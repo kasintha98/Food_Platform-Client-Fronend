@@ -15,7 +15,7 @@ import ChangePasswordPage from "./containers/ChangePasswordPage";
 import OrderDetailsPage from "./containers/OrderDetailsPage";
 import SignupPage from "./containers/SignupPage";
 import PdfPage from "./containers/PdfPage";
-import NewMwnu from "./containers/NewMenu";
+import NewMenu from "./containers/NewMenu";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/new-mwnu" exact component={NewMwnu} />
+          <Route path="/new-menu" exact component={NewMenu} />
           <Route path="/cart" component={CartPage} />
           <Route path="/bill" exact component={PdfPage} />
           <Route path="/checkout" component={CheckoutPage} />
