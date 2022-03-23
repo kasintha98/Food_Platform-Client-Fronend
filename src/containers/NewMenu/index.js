@@ -60,7 +60,7 @@ export default function NewMenu() {
       <Header></Header>
       <Container
         style={{
-          marginTop: "120px",
+          marginTop: "65px",
           minHeight: "calc(100vh - 180px)",
         }}
       >
@@ -110,7 +110,7 @@ export default function NewMenu() {
             </div>
           </Col>
           <Col sm={6} md={4}>
-            <Card sx={{ maxWidth: 345, marginTop: 12 }}>
+            <Card sx={{ width: "100%", marginTop: 12 }}>
               <CardContent sx={{ height: "500px", overflowY: "auto" }}>
                 <CartCard></CartCard>
                 <CartCard></CartCard>

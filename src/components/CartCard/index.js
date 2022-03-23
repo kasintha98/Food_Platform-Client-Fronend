@@ -35,6 +35,7 @@ export default function CartCard() {
                   <ButtonGroup
                     variant="contained"
                     aria-label="outlined primary button group"
+                    sx={{ marginTop: "5px" }}
                   >
                     <Button
                       sx={{
