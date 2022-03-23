@@ -1,5 +1,15 @@
-#outlined-number {
-  width: 13px;
+#numberofitems {
+  width: 7px;
   font-size: 12px;
-  height: 14px;
+  height: 8px;
+}
+
+.borderRound {
+  border: 1px #2979ff solid;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.borderRound:hover {
+  background-color: #a6d4fa;
 }

@@ -6,18 +6,14 @@ import { Row, Col, Container } from "react-bootstrap";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import TextField from "@mui/material/TextField";
-import AddShoppingCart from "@mui/icons-material/AddShoppingCart";
-import pizzaImg from "../../img/pizza.jpg";
-import IconButton from "@mui/material/IconButton";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import CartCard from "../../components/CartCard";
+import ProductCard from "../../components/ProductCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -90,168 +86,16 @@ export default function NewMenu() {
                   <div>
                     <Row>
                       <Col sm={6} md={6} lg={4}>
-                        <Card sx={{ maxWidth: 345, marginTop: 5 }}>
-                          <CardMedia
-                            component="img"
-                            height="180"
-                            image={pizzaImg}
-                            alt="product"
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              Sausages Pizza
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit
-                            </Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Row className="w-100">
-                              <Col className="col-10">
-                                <Button size="small" variant="outlined">
-                                  Customize
-                                </Button>
-                              </Col>
-                              <Col className="col-2">
-                                <IconButton
-                                  size="small"
-                                  color="success"
-                                  aria-label="add to shopping cart"
-                                >
-                                  <AddShoppingCart />
-                                </IconButton>
-                              </Col>
-                            </Row>
-                          </CardActions>
-                        </Card>
+                        <ProductCard></ProductCard>
                       </Col>
                       <Col sm={6} md={6} lg={4}>
-                        <Card sx={{ maxWidth: 345, marginTop: 5 }}>
-                          <CardMedia
-                            component="img"
-                            height="180"
-                            image={pizzaImg}
-                            alt="product"
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              Sausages Pizza
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit
-                            </Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Row className="w-100">
-                              <Col className="col-10">
-                                <Button size="small" variant="outlined">
-                                  Customize
-                                </Button>
-                              </Col>
-                              <Col className="col-2">
-                                <IconButton
-                                  size="small"
-                                  color="success"
-                                  aria-label="add to shopping cart"
-                                >
-                                  <AddShoppingCart />
-                                </IconButton>
-                              </Col>
-                            </Row>
-                          </CardActions>
-                        </Card>
+                        <ProductCard></ProductCard>
                       </Col>
                       <Col sm={6} md={6} lg={4}>
-                        <Card sx={{ maxWidth: 345, marginTop: 5 }}>
-                          <CardMedia
-                            component="img"
-                            height="180"
-                            image={pizzaImg}
-                            alt="product"
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              Sausages Pizza
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit
-                            </Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Row className="w-100">
-                              <Col className="col-10">
-                                <Button size="small" variant="outlined">
-                                  Customize
-                                </Button>
-                              </Col>
-                              <Col className="col-2">
-                                <IconButton
-                                  size="small"
-                                  color="success"
-                                  aria-label="add to shopping cart"
-                                >
-                                  <AddShoppingCart />
-                                </IconButton>
-                              </Col>
-                            </Row>
-                          </CardActions>
-                        </Card>
+                        <ProductCard></ProductCard>
                       </Col>
                       <Col sm={6} md={6} lg={4}>
-                        <Card sx={{ maxWidth: 345, marginTop: 5 }}>
-                          <CardMedia
-                            component="img"
-                            height="180"
-                            image={pizzaImg}
-                            alt="product"
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="div"
-                            >
-                              Sausages Pizza
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit
-                            </Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Row className="w-100">
-                              <Col className="col-10">
-                                <Button size="small" variant="outlined">
-                                  Customize
-                                </Button>
-                              </Col>
-                              <Col className="col-2">
-                                <IconButton
-                                  size="small"
-                                  color="success"
-                                  aria-label="add to shopping cart"
-                                >
-                                  <AddShoppingCart />
-                                </IconButton>
-                              </Col>
-                            </Row>
-                          </CardActions>
-                        </Card>
+                        <ProductCard></ProductCard>
                       </Col>
                     </Row>
                   </div>
@@ -267,36 +111,10 @@ export default function NewMenu() {
           </Col>
           <Col sm={6} md={4}>
             <Card sx={{ maxWidth: 345, marginTop: 12 }}>
-              <CardContent>
-                <Card sx={{ maxWidth: 345 }}>
-                  <Row>
-                    <Col className="col-3">
-                      <CardMedia
-                        component="img"
-                        height="50"
-                        image={pizzaImg}
-                        alt="green iguana"
-                      />
-                    </Col>
-                    <Col className="col-9">
-                      <Typography variant="body2" color="text.secondary">
-                        Lizards are a widespread group of squamate reptiles,
-                        with over 6,000 species, ranging across all continents
-                        except Antarctica
-                      </Typography>
-                    </Col>
-                  </Row>
-                  <CardActions>
-                    <ButtonGroup
-                      variant="contained"
-                      aria-label="outlined primary button group"
-                    >
-                      <Button size="small">-</Button>
-                      <TextField size="small" id="outlined-number" type="tel" />
-                      <Button size="small">+</Button>
-                    </ButtonGroup>
-                  </CardActions>
-                </Card>
+              <CardContent sx={{ height: "500px", overflowY: "auto" }}>
+                <CartCard></CartCard>
+                <CartCard></CartCard>
+                <CartCard></CartCard>
               </CardContent>
               <CardActions>
                 <Button variant="contained" color="success" className="w-100">
