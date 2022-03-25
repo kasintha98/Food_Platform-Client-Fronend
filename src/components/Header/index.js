@@ -212,7 +212,7 @@ export default function Header(props) {
               <img width="40px" src={logo} alt="logo" />
             </Link>
           </Navbar.Brand>
-          <Form className="d-flex">
+          {/* <Form className="d-flex">
             <FormControl
               type="search"
               placeholder="Search"
@@ -220,7 +220,7 @@ export default function Header(props) {
               aria-label="Search"
             />
             <Button variant="outline-success">Search</Button>
-          </Form>
+          </Form> */}
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav

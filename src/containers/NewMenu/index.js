@@ -14,6 +14,9 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import CartCard from "../../components/CartCard";
 import ProductCard from "../../components/ProductCard";
+import styled from "@emotion/styled";
+import CartNum from "../../components/UI/CartNum";
+import { useSelector } from "react-redux";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -48,8 +51,33 @@ function a11yProps(index) {
   };
 }
 
+const CartIconArea = styled.div`
+  display: none;
+
+  @media (max-width: 992px) {
+    display: block;
+  }
+`;
+
+const CusContainer = styled(Container)`
+  margin-top: 65px;
+  min-height: calc(100vh - 180px);
+
+  @media (max-width: 992px) {
+    margin-top: 80px;
+  }
+`;
+
+const CusCol = styled(Col)`
+  @media (max-width: 992px) {
+    display: none;
+  }
+`;
+
 export default function NewMenu() {
   const [value, setValue] = React.useState(0);
+
+  const cart = useSelector((state) => state.cart);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -58,17 +86,28 @@ export default function NewMenu() {
   return (
     <div>
       <Header></Header>
-      <Container
-        style={{
-          marginTop: "65px",
-          minHeight: "calc(100vh - 180px)",
-        }}
-      >
+      <CusContainer>
         <Row>
-          <Col sm={6} md={8}>
-            <div>
-              <h2>Our Menu</h2>
-            </div>
+          <Col sm={12} md={12} lg={8} xl={8}>
+            <Row>
+              <Col className="col-10">
+                <h2>Our Menu</h2>
+              </Col>
+              <Col className="col-2">
+                <CartIconArea>
+                  {Object.keys(cart.cartItems) ? (
+                    <CartNum
+                      count={Object.keys(cart.cartItems).length}
+                    ></CartNum>
+                  ) : null}
+                  <i
+                    style={{ fontSize: "25px" }}
+                    className="fa fa-cart-plus"
+                  ></i>
+                </CartIconArea>
+              </Col>
+            </Row>
+
             <div>
               <Box sx={{ width: "100%" }}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -85,16 +124,16 @@ export default function NewMenu() {
                 <TabPanel value={value} index={0}>
                   <div>
                     <Row>
-                      <Col sm={6} md={6} lg={4}>
+                      <Col xs={6} sm={6} md={6} lg={4}>
                         <ProductCard></ProductCard>
                       </Col>
-                      <Col sm={6} md={6} lg={4}>
+                      <Col xs={6} sm={6} md={6} lg={4}>
                         <ProductCard></ProductCard>
                       </Col>
-                      <Col sm={6} md={6} lg={4}>
+                      <Col xs={6} sm={6} md={6} lg={4}>
                         <ProductCard></ProductCard>
                       </Col>
-                      <Col sm={6} md={6} lg={4}>
+                      <Col xs={6} sm={6} md={6} lg={4}>
                         <ProductCard></ProductCard>
                       </Col>
                     </Row>
@@ -109,7 +148,7 @@ export default function NewMenu() {
               </Box>
             </div>
           </Col>
-          <Col sm={6} md={4}>
+          <CusCol sm={12} md={12} lg={4} xl={4}>
             <Card sx={{ width: "100%", marginTop: 12 }}>
               <CardContent sx={{ height: "500px", overflowY: "auto" }}>
                 <CartCard></CartCard>
@@ -122,9 +161,9 @@ export default function NewMenu() {
                 </Button>
               </CardActions>
             </Card>
-          </Col>
+          </CusCol>
         </Row>
-      </Container>
+      </CusContainer>
       <Footer></Footer>
     </div>
   );
