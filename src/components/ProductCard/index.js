@@ -37,7 +37,7 @@ const style = {
   overflowY: "auto",
 };
 
-export default function ProductCard() {
+export default function ProductCard(props) {
   const [open, setOpen] = React.useState(false);
   const [pizzaType, setPizzaType] = React.useState("1");
   const [pizzaSize, setPizzaSize] = React.useState("11");
@@ -86,10 +86,10 @@ export default function ProductCard() {
             </Carousel>
           </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Sausages Pizza Customize
+            {props.product?.name}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            {props.product?.description}
           </Typography>
           <div>
             <div>
@@ -288,10 +288,10 @@ export default function ProductCard() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Sausages Pizza
+            {props.product?.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+            {props.product?.description}
           </Typography>
         </CardContent>
         <CardActions>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Modal } from "react-bootstrap";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -15,8 +15,8 @@ import Box from "@mui/material/Box";
 import CartCard from "../../components/CartCard";
 import ProductCard from "../../components/ProductCard";
 import styled from "@emotion/styled";
-import CartNum from "../../components/UI/CartNum";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductsNew } from "../../actions";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,6 +53,10 @@ function a11yProps(index) {
 
 const CartIconArea = styled.div`
   display: none;
+  & span {
+    left: -11px;
+    top: -24px;
+  }
 
   @media (max-width: 992px) {
     display: block;
@@ -74,13 +78,58 @@ const CusCol = styled(Col)`
   }
 `;
 
+const HeadMod = styled.div`
+  & .close {
+    color: red;
+  }
+`;
+
 export default function NewMenu() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [showCartModal, setShowCartModal] = useState(false);
 
   const cart = useSelector((state) => state.cart);
+  const product = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProductsNew());
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleCartModalClose = () => setShowCartModal(false);
+  const handleCartModalShow = () => setShowCartModal(true);
+
+  const renderCartModal = () => {
+    return (
+      <>
+        <Modal size="lg" show={showCartModal} onHide={handleCartModalClose}>
+          <HeadMod>
+            <Modal.Header closeButton>
+              <Modal.Title>My Cart</Modal.Title>
+            </Modal.Header>
+          </HeadMod>
+
+          <Modal.Body style={{ padding: "0px" }}>
+            <Card sx={{ width: "100%" }}>
+              <CardContent sx={{ height: "500px", overflowY: "auto" }}>
+                <CartCard></CartCard>
+                <CartCard></CartCard>
+                <CartCard></CartCard>
+              </CardContent>
+              <CardActions>
+                <Button variant="contained" color="success" className="w-100">
+                  Checkout
+                </Button>
+              </CardActions>
+            </Card>
+          </Modal.Body>
+        </Modal>
+      </>
+    );
   };
 
   return (
@@ -90,20 +139,39 @@ export default function NewMenu() {
         <Row>
           <Col sm={12} md={12} lg={8} xl={8}>
             <Row>
-              <Col className="col-10">
+              <Col className="col-9">
                 <h2>Our Menu</h2>
               </Col>
-              <Col className="col-2">
+              <Col className="col-3">
                 <CartIconArea>
-                  {Object.keys(cart.cartItems) ? (
-                    <CartNum
-                      count={Object.keys(cart.cartItems).length}
-                    ></CartNum>
-                  ) : null}
-                  <i
-                    style={{ fontSize: "25px" }}
-                    className="fa fa-cart-plus"
-                  ></i>
+                  <Button sx={{ color: "black" }} onClick={handleCartModalShow}>
+                    {Object.keys(cart.cartItems) ? (
+                      <div style={{ position: "relative" }}>
+                        <span
+                          style={{
+                            position: "absolute",
+                            background: "red",
+                            width: "15px",
+                            height: "15px",
+                            borderRadius: "5px",
+                            fontSize: "10px",
+                            textAlign: "center",
+                            alignSelf: "center",
+                            color: "#fff",
+                            left: "-11px",
+                            top: "-25px",
+                          }}
+                        >
+                          {Object.keys(cart.cartItems).length}
+                        </span>
+                      </div>
+                    ) : null}
+
+                    <i
+                      style={{ fontSize: "25px" }}
+                      className="fa fa-cart-plus"
+                    ></i>
+                  </Button>
                 </CartIconArea>
               </Col>
             </Row>
@@ -124,18 +192,17 @@ export default function NewMenu() {
                 <TabPanel value={value} index={0}>
                   <div>
                     <Row>
-                      <Col xs={6} sm={6} md={6} lg={4}>
-                        <ProductCard></ProductCard>
-                      </Col>
-                      <Col xs={6} sm={6} md={6} lg={4}>
-                        <ProductCard></ProductCard>
-                      </Col>
-                      <Col xs={6} sm={6} md={6} lg={4}>
-                        <ProductCard></ProductCard>
-                      </Col>
-                      <Col xs={6} sm={6} md={6} lg={4}>
-                        <ProductCard></ProductCard>
-                      </Col>
+                      {product?.products.length > 0 ? (
+                        <>
+                          {product?.products.map((product) => (
+                            <Col xs={6} sm={6} md={6} lg={4}>
+                              <ProductCard product={product}></ProductCard>
+                            </Col>
+                          ))}
+                        </>
+                      ) : (
+                        <h4>No Products Available</h4>
+                      )}
                     </Row>
                   </div>
                 </TabPanel>
@@ -165,6 +232,7 @@ export default function NewMenu() {
         </Row>
       </CusContainer>
       <Footer></Footer>
+      {renderCartModal()}
     </div>
   );
 }

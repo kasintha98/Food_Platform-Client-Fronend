@@ -24,9 +24,9 @@ export default function HomePage(props) {
           <Section id="chef">
             <Chef></Chef>
           </Section>
-          <Section id="menu">
+          {/* <Section id="menu">
             <CategoryGallery></CategoryGallery>
-          </Section>
+          </Section> */}
           <Section id="contact">
             <Contact></Contact>
           </Section>

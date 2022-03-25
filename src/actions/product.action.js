@@ -1,4 +1,5 @@
 import axios from "../helpers/axios";
+import stockAxios from "axios";
 import { productConstants } from "./constants";
 
 //geting products belong to a specific category by url slug
@@ -33,6 +34,23 @@ export const getSpecificProductBySlug = (slug) => {
         type: productConstants.GET_SPECIFIC_PRODUCT_BY_SLUG_FAILURE,
         payload: res.data.error,
       });
+    }
+  };
+};
+
+//geting products belong to a specific category by url slug
+export const getProductsNew = (slug) => {
+  return async (dispatch) => {
+    const res = await stockAxios.get(`products.json`);
+
+    if (res.status === 200) {
+      dispatch({
+        type: productConstants.GET_PRODUCTS_BY_SLUG_SUCCESS,
+        payload: res.data,
+      });
+      console.log(res.data);
+    } else {
+      console.log("error");
     }
   };
 };

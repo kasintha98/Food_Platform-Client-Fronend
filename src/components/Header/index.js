@@ -135,13 +135,16 @@ export default function Header(props) {
         >
           Chef
         </Nav.Link>
-        <Nav.Link
+        {/* <Nav.Link
           className="nav-link"
           onClick={menuSection.onClick}
           selected={menuSection.selected}
         >
           Menu
-        </Nav.Link>
+        </Nav.Link> */}
+        <NavLink to="/new-menu" className="nav-link">
+          Menu
+        </NavLink>
         <Nav.Link
           className="nav-link"
           onClick={contactSection.onClick}
