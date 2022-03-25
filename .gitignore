@@ -5,9 +5,9 @@
 /.pnp
 .pnp.js
 
-apikey.js
+#apikey.js
 
-/apikey.js
+#/apikey.js
 
 /src/apikey.js
 
