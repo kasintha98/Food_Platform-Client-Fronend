@@ -2,15 +2,15 @@
   "products": [
     {
       "name": "Sausages Pizza 1",
-      "discription": "test 1 Lorem ipsum dolor sit amet"
+      "description": "test 1 Lorem ipsum dolor sit amet"
     },
     {
       "name": "Sausages Pizza 2",
-      "discription": "test 2 Lorem ipsum dolor sit amet"
+      "description": "test 2 Lorem ipsum dolor sit amet"
     },
     {
       "name": "Sausages Pizza 3",
-      "discription": "test 3 Lorem ipsum dolor sit amet"
+      "description": "test 3 Lorem ipsum dolor sit amet"
     }
   ]
 }
