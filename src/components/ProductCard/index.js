@@ -86,10 +86,10 @@ export default function ProductCard(props) {
             </Carousel>
           </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {props.product?.name}
+            {props.product?.dish}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {props.product?.description}
+            {props.product?.dish_description_id}
           </Typography>
           <div>
             <div>
@@ -288,10 +288,10 @@ export default function ProductCard(props) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {props.product?.name}
+            {props.product?.dish}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {props.product?.description}
+            {props.product?.dish_description_id}
           </Typography>
         </CardContent>
         <CardActions>
