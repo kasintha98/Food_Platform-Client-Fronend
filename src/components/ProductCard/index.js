@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col, Carousel } from "react-bootstrap";
+import styled from "@emotion/styled";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -11,6 +12,8 @@ import pizzaImg from "../../img/pizza.jpg";
 import IconButton from "@mui/material/IconButton";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Add, Remove } from "@mui/icons-material";
+import vegSvg from "../../img/veg.svg";
+import nonvegSvg from "../../img/non-veg.svg";
 import {
   Modal,
   Box,
@@ -22,6 +25,8 @@ import {
   Checkbox,
   TextField,
 } from "@mui/material";
+import { addToCartNew, replaceCartItemNew } from "../../actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -37,18 +42,57 @@ const style = {
   overflowY: "auto",
 };
 
+const CusomizeBtn = styled(Button)`
+  position: absolute;
+  right: 5px;
+  top: 84px;
+  background-color: rgba(255, 255, 255, 0.7);
+
+  &:hover {
+    background-color: rgba(255, 255, 255);
+  }
+`;
+
+const VegImg = styled.img`
+  position: absolute;
+  left: 5px;
+  top: 5px;
+`;
+
 export default function ProductCard(props) {
   const [open, setOpen] = React.useState(false);
-  const [pizzaType, setPizzaType] = React.useState("1");
-  const [pizzaSize, setPizzaSize] = React.useState("11");
+  const [dishAddOn, setDishAddOn] = React.useState("1");
+  const [dishSize, setDishSize] = React.useState(props.product.size);
+  const [currentProduct, setCurrentProduct] = React.useState(props.product);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const cart = useSelector((state) => state.cart);
 
-  const handlePizzaType = (event) => {
-    setPizzaType(event.target.value);
+  const dispatch = useDispatch();
+
+  const onQuantityIncrement = (product_id) => {
+    console.log({ product_id });
+    dispatch(addToCartNew(cart.cartItems[product_id], 1));
   };
-  const handlePizzaSize = (event) => {
-    setPizzaSize(event.target.value);
+
+  const onQuantityDecrement = (product_id) => {
+    dispatch(addToCartNew(cart.cartItems[product_id], -1));
+  };
+
+  const handleDishAddOn = (event) => {
+    setDishAddOn(event.target.value);
+  };
+  const handleDishSize = (event) => {
+    setDishSize(event.target.value);
+  };
+
+  const handleCurrentProduct = (curProduct) => {
+    setCurrentProduct(curProduct);
+    console.log(curProduct);
+  };
+
+  const replaceCartItem = (dupProduct, oldId) => {
+    dispatch(replaceCartItemNew(dupProduct, oldId));
   };
 
   const renderCustomizeModal = () => {
@@ -86,7 +130,7 @@ export default function ProductCard(props) {
             </Carousel>
           </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {props.product?.dish}
+            {props.product?.dish_type}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {props.product?.dish_description_id}
@@ -104,8 +148,8 @@ export default function ProductCard(props) {
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
                     name="controlled-radio-buttons-group"
-                    value={pizzaType}
-                    onChange={handlePizzaType}
+                    value={dishAddOn}
+                    onChange={handleDishAddOn}
                   >
                     <FormControlLabel
                       value="1"
@@ -135,27 +179,29 @@ export default function ProductCard(props) {
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
                     name="controlled-radio-buttons-group"
-                    value={pizzaSize}
-                    onChange={handlePizzaSize}
+                    value={dishSize}
+                    onChange={handleDishSize}
                   >
-                    <FormControlLabel
-                      value="11"
-                      control={<Radio />}
-                      label="Regular"
-                      className="borderRound"
-                    />
-                    <FormControlLabel
-                      value="21"
-                      control={<Radio />}
-                      label="Medium"
-                      className="borderRound"
-                    />
-                    <FormControlLabel
-                      value="31"
-                      control={<Radio />}
-                      label="Large"
-                      className="borderRound"
-                    />
+                    {props.products.map((dupProduct) =>
+                      dupProduct.dish_type === props.product.dish_type ? (
+                        <FormControlLabel
+                          value={dupProduct.size}
+                          control={
+                            <Radio
+                              onClick={() => {
+                                handleCurrentProduct(dupProduct);
+                                replaceCartItem(
+                                  dupProduct,
+                                  props.product.product_id
+                                );
+                              }}
+                            />
+                          }
+                          label={dupProduct.size}
+                          className="borderRound"
+                        />
+                      ) : null
+                    )}
                   </RadioGroup>
                 </FormControl>
               </div>
@@ -245,15 +291,26 @@ export default function ProductCard(props) {
                       height: "25px",
                       minWidth: "25px !important",
                     }}
+                    onClick={() => {
+                      onQuantityDecrement(props.product?.product_id);
+                    }}
                   >
                     <Remove></Remove>
                   </Button>
-                  <TextField size="small" id="numberofitems" type="tel" />
+                  <TextField
+                    size="small"
+                    id="numberofitems"
+                    type="tel"
+                    value={cart?.cartItems[props.product?.product_id]?.qty}
+                  />
                   <Button
                     sx={{
                       width: "25px !important",
                       height: "25px",
                       minWidth: "25px !important",
+                    }}
+                    onClick={() => {
+                      onQuantityIncrement(props.product?.product_id);
                     }}
                   >
                     <Add></Add>
@@ -279,33 +336,62 @@ export default function ProductCard(props) {
 
   return (
     <div>
-      <Card sx={{ maxWidth: 345, marginTop: 5 }}>
+      <Card sx={{ maxWidth: 345, marginTop: 5, position: "relative" }}>
         <CardMedia
           component="img"
-          height="180"
+          height="120px"
           image={pizzaImg}
           alt="product"
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {props.product?.dish}
+        {props.product.ingredient_exists_flag === "Y" ? (
+          <CusomizeBtn onClick={handleOpen} size="small" variant="outlined">
+            Customize
+          </CusomizeBtn>
+        ) : null}
+
+        {props.product?.dish_category === "Veg" ? (
+          <VegImg src={vegSvg} alt="veg" />
+        ) : (
+          <VegImg src={nonvegSvg} alt="non-veg" />
+        )}
+        <VegImg src={vegSvg} alt="veg" />
+
+        <CardContent sx={{ padding: "5px" }}>
+          <Typography
+            sx={{ fontSize: "1rem", fontWeight: "600" }}
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
+            {props.product?.dish_type === "Fries" ? (
+              <>
+                {props.product?.dish_type} ({props.product?.size})
+              </>
+            ) : (
+              <>{props.product?.dish_type}</>
+            )}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            sx={{ fontSize: "0.85rem" }}
+            variant="body2"
+            color="text.secondary"
+          >
             {props.product?.dish_description_id}
           </Typography>
         </CardContent>
         <CardActions>
-          <Row className="w-100">
+          <Row className="w-100 align-items-center">
             <Col className="col-10">
-              <Button onClick={handleOpen} size="small" variant="outlined">
-                Customize
-              </Button>
+              <Typography>₹ {props.product?.price}</Typography>
             </Col>
             <Col className="col-2">
               <IconButton
                 size="small"
                 color="success"
                 aria-label="add to shopping cart"
+                onClick={() => {
+                  dispatch(addToCartNew(currentProduct, 1));
+                }}
               >
                 <AddShoppingCart />
               </IconButton>
