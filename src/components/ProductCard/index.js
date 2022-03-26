@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Row, Col, Carousel } from "react-bootstrap";
+import { Row, Col, Carousel, Modal } from "react-bootstrap";
 import styled from "@emotion/styled";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -17,7 +17,6 @@ import chili from "../../img/chili.svg";
 import nonvegSvg from "../../img/non-veg.svg";
 import Delete from "@mui/icons-material/Delete";
 import {
-  Modal,
   Box,
   Radio,
   RadioGroup,
@@ -122,12 +121,14 @@ export default function ProductCard(props) {
   const renderCustomizeModal = () => {
     return (
       <Modal
-        open={open}
-        onClose={handleClose}
+        show={open}
+        onHide={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        style={{ padding: "0px" }}
       >
-        <Box sx={style}>
+        <Modal.Header closeButton>Customise Order</Modal.Header>
+        <Box>
           <div>
             <Carousel>
               <Carousel.Item style={{ height: "200px" }}>
@@ -153,247 +154,276 @@ export default function ProductCard(props) {
               </Carousel.Item>
             </Carousel>
           </div>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {currentProduct?.dish_type}{" "}
-            {currentProduct.dish_spice_indicater === "Less Spicy" && (
-              <>
-                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-              </>
-            )}
-            {currentProduct.dish_spice_indicater === "Medium Spicy" && (
-              <>
-                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-              </>
-            )}
-            {currentProduct.dish_spice_indicater === "Extra Hot" && (
-              <>
-                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-              </>
-            )}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {currentProduct?.dish_description_id}
-          </Typography>
-          <div>
+          <Modal.Body>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              {currentProduct?.dish_type}{" "}
+              {currentProduct.dish_spice_indicater === "Less Spicy" && (
+                <>
+                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                </>
+              )}
+              {currentProduct.dish_spice_indicater === "Medium Spicy" && (
+                <>
+                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                </>
+              )}
+              {currentProduct.dish_spice_indicater === "Extra Hot" && (
+                <>
+                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                </>
+              )}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {currentProduct?.dish_description_id}
+            </Typography>
             <div>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 2, fontWeight: "500" }}
-              >
-                Pizza type
-              </Typography>
               <div>
-                <FormControl sx={{ width: "100%" }}>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={dishAddOn}
-                    onChange={handleDishAddOn}
-                  >
+                <Typography
+                  id="modal-modal-description"
+                  sx={{ mt: 2, fontWeight: "500" }}
+                >
+                  Pizza type
+                </Typography>
+                <div>
+                  <FormControl sx={{ width: "100%" }}>
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={dishAddOn}
+                      onChange={handleDishAddOn}
+                    >
+                      <FormControlLabel
+                        value="1"
+                        control={<Radio />}
+                        label="Mix Veg, Pizza (Onion, Tomato)"
+                        className="borderRound"
+                        sx={{ marginLeft: "0px" }}
+                      />
+                      <FormControlLabel
+                        value="2"
+                        control={<Radio />}
+                        label="Paradise Veg, Pizza (Baby Corn, Olives)"
+                        className="borderRound"
+                        sx={{ marginLeft: "0px" }}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+              </div>
+              <div>
+                <Typography
+                  id="modal-modal-description"
+                  sx={{ mt: 2, fontWeight: "500" }}
+                >
+                  Pizza size
+                </Typography>
+                <div>
+                  <FormControl sx={{ width: "100%" }}>
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={dishSize}
+                      onChange={handleDishSize}
+                      defaultValue={currentProduct.size}
+                    >
+                      {props.products.map((dupProduct) =>
+                        dupProduct.dish_type === currentProduct.dish_type ? (
+                          <FormControlLabel
+                            value={dupProduct.size}
+                            control={
+                              <Radio
+                                onClick={() => {
+                                  handleCurrentProduct(dupProduct);
+                                  replaceCartItem(
+                                    dupProduct,
+                                    currentProduct.product_id
+                                  );
+                                }}
+                              />
+                            }
+                            label={dupProduct.size}
+                            className="borderRound"
+                            sx={{ marginLeft: "0px" }}
+                          />
+                        ) : null
+                      )}
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+              </div>
+              <div>
+                <Typography
+                  id="modal-modal-description"
+                  sx={{ mt: 2, fontWeight: "500" }}
+                >
+                  Extra toppings
+                </Typography>
+                <div>
+                  <FormGroup>
                     <FormControlLabel
-                      value="1"
-                      control={<Radio />}
-                      label="Mix Veg, Pizza (Onion, Tomato)"
+                      control={<Checkbox />}
+                      label="Extra Toppings (Regular)"
+                      sx={{
+                        width: "100%",
+                        marginRight: "0px",
+                        marginLeft: "0px",
+                      }}
                       className="borderRound"
                     />
                     <FormControlLabel
-                      value="2"
-                      control={<Radio />}
-                      label="Paradise Veg, Pizza (Baby Corn, Olives)"
+                      control={<Checkbox />}
+                      label="Extra Toppings (Middle)"
+                      sx={{
+                        width: "100%",
+                        marginRight: "0px",
+                        marginLeft: "0px",
+                      }}
                       className="borderRound"
                     />
-                  </RadioGroup>
-                </FormControl>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Extra Toppings (Large)"
+                      sx={{
+                        width: "100%",
+                        marginRight: "0px",
+                        marginLeft: "0px",
+                      }}
+                      className="borderRound"
+                    />
+                  </FormGroup>
+                </div>
               </div>
-            </div>
-            <div>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 2, fontWeight: "500" }}
-              >
-                Pizza size
-              </Typography>
               <div>
-                <FormControl sx={{ width: "100%" }}>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={dishSize}
-                    onChange={handleDishSize}
-                    defaultValue={currentProduct.size}
-                  >
-                    {props.products.map((dupProduct) =>
-                      dupProduct.dish_type === currentProduct.dish_type ? (
-                        <FormControlLabel
-                          value={dupProduct.size}
-                          control={
-                            <Radio
-                              onClick={() => {
-                                handleCurrentProduct(dupProduct);
-                                replaceCartItem(
-                                  dupProduct,
-                                  currentProduct.product_id
-                                );
-                              }}
-                            />
-                          }
-                          label={dupProduct.size}
-                          className="borderRound"
-                        />
-                      ) : null
-                    )}
-                  </RadioGroup>
-                </FormControl>
+                <Typography
+                  id="modal-modal-description"
+                  sx={{ mt: 2, fontWeight: "500" }}
+                >
+                  Paneer & Cheese
+                </Typography>
+                <div>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Paneer & Cheese (Regular)"
+                      sx={{
+                        width: "100%",
+                        marginRight: "0px",
+                        marginLeft: "0px",
+                      }}
+                      className="borderRound"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Paneer & Cheese (Middle)"
+                      sx={{
+                        width: "100%",
+                        marginRight: "0px",
+                        marginLeft: "0px",
+                      }}
+                      className="borderRound"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Paneer & Cheese (Large)"
+                      sx={{
+                        width: "100%",
+                        marginRight: "0px",
+                        marginLeft: "0px",
+                      }}
+                      className="borderRound"
+                    />
+                  </FormGroup>
+                </div>
               </div>
-            </div>
-            <div>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 2, fontWeight: "500" }}
-              >
-                Extra toppings
-              </Typography>
               <div>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Extra Toppings (Regular)"
-                    sx={{ width: "100%", marginRight: "0px" }}
-                    className="borderRound"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Extra Toppings (Middle)"
-                    sx={{ width: "100%", marginRight: "0px" }}
-                    className="borderRound"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Extra Toppings (Large)"
-                    sx={{ width: "100%", marginRight: "0px" }}
-                    className="borderRound"
-                  />
-                </FormGroup>
-              </div>
-            </div>
-            <div>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 2, fontWeight: "500" }}
-              >
-                Paneer & Cheese
-              </Typography>
-              <div>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Paneer & Cheese (Regular)"
-                    sx={{ width: "100%", marginRight: "0px" }}
-                    className="borderRound"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Paneer & Cheese (Middle)"
-                    sx={{ width: "100%", marginRight: "0px" }}
-                    className="borderRound"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Paneer & Cheese (Large)"
-                    sx={{ width: "100%", marginRight: "0px" }}
-                    className="borderRound"
-                  />
-                </FormGroup>
+                <br></br>
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Special Requests"
+                  multiline
+                  rows={3}
+                  sx={{ width: "100%" }}
+                />
               </div>
             </div>
             <div>
               <br></br>
-              <TextField
-                id="outlined-multiline-static"
-                label="Special Requests"
-                multiline
-                rows={3}
-                sx={{ width: "100%" }}
-              />
+              <Row className="align-items-center">
+                <Col className="col-4">
+                  <ButtonGroup
+                    variant="contained"
+                    aria-label="outlined primary button group"
+                  >
+                    <Button
+                      sx={{
+                        width: "25px !important",
+                        height: "25px",
+                        minWidth: "25px !important",
+                      }}
+                      onClick={() => {
+                        onQuantityDecrement(currentProduct?.product_id);
+                      }}
+                    >
+                      {cart?.cartItems[currentProduct?.product_id]?.qty < 2 ? (
+                        <Delete sx={{ fontSize: "0.9rem" }}></Delete>
+                      ) : (
+                        <Remove sx={{ fontSize: "0.9rem" }}></Remove>
+                      )}
+                    </Button>
+                    <TextField
+                      size="small"
+                      id="numberofitems"
+                      type="tel"
+                      value={
+                        cart?.cartItems[currentProduct?.product_id]?.qty
+                          ? cart?.cartItems[currentProduct?.product_id]?.qty
+                          : 0
+                      }
+                      defaultValue={0}
+                      InputProps={{ inputProps: { min: 0 } }}
+                    />
+                    <Button
+                      sx={{
+                        width: "25px !important",
+                        height: "25px",
+                        minWidth: "25px !important",
+                      }}
+                      onClick={() => {
+                        onQuantityIncrement(currentProduct?.product_id);
+                      }}
+                    >
+                      <Add sx={{ fontSize: "0.9rem" }}></Add>
+                    </Button>
+                  </ButtonGroup>
+                </Col>
+                <Col className="col-8">
+                  <Button
+                    sx={{ width: "100%" }}
+                    variant="contained"
+                    color="success"
+                    onClick={() => {
+                      let qty = cart?.cartItems[currentProduct?.product_id]?.qty
+                        ? 0
+                        : 0;
+                      dispatch(addToCartNew(currentProduct, qty));
+                      handleClose();
+                    }}
+                  >
+                    Add to my order ₹{" "}
+                    {cart?.cartItems[currentProduct?.product_id]?.qty *
+                    cart?.cartItems[currentProduct?.product_id]?.price
+                      ? cart?.cartItems[currentProduct?.product_id]?.qty *
+                        cart?.cartItems[currentProduct?.product_id]?.price
+                      : 0}
+                    .00
+                  </Button>
+                </Col>
+              </Row>
             </div>
-          </div>
-          <div>
-            <br></br>
-            <Row className="align-items-center">
-              <Col className="col-4">
-                <ButtonGroup
-                  variant="contained"
-                  aria-label="outlined primary button group"
-                >
-                  <Button
-                    sx={{
-                      width: "25px !important",
-                      height: "25px",
-                      minWidth: "25px !important",
-                    }}
-                    onClick={() => {
-                      onQuantityDecrement(currentProduct?.product_id);
-                    }}
-                  >
-                    {cart?.cartItems[currentProduct?.product_id]?.qty < 2 ? (
-                      <Delete sx={{ fontSize: "0.9rem" }}></Delete>
-                    ) : (
-                      <Remove sx={{ fontSize: "0.9rem" }}></Remove>
-                    )}
-                  </Button>
-                  <TextField
-                    size="small"
-                    id="numberofitems"
-                    type="tel"
-                    value={
-                      cart?.cartItems[currentProduct?.product_id]?.qty
-                        ? cart?.cartItems[currentProduct?.product_id]?.qty
-                        : 0
-                    }
-                    defaultValue={0}
-                    InputProps={{ inputProps: { min: 0 } }}
-                  />
-                  <Button
-                    sx={{
-                      width: "25px !important",
-                      height: "25px",
-                      minWidth: "25px !important",
-                    }}
-                    onClick={() => {
-                      onQuantityIncrement(currentProduct?.product_id);
-                    }}
-                  >
-                    <Add sx={{ fontSize: "0.9rem" }}></Add>
-                  </Button>
-                </ButtonGroup>
-              </Col>
-              <Col className="col-8">
-                <Button
-                  sx={{ width: "100%" }}
-                  variant="contained"
-                  color="success"
-                  onClick={() => {
-                    let qty = cart?.cartItems[currentProduct?.product_id]?.qty
-                      ? 0
-                      : 0;
-                    dispatch(addToCartNew(currentProduct, qty));
-                    handleClose();
-                  }}
-                >
-                  Add to my order ₹{" "}
-                  {cart?.cartItems[currentProduct?.product_id]?.qty *
-                  cart?.cartItems[currentProduct?.product_id]?.price
-                    ? cart?.cartItems[currentProduct?.product_id]?.qty *
-                      cart?.cartItems[currentProduct?.product_id]?.price
-                    : 0}
-                  .00
-                </Button>
-              </Col>
-            </Row>
-          </div>
+          </Modal.Body>
         </Box>
       </Modal>
     );
