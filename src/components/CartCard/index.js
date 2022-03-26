@@ -11,6 +11,7 @@ import { Add, Remove } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
 import { addToCartNew } from "../../actions";
+import Delete from "@mui/icons-material/Delete";
 
 export default function CartCard() {
   const cart = useSelector((state) => state.cart);
@@ -42,7 +43,13 @@ export default function CartCard() {
                 </Col>
                 <Col className="col-9">
                   <Typography variant="body2" color="text.secondary">
-                    <p style={{ fontSize: "20px", marginBottom: "0.5rem" }}>
+                    <p
+                      style={{
+                        fontSize: "1rem",
+                        fontWeight: "600",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
                       {cart?.cartItems[key].dish_type}
                     </p>
                     <p>{cart?.cartItems[key].dish_description_id}</p>
@@ -60,6 +67,8 @@ export default function CartCard() {
                               width: "25px !important",
                               height: "25px",
                               minWidth: "25px !important",
+                              fontSize: "1rem !important",
+                              fontWeight: "600",
                             }}
                             onClick={() => {
                               onQuantityDecrement(
@@ -67,7 +76,11 @@ export default function CartCard() {
                               );
                             }}
                           >
-                            <Remove></Remove>
+                            {cart?.cartItems[key].qty < 2 ? (
+                              <Delete></Delete>
+                            ) : (
+                              <Remove></Remove>
+                            )}
                           </Button>
                           <TextField
                             size="small"
@@ -80,6 +93,8 @@ export default function CartCard() {
                               width: "25px !important",
                               height: "25px",
                               minWidth: "25px !important",
+                              fontSize: "1rem",
+                              fontWeight: "600",
                             }}
                             onClick={() => {
                               onQuantityIncrement(
@@ -95,8 +110,8 @@ export default function CartCard() {
                         <div>
                           <p
                             style={{
-                              fontSize: "20px",
-                              fontWeight: "500",
+                              fontSize: "1.1rem",
+                              fontWeight: "600",
                               marginTop: "auto",
                               marginBottom: "auto",
                             }}
@@ -115,15 +130,21 @@ export default function CartCard() {
                       style={{
                         marginBottom: "0.5rem",
                         marginTop: "1rem",
-                        fontSize: "16px",
+                        fontSize: "1rem",
+                        fontWeight: "600",
                         color: "#4285F4",
                       }}
                     >
                       Your Customisation
                     </p>
                     <p>
-                      <span style={{ fontWeight: "500" }}>Size :</span>
-                      <span> {cart?.cartItems[key].size}</span>
+                      <span style={{ fontSize: "0.9rem", fontWeight: "500" }}>
+                        Size :
+                      </span>
+                      <span style={{ fontSize: "0.86rem" }}>
+                        {" "}
+                        {cart?.cartItems[key].size}
+                      </span>
                     </p>
                   </Typography>
                 </Col>

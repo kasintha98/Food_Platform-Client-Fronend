@@ -13,7 +13,7 @@ import "./style.css";
 import NewModal from "../Modal";
 import Input from "../Input";
 import { useDispatch, useSelector } from "react-redux";
-import logo from "../../img/logo.jpg";
+import logo from "../../img/logo.png";
 import { login, signout } from "../../actions";
 import { Link, NavLink } from "react-router-dom";
 import { useScrollSection } from "react-scroll-section";
@@ -212,7 +212,7 @@ export default function Header(props) {
         <Container>
           <Navbar.Brand>
             <Link to="/">
-              <img width="40px" src={logo} alt="logo" />
+              <img height="40px" src={logo} alt="logo" />
             </Link>
           </Navbar.Brand>
           {/* <Form className="d-flex">

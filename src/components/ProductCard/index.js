@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Row, Col, Carousel } from "react-bootstrap";
 import styled from "@emotion/styled";
 import Card from "@mui/material/Card";
@@ -13,6 +13,7 @@ import IconButton from "@mui/material/IconButton";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Add, Remove } from "@mui/icons-material";
 import vegSvg from "../../img/veg.svg";
+import chili from "../../img/chili.svg";
 import nonvegSvg from "../../img/non-veg.svg";
 import {
   Modal,
@@ -69,10 +70,33 @@ export default function ProductCard(props) {
   const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
+  const prevProduct = useRef();
+
+  useEffect(() => {
+    if (cart?.cartItems && !cart?.cartItems[props.product.product_id]) {
+      for (const cartItem in cart?.cartItems) {
+        if (cart?.cartItems[cartItem].dish_type === props.product.dish_type) {
+          setCurrentProduct(cart?.cartItems[cartItem]);
+          setDishSize(cart?.cartItems[cartItem].size);
+        }
+      }
+    }
+
+    prevProduct.current = currentProduct;
+    console.log(currentProduct);
+  }, [
+    currentProduct,
+    cart?.cartItems,
+    props.product.dish_type,
+    props.product.product_id,
+  ]);
 
   const onQuantityIncrement = (product_id) => {
-    console.log({ product_id });
-    dispatch(addToCartNew(cart.cartItems[product_id], 1));
+    if (cart.cartItems[product_id]) {
+      dispatch(addToCartNew(cart.cartItems[product_id], 1));
+    } else {
+      dispatch(addToCartNew(currentProduct, 1));
+    }
   };
 
   const onQuantityDecrement = (product_id) => {
@@ -88,11 +112,10 @@ export default function ProductCard(props) {
 
   const handleCurrentProduct = (curProduct) => {
     setCurrentProduct(curProduct);
-    console.log(curProduct);
   };
 
   const replaceCartItem = (dupProduct, oldId) => {
-    dispatch(replaceCartItemNew(dupProduct, oldId));
+    dispatch(replaceCartItemNew(dupProduct, prevProduct.current.product_id));
   };
 
   const renderCustomizeModal = () => {
@@ -130,10 +153,28 @@ export default function ProductCard(props) {
             </Carousel>
           </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {props.product?.dish_type}
+            {currentProduct?.dish_type}{" "}
+            {currentProduct.dish_spice_indicater === "Less Spicy" && (
+              <>
+                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+              </>
+            )}
+            {currentProduct.dish_spice_indicater === "Medium Spicy" && (
+              <>
+                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+              </>
+            )}
+            {currentProduct.dish_spice_indicater === "Extra Hot" && (
+              <>
+                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+              </>
+            )}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {props.product?.dish_description_id}
+            {currentProduct?.dish_description_id}
           </Typography>
           <div>
             <div>
@@ -181,9 +222,10 @@ export default function ProductCard(props) {
                     name="controlled-radio-buttons-group"
                     value={dishSize}
                     onChange={handleDishSize}
+                    defaultValue={currentProduct.size}
                   >
                     {props.products.map((dupProduct) =>
-                      dupProduct.dish_type === props.product.dish_type ? (
+                      dupProduct.dish_type === currentProduct.dish_type ? (
                         <FormControlLabel
                           value={dupProduct.size}
                           control={
@@ -192,7 +234,7 @@ export default function ProductCard(props) {
                                 handleCurrentProduct(dupProduct);
                                 replaceCartItem(
                                   dupProduct,
-                                  props.product.product_id
+                                  currentProduct.product_id
                                 );
                               }}
                             />
@@ -292,7 +334,7 @@ export default function ProductCard(props) {
                       minWidth: "25px !important",
                     }}
                     onClick={() => {
-                      onQuantityDecrement(props.product?.product_id);
+                      onQuantityDecrement(currentProduct?.product_id);
                     }}
                   >
                     <Remove></Remove>
@@ -301,7 +343,9 @@ export default function ProductCard(props) {
                     size="small"
                     id="numberofitems"
                     type="tel"
-                    value={cart?.cartItems[props.product?.product_id]?.qty}
+                    value={cart?.cartItems[currentProduct?.product_id]?.qty}
+                    defaultValue={0}
+                    InputProps={{ inputProps: { min: 0 } }}
                   />
                   <Button
                     sx={{
@@ -310,7 +354,7 @@ export default function ProductCard(props) {
                       minWidth: "25px !important",
                     }}
                     onClick={() => {
-                      onQuantityIncrement(props.product?.product_id);
+                      onQuantityIncrement(currentProduct?.product_id);
                     }}
                   >
                     <Add></Add>
@@ -322,9 +366,21 @@ export default function ProductCard(props) {
                   sx={{ width: "100%" }}
                   variant="contained"
                   color="success"
-                  onClick={handleClose}
+                  onClick={() => {
+                    let qty = cart?.cartItems[currentProduct?.product_id]?.qty
+                      ? 0
+                      : 0;
+                    dispatch(addToCartNew(currentProduct, qty));
+                    handleClose();
+                  }}
                 >
-                  Add to my order ₹ 100.00
+                  Add to my order ₹{" "}
+                  {cart?.cartItems[currentProduct?.product_id]?.qty *
+                  cart?.cartItems[currentProduct?.product_id]?.price
+                    ? cart?.cartItems[currentProduct?.product_id]?.qty *
+                      cart?.cartItems[currentProduct?.product_id]?.price
+                    : 0}
+                  .00
                 </Button>
               </Col>
             </Row>
@@ -370,6 +426,49 @@ export default function ProductCard(props) {
             ) : (
               <>{props.product?.dish_type}</>
             )}
+
+            {currentProduct.dish_spice_indicater === "Less Spicy" && (
+              <>
+                <img
+                  style={{ width: "16px", marginLeft: "5px" }}
+                  src={chili}
+                  alt="less-spicy"
+                />
+              </>
+            )}
+            {currentProduct.dish_spice_indicater === "Medium Spicy" && (
+              <>
+                <img
+                  style={{ width: "16px", marginLeft: "5px" }}
+                  src={chili}
+                  alt="less-spicy"
+                />
+                <img
+                  style={{ width: "16px", marginLeft: "5px" }}
+                  src={chili}
+                  alt="less-spicy"
+                />
+              </>
+            )}
+            {currentProduct.dish_spice_indicater === "Extra Hot" && (
+              <>
+                <img
+                  style={{ width: "16px", marginLeft: "5px" }}
+                  src={chili}
+                  alt="less-spicy"
+                />
+                <img
+                  style={{ width: "16px", marginLeft: "5px" }}
+                  src={chili}
+                  alt="less-spicy"
+                />
+                <img
+                  style={{ width: "16px", marginLeft: "5px" }}
+                  src={chili}
+                  alt="less-spicy"
+                />
+              </>
+            )}
           </Typography>
           <Typography
             sx={{ fontSize: "0.85rem" }}
@@ -382,7 +481,15 @@ export default function ProductCard(props) {
         <CardActions>
           <Row className="w-100 align-items-center">
             <Col className="col-10">
-              <Typography>₹ {props.product?.price}</Typography>
+              <Typography
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  color: "#4285F4",
+                }}
+              >
+                ₹ {props.product?.price}
+              </Typography>
             </Col>
             <Col className="col-2">
               <IconButton

@@ -198,7 +198,10 @@ export default function NewMenu() {
                             </TabList>
                           </Box>
                           {dishesOfSection.map((dish) => (
-                            <TabPanel value={dish}>
+                            <TabPanel
+                              sx={{ backgroundColor: "#f7f7f7" }}
+                              value={dish}
+                            >
                               <Row>
                                 {productList?.products.length > 0 ? (
                                   <>
