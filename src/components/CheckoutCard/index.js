@@ -20,27 +20,31 @@ export default function CartCard() {
               component="img"
               height="100"
               display="flex"
-              justify="center"
-              alignItems="center"
-              justifyContent="center"
               image={pizzaImg}
               alt="green iguana"
             />
           </Col>
-          <Col sx={{ ml: 5 }} className="col-6">
-            <Typography variant="body2" color="text.secondary">
-              <p style={{ fontSize: "20px", marginBottom: "0.5rem" }}>
+          <Col className="col-6">
+            <Typography variant="body2" color="text.secondary" m={2}>
+              <p
+                style={{
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                  marginBottom: "0.5rem",
+                }}
+              >
                 Sausages Pizza
               </p>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
             </Typography>
 
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" m={2}>
               <p
                 style={{
                   marginBottom: "0.5rem",
                   marginTop: "1rem",
-                  fontSize: "16px",
+                  fontSize: "1rem",
+                  fontWeight: "600",
                   color: "#4285F4",
                 }}
               >
@@ -54,45 +58,50 @@ export default function CartCard() {
           </Col>
           <Col className="col-3 align-items-right">
             <Col className="col-12">
-              <div>
-                <p
-                  style={{
-                    fontSize: "20px",
-                    fontWeight: "500",
-                    marginTop: "auto",
-                    marginBottom: "auto",
-                  }}
-                >
-                  ₹ 150.00
-                </p>
-              </div>
+              <Typography sx={{ textAlign: "end" }} m={2}>
+                <div>
+                  <p
+                    sx={{ textAlign: "end" }}
+                    style={{
+                      fontSize: "20px",
+                      fontWeight: "500",
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                    }}
+                  >
+                    ₹ 150.00
+                  </p>
+                </div>
+              </Typography>
             </Col>
             <Col className="col-12 mt-3">
-              <ButtonGroup
-                variant="contained"
-                aria-label="outlined primary button group"
-                sx={{ marginTop: "5px" }}
-              >
-                <Button
-                  sx={{
-                    width: "25px !important",
-                    height: "25px",
-                    minWidth: "25px !important",
-                  }}
+              <Typography sx={{ textAlign: "end" }} m={2}>
+                <ButtonGroup
+                  variant="contained"
+                  aria-label="outlined primary button group"
+                  sx={{ marginTop: "5px", textAlign: "end" }}
                 >
-                  <Remove></Remove>
-                </Button>
-                <TextField size="small" id="numberofitems" type="tel" />
-                <Button
-                  sx={{
-                    width: "25px !important",
-                    height: "25px",
-                    minWidth: "25px !important",
-                  }}
-                >
-                  <Add></Add>
-                </Button>
-              </ButtonGroup>
+                  <Button
+                    sx={{
+                      width: "25px !important",
+                      height: "25px",
+                      minWidth: "25px !important",
+                    }}
+                  >
+                    <Remove></Remove>
+                  </Button>
+                  <TextField size="small" id="numberofitems" type="tel" />
+                  <Button
+                    sx={{
+                      width: "25px !important",
+                      height: "25px",
+                      minWidth: "25px !important",
+                    }}
+                  >
+                    <Add></Add>
+                  </Button>
+                </ButtonGroup>
+              </Typography>
             </Col>
           </Col>
         </Row>
