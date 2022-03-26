@@ -15,6 +15,7 @@ import { Add, Remove } from "@mui/icons-material";
 import vegSvg from "../../img/veg.svg";
 import chili from "../../img/chili.svg";
 import nonvegSvg from "../../img/non-veg.svg";
+import Delete from "@mui/icons-material/Delete";
 import {
   Modal,
   Box,
@@ -337,13 +338,21 @@ export default function ProductCard(props) {
                       onQuantityDecrement(currentProduct?.product_id);
                     }}
                   >
-                    <Remove></Remove>
+                    {cart?.cartItems[currentProduct?.product_id]?.qty < 2 ? (
+                      <Delete sx={{ fontSize: "0.9rem" }}></Delete>
+                    ) : (
+                      <Remove sx={{ fontSize: "0.9rem" }}></Remove>
+                    )}
                   </Button>
                   <TextField
                     size="small"
                     id="numberofitems"
                     type="tel"
-                    value={cart?.cartItems[currentProduct?.product_id]?.qty}
+                    value={
+                      cart?.cartItems[currentProduct?.product_id]?.qty
+                        ? cart?.cartItems[currentProduct?.product_id]?.qty
+                        : 0
+                    }
                     defaultValue={0}
                     InputProps={{ inputProps: { min: 0 } }}
                   />
@@ -357,7 +366,7 @@ export default function ProductCard(props) {
                       onQuantityIncrement(currentProduct?.product_id);
                     }}
                   >
-                    <Add></Add>
+                    <Add sx={{ fontSize: "0.9rem" }}></Add>
                   </Button>
                 </ButtonGroup>
               </Col>

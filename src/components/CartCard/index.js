@@ -77,9 +77,9 @@ export default function CartCard() {
                             }}
                           >
                             {cart?.cartItems[key].qty < 2 ? (
-                              <Delete></Delete>
+                              <Delete sx={{ fontSize: "0.9rem" }}></Delete>
                             ) : (
-                              <Remove></Remove>
+                              <Remove sx={{ fontSize: "0.9rem" }}></Remove>
                             )}
                           </Button>
                           <TextField
@@ -102,7 +102,7 @@ export default function CartCard() {
                               );
                             }}
                           >
-                            <Add></Add>
+                            <Add sx={{ fontSize: "0.9rem" }}></Add>
                           </Button>
                         </ButtonGroup>
                       </Col>

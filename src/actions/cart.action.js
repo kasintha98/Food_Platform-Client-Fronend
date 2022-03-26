@@ -138,42 +138,44 @@ export const addToCartNew = (product, newQty) => {
       auth,
     } = store.getState();
 
-    const qty = cartItems[product.product_id]
-      ? parseInt(cartItems[product.product_id].qty) + newQty
-      : newQty;
+    if (product) {
+      const qty = cartItems[product.product_id]
+        ? parseInt(cartItems[product.product_id].qty) + newQty
+        : newQty;
 
-    if (qty < 1) {
-      delete cartItems[product.product_id];
-    } else {
-      cartItems[product.product_id] = { ...product, qty };
-    }
-
-    if (auth.authenticate) {
-      dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
-      const payload = {
-        cartItems: [
-          {
-            product: product.product_id,
-            quantity: qty,
-          },
-        ],
-      };
-      console.log(payload);
-      const res = await axios.post("/user/cart/addtocart", payload);
-      console.log(res);
-      if (res.status === 201) {
-        dispatch(getCartItems());
+      if (qty < 1) {
+        delete cartItems[product.product_id];
+      } else {
+        cartItems[product.product_id] = { ...product, qty };
       }
-    } else {
-      localStorage.setItem("cart", JSON.stringify(cartItems));
+
+      if (auth.authenticate) {
+        dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
+        const payload = {
+          cartItems: [
+            {
+              product: product.product_id,
+              quantity: qty,
+            },
+          ],
+        };
+        console.log(payload);
+        const res = await axios.post("/user/cart/addtocart", payload);
+        console.log(res);
+        if (res.status === 201) {
+          dispatch(getCartItems());
+        }
+      } else {
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+      }
+
+      console.log("addToCart:", cartItems);
+
+      dispatch({
+        type: cartConstants.ADD_TO_CART_SUCCESS,
+        payload: { cartItems },
+      });
     }
-
-    console.log("addToCart:", cartItems);
-
-    dispatch({
-      type: cartConstants.ADD_TO_CART_SUCCESS,
-      payload: { cartItems },
-    });
   };
 };
 
