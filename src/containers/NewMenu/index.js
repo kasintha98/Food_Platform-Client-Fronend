@@ -17,6 +17,8 @@ import { getProductsNew } from "../../actions";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import coverImg from "../../img/cover.jpg";
+import { Typography } from "@mui/material";
 
 const CartIconArea = styled.div`
   display: none;
@@ -27,6 +29,25 @@ const CartIconArea = styled.div`
 
   @media (max-width: 992px) {
     display: block;
+  }
+`;
+
+const SubTotalArea = styled.div`
+display: flex;
+justify-content: space-between;
+
+}
+`;
+
+const SubTotal = styled(Typography)`
+  margin: 8px;
+`;
+
+const CusBox1 = styled(Box)`
+  margin-top: 48px;
+
+  @media (max-width: 992px) {
+    margin-top: -6px;
   }
 `;
 
@@ -60,6 +81,7 @@ export default function NewMenu() {
 
   const [dishesOfSection, setDishesOfSection] = useState(["Burger", "Fries"]);
   const [value, setValue] = useState(sections[0]);
+  const [subTotal, setSubtotal] = useState(0);
   const [value2, setValue2] = useState(dishesOfSection[0]);
 
   const [showCartModal, setShowCartModal] = useState(false);
@@ -70,7 +92,16 @@ export default function NewMenu() {
 
   useEffect(() => {
     dispatch(getProductsNew());
+    calculateSubTotal();
   }, []);
+
+  const calculateSubTotal = () => {
+    let total = 0;
+    for (let key of Object.keys(cart?.cartItems)) {
+      total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
+    }
+    setSubtotal(total);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -122,15 +153,13 @@ export default function NewMenu() {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#f7f7f7" }}>
       <Header></Header>
       <CusContainer>
         <Row>
           <Col sm={12} md={12} lg={8} xl={8}>
             <Row>
-              <Col className="col-9">
-                <h2>Our Menu</h2>
-              </Col>
+              <Col className="col-9"></Col>
               <Col className="col-3">
                 <CartIconArea>
                   <Button sx={{ color: "black" }} onClick={handleCartModalShow}>
@@ -167,7 +196,17 @@ export default function NewMenu() {
             <div>
               <Box sx={{ width: "100%" }}>
                 <TabContext value={value}>
-                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <Box
+                    sx={{
+                      borderBottom: 1,
+                      borderColor: "divider",
+                      position: "absolute",
+                      top: "65px",
+                      left: "0px",
+                      width: "100%",
+                      backgroundColor: "#fff",
+                    }}
+                  >
                     <TabList
                       onChange={handleChange}
                       aria-label="lab API tabs example"
@@ -179,6 +218,12 @@ export default function NewMenu() {
                           }}
                           label={section}
                           value={section}
+                          sx={{
+                            fontSize: "10px",
+                            fontWeight: "600",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
                         />
                       ))}
                     </TabList>
@@ -187,19 +232,34 @@ export default function NewMenu() {
                     <TabPanel sx={{ padding: "0px" }} value={section}>
                       <Box sx={{ width: "100%" }}>
                         <TabContext value={value2}>
-                          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                          <CusBox1
+                            sx={{
+                              borderBottom: 1,
+                              borderColor: "divider",
+                              backgroundColor: "#D0CECE",
+                            }}
+                          >
                             <TabList
                               onChange={handleChange2}
                               aria-label="lab API tabs example"
                             >
                               {dishesOfSection.map((dish) => (
-                                <Tab label={dish} value={dish} />
+                                <Tab
+                                  label={dish}
+                                  value={dish}
+                                  sx={{
+                                    fontSize: "10px",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                    color: "#595959",
+                                  }}
+                                />
                               ))}
                             </TabList>
-                          </Box>
+                          </CusBox1>
                           {dishesOfSection.map((dish) => (
                             <TabPanel
-                              sx={{ backgroundColor: "#f7f7f7" }}
+                              sx={{ backgroundColor: "#fff" }}
                               value={dish}
                             >
                               <Row>
@@ -256,12 +316,30 @@ export default function NewMenu() {
             </div>
           </Col>
           <CusCol sm={12} md={12} lg={4} xl={4}>
-            <Card sx={{ width: "100%", marginTop: 12 }}>
-              <CardContent sx={{ height: "500px", overflowY: "auto" }}>
+            <Row>
+              <img src={coverImg} alt="banner" />
+            </Row>
+            <Card sx={{ width: "100%", marginTop: "15px" }}>
+              <CardContent
+                sx={{
+                  height: "500px",
+                  overflowY: "auto",
+                  backgroundColor: "#F7F7F7",
+                }}
+              >
                 <CartCard></CartCard>
               </CardContent>
+
+              <SubTotalArea>
+                <SubTotal>Subtotal</SubTotal>
+                <SubTotal>₹ {subTotal}</SubTotal>
+              </SubTotalArea>
               <CardActions>
-                <Button variant="contained" color="success" className="w-100">
+                <Button
+                  variant="contained"
+                  sx={{ backgroundColor: "rgb(130, 187, 55)" }}
+                  className="w-100"
+                >
                   Checkout
                 </Button>
               </CardActions>

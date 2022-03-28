@@ -28,26 +28,17 @@ import {
 } from "@mui/material";
 import { addToCartNew, replaceCartItemNew } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "500px",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  maxHeight: "80%",
-  overflowY: "auto",
-};
+import LinesEllipsis from "react-lines-ellipsis";
 
 const CusomizeBtn = styled(Button)`
   position: absolute;
   right: 5px;
-  top: 84px;
-  background-color: rgba(255, 255, 255, 0.7);
+  top: 65px;
+  background-color: rgba(255, 255, 255);
+  font-size: 9px;
+  font-weight: 400;
+  font-family: Arial;
+  color: #767171;
 
   &:hover {
     background-color: rgba(255, 255, 255);
@@ -155,11 +146,21 @@ export default function ProductCard(props) {
             </Carousel>
           </div>
           <Modal.Body>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Typography
+              sx={{
+                fontSize: "10px",
+                fontWeight: "600",
+                fontFamily: "Arial",
+                color: "#595959",
+              }}
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+            >
               {currentProduct?.dish_type}{" "}
               {currentProduct.dish_spice_indicater === "Less Spicy" && (
                 <>
-                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "13px" }} src={chili} alt="less-spicy" />
                 </>
               )}
               {currentProduct.dish_spice_indicater === "Medium Spicy" && (
@@ -176,19 +177,54 @@ export default function ProductCard(props) {
                 </>
               )}
             </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              {currentProduct?.dish_description_id}
+            <Typography
+              id="modal-modal-description"
+              sx={{
+                mt: 2,
+                fontSize: "9px",
+                fontWeight: "400",
+                fontFamily: "Arial",
+                color: "#767171",
+              }}
+            >
+              <LinesEllipsis
+                text={`${currentProduct?.dish_description_id} The real dish discription can
+  be added when have the get discription by product_id API. The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.
+  ea commodo consequat.`}
+                maxLine="3"
+                ellipsis="..."
+                trimRight
+                basedOn="letters"
+              />
             </Typography>
             <div>
               <div>
                 <Typography
                   id="modal-modal-description"
-                  sx={{ mt: 2, fontWeight: "500" }}
+                  sx={{
+                    mt: 2,
+                    fontSize: "10px",
+                    fontWeight: "600",
+                    fontFamily: "Arial",
+                    color: "#595959",
+                  }}
                 >
                   Pizza type
                 </Typography>
                 <div>
-                  <FormControl sx={{ width: "100%" }}>
+                  <FormControl
+                    sx={{
+                      width: "100%",
+                      fontSize: "10px !important",
+                      fontWeight: "400",
+                      fontFamily: "Arial",
+                      color: "#595959",
+                    }}
+                  >
                     <RadioGroup
                       aria-labelledby="demo-controlled-radio-buttons-group"
                       name="controlled-radio-buttons-group"
@@ -216,12 +252,26 @@ export default function ProductCard(props) {
               <div>
                 <Typography
                   id="modal-modal-description"
-                  sx={{ mt: 2, fontWeight: "500" }}
+                  sx={{
+                    mt: 2,
+                    fontSize: "10px",
+                    fontWeight: "600",
+                    fontFamily: "Arial",
+                    color: "#595959",
+                  }}
                 >
                   Pizza size
                 </Typography>
                 <div>
-                  <FormControl sx={{ width: "100%" }}>
+                  <FormControl
+                    sx={{
+                      width: "100%",
+                      fontSize: "10px !important",
+                      fontWeight: "400",
+                      fontFamily: "Arial",
+                      color: "#595959",
+                    }}
+                  >
                     <RadioGroup
                       aria-labelledby="demo-controlled-radio-buttons-group"
                       name="controlled-radio-buttons-group"
@@ -257,7 +307,13 @@ export default function ProductCard(props) {
               <div>
                 <Typography
                   id="modal-modal-description"
-                  sx={{ mt: 2, fontWeight: "500" }}
+                  sx={{
+                    mt: 2,
+                    fontSize: "10px !important",
+                    fontWeight: "600",
+                    fontFamily: "Arial",
+                    color: "#595959",
+                  }}
                 >
                   Extra toppings
                 </Typography>
@@ -270,6 +326,10 @@ export default function ProductCard(props) {
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
+                        fontSize: "10px !important",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -280,6 +340,10 @@ export default function ProductCard(props) {
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
+                        fontSize: "10px !important",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -290,6 +354,10 @@ export default function ProductCard(props) {
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
+                        fontSize: "10px !important",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -299,7 +367,13 @@ export default function ProductCard(props) {
               <div>
                 <Typography
                   id="modal-modal-description"
-                  sx={{ mt: 2, fontWeight: "500" }}
+                  sx={{
+                    mt: 2,
+                    fontWeight: "600",
+                    fontSize: "10px !important",
+                    fontFamily: "Arial",
+                    color: "#595959",
+                  }}
                 >
                   Paneer & Cheese
                 </Typography>
@@ -312,6 +386,10 @@ export default function ProductCard(props) {
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
+                        fontSize: "10px !important",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -322,6 +400,10 @@ export default function ProductCard(props) {
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
+                        fontSize: "10px !important",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -332,6 +414,10 @@ export default function ProductCard(props) {
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
+                        fontSize: "10px !important",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -345,7 +431,13 @@ export default function ProductCard(props) {
                   label="Special Requests"
                   multiline
                   rows={3}
-                  sx={{ width: "100%" }}
+                  sx={{
+                    width: "100%",
+                    fontSize: "10px !important",
+                    fontWeight: "400",
+                    fontFamily: "Arial",
+                    color: "#595959",
+                  }}
                 />
               </div>
             </div>
@@ -434,13 +526,13 @@ export default function ProductCard(props) {
       <Card sx={{ maxWidth: 345, marginTop: 5, position: "relative" }}>
         <CardMedia
           component="img"
-          height="120px"
+          height="100px"
           image={pizzaImg}
           alt="product"
         />
         {props.product.ingredient_exists_flag === "Y" ? (
           <CusomizeBtn onClick={handleOpen} size="small" variant="outlined">
-            Customize
+            CUSTOMISE
           </CusomizeBtn>
         ) : null}
 
@@ -453,7 +545,12 @@ export default function ProductCard(props) {
 
         <CardContent sx={{ padding: "5px" }}>
           <Typography
-            sx={{ fontSize: "1rem", fontWeight: "600" }}
+            sx={{
+              fontSize: "10px",
+              fontWeight: "600",
+              fontFamily: "Arial",
+              color: "#595959",
+            }}
             gutterBottom
             variant="h5"
             component="div"
@@ -469,7 +566,7 @@ export default function ProductCard(props) {
             {currentProduct.dish_spice_indicater === "Less Spicy" && (
               <>
                 <img
-                  style={{ width: "16px", marginLeft: "5px" }}
+                  style={{ width: "12px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
@@ -478,12 +575,12 @@ export default function ProductCard(props) {
             {currentProduct.dish_spice_indicater === "Medium Spicy" && (
               <>
                 <img
-                  style={{ width: "16px", marginLeft: "5px" }}
+                  style={{ width: "12px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
                 <img
-                  style={{ width: "16px", marginLeft: "5px" }}
+                  style={{ width: "12px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
@@ -492,17 +589,17 @@ export default function ProductCard(props) {
             {currentProduct.dish_spice_indicater === "Extra Hot" && (
               <>
                 <img
-                  style={{ width: "16px", marginLeft: "5px" }}
+                  style={{ width: "12px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
                 <img
-                  style={{ width: "16px", marginLeft: "5px" }}
+                  style={{ width: "12px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
                 <img
-                  style={{ width: "16px", marginLeft: "5px" }}
+                  style={{ width: "12px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
@@ -510,21 +607,39 @@ export default function ProductCard(props) {
             )}
           </Typography>
           <Typography
-            sx={{ fontSize: "0.85rem" }}
+            sx={{
+              fontSize: "9px",
+              fontWeight: "400",
+              fontFamily: "Arial",
+              color: "#767171",
+            }}
             variant="body2"
             color="text.secondary"
           >
-            {props.product?.dish_description_id}
+            <LinesEllipsis
+              text={`${props.product?.dish_description_id} The real dish discription can
+  be added when have the get discription by product_id API. The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.
+  ea commodo consequat.`}
+              maxLine="3"
+              ellipsis="..."
+              trimRight
+              basedOn="letters"
+            />
           </Typography>
         </CardContent>
         <CardActions>
           <Row className="w-100 align-items-center">
             <Col className="col-10">
               <Typography
-                style={{
-                  fontSize: "1rem",
+                sx={{
+                  fontSize: "10px",
                   fontWeight: "600",
-                  color: "#4285F4",
+                  fontFamily: "Arial",
+                  color: "#595959",
                 }}
               >
                 ₹ {props.product?.price}
@@ -538,8 +653,9 @@ export default function ProductCard(props) {
                 onClick={() => {
                   dispatch(addToCartNew(currentProduct, 1));
                 }}
+                sx={{ fontSize: "18px" }}
               >
-                <AddShoppingCart />
+                <AddShoppingCart sx={{ fontSize: "18px" }} />
               </IconButton>
             </Col>
           </Row>

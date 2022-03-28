@@ -12,6 +12,23 @@ import { useSelector, useDispatch } from "react-redux";
 import Alert from "@mui/material/Alert";
 import { addToCartNew } from "../../actions";
 import Delete from "@mui/icons-material/Delete";
+import styled from "@emotion/styled";
+import LinesEllipsis from "react-lines-ellipsis";
+
+const IncButton = styled(Button)`
+  width: 25px !important;
+  height: 25px;
+  min-width: 25px !important;
+  font-size: 1rem !important;
+  font-weight: 600;
+  background-color: #fff;
+  color: #595959;
+  border: none;
+
+  &:hover {
+    background-color: #f2f3f4;
+  }
+`;
 
 export default function CartCard() {
   const cart = useSelector((state) => state.cart);
@@ -31,7 +48,15 @@ export default function CartCard() {
       {Object.keys(cart?.cartItems).length > 0 ? (
         <>
           {Object.keys(cart?.cartItems).map((key, index) => (
-            <Card key={index} sx={{ maxWidth: 345, marginBottom: "15px" }}>
+            <Card
+              key={index}
+              sx={{
+                maxWidth: 345,
+                marginBottom: "15px",
+                boxShadow: "none",
+                backgroundColor: "#F7F7F7",
+              }}
+            >
               <Row>
                 <Col className="col-3">
                   <CardMedia
@@ -45,14 +70,37 @@ export default function CartCard() {
                   <Typography variant="body2" color="text.secondary">
                     <p
                       style={{
-                        fontSize: "1rem",
-                        fontWeight: "600",
                         marginBottom: "0.5rem",
+                        fontSize: "10px",
+                        fontWeight: "600",
+                        fontFamily: "Arial",
+                        color: "#595959",
                       }}
                     >
                       {cart?.cartItems[key].dish_type}
                     </p>
-                    <p>{cart?.cartItems[key].dish_description_id}</p>
+                    <p
+                      style={{
+                        fontSize: "9px",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#767171",
+                      }}
+                    >
+                      <LinesEllipsis
+                        text={`${cart?.cartItems[key].dish_description_id} The real dish discription can
+  be added when have the get discription by product_id API. The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.The real dish discription can
+  be added when have the get discription by product_id API.
+  ea commodo consequat.`}
+                        maxLine="3"
+                        ellipsis="..."
+                        trimRight
+                        basedOn="letters"
+                      />
+                    </p>
                   </Typography>
                   <div>
                     <Row className="align-items-center">
@@ -62,14 +110,8 @@ export default function CartCard() {
                           aria-label="outlined primary button group"
                           sx={{ marginTop: "5px" }}
                         >
-                          <Button
-                            sx={{
-                              width: "25px !important",
-                              height: "25px",
-                              minWidth: "25px !important",
-                              fontSize: "1rem !important",
-                              fontWeight: "600",
-                            }}
+                          <IncButton
+                            sx={{ border: "none !important" }}
                             onClick={() => {
                               onQuantityDecrement(
                                 cart?.cartItems[key].product_id
@@ -81,21 +123,15 @@ export default function CartCard() {
                             ) : (
                               <Remove sx={{ fontSize: "0.9rem" }}></Remove>
                             )}
-                          </Button>
+                          </IncButton>
                           <TextField
                             size="small"
                             id="numberofitems"
                             type="tel"
                             value={cart?.cartItems[key].qty}
+                            InputProps={{ readOnly: true }}
                           />
-                          <Button
-                            sx={{
-                              width: "25px !important",
-                              height: "25px",
-                              minWidth: "25px !important",
-                              fontSize: "1rem",
-                              fontWeight: "600",
-                            }}
+                          <IncButton
                             onClick={() => {
                               onQuantityIncrement(
                                 cart?.cartItems[key].product_id
@@ -103,7 +139,7 @@ export default function CartCard() {
                             }}
                           >
                             <Add sx={{ fontSize: "0.9rem" }}></Add>
-                          </Button>
+                          </IncButton>
                         </ButtonGroup>
                       </Col>
                       <Col className="col-6">
@@ -130,18 +166,33 @@ export default function CartCard() {
                       style={{
                         marginBottom: "0.5rem",
                         marginTop: "1rem",
-                        fontSize: "1rem",
-                        fontWeight: "600",
                         color: "#4285F4",
+                        fontSize: "10px",
+                        fontWeight: "600",
+                        fontFamily: "Arial",
                       }}
                     >
                       Your Customisation
                     </p>
                     <p>
-                      <span style={{ fontSize: "0.9rem", fontWeight: "500" }}>
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: "600",
+                          fontFamily: "Arial",
+                          color: "#595959",
+                        }}
+                      >
                         Size :
                       </span>
-                      <span style={{ fontSize: "0.86rem" }}>
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          fontWeight: "400",
+                          fontFamily: "Arial",
+                          color: "#767171",
+                        }}
+                      >
                         {" "}
                         {cart?.cartItems[key].size}
                       </span>
@@ -149,6 +200,7 @@ export default function CartCard() {
                   </Typography>
                 </Col>
               </Row>
+              <hr></hr>
             </Card>
           ))}
         </>
