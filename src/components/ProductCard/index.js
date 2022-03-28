@@ -51,6 +51,18 @@ const VegImg = styled.img`
   top: 5px;
 `;
 
+const CusFormControlLable = styled(FormControlLabel)`
+  & span {
+    width: 100%;
+    marginright: 0px;
+    marginleft: 0px;
+    fontsize: 10px !important;
+    fontweight: 400;
+    fontfamily: Arial;
+    color: #595959;
+  }
+`;
+
 export default function ProductCard(props) {
   const [open, setOpen] = React.useState(false);
   const [dishAddOn, setDishAddOn] = React.useState("1");
@@ -234,14 +246,38 @@ export default function ProductCard(props) {
                       <FormControlLabel
                         value="1"
                         control={<Radio />}
-                        label="Mix Veg, Pizza (Onion, Tomato)"
+                        label={
+                          <Typography
+                            sx={{
+                              fontSize: "10px !important",
+                              fontWeight: "400",
+                              fontFamily: "Arial",
+                              color: "#595959",
+                            }}
+                          >
+                            Mix Veg, Pizza (Onion, Tomato)
+                          </Typography>
+                        }
                         className="borderRound"
-                        sx={{ marginLeft: "0px" }}
+                        sx={{
+                          marginLeft: "0px",
+                        }}
                       />
                       <FormControlLabel
                         value="2"
                         control={<Radio />}
-                        label="Paradise Veg, Pizza (Baby Corn, Olives)"
+                        label={
+                          <Typography
+                            sx={{
+                              fontSize: "10px !important",
+                              fontWeight: "400",
+                              fontFamily: "Arial",
+                              color: "#595959",
+                            }}
+                          >
+                            Paradise Veg, Pizza (Baby Corn, Olives)
+                          </Typography>
+                        }
                         className="borderRound"
                         sx={{ marginLeft: "0px" }}
                       />
@@ -266,10 +302,6 @@ export default function ProductCard(props) {
                   <FormControl
                     sx={{
                       width: "100%",
-                      fontSize: "10px !important",
-                      fontWeight: "400",
-                      fontFamily: "Arial",
-                      color: "#595959",
                     }}
                   >
                     <RadioGroup
@@ -294,7 +326,18 @@ export default function ProductCard(props) {
                                 }}
                               />
                             }
-                            label={dupProduct.size}
+                            label={
+                              <Typography
+                                sx={{
+                                  fontSize: "10px !important",
+                                  fontWeight: "400",
+                                  fontFamily: "Arial",
+                                  color: "#595959",
+                                }}
+                              >
+                                {dupProduct.size}
+                              </Typography>
+                            }
                             className="borderRound"
                             sx={{ marginLeft: "0px" }}
                           />
@@ -321,43 +364,64 @@ export default function ProductCard(props) {
                   <FormGroup>
                     <FormControlLabel
                       control={<Checkbox />}
-                      label="Extra Toppings (Regular)"
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "10px !important",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Extra Toppings (Regular)
+                        </Typography>
+                      }
                       sx={{
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
-                        fontSize: "10px !important",
-                        fontWeight: "400",
-                        fontFamily: "Arial",
-                        color: "#595959",
                       }}
                       className="borderRound"
                     />
                     <FormControlLabel
                       control={<Checkbox />}
-                      label="Extra Toppings (Middle)"
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "10px !important",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Extra Toppings (Middle)
+                        </Typography>
+                      }
                       sx={{
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
-                        fontSize: "10px !important",
-                        fontWeight: "400",
-                        fontFamily: "Arial",
-                        color: "#595959",
                       }}
                       className="borderRound"
                     />
                     <FormControlLabel
                       control={<Checkbox />}
-                      label="Extra Toppings (Large)"
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "10px !important",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Extra Toppings (Large)
+                        </Typography>
+                      }
                       sx={{
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
-                        fontSize: "10px !important",
-                        fontWeight: "400",
-                        fontFamily: "Arial",
-                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -381,43 +445,64 @@ export default function ProductCard(props) {
                   <FormGroup>
                     <FormControlLabel
                       control={<Checkbox />}
-                      label="Paneer & Cheese (Regular)"
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "10px !important",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Paneer & Cheese (Regular)
+                        </Typography>
+                      }
                       sx={{
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
-                        fontSize: "10px !important",
-                        fontWeight: "400",
-                        fontFamily: "Arial",
-                        color: "#595959",
                       }}
                       className="borderRound"
                     />
                     <FormControlLabel
                       control={<Checkbox />}
-                      label="Paneer & Cheese (Middle)"
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "10px !important",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Paneer & Cheese (Middle)
+                        </Typography>
+                      }
                       sx={{
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
-                        fontSize: "10px !important",
-                        fontWeight: "400",
-                        fontFamily: "Arial",
-                        color: "#595959",
                       }}
                       className="borderRound"
                     />
                     <FormControlLabel
                       control={<Checkbox />}
-                      label="Paneer & Cheese (Large)"
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "10px !important",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Paneer & Cheese (Large)
+                        </Typography>
+                      }
                       sx={{
                         width: "100%",
                         marginRight: "0px",
                         marginLeft: "0px",
-                        fontSize: "10px !important",
-                        fontWeight: "400",
-                        fontFamily: "Arial",
-                        color: "#595959",
                       }}
                       className="borderRound"
                     />
@@ -428,15 +513,28 @@ export default function ProductCard(props) {
                 <br></br>
                 <TextField
                   id="outlined-multiline-static"
-                  label="Special Requests"
+                  label={
+                    <Typography
+                      sx={{
+                        fontSize: "12px !important",
+                        fontWeight: "400",
+                        fontFamily: "Arial",
+                        color: "#595959",
+                      }}
+                    >
+                      Special Requests
+                    </Typography>
+                  }
                   multiline
                   rows={3}
-                  sx={{
-                    width: "100%",
-                    fontSize: "10px !important",
-                    fontWeight: "400",
-                    fontFamily: "Arial",
-                    color: "#595959",
+                  sx={{ width: "100%" }}
+                  InputProps={{
+                    style: {
+                      fontSize: "10px",
+                      fontWeight: "400",
+                      fontFamily: "Arial",
+                      color: "#595959",
+                    },
                   }}
                 />
               </div>
