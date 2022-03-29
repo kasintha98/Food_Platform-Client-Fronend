@@ -35,7 +35,7 @@ const CusomizeBtn = styled(Button)`
   right: 5px;
   top: 65px;
   background-color: rgba(255, 255, 255);
-  font-size: 9px;
+  font-size: 0.875rem;
   font-weight: 400;
   font-family: Arial;
   color: #767171;
@@ -56,7 +56,7 @@ const CusFormControlLable = styled(FormControlLabel)`
     width: 100%;
     marginright: 0px;
     marginleft: 0px;
-    fontsize: 10px !important;
+    fontsize: 1rem !important;
     fontweight: 400;
     fontfamily: Arial;
     color: #595959;
@@ -100,10 +100,12 @@ export default function ProductCard(props) {
     } else {
       dispatch(addToCartNew(currentProduct, 1));
     }
+    calculateSubTotal();
   };
 
   const onQuantityDecrement = (product_id) => {
     dispatch(addToCartNew(cart.cartItems[product_id], -1));
+    calculateSubTotal();
   };
 
   const handleDishAddOn = (event) => {
@@ -119,6 +121,15 @@ export default function ProductCard(props) {
 
   const replaceCartItem = (dupProduct, oldId) => {
     dispatch(replaceCartItemNew(dupProduct, prevProduct.current.product_id));
+    calculateSubTotal();
+  };
+
+  const calculateSubTotal = () => {
+    let total = 0;
+    for (let key of Object.keys(cart?.cartItems)) {
+      total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
+    }
+    props.onChangeSubTotal(total);
   };
 
   const renderCustomizeModal = () => {
@@ -160,7 +171,7 @@ export default function ProductCard(props) {
           <Modal.Body>
             <Typography
               sx={{
-                fontSize: "10px",
+                fontSize: "1rem",
                 fontWeight: "600",
                 fontFamily: "Arial",
                 color: "#595959",
@@ -172,20 +183,20 @@ export default function ProductCard(props) {
               {currentProduct?.dish_type}{" "}
               {currentProduct.dish_spice_indicater === "Less Spicy" && (
                 <>
-                  <img style={{ width: "13px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
                 </>
               )}
               {currentProduct.dish_spice_indicater === "Medium Spicy" && (
                 <>
-                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
                 </>
               )}
               {currentProduct.dish_spice_indicater === "Extra Hot" && (
                 <>
-                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
-                  <img style={{ width: "20px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
+                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
                 </>
               )}
             </Typography>
@@ -193,7 +204,7 @@ export default function ProductCard(props) {
               id="modal-modal-description"
               sx={{
                 mt: 2,
-                fontSize: "9px",
+                fontSize: "0.875rem",
                 fontWeight: "400",
                 fontFamily: "Arial",
                 color: "#767171",
@@ -219,7 +230,7 @@ export default function ProductCard(props) {
                   id="modal-modal-description"
                   sx={{
                     mt: 2,
-                    fontSize: "10px",
+                    fontSize: "1rem",
                     fontWeight: "600",
                     fontFamily: "Arial",
                     color: "#595959",
@@ -231,7 +242,7 @@ export default function ProductCard(props) {
                   <FormControl
                     sx={{
                       width: "100%",
-                      fontSize: "10px !important",
+                      fontSize: "1rem !important",
                       fontWeight: "400",
                       fontFamily: "Arial",
                       color: "#595959",
@@ -249,7 +260,7 @@ export default function ProductCard(props) {
                         label={
                           <Typography
                             sx={{
-                              fontSize: "10px !important",
+                              fontSize: "1rem !important",
                               fontWeight: "400",
                               fontFamily: "Arial",
                               color: "#595959",
@@ -269,7 +280,7 @@ export default function ProductCard(props) {
                         label={
                           <Typography
                             sx={{
-                              fontSize: "10px !important",
+                              fontSize: "1rem !important",
                               fontWeight: "400",
                               fontFamily: "Arial",
                               color: "#595959",
@@ -290,7 +301,7 @@ export default function ProductCard(props) {
                   id="modal-modal-description"
                   sx={{
                     mt: 2,
-                    fontSize: "10px",
+                    fontSize: "1rem",
                     fontWeight: "600",
                     fontFamily: "Arial",
                     color: "#595959",
@@ -329,7 +340,7 @@ export default function ProductCard(props) {
                             label={
                               <Typography
                                 sx={{
-                                  fontSize: "10px !important",
+                                  fontSize: "1rem !important",
                                   fontWeight: "400",
                                   fontFamily: "Arial",
                                   color: "#595959",
@@ -352,7 +363,7 @@ export default function ProductCard(props) {
                   id="modal-modal-description"
                   sx={{
                     mt: 2,
-                    fontSize: "10px !important",
+                    fontSize: "1rem !important",
                     fontWeight: "600",
                     fontFamily: "Arial",
                     color: "#595959",
@@ -367,7 +378,7 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "10px !important",
+                            fontSize: "1rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
@@ -388,7 +399,7 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "10px !important",
+                            fontSize: "1rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
@@ -409,7 +420,7 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "10px !important",
+                            fontSize: "1rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
@@ -434,7 +445,7 @@ export default function ProductCard(props) {
                   sx={{
                     mt: 2,
                     fontWeight: "600",
-                    fontSize: "10px !important",
+                    fontSize: "1rem !important",
                     fontFamily: "Arial",
                     color: "#595959",
                   }}
@@ -448,7 +459,7 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "10px !important",
+                            fontSize: "1rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
@@ -469,7 +480,7 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "10px !important",
+                            fontSize: "1rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
@@ -490,7 +501,7 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "10px !important",
+                            fontSize: "1rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
@@ -530,7 +541,7 @@ export default function ProductCard(props) {
                   sx={{ width: "100%" }}
                   InputProps={{
                     style: {
-                      fontSize: "10px",
+                      fontSize: "1rem",
                       fontWeight: "400",
                       fontFamily: "Arial",
                       color: "#595959",
@@ -599,6 +610,7 @@ export default function ProductCard(props) {
                         ? 0
                         : 0;
                       dispatch(addToCartNew(currentProduct, qty));
+                      calculateSubTotal();
                       handleClose();
                     }}
                   >
@@ -644,7 +656,7 @@ export default function ProductCard(props) {
         <CardContent sx={{ padding: "5px" }}>
           <Typography
             sx={{
-              fontSize: "10px",
+              fontSize: "1rem",
               fontWeight: "600",
               fontFamily: "Arial",
               color: "#595959",
@@ -664,7 +676,7 @@ export default function ProductCard(props) {
             {currentProduct.dish_spice_indicater === "Less Spicy" && (
               <>
                 <img
-                  style={{ width: "12px", marginLeft: "5px" }}
+                  style={{ width: "14px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
@@ -673,12 +685,12 @@ export default function ProductCard(props) {
             {currentProduct.dish_spice_indicater === "Medium Spicy" && (
               <>
                 <img
-                  style={{ width: "12px", marginLeft: "5px" }}
+                  style={{ width: "14px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
                 <img
-                  style={{ width: "12px", marginLeft: "5px" }}
+                  style={{ width: "14px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
@@ -687,17 +699,17 @@ export default function ProductCard(props) {
             {currentProduct.dish_spice_indicater === "Extra Hot" && (
               <>
                 <img
-                  style={{ width: "12px", marginLeft: "5px" }}
+                  style={{ width: "14px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
                 <img
-                  style={{ width: "12px", marginLeft: "5px" }}
+                  style={{ width: "14px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
                 <img
-                  style={{ width: "12px", marginLeft: "5px" }}
+                  style={{ width: "14px", marginLeft: "5px" }}
                   src={chili}
                   alt="less-spicy"
                 />
@@ -706,7 +718,7 @@ export default function ProductCard(props) {
           </Typography>
           <Typography
             sx={{
-              fontSize: "9px",
+              fontSize: "0.875rem",
               fontWeight: "400",
               fontFamily: "Arial",
               color: "#767171",
@@ -734,7 +746,7 @@ export default function ProductCard(props) {
             <Col className="col-10">
               <Typography
                 sx={{
-                  fontSize: "10px",
+                  fontSize: "1rem",
                   fontWeight: "600",
                   fontFamily: "Arial",
                   color: "#595959",
@@ -750,8 +762,9 @@ export default function ProductCard(props) {
                 aria-label="add to shopping cart"
                 onClick={() => {
                   dispatch(addToCartNew(currentProduct, 1));
+                  calculateSubTotal();
                 }}
-                sx={{ fontSize: "18px" }}
+                sx={{ fontSize: "20px" }}
               >
                 <AddShoppingCart sx={{ fontSize: "18px" }} />
               </IconButton>

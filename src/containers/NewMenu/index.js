@@ -32,6 +32,14 @@ const CartIconArea = styled.div`
   }
 `;
 
+const CheckoutButton = styled(Button)`
+  background-color: rgb(130, 187, 55);
+
+  &:hover {
+    background-color: rgb(130, 187, 55);
+  }
+`;
+
 const SubTotalArea = styled.div`
 display: flex;
 justify-content: space-between;
@@ -45,6 +53,10 @@ const SubTotal = styled(Typography)`
 
 const CusBox1 = styled(Box)`
   margin-top: 48px;
+  position: absolute;
+  top: 65.5px;
+  width: 65.3%;
+  left: 0;
 
   @media (max-width: 992px) {
     margin-top: -6px;
@@ -79,6 +91,7 @@ export default function NewMenu() {
     { PIZZA: ["Simply Veg"] },
   ];
 
+  const cart = useSelector((state) => state.cart);
   const [dishesOfSection, setDishesOfSection] = useState(["Burger", "Fries"]);
   const [value, setValue] = useState(sections[0]);
   const [subTotal, setSubtotal] = useState(0);
@@ -86,20 +99,14 @@ export default function NewMenu() {
 
   const [showCartModal, setShowCartModal] = useState(false);
 
-  const cart = useSelector((state) => state.cart);
   const productList = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProductsNew());
-    calculateSubTotal();
   }, []);
 
-  const calculateSubTotal = () => {
-    let total = 0;
-    for (let key of Object.keys(cart?.cartItems)) {
-      total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
-    }
+  const handleSubTotal = (total) => {
     setSubtotal(total);
   };
 
@@ -172,7 +179,7 @@ export default function NewMenu() {
                             width: "15px",
                             height: "15px",
                             borderRadius: "5px",
-                            fontSize: "10px",
+                            fontSize: "1rem",
                             textAlign: "center",
                             alignSelf: "center",
                             color: "#fff",
@@ -219,7 +226,7 @@ export default function NewMenu() {
                           label={section}
                           value={section}
                           sx={{
-                            fontSize: "10px",
+                            fontSize: "1rem",
                             fontWeight: "600",
                             fontFamily: "Arial",
                             color: "#595959",
@@ -236,7 +243,7 @@ export default function NewMenu() {
                             sx={{
                               borderBottom: 1,
                               borderColor: "divider",
-                              backgroundColor: "#D0CECE",
+                              backgroundColor: "#FFF",
                             }}
                           >
                             <TabList
@@ -248,7 +255,7 @@ export default function NewMenu() {
                                   label={dish}
                                   value={dish}
                                   sx={{
-                                    fontSize: "10px",
+                                    fontSize: "1rem",
                                     fontWeight: "600",
                                     fontFamily: "Arial",
                                     color: "#595959",
@@ -259,7 +266,10 @@ export default function NewMenu() {
                           </CusBox1>
                           {dishesOfSection.map((dish) => (
                             <TabPanel
-                              sx={{ backgroundColor: "#fff" }}
+                              sx={{
+                                backgroundColor: "#f7f7f7",
+                                marginTop: "70px",
+                              }}
                               value={dish}
                             >
                               <Row>
@@ -275,6 +285,9 @@ export default function NewMenu() {
                                               <ProductCard
                                                 product={product}
                                                 products={productList.products}
+                                                onChangeSubTotal={
+                                                  handleSubTotal
+                                                }
                                               ></ProductCard>
                                             </Col>
                                           ) : (
@@ -291,6 +304,9 @@ export default function NewMenu() {
                                                     product={product}
                                                     products={
                                                       productList.products
+                                                    }
+                                                    onChangeSubTotal={
+                                                      handleSubTotal
                                                     }
                                                   ></ProductCard>
                                                 </Col>
@@ -317,7 +333,7 @@ export default function NewMenu() {
           </Col>
           <CusCol sm={12} md={12} lg={4} xl={4}>
             <Row>
-              <img src={coverImg} alt="banner" />
+              <img style={{ marginTop: "48px" }} src={coverImg} alt="banner" />
             </Row>
             <Card sx={{ width: "100%", marginTop: "15px" }}>
               <CardContent
@@ -327,7 +343,7 @@ export default function NewMenu() {
                   backgroundColor: "#F7F7F7",
                 }}
               >
-                <CartCard></CartCard>
+                <CartCard onChangeSubTotal={handleSubTotal}></CartCard>
               </CardContent>
 
               <SubTotalArea>
@@ -335,13 +351,9 @@ export default function NewMenu() {
                 <SubTotal>₹ {subTotal}</SubTotal>
               </SubTotalArea>
               <CardActions>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: "rgb(130, 187, 55)" }}
-                  className="w-100"
-                >
+                <CheckoutButton variant="contained" className="w-100">
                   Checkout
-                </Button>
+                </CheckoutButton>
               </CardActions>
             </Card>
           </CusCol>

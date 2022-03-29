@@ -208,7 +208,12 @@ export default function Header(props) {
   return (
     <div>
       <ToastContainer />
-      <Navbar fixed="top" bg="dark" variant="dark" expand="lg">
+      <Navbar
+        fixed="top"
+        style={{ backgroundColor: "#FFF", boxShadow: "2px 2px #F7F7F7" }}
+        variant="light"
+        expand="lg"
+      >
         <Container>
           <Navbar.Brand>
             <Link to="/">

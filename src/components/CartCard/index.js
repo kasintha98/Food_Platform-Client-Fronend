@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -30,17 +30,31 @@ const IncButton = styled(Button)`
   }
 `;
 
-export default function CartCard() {
+export default function CartCard(props) {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    calculateSubTotal();
+  });
 
   const onQuantityIncrement = (product_id) => {
     console.log({ product_id });
     dispatch(addToCartNew(cart.cartItems[product_id], 1));
+    calculateSubTotal();
   };
 
   const onQuantityDecrement = (product_id) => {
     dispatch(addToCartNew(cart.cartItems[product_id], -1));
+    calculateSubTotal();
+  };
+
+  const calculateSubTotal = () => {
+    let total = 0;
+    for (let key of Object.keys(cart?.cartItems)) {
+      total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
+    }
+    props.onChangeSubTotal(total);
   };
 
   return (
@@ -71,7 +85,7 @@ export default function CartCard() {
                     <p
                       style={{
                         marginBottom: "0.5rem",
-                        fontSize: "10px",
+                        fontSize: "1rem",
                         fontWeight: "600",
                         fontFamily: "Arial",
                         color: "#595959",
@@ -79,9 +93,9 @@ export default function CartCard() {
                     >
                       {cart?.cartItems[key].dish_type}
                     </p>
-                    <p
+                    {/* <p
                       style={{
-                        fontSize: "9px",
+                        fontSize: "0.8rem",
                         fontWeight: "400",
                         fontFamily: "Arial",
                         color: "#767171",
@@ -100,7 +114,7 @@ export default function CartCard() {
                         trimRight
                         basedOn="letters"
                       />
-                    </p>
+                    </p> */}
                   </Typography>
                   <div>
                     <Row className="align-items-center">
@@ -161,43 +175,45 @@ export default function CartCard() {
                       </Col>
                     </Row>
                   </div>
-                  <Typography variant="body2" color="text.secondary">
-                    <p
-                      style={{
-                        marginBottom: "0.5rem",
-                        marginTop: "1rem",
-                        color: "#4285F4",
-                        fontSize: "10px",
-                        fontWeight: "600",
-                        fontFamily: "Arial",
-                      }}
-                    >
-                      Your Customisation
-                    </p>
-                    <p>
-                      <span
+                  {cart?.cartItems[key].ingredient_exists_flag === "Y" ? (
+                    <Typography variant="body2" color="text.secondary">
+                      <p
                         style={{
-                          fontSize: "10px",
+                          marginBottom: "0.5rem",
+                          marginTop: "1rem",
+                          color: "#4285F4",
+                          fontSize: "1rem",
                           fontWeight: "600",
                           fontFamily: "Arial",
-                          color: "#595959",
                         }}
                       >
-                        Size :
-                      </span>
-                      <span
-                        style={{
-                          fontSize: "10px",
-                          fontWeight: "400",
-                          fontFamily: "Arial",
-                          color: "#767171",
-                        }}
-                      >
-                        {" "}
-                        {cart?.cartItems[key].size}
-                      </span>
-                    </p>
-                  </Typography>
+                        Your Customisation
+                      </p>
+                      <p>
+                        <span
+                          style={{
+                            fontSize: "1rem",
+                            fontWeight: "600",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Size :
+                        </span>
+                        <span
+                          style={{
+                            fontSize: "1rem",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#767171",
+                          }}
+                        >
+                          {" "}
+                          {cart?.cartItems[key].size}
+                        </span>
+                      </p>
+                    </Typography>
+                  ) : null}
                 </Col>
               </Row>
               <hr></hr>
