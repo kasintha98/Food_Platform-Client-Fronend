@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { Paper } from "@mui/material";
 import { Grid } from "@mui/material";
 import { CardActionArea } from "@mui/material";
-import { CardMedia } from "@mui/material";
+import { CardMedia, TextField } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Divider from "@mui/material/Divider";
 import LoginIcon from "@mui/icons-material/Login";
@@ -32,6 +32,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -187,7 +188,39 @@ export default function NewCheckout() {
                 </Grid>
               </Col>
             </Row>
-
+            <Row>
+              <Col className="col-12 mt-5">
+                <h5>Order Pick Up</h5>
+              </Col>
+              <Col className="col-12">
+                <Grid sx={{ width: "100%", marginTop: 3 }}>
+                  <Card>
+                    <CardContent>
+                      <div className="row ">
+                        <div className="col-2">
+                          <Typography sx={{ textAlign: "center" }}>
+                            <PhoneIphoneIcon></PhoneIphoneIcon>
+                          </Typography>
+                        </div>
+                        <div className="col-6">
+                          <Typography variant="subtitle1" paragraph>
+                            Enter your phone number
+                          </Typography>
+                        </div>
+                        <div className="col-4">
+                          <TextField
+                            id=""
+                            label="Phone"
+                            type="text"
+                            variant="standard"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Col>
+            </Row>
             <Row>
               <Col className="col-12 mt-5">
                 <h5>Offers</h5>
