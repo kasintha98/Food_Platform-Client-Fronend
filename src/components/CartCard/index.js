@@ -14,6 +14,7 @@ import { addToCartNew } from "../../actions";
 import Delete from "@mui/icons-material/Delete";
 import styled from "@emotion/styled";
 import LinesEllipsis from "react-lines-ellipsis";
+import emptyCartImg from "./../../img/empty-cart.jpg";
 
 const IncButton = styled(Button)`
   width: 25px !important;
@@ -76,6 +77,7 @@ export default function CartCard(props) {
                   <CardMedia
                     component="img"
                     height="50"
+                    sx={{ borderRadius: "5px" }}
                     image={pizzaImg}
                     alt="green iguana"
                   />
@@ -85,7 +87,7 @@ export default function CartCard(props) {
                     <p
                       style={{
                         marginBottom: "0.5rem",
-                        fontSize: "1rem",
+                        fontSize: "0.9rem",
                         fontWeight: "600",
                         fontFamily: "Arial",
                         color: "#595959",
@@ -138,13 +140,29 @@ export default function CartCard(props) {
                               <Remove sx={{ fontSize: "0.9rem" }}></Remove>
                             )}
                           </IncButton>
-                          <TextField
+                          {/* <TextField
                             size="small"
                             id="numberofitems"
                             type="tel"
                             value={cart?.cartItems[key].qty}
+                            sx={{ borderRadius: "0px" }}
                             InputProps={{ readOnly: true }}
-                          />
+                          /> */}
+                          <IncButton
+                            sx={{
+                              borderLeft: "1px solid #bdbdbd !important",
+                              borderRight: "1px solid #bdbdbd !important",
+                            }}
+                            InputProps={{ disabled: true }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                              }}
+                            >
+                              {cart?.cartItems[key].qty}
+                            </Typography>{" "}
+                          </IncButton>
                           <IncButton
                             onClick={() => {
                               onQuantityIncrement(
@@ -160,10 +178,11 @@ export default function CartCard(props) {
                         <div>
                           <p
                             style={{
-                              fontSize: "1.1rem",
+                              fontSize: "0.9rem",
                               fontWeight: "600",
                               marginTop: "auto",
                               marginBottom: "auto",
+                              color: "#2e7d32",
                             }}
                           >
                             ₹{" "}
@@ -221,7 +240,9 @@ export default function CartCard(props) {
           ))}
         </>
       ) : (
-        <Alert severity="info">Your Cart Is Empty!</Alert>
+        <div>
+          <img style={{ width: "100%" }} src={emptyCartImg} alt="Empty Cart" />
+        </div>
       )}
     </div>
   );

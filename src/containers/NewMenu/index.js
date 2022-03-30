@@ -32,6 +32,29 @@ const CartIconArea = styled.div`
   }
 `;
 
+const CusTabList = styled(TabList)`
+  position: relative;
+  z-index: 6;
+
+  & .MuiTabs-flexContainer {
+    column-gap: 10px;
+    justify-content: center;
+  }
+  & .Mui-selected {
+    background-color: #ffc107 !important;
+    color: #e71b23;
+  }
+`;
+
+const CusTab = styled(Tab)`
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: Arial;
+  color: #595959;
+  background-color: #fff;
+  border-radius: 25px;
+`;
+
 const CheckoutButton = styled(Button)`
   background-color: rgb(130, 187, 55);
 
@@ -52,11 +75,7 @@ const SubTotal = styled(Typography)`
 `;
 
 const CusBox1 = styled(Box)`
-  margin-top: 48px;
-  position: absolute;
-  top: 65.5px;
-  width: 65.3%;
-  left: 0;
+  margin-top: 41px;
 
   @media (max-width: 992px) {
     margin-top: -6px;
@@ -208,10 +227,10 @@ export default function NewMenu() {
                       borderBottom: 1,
                       borderColor: "divider",
                       position: "absolute",
-                      top: "65px",
+                      top: "52px",
                       left: "0px",
                       width: "100%",
-                      backgroundColor: "#fff",
+                      backgroundColor: "#ffc423",
                     }}
                   >
                     <TabList
@@ -226,10 +245,10 @@ export default function NewMenu() {
                           label={section}
                           value={section}
                           sx={{
-                            fontSize: "1rem",
+                            fontSize: "0.75rem",
                             fontWeight: "600",
                             fontFamily: "Arial",
-                            color: "#595959",
+                            color: "#e71b23",
                           }}
                         />
                       ))}
@@ -241,34 +260,33 @@ export default function NewMenu() {
                         <TabContext value={value2}>
                           <CusBox1
                             sx={{
-                              borderBottom: 1,
-                              borderColor: "divider",
-                              backgroundColor: "#FFF",
+                              backgroundColor: "transparent",
                             }}
                           >
-                            <TabList
+                            <CusTabList
                               onChange={handleChange2}
                               aria-label="lab API tabs example"
+                              TabIndicatorProps={{
+                                style: { background: "transparent" },
+                              }}
                             >
                               {dishesOfSection.map((dish) => (
-                                <Tab
-                                  label={dish}
-                                  value={dish}
-                                  sx={{
-                                    fontSize: "1rem",
-                                    fontWeight: "600",
-                                    fontFamily: "Arial",
-                                    color: "#595959",
-                                  }}
-                                />
+                                <CusTab label={dish} value={dish} />
                               ))}
-                            </TabList>
+                            </CusTabList>
+                            <hr
+                              style={{
+                                zIndex: 1,
+                                position: "relative",
+                                marginTop: "-25px",
+                              }}
+                            ></hr>
                           </CusBox1>
                           {dishesOfSection.map((dish) => (
                             <TabPanel
                               sx={{
                                 backgroundColor: "#f7f7f7",
-                                marginTop: "70px",
+                                marginTop: "-45px",
                               }}
                               value={dish}
                             >
@@ -336,25 +354,34 @@ export default function NewMenu() {
               <img style={{ marginTop: "48px" }} src={coverImg} alt="banner" />
             </Row>
             <Card sx={{ width: "100%", marginTop: "15px" }}>
+              <div
+                style={{ height: "5px", backgroundColor: "rgb(130, 187, 55)" }}
+              ></div>
               <CardContent
                 sx={{
-                  height: "500px",
+                  height: "300px",
                   overflowY: "auto",
                   backgroundColor: "#F7F7F7",
                 }}
               >
                 <CartCard onChangeSubTotal={handleSubTotal}></CartCard>
               </CardContent>
-
-              <SubTotalArea>
-                <SubTotal>Subtotal</SubTotal>
-                <SubTotal>₹ {subTotal}</SubTotal>
-              </SubTotalArea>
-              <CardActions>
-                <CheckoutButton variant="contained" className="w-100">
-                  Checkout
-                </CheckoutButton>
-              </CardActions>
+              <div
+                style={{
+                  backgroundColor: "rgb(239, 245, 251)",
+                  boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.3)",
+                }}
+              >
+                <SubTotalArea>
+                  <SubTotal>Subtotal</SubTotal>
+                  <SubTotal>₹ {subTotal}</SubTotal>
+                </SubTotalArea>
+                <CardActions>
+                  <CheckoutButton variant="contained" className="w-100">
+                    Checkout
+                  </CheckoutButton>
+                </CardActions>
+              </div>
             </Card>
           </CusCol>
         </Row>

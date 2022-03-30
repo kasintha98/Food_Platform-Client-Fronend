@@ -5,13 +5,17 @@
 }
 
 .borderRound {
-  border: 1px #2979ff solid;
+  border: 1px #d32f2f solid !important;
   width: 100%;
   margin-top: 5px;
 }
 
+.borderRound .Mui-checked {
+  color: #343a40 !important;
+}
+
 .borderRound:hover {
-  background-color: #a6d4fa;
+  background-color: #ff9191 !important;
 }
 
 .css-ahj2mt-MuiTypography-root {

@@ -45,6 +45,22 @@ const CusomizeBtn = styled(Button)`
   }
 `;
 
+const Parent = styled.div`
+  font-size: 0.75rem !important;
+  font-weight: 400;
+  font-family: Arial;
+  color: #595959;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-evenly !important;
+`;
+
+const CusRadio = styled(Radio)`
+  & .Mui-checked {
+    color: #343a40;
+  }
+`;
+
 const VegImg = styled.img`
   position: absolute;
   left: 5px;
@@ -145,21 +161,21 @@ export default function ProductCard(props) {
         <Box>
           <div>
             <Carousel>
-              <Carousel.Item style={{ height: "200px" }}>
+              <Carousel.Item style={{ height: "150px" }}>
                 <img
                   className="d-block w-100"
                   src={pizzaImg}
                   alt="First slide"
                 />
               </Carousel.Item>
-              <Carousel.Item style={{ height: "200px" }}>
+              <Carousel.Item style={{ height: "150px" }}>
                 <img
                   className="d-block w-100"
                   src={pizzaImg}
                   alt="Second slide"
                 />
               </Carousel.Item>
-              <Carousel.Item style={{ height: "200px" }}>
+              <Carousel.Item style={{ height: "150px" }}>
                 <img
                   className="d-block w-100"
                   src={pizzaImg}
@@ -171,7 +187,7 @@ export default function ProductCard(props) {
           <Modal.Body>
             <Typography
               sx={{
-                fontSize: "1rem",
+                fontSize: "0.9rem",
                 fontWeight: "600",
                 fontFamily: "Arial",
                 color: "#595959",
@@ -204,7 +220,7 @@ export default function ProductCard(props) {
               id="modal-modal-description"
               sx={{
                 mt: 2,
-                fontSize: "0.875rem",
+                fontSize: "0.75rem",
                 fontWeight: "400",
                 fontFamily: "Arial",
                 color: "#767171",
@@ -213,11 +229,7 @@ export default function ProductCard(props) {
               <LinesEllipsis
                 text={`${currentProduct?.dish_description_id} The real dish discription can
   be added when have the get discription by product_id API. The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.
-  ea commodo consequat.`}
+  be added when have the get discription by product_id API.`}
                 maxLine="3"
                 ellipsis="..."
                 trimRight
@@ -230,7 +242,7 @@ export default function ProductCard(props) {
                   id="modal-modal-description"
                   sx={{
                     mt: 2,
-                    fontSize: "1rem",
+                    fontSize: "0.9rem",
                     fontWeight: "600",
                     fontFamily: "Arial",
                     color: "#595959",
@@ -242,7 +254,7 @@ export default function ProductCard(props) {
                   <FormControl
                     sx={{
                       width: "100%",
-                      fontSize: "1rem !important",
+                      fontSize: "0.75rem !important",
                       fontWeight: "400",
                       fontFamily: "Arial",
                       color: "#595959",
@@ -260,13 +272,14 @@ export default function ProductCard(props) {
                         label={
                           <Typography
                             sx={{
-                              fontSize: "1rem !important",
+                              fontSize: "0.75rem !important",
                               fontWeight: "400",
                               fontFamily: "Arial",
                               color: "#595959",
                             }}
                           >
                             Mix Veg, Pizza (Onion, Tomato)
+                            <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                           </Typography>
                         }
                         className="borderRound"
@@ -280,13 +293,14 @@ export default function ProductCard(props) {
                         label={
                           <Typography
                             sx={{
-                              fontSize: "1rem !important",
+                              fontSize: "0.75rem !important",
                               fontWeight: "400",
                               fontFamily: "Arial",
                               color: "#595959",
                             }}
                           >
                             Paradise Veg, Pizza (Baby Corn, Olives)
+                            <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                           </Typography>
                         }
                         className="borderRound"
@@ -301,7 +315,7 @@ export default function ProductCard(props) {
                   id="modal-modal-description"
                   sx={{
                     mt: 2,
-                    fontSize: "1rem",
+                    fontSize: "0.9rem",
                     fontWeight: "600",
                     fontFamily: "Arial",
                     color: "#595959",
@@ -340,13 +354,17 @@ export default function ProductCard(props) {
                             label={
                               <Typography
                                 sx={{
-                                  fontSize: "1rem !important",
+                                  fontSize: "0.75rem !important",
                                   fontWeight: "400",
                                   fontFamily: "Arial",
                                   color: "#595959",
                                 }}
                               >
                                 {dupProduct.size}
+                                <span style={{ fontWeight: "600" }}>
+                                  {" "}
+                                  + ₹ {dupProduct.price}
+                                </span>
                               </Typography>
                             }
                             className="borderRound"
@@ -363,7 +381,7 @@ export default function ProductCard(props) {
                   id="modal-modal-description"
                   sx={{
                     mt: 2,
-                    fontSize: "1rem !important",
+                    fontSize: "0.9rem !important",
                     fontWeight: "600",
                     fontFamily: "Arial",
                     color: "#595959",
@@ -378,13 +396,14 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "1rem !important",
+                            fontSize: "0.75rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
                           }}
                         >
                           Extra Toppings (Regular)
+                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                         </Typography>
                       }
                       sx={{
@@ -399,13 +418,14 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "1rem !important",
+                            fontSize: "0.75rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
                           }}
                         >
                           Extra Toppings (Middle)
+                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                         </Typography>
                       }
                       sx={{
@@ -420,13 +440,14 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "1rem !important",
+                            fontSize: "0.75rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
                           }}
                         >
                           Extra Toppings (Large)
+                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                         </Typography>
                       }
                       sx={{
@@ -445,7 +466,7 @@ export default function ProductCard(props) {
                   sx={{
                     mt: 2,
                     fontWeight: "600",
-                    fontSize: "1rem !important",
+                    fontSize: "0.9rem !important",
                     fontFamily: "Arial",
                     color: "#595959",
                   }}
@@ -459,13 +480,14 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "1rem !important",
+                            fontSize: "0.75rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
                           }}
                         >
                           Paneer & Cheese (Regular)
+                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                         </Typography>
                       }
                       sx={{
@@ -480,13 +502,14 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "1rem !important",
+                            fontSize: "0.75rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
                           }}
                         >
                           Paneer & Cheese (Middle)
+                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                         </Typography>
                       }
                       sx={{
@@ -501,13 +524,14 @@ export default function ProductCard(props) {
                       label={
                         <Typography
                           sx={{
-                            fontSize: "1rem !important",
+                            fontSize: "0.75rem !important",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#595959",
                           }}
                         >
                           Paneer & Cheese (Large)
+                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
                         </Typography>
                       }
                       sx={{
@@ -527,7 +551,7 @@ export default function ProductCard(props) {
                   label={
                     <Typography
                       sx={{
-                        fontSize: "12px !important",
+                        fontSize: "0.75rem !important",
                         fontWeight: "400",
                         fontFamily: "Arial",
                         color: "#595959",
@@ -656,7 +680,7 @@ export default function ProductCard(props) {
         <CardContent sx={{ padding: "5px" }}>
           <Typography
             sx={{
-              fontSize: "1rem",
+              fontSize: "0.9rem",
               fontWeight: "600",
               fontFamily: "Arial",
               color: "#595959",
@@ -718,7 +742,7 @@ export default function ProductCard(props) {
           </Typography>
           <Typography
             sx={{
-              fontSize: "0.875rem",
+              fontSize: "0.75rem",
               fontWeight: "400",
               fontFamily: "Arial",
               color: "#767171",
@@ -742,32 +766,31 @@ export default function ProductCard(props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Row className="w-100 align-items-center">
-            <Col className="col-10">
+          <Row className="w-100 align-items-center" style={{ margin: "0px" }}>
+            <Col className=" col-xl-6">
               <Typography
                 sx={{
                   fontSize: "1rem",
                   fontWeight: "600",
                   fontFamily: "Arial",
-                  color: "#595959",
+                  color: "#2e7d32",
                 }}
               >
                 ₹ {props.product?.price}
               </Typography>
             </Col>
-            <Col className="col-2">
-              <IconButton
-                size="small"
-                color="success"
-                aria-label="add to shopping cart"
+            <Col className=" col-xl-6">
+              <Button
                 onClick={() => {
                   dispatch(addToCartNew(currentProduct, 1));
                   calculateSubTotal();
                 }}
-                sx={{ fontSize: "20px" }}
+                variant="contained"
+                color="error"
+                sx={{ width: "100%" }}
               >
-                <AddShoppingCart sx={{ fontSize: "18px" }} />
-              </IconButton>
+                Add
+              </Button>
             </Col>
           </Row>
         </CardActions>

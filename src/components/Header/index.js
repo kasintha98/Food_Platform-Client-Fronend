@@ -210,7 +210,12 @@ export default function Header(props) {
       <ToastContainer />
       <Navbar
         fixed="top"
-        style={{ backgroundColor: "#FFF", boxShadow: "2px 2px #F7F7F7" }}
+        style={{
+          backgroundColor: "#FFF",
+          boxShadow: "2px 2px #F7F7F7",
+          height: "50px",
+          fontWeight: "bold",
+        }}
         variant="light"
         expand="lg"
       >
