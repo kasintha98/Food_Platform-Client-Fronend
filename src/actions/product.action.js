@@ -38,14 +38,34 @@ export const getSpecificProductBySlug = (slug) => {
   };
 };
 
-//geting products belong to a specific category by url slug
-export const getProductsNew = (slug) => {
+export const getProductsNew = () => {
   return async (dispatch) => {
-    const res = await stockAxios.get(`products.json`);
+    const res = await axios.get(`/getAllMenuItems`);
+    //const res = await stockAxios.get(`products.json`);
+
+    if (res.status === 200) {
+      const productsList = {
+        products: res.data,
+      };
+      console.log(productsList);
+
+      dispatch({
+        type: productConstants.GET_PRODUCTS_BY_SLUG_SUCCESS,
+        payload: productsList,
+      });
+    } else {
+      console.log("error");
+    }
+  };
+};
+
+export const getMenuIngredientsByProductId = (id) => {
+  return async (dispatch) => {
+    const res = await axios.get(`/getMenuIngredientsByMenuId?productId=${id}`);
 
     if (res.status === 200) {
       dispatch({
-        type: productConstants.GET_PRODUCTS_BY_SLUG_SUCCESS,
+        type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
         payload: res.data,
       });
       console.log(res.data);

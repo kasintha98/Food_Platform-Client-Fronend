@@ -131,7 +131,7 @@ export const removeCartItem = (payload) => {
 };
 
 //action to add items to cart
-export const addToCartNew = (product, newQty) => {
+export const addToCartNew = (product, newQty, extra, extraSubTotal) => {
   return async (dispatch) => {
     const {
       cart: { cartItems },
@@ -139,14 +139,31 @@ export const addToCartNew = (product, newQty) => {
     } = store.getState();
 
     if (product) {
-      const qty = cartItems[product.product_id]
-        ? parseInt(cartItems[product.product_id].qty) + newQty
+      const qty = cartItems[product.productId]
+        ? parseInt(cartItems[product.productId].qty) + newQty
         : newQty;
 
+      const extraTotal = extraSubTotal
+        ? extraSubTotal
+        : cartItems[product.productId]?.extraSubTotal
+        ? cartItems[product.productId]?.extraSubTotal
+        : 0;
+
+      const extraItems = extra
+        ? extra
+        : cartItems[product.productId]?.extra
+        ? cartItems[product.productId]?.extra
+        : {};
+
       if (qty < 1) {
-        delete cartItems[product.product_id];
+        delete cartItems[product.productId];
       } else {
-        cartItems[product.product_id] = { ...product, qty };
+        cartItems[product.productId] = {
+          ...product,
+          qty,
+          extra: extraItems,
+          extraSubTotal: extraTotal,
+        };
       }
 
       if (auth.authenticate) {
@@ -154,7 +171,7 @@ export const addToCartNew = (product, newQty) => {
         const payload = {
           cartItems: [
             {
-              product: product.product_id,
+              product: product.productId,
               quantity: qty,
             },
           ],
@@ -187,17 +204,17 @@ export const replaceCartItemNew = (newProduct, oldId) => {
     } = store.getState();
     if (cartItems[oldId]) {
       delete Object.assign(cartItems, {
-        [newProduct.product_id]: cartItems[oldId],
+        [newProduct.productId]: cartItems[oldId],
       })[oldId];
-      const qty = cartItems[newProduct.product_id].qty;
-      cartItems[newProduct.product_id] = { ...newProduct, qty };
+      const qty = cartItems[newProduct.productId].qty;
+      cartItems[newProduct.productId] = { ...newProduct, qty };
 
       if (auth.authenticate) {
         dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
         const payload = {
           cartItems: [
             {
-              product: newProduct.product_id,
+              product: newProduct.productId,
             },
           ],
         };

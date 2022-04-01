@@ -2,6 +2,7 @@ import { productConstants } from "../actions/constants";
 
 const initState = {
   products: [],
+  ingredients: [],
   loading: false,
   product: {},
   error: null,
@@ -32,6 +33,26 @@ export default (state = initState, action) => {
       state = {
         ...state,
         product: action.payload.error,
+        loading: false,
+      };
+      break;
+    case productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS:
+      state = {
+        ...state,
+        ingredients: action.payload,
+        loading: false,
+      };
+      break;
+    case productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_FAILURE:
+      state = {
+        ...state,
+        ingredients: action.payload.error,
         loading: false,
       };
       break;

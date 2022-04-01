@@ -37,16 +37,17 @@ export default function CartCard(props) {
 
   useEffect(() => {
     calculateSubTotal();
+    calculateExtraTotal();
   });
 
-  const onQuantityIncrement = (product_id) => {
-    console.log({ product_id });
-    dispatch(addToCartNew(cart.cartItems[product_id], 1));
+  const onQuantityIncrement = (productId) => {
+    console.log({ productId });
+    dispatch(addToCartNew(cart.cartItems[productId], 1));
     calculateSubTotal();
   };
 
-  const onQuantityDecrement = (product_id) => {
-    dispatch(addToCartNew(cart.cartItems[product_id], -1));
+  const onQuantityDecrement = (productId) => {
+    dispatch(addToCartNew(cart.cartItems[productId], -1));
     calculateSubTotal();
   };
 
@@ -58,6 +59,14 @@ export default function CartCard(props) {
     props.onChangeSubTotal(total);
   };
 
+  const calculateExtraTotal = () => {
+    let total = 0;
+    for (let key of Object.keys(cart?.cartItems)) {
+      total = total + cart?.cartItems[key].extraSubTotal;
+    }
+    props.onChangeExtraSubTotal(total);
+  };
+
   return (
     <div>
       {Object.keys(cart?.cartItems).length > 0 ? (
@@ -66,7 +75,7 @@ export default function CartCard(props) {
             <Card
               key={index}
               sx={{
-                maxWidth: 345,
+                maxWidth: "100%",
                 marginBottom: "15px",
                 boxShadow: "none",
                 backgroundColor: "#F7F7F7",
@@ -93,7 +102,7 @@ export default function CartCard(props) {
                         color: "#595959",
                       }}
                     >
-                      {cart?.cartItems[key].dish_type}
+                      {cart?.cartItems[key].dishType}
                     </p>
                     {/* <p
                       style={{
@@ -105,11 +114,11 @@ export default function CartCard(props) {
                     >
                       <LinesEllipsis
                         text={`${cart?.cartItems[key].dish_description_id} The real dish discription can
-  be added when have the get discription by product_id API. The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.
+  be added when have the get discription by productId API. The real dish discription can
+  be added when have the get discription by productId API.The real dish discription can
+  be added when have the get discription by productId API.The real dish discription can
+  be added when have the get discription by productId API.The real dish discription can
+  be added when have the get discription by productId API.
   ea commodo consequat.`}
                         maxLine="3"
                         ellipsis="..."
@@ -130,7 +139,7 @@ export default function CartCard(props) {
                             sx={{ border: "none !important" }}
                             onClick={() => {
                               onQuantityDecrement(
-                                cart?.cartItems[key].product_id
+                                cart?.cartItems[key].productId
                               );
                             }}
                           >
@@ -166,7 +175,7 @@ export default function CartCard(props) {
                           <IncButton
                             onClick={() => {
                               onQuantityIncrement(
-                                cart?.cartItems[key].product_id
+                                cart?.cartItems[key].productId
                               );
                             }}
                           >
@@ -187,14 +196,15 @@ export default function CartCard(props) {
                           >
                             ₹{" "}
                             {cart?.cartItems[key].qty *
-                              cart?.cartItems[key].price}
+                              cart?.cartItems[key].price +
+                              cart?.cartItems[key].extraSubTotal}
                             .00
                           </p>
                         </div>
                       </Col>
                     </Row>
                   </div>
-                  {cart?.cartItems[key].ingredient_exists_flag === "Y" ? (
+                  {cart?.cartItems[key].ingredientExistsFalg === "Y" ? (
                     <Typography variant="body2" color="text.secondary">
                       <p
                         style={{
@@ -228,9 +238,28 @@ export default function CartCard(props) {
                           }}
                         >
                           {" "}
-                          {cart?.cartItems[key].size}
+                          {cart?.cartItems[key].productSize}
                         </span>
                       </p>
+                      {cart?.cartItems[key]?.extra
+                        ? Object.keys(cart?.cartItems[key]?.extra).map(
+                            (index) => (
+                              <p
+                                style={{
+                                  fontSize: "1rem",
+                                  fontWeight: "400",
+                                  fontFamily: "Arial",
+                                  color: "#767171",
+                                }}
+                              >
+                                {
+                                  cart?.cartItems[key]?.extra[index]
+                                    .ingredientType
+                                }
+                              </p>
+                            )
+                          )
+                        : null}
                     </Typography>
                   ) : null}
                 </Col>
@@ -241,7 +270,11 @@ export default function CartCard(props) {
         </>
       ) : (
         <div>
-          <img style={{ width: "100%" }} src={emptyCartImg} alt="Empty Cart" />
+          <img
+            style={{ width: "100%", maxHeight: "468px" }}
+            src={emptyCartImg}
+            alt="Empty Cart"
+          />
         </div>
       )}
     </div>

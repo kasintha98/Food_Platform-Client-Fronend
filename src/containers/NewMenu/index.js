@@ -97,6 +97,12 @@ const CusCol = styled(Col)`
   }
 `;
 
+const CustRow = styled(Row)`
+  @media (max-width: 992px) {
+    margin-top: 35px;
+  }
+`;
+
 const HeadMod = styled.div`
   & .close {
     color: red;
@@ -114,6 +120,7 @@ export default function NewMenu() {
   const [dishesOfSection, setDishesOfSection] = useState(["Burger", "Fries"]);
   const [value, setValue] = useState(sections[0]);
   const [subTotal, setSubtotal] = useState(0);
+  const [extraSubTotal, setExtraSubTotal] = useState(0);
   const [value2, setValue2] = useState(dishesOfSection[0]);
 
   const [showCartModal, setShowCartModal] = useState(false);
@@ -127,6 +134,10 @@ export default function NewMenu() {
 
   const handleSubTotal = (total) => {
     setSubtotal(total);
+  };
+
+  const handleExtraTotal = (total) => {
+    setExtraSubTotal(total);
   };
 
   const handleChange = (event, newValue) => {
@@ -162,9 +173,10 @@ export default function NewMenu() {
           <Modal.Body style={{ padding: "0px" }}>
             <Card sx={{ width: "100%" }}>
               <CardContent sx={{ height: "500px", overflowY: "auto" }}>
-                <CartCard></CartCard>
-                <CartCard></CartCard>
-                <CartCard></CartCard>
+                <CartCard
+                  onChangeSubTotal={handleSubTotal}
+                  onChangeExtraSubTotal={handleExtraTotal}
+                ></CartCard>
               </CardContent>
               <CardActions>
                 <Button variant="contained" color="success" className="w-100">
@@ -184,7 +196,7 @@ export default function NewMenu() {
       <CusContainer>
         <Row>
           <Col sm={12} md={12} lg={8} xl={8}>
-            <Row>
+            <CustRow>
               <Col className="col-9"></Col>
               <Col className="col-3">
                 <CartIconArea>
@@ -218,7 +230,7 @@ export default function NewMenu() {
                   </Button>
                 </CartIconArea>
               </Col>
-            </Row>
+            </CustRow>
             <div>
               <Box sx={{ width: "100%" }}>
                 <TabContext value={value}>
@@ -291,10 +303,11 @@ export default function NewMenu() {
                               value={dish}
                             >
                               <Row>
-                                {productList?.products.length > 0 ? (
+                                {productList.products?.length > 0 ? (
                                   <>
-                                    {productList?.products.map((product) =>
-                                      product.menu_available_flag === "Y" &&
+                                    {productList.products?.map((product) =>
+                                      product &&
+                                      product.menuAvailableFlag === "Y" &&
                                       product.section === section &&
                                       product.dish === dish ? (
                                         <>
@@ -310,8 +323,10 @@ export default function NewMenu() {
                                             </Col>
                                           ) : (
                                             <>
-                                              {product.size === "Regular" ||
-                                              product.size === "Small" ? (
+                                              {product.productSize ===
+                                                "Regular" ||
+                                              product.productSize ===
+                                                "Small" ? (
                                                 <Col
                                                   xs={6}
                                                   sm={6}
@@ -336,7 +351,9 @@ export default function NewMenu() {
                                     )}
                                   </>
                                 ) : (
-                                  <h4>No Products Available</h4>
+                                  <h4 style={{ marginTop: "50px" }}>
+                                    No Products Available
+                                  </h4>
                                 )}
                               </Row>
                             </TabPanel>
@@ -350,21 +367,24 @@ export default function NewMenu() {
             </div>
           </Col>
           <CusCol sm={12} md={12} lg={4} xl={4}>
-            <Row>
+            {/* <Row>
               <img style={{ marginTop: "48px" }} src={coverImg} alt="banner" />
-            </Row>
-            <Card sx={{ width: "100%", marginTop: "15px" }}>
+            </Row> */}
+            <Card sx={{ width: "100%", marginTop: "60px" }}>
               <div
                 style={{ height: "5px", backgroundColor: "rgb(130, 187, 55)" }}
               ></div>
               <CardContent
                 sx={{
-                  height: "300px",
+                  height: "500px",
                   overflowY: "auto",
                   backgroundColor: "#F7F7F7",
                 }}
               >
-                <CartCard onChangeSubTotal={handleSubTotal}></CartCard>
+                <CartCard
+                  onChangeSubTotal={handleSubTotal}
+                  onChangeExtraSubTotal={handleExtraTotal}
+                ></CartCard>
               </CardContent>
               <div
                 style={{
@@ -374,7 +394,7 @@ export default function NewMenu() {
               >
                 <SubTotalArea>
                   <SubTotal>Subtotal</SubTotal>
-                  <SubTotal>₹ {subTotal}</SubTotal>
+                  <SubTotal>₹ {subTotal + extraSubTotal}</SubTotal>
                 </SubTotalArea>
                 <CardActions>
                   <CheckoutButton variant="contained" className="w-100">

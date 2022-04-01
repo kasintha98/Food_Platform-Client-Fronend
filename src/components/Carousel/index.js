@@ -6,8 +6,8 @@ import bg2 from "../../img/2.jpg";
 export default function MyCarousel(props) {
   return (
     <div>
-      <Carousel style={{ marginBottom: "15px" }}>
-        <Carousel.Item>
+      <Carousel style={{ marginBottom: "15px", marginTop: "50px" }}>
+        <Carousel.Item style={{ width: "100%", height: "calc(100vh - 50px)" }}>
           <img className="d-block w-100" src={bg1} alt="First slide" />
           <Carousel.Caption>
             <h3>Order Now!</h3>

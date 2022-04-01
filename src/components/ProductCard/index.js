@@ -26,9 +26,14 @@ import {
   Checkbox,
   TextField,
 } from "@mui/material";
-import { addToCartNew, replaceCartItemNew } from "../../actions";
+import {
+  addToCartNew,
+  replaceCartItemNew,
+  getMenuIngredientsByProductId,
+} from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
+import { imagePath } from "../../urlConfig";
 
 const CusomizeBtn = styled(Button)`
   position: absolute;
@@ -81,51 +86,83 @@ const CusFormControlLable = styled(FormControlLabel)`
 
 export default function ProductCard(props) {
   const [open, setOpen] = React.useState(false);
-  const [dishAddOn, setDishAddOn] = React.useState("1");
-  const [dishSize, setDishSize] = React.useState(props.product.size);
+  const [dishCusType, setDishCusType] = React.useState("1");
+  const [defaultIngrdients, setDefaultIngrdients] = React.useState([]);
+  const [extraIngrdients, setExtraIngrdients] = React.useState([]);
+  const [dishSize, setDishSize] = React.useState(props.product.productSize);
   const [currentProduct, setCurrentProduct] = React.useState(props.product);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [extraCustomization, setExtraCustomization] = React.useState({});
+  const [extraSubTotal, setExtraSubTotal] = React.useState(0);
+  const [extra, setExtra] = React.useState({});
+
   const cart = useSelector((state) => state.cart);
+  const ingredients = useSelector((state) => state.product.ingredients);
+
+  let { check } = extraCustomization;
 
   const dispatch = useDispatch();
   const prevProduct = useRef();
 
+  const handleOpen = () => {
+    setOpen(true);
+    dispatch(getMenuIngredientsByProductId(currentProduct.productId));
+  };
+  const handleClose = () => setOpen(false);
+
   useEffect(() => {
-    if (cart?.cartItems && !cart?.cartItems[props.product.product_id]) {
+    if (cart?.cartItems && !cart?.cartItems[props.product.productId]) {
       for (const cartItem in cart?.cartItems) {
-        if (cart?.cartItems[cartItem].dish_type === props.product.dish_type) {
+        if (cart?.cartItems[cartItem].dishType === props.product.dishType) {
           setCurrentProduct(cart?.cartItems[cartItem]);
-          setDishSize(cart?.cartItems[cartItem].size);
+          setDishSize(cart?.cartItems[cartItem].productSize);
         }
       }
     }
 
     prevProduct.current = currentProduct;
     console.log(currentProduct);
+
+    let filteredArrayDefault = [];
+    for (let i = 0; i < ingredients.length; i++) {
+      if (ingredients[i].category === "Default") {
+        filteredArrayDefault.push(ingredients[i]);
+      }
+    }
+    setDefaultIngrdients(filteredArrayDefault);
+
+    let filteredArrayExtra = [];
+    for (let i = 0; i < ingredients.length; i++) {
+      if (ingredients[i].category === "Extra") {
+        filteredArrayExtra.push(ingredients[i]);
+      }
+    }
+    setExtraIngrdients(filteredArrayExtra);
   }, [
     currentProduct,
     cart?.cartItems,
-    props.product.dish_type,
-    props.product.product_id,
+    props.product.dishType,
+    props.product.productId,
+    ingredients,
   ]);
 
-  const onQuantityIncrement = (product_id) => {
-    if (cart.cartItems[product_id]) {
-      dispatch(addToCartNew(cart.cartItems[product_id], 1));
+  const onQuantityIncrement = (productId) => {
+    if (cart.cartItems[productId]) {
+      dispatch(
+        addToCartNew(cart.cartItems[productId], 1, extra, extraSubTotal)
+      );
     } else {
-      dispatch(addToCartNew(currentProduct, 1));
+      dispatch(addToCartNew(currentProduct, 1, extra, extraSubTotal));
     }
     calculateSubTotal();
   };
 
-  const onQuantityDecrement = (product_id) => {
-    dispatch(addToCartNew(cart.cartItems[product_id], -1));
+  const onQuantityDecrement = (productId) => {
+    dispatch(addToCartNew(cart.cartItems[productId], -1, extra, extraSubTotal));
     calculateSubTotal();
   };
 
-  const handleDishAddOn = (event) => {
-    setDishAddOn(event.target.value);
+  const handleDishCusType = (event) => {
+    setDishCusType(event.target.value);
   };
   const handleDishSize = (event) => {
     setDishSize(event.target.value);
@@ -136,7 +173,7 @@ export default function ProductCard(props) {
   };
 
   const replaceCartItem = (dupProduct, oldId) => {
-    dispatch(replaceCartItemNew(dupProduct, prevProduct.current.product_id));
+    dispatch(replaceCartItemNew(dupProduct, prevProduct.current.productId));
     calculateSubTotal();
   };
 
@@ -146,6 +183,39 @@ export default function ProductCard(props) {
       total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
     }
     props.onChangeSubTotal(total);
+  };
+
+  const handleCustomization = (event) => {
+    setExtraCustomization({
+      ...extraCustomization,
+      [event.target.name]: event.target.checked,
+    });
+    console.log(extraCustomization);
+  };
+
+  const handleClearCheckBox = () => {
+    setExtra({});
+    calculateExtraTotal();
+  };
+
+  const handleExtra = (ing) => {
+    const existing = extra[ing.subProductId];
+    if (existing) {
+      delete extra[ing.subProductId];
+    } else {
+      extra[ing.subProductId] = { ...ing };
+    }
+    calculateExtraTotal();
+    console.log(extra);
+  };
+
+  const calculateExtraTotal = () => {
+    let extraTotal = 0;
+    for (let key of Object.keys(extra)) {
+      extraTotal = extraTotal + extra[key].price;
+    }
+    console.log(extraTotal);
+    setExtraSubTotal(extraTotal);
   };
 
   const renderCustomizeModal = () => {
@@ -168,20 +238,6 @@ export default function ProductCard(props) {
                   alt="First slide"
                 />
               </Carousel.Item>
-              <Carousel.Item style={{ height: "150px" }}>
-                <img
-                  className="d-block w-100"
-                  src={pizzaImg}
-                  alt="Second slide"
-                />
-              </Carousel.Item>
-              <Carousel.Item style={{ height: "150px" }}>
-                <img
-                  className="d-block w-100"
-                  src={pizzaImg}
-                  alt="Third slide"
-                />
-              </Carousel.Item>
             </Carousel>
           </div>
           <Modal.Body>
@@ -196,19 +252,19 @@ export default function ProductCard(props) {
               variant="h6"
               component="h2"
             >
-              {currentProduct?.dish_type}{" "}
-              {currentProduct.dish_spice_indicater === "Less Spicy" && (
+              {currentProduct?.dishType}{" "}
+              {currentProduct.dishSpiceIndicatory === "Less Spicy" && (
                 <>
                   <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
                 </>
               )}
-              {currentProduct.dish_spice_indicater === "Medium Spicy" && (
+              {currentProduct.dishSpiceIndicatory === "Medium Spicy" && (
                 <>
                   <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
                   <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
                 </>
               )}
-              {currentProduct.dish_spice_indicater === "Extra Hot" && (
+              {currentProduct.dishSpiceIndicatory === "Extra Hot" && (
                 <>
                   <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
                   <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
@@ -227,9 +283,7 @@ export default function ProductCard(props) {
               }}
             >
               <LinesEllipsis
-                text={`${currentProduct?.dish_description_id} The real dish discription can
-  be added when have the get discription by product_id API. The real dish discription can
-  be added when have the get discription by product_id API.`}
+                text={`${currentProduct?.dishDescriptionId}`}
                 maxLine="3"
                 ellipsis="..."
                 trimRight
@@ -248,7 +302,7 @@ export default function ProductCard(props) {
                     color: "#595959",
                   }}
                 >
-                  Pizza type
+                  Type
                 </Typography>
                 <div>
                   <FormControl
@@ -263,8 +317,8 @@ export default function ProductCard(props) {
                     <RadioGroup
                       aria-labelledby="demo-controlled-radio-buttons-group"
                       name="controlled-radio-buttons-group"
-                      value={dishAddOn}
-                      onChange={handleDishAddOn}
+                      value={dishCusType}
+                      onChange={handleDishCusType}
                     >
                       <FormControlLabel
                         value="1"
@@ -278,8 +332,11 @@ export default function ProductCard(props) {
                               color: "#595959",
                             }}
                           >
-                            Mix Veg, Pizza (Onion, Tomato)
-                            <span style={{ fontWeight: "600" }}> + ₹ 100</span>
+                            {currentProduct?.dishType} ({" "}
+                            {defaultIngrdients.map((ing) => (
+                              <span>{ing.ingredientType}, </span>
+                            ))}{" "}
+                            )<span style={{ fontWeight: "600" }}></span>
                           </Typography>
                         }
                         className="borderRound"
@@ -287,7 +344,7 @@ export default function ProductCard(props) {
                           marginLeft: "0px",
                         }}
                       />
-                      <FormControlLabel
+                      {/* <FormControlLabel
                         value="2"
                         control={<Radio />}
                         label={
@@ -305,7 +362,7 @@ export default function ProductCard(props) {
                         }
                         className="borderRound"
                         sx={{ marginLeft: "0px" }}
-                      />
+                      /> */}
                     </RadioGroup>
                   </FormControl>
                 </div>
@@ -321,7 +378,7 @@ export default function ProductCard(props) {
                     color: "#595959",
                   }}
                 >
-                  Pizza size
+                  Size
                 </Typography>
                 <div>
                   <FormControl
@@ -334,20 +391,26 @@ export default function ProductCard(props) {
                       name="controlled-radio-buttons-group"
                       value={dishSize}
                       onChange={handleDishSize}
-                      defaultValue={currentProduct.size}
+                      defaultValue={currentProduct.productSize}
                     >
                       {props.products.map((dupProduct) =>
-                        dupProduct.dish_type === currentProduct.dish_type ? (
+                        dupProduct.dishType === currentProduct.dishType ? (
                           <FormControlLabel
-                            value={dupProduct.size}
+                            value={dupProduct.productSize}
                             control={
                               <Radio
                                 onClick={() => {
                                   handleCurrentProduct(dupProduct);
                                   replaceCartItem(
                                     dupProduct,
-                                    currentProduct.product_id
+                                    currentProduct.productId
                                   );
+                                  dispatch(
+                                    getMenuIngredientsByProductId(
+                                      dupProduct.productId
+                                    )
+                                  );
+                                  handleClearCheckBox();
                                 }}
                               />
                             }
@@ -360,7 +423,7 @@ export default function ProductCard(props) {
                                   color: "#595959",
                                 }}
                               >
-                                {dupProduct.size}
+                                {dupProduct.productSize}
                                 <span style={{ fontWeight: "600" }}>
                                   {" "}
                                   + ₹ {dupProduct.price}
@@ -387,163 +450,50 @@ export default function ProductCard(props) {
                     color: "#595959",
                   }}
                 >
-                  Extra toppings
+                  Extra toppings, Paneer & Cheese
                 </Typography>
                 <div>
                   <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label={
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem !important",
-                            fontWeight: "400",
-                            fontFamily: "Arial",
-                            color: "#595959",
-                          }}
-                        >
-                          Extra Toppings (Regular)
-                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
-                        </Typography>
-                      }
-                      sx={{
-                        width: "100%",
-                        marginRight: "0px",
-                        marginLeft: "0px",
-                      }}
-                      className="borderRound"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label={
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem !important",
-                            fontWeight: "400",
-                            fontFamily: "Arial",
-                            color: "#595959",
-                          }}
-                        >
-                          Extra Toppings (Middle)
-                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
-                        </Typography>
-                      }
-                      sx={{
-                        width: "100%",
-                        marginRight: "0px",
-                        marginLeft: "0px",
-                      }}
-                      className="borderRound"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label={
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem !important",
-                            fontWeight: "400",
-                            fontFamily: "Arial",
-                            color: "#595959",
-                          }}
-                        >
-                          Extra Toppings (Large)
-                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
-                        </Typography>
-                      }
-                      sx={{
-                        width: "100%",
-                        marginRight: "0px",
-                        marginLeft: "0px",
-                      }}
-                      className="borderRound"
-                    />
+                    {extraIngrdients.map((ing) => (
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={extra[ing.subProductId] ? true : false}
+                            onChange={(e) => {
+                              handleCustomization(e);
+                              handleExtra(ing);
+                            }}
+                            name={ing.ingredientType}
+                          />
+                        }
+                        label={
+                          <Typography
+                            sx={{
+                              fontSize: "0.75rem !important",
+                              fontWeight: "400",
+                              fontFamily: "Arial",
+                              color: "#595959",
+                            }}
+                          >
+                            {ing.ingredientType}
+                            <span style={{ fontWeight: "600" }}>
+                              {" "}
+                              + ₹ {ing.price}
+                            </span>
+                          </Typography>
+                        }
+                        sx={{
+                          width: "100%",
+                          marginRight: "0px",
+                          marginLeft: "0px",
+                        }}
+                        className="borderRound"
+                      />
+                    ))}
                   </FormGroup>
                 </div>
               </div>
-              <div>
-                <Typography
-                  id="modal-modal-description"
-                  sx={{
-                    mt: 2,
-                    fontWeight: "600",
-                    fontSize: "0.9rem !important",
-                    fontFamily: "Arial",
-                    color: "#595959",
-                  }}
-                >
-                  Paneer & Cheese
-                </Typography>
-                <div>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label={
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem !important",
-                            fontWeight: "400",
-                            fontFamily: "Arial",
-                            color: "#595959",
-                          }}
-                        >
-                          Paneer & Cheese (Regular)
-                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
-                        </Typography>
-                      }
-                      sx={{
-                        width: "100%",
-                        marginRight: "0px",
-                        marginLeft: "0px",
-                      }}
-                      className="borderRound"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label={
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem !important",
-                            fontWeight: "400",
-                            fontFamily: "Arial",
-                            color: "#595959",
-                          }}
-                        >
-                          Paneer & Cheese (Middle)
-                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
-                        </Typography>
-                      }
-                      sx={{
-                        width: "100%",
-                        marginRight: "0px",
-                        marginLeft: "0px",
-                      }}
-                      className="borderRound"
-                    />
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label={
-                        <Typography
-                          sx={{
-                            fontSize: "0.75rem !important",
-                            fontWeight: "400",
-                            fontFamily: "Arial",
-                            color: "#595959",
-                          }}
-                        >
-                          Paneer & Cheese (Large)
-                          <span style={{ fontWeight: "600" }}> + ₹ 100</span>
-                        </Typography>
-                      }
-                      sx={{
-                        width: "100%",
-                        marginRight: "0px",
-                        marginLeft: "0px",
-                      }}
-                      className="borderRound"
-                    />
-                  </FormGroup>
-                </div>
-              </div>
+
               <div>
                 <br></br>
                 <TextField
@@ -589,10 +539,10 @@ export default function ProductCard(props) {
                         minWidth: "25px !important",
                       }}
                       onClick={() => {
-                        onQuantityDecrement(currentProduct?.product_id);
+                        onQuantityDecrement(currentProduct?.productId);
                       }}
                     >
-                      {cart?.cartItems[currentProduct?.product_id]?.qty < 2 ? (
+                      {cart?.cartItems[currentProduct?.productId]?.qty < 2 ? (
                         <Delete sx={{ fontSize: "0.9rem" }}></Delete>
                       ) : (
                         <Remove sx={{ fontSize: "0.9rem" }}></Remove>
@@ -603,8 +553,8 @@ export default function ProductCard(props) {
                       id="numberofitems"
                       type="tel"
                       value={
-                        cart?.cartItems[currentProduct?.product_id]?.qty
-                          ? cart?.cartItems[currentProduct?.product_id]?.qty
+                        cart?.cartItems[currentProduct?.productId]?.qty
+                          ? cart?.cartItems[currentProduct?.productId]?.qty
                           : 0
                       }
                       defaultValue={0}
@@ -617,7 +567,7 @@ export default function ProductCard(props) {
                         minWidth: "25px !important",
                       }}
                       onClick={() => {
-                        onQuantityIncrement(currentProduct?.product_id);
+                        onQuantityIncrement(currentProduct?.productId);
                       }}
                     >
                       <Add sx={{ fontSize: "0.9rem" }}></Add>
@@ -630,19 +580,22 @@ export default function ProductCard(props) {
                     variant="contained"
                     color="success"
                     onClick={() => {
-                      let qty = cart?.cartItems[currentProduct?.product_id]?.qty
+                      let qty = cart?.cartItems[currentProduct?.productId]?.qty
                         ? 0
                         : 0;
-                      dispatch(addToCartNew(currentProduct, qty));
+                      dispatch(
+                        addToCartNew(currentProduct, qty, extra, extraSubTotal)
+                      );
                       calculateSubTotal();
                       handleClose();
                     }}
                   >
                     Add to my order ₹{" "}
-                    {cart?.cartItems[currentProduct?.product_id]?.qty *
-                    cart?.cartItems[currentProduct?.product_id]?.price
-                      ? cart?.cartItems[currentProduct?.product_id]?.qty *
-                        cart?.cartItems[currentProduct?.product_id]?.price
+                    {cart?.cartItems[currentProduct?.productId]?.qty *
+                    cart?.cartItems[currentProduct?.productId]?.price
+                      ? cart?.cartItems[currentProduct?.productId]?.qty *
+                          cart?.cartItems[currentProduct?.productId]?.price +
+                        extraSubTotal
                       : 0}
                     .00
                   </Button>
@@ -664,13 +617,13 @@ export default function ProductCard(props) {
           image={pizzaImg}
           alt="product"
         />
-        {props.product.ingredient_exists_flag === "Y" ? (
+        {props.product.ingredientExistsFalg === "Y" ? (
           <CusomizeBtn onClick={handleOpen} size="small" variant="outlined">
             CUSTOMISE
           </CusomizeBtn>
         ) : null}
 
-        {props.product?.dish_category === "Veg" ? (
+        {props.product?.dishCategory === "Veg" ? (
           <VegImg src={vegSvg} alt="veg" />
         ) : (
           <VegImg src={nonvegSvg} alt="non-veg" />
@@ -689,15 +642,15 @@ export default function ProductCard(props) {
             variant="h5"
             component="div"
           >
-            {props.product?.dish_type === "Fries" ? (
+            {props.product?.dishType === "Fries" ? (
               <>
-                {props.product?.dish_type} ({props.product?.size})
+                {props.product?.dishType} ({props.product?.productSize})
               </>
             ) : (
-              <>{props.product?.dish_type}</>
+              <>{props.product?.dishType}</>
             )}
 
-            {currentProduct.dish_spice_indicater === "Less Spicy" && (
+            {currentProduct.dishSpiceIndicatory === "Less Spicy" && (
               <>
                 <img
                   style={{ width: "14px", marginLeft: "5px" }}
@@ -706,7 +659,7 @@ export default function ProductCard(props) {
                 />
               </>
             )}
-            {currentProduct.dish_spice_indicater === "Medium Spicy" && (
+            {currentProduct.dishSpiceIndicatory === "Medium Spicy" && (
               <>
                 <img
                   style={{ width: "14px", marginLeft: "5px" }}
@@ -720,7 +673,7 @@ export default function ProductCard(props) {
                 />
               </>
             )}
-            {currentProduct.dish_spice_indicater === "Extra Hot" && (
+            {currentProduct.dishSpiceIndicatory === "Extra Hot" && (
               <>
                 <img
                   style={{ width: "14px", marginLeft: "5px" }}
@@ -751,13 +704,7 @@ export default function ProductCard(props) {
             color="text.secondary"
           >
             <LinesEllipsis
-              text={`${props.product?.dish_description_id} The real dish discription can
-  be added when have the get discription by product_id API. The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.The real dish discription can
-  be added when have the get discription by product_id API.
-  ea commodo consequat.`}
+              text={`${props.product?.dishDescriptionId}`}
               maxLine="3"
               ellipsis="..."
               trimRight
@@ -782,7 +729,9 @@ export default function ProductCard(props) {
             <Col className=" col-xl-6">
               <Button
                 onClick={() => {
-                  dispatch(addToCartNew(currentProduct, 1));
+                  dispatch(
+                    addToCartNew(currentProduct, 1, extra, extraSubTotal)
+                  );
                   calculateSubTotal();
                 }}
                 variant="contained"
