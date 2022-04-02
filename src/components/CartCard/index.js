@@ -15,6 +15,10 @@ import Delete from "@mui/icons-material/Delete";
 import styled from "@emotion/styled";
 import LinesEllipsis from "react-lines-ellipsis";
 import emptyCartImg from "./../../img/empty-cart.jpg";
+import { imagePath } from "../../urlConfig";
+import noImage from "../../img/no-img.png";
+
+const imageExt = ".jpg";
 
 const IncButton = styled(Button)`
   width: 25px !important;
@@ -83,13 +87,24 @@ export default function CartCard(props) {
             >
               <Row>
                 <Col className="col-3">
-                  <CardMedia
-                    component="img"
-                    height="50"
-                    sx={{ borderRadius: "5px" }}
-                    image={pizzaImg}
-                    alt="green iguana"
-                  />
+                  {!cart?.cartItems[key].imagePath ||
+                  cart?.cartItems[key].imagePath === "No_Image_Found" ? (
+                    <CardMedia
+                      component="img"
+                      height="100px"
+                      image={noImage}
+                      alt="product"
+                      style={{ borderRadius: "6px" }}
+                    />
+                  ) : (
+                    <CardMedia
+                      component="img"
+                      height="100px"
+                      image={`${imagePath}/${cart?.cartItems[key].imagePath}${imageExt}`}
+                      alt="product"
+                      style={{ borderRadius: "6px" }}
+                    />
+                  )}
                 </Col>
                 <Col className="col-9">
                   <Typography variant="body2" color="text.secondary">

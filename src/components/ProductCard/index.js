@@ -15,6 +15,7 @@ import { Add, Remove } from "@mui/icons-material";
 import vegSvg from "../../img/veg.svg";
 import chili from "../../img/chili.svg";
 import nonvegSvg from "../../img/non-veg.svg";
+import noImage from "../../img/no-img.png";
 import Delete from "@mui/icons-material/Delete";
 import {
   Box,
@@ -34,6 +35,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
 import { imagePath } from "../../urlConfig";
+
+const imageExt = ".jpg";
 
 const CusomizeBtn = styled(Button)`
   position: absolute;
@@ -231,12 +234,27 @@ export default function ProductCard(props) {
         <Box>
           <div>
             <Carousel>
-              <Carousel.Item style={{ height: "150px" }}>
-                <img
-                  className="d-block w-100"
-                  src={pizzaImg}
-                  alt="First slide"
-                />
+              <Carousel.Item style={{ height: "150px", width: "100%" }}>
+                {!currentProduct?.imagePath ||
+                currentProduct?.imagePath === "No_Image_Found" ? (
+                  <img
+                    className="d-block w-100"
+                    src={noImage}
+                    alt="First slide"
+                    height="150px"
+                    width="100%"
+                    style={{ objectFit: "cover" }}
+                  />
+                ) : (
+                  <img
+                    className="d-block w-100"
+                    src={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
+                    alt="First slide"
+                    height="150px"
+                    width="100%"
+                    style={{ objectFit: "cover" }}
+                  />
+                )}
               </Carousel.Item>
             </Carousel>
           </div>
@@ -611,12 +629,23 @@ export default function ProductCard(props) {
   return (
     <div>
       <Card sx={{ maxWidth: 345, marginTop: 5, position: "relative" }}>
-        <CardMedia
-          component="img"
-          height="100px"
-          image={pizzaImg}
-          alt="product"
-        />
+        {!currentProduct?.imagePath ||
+        currentProduct?.imagePath === "No_Image_Found" ? (
+          <CardMedia
+            component="img"
+            height="100px"
+            image={noImage}
+            alt="product"
+          />
+        ) : (
+          <CardMedia
+            component="img"
+            height="100px"
+            image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
+            alt="product"
+          />
+        )}
+
         {props.product.ingredientExistsFalg === "Y" ? (
           <CusomizeBtn onClick={handleOpen} size="small" variant="outlined">
             CUSTOMISE

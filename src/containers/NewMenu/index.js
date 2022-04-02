@@ -38,11 +38,19 @@ const CusTabList = styled(TabList)`
 
   & .MuiTabs-flexContainer {
     column-gap: 10px;
-    justify-content: center;
+    /* justify-content: center; */
+    overflow-x: auto;
+  }
   }
   & .Mui-selected {
     background-color: #ffc107 !important;
     color: #e71b23;
+  }
+`;
+
+const CusTabList2 = styled(TabList)`
+  & .MuiTabs-flexContainer {
+    overflow-x: auto !important;
   }
 `;
 
@@ -110,10 +118,51 @@ const HeadMod = styled.div`
 `;
 
 export default function NewMenu() {
-  const sections = ["FAST FOOD", "PIZZA"];
+  const sections = [
+    "Fast Food",
+    "Pizza",
+    "Sandwiches",
+    "Pasta",
+    "Wraps",
+    "Sides",
+    "Mania Range",
+    "Desserts",
+    "Shakes & Drinks",
+    "Chinese",
+  ];
   const dishes = [
-    { "FAST FOOD": ["Burger", "Fries"] },
-    { PIZZA: ["Simply Veg"] },
+    { "Fast Food": ["Burger", "Fries"] },
+    {
+      Pizza: [
+        "Simply Veg",
+        "Simply Veg 1",
+        "Taste of India",
+        "Simply Veg 2",
+        "Simply Veg 3",
+        "Combo",
+      ],
+    },
+    { Sandwiches: ["Sandwiches"] },
+    { Pasta: ["Pasta"] },
+    { Wraps: ["Wraps"] },
+    { Sides: ["Sides"] },
+    { "Mania Range": ["Mania Range"] },
+    { Desserts: ["Desserts"] },
+    { "Shakes & Drinks": ["Shake"] },
+    {
+      Chinese: [
+        "Vegetable",
+        "Paneer",
+        "Mushroom",
+        "Chaap",
+        "Combo Meal",
+        "Noodles",
+        "Rice",
+        "Soup",
+        "Main Course",
+        "Momo's",
+      ],
+    },
   ];
 
   const cart = useSelector((state) => state.cart);
@@ -245,7 +294,7 @@ export default function NewMenu() {
                       backgroundColor: "#ffc423",
                     }}
                   >
-                    <TabList
+                    <CusTabList2
                       onChange={handleChange}
                       aria-label="lab API tabs example"
                     >
@@ -264,7 +313,7 @@ export default function NewMenu() {
                           }}
                         />
                       ))}
-                    </TabList>
+                    </CusTabList2>
                   </Box>
                   {sections.map((section) => (
                     <TabPanel sx={{ padding: "0px" }} value={section}>
