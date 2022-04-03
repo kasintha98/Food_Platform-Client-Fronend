@@ -35,6 +35,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
 import { imagePath } from "../../urlConfig";
+import "./style.css";
 
 const imageExt = ".jpg";
 
@@ -231,7 +232,7 @@ export default function ProductCard(props) {
         style={{ padding: "0px" }}
       >
         <Modal.Header closeButton>Customise Order</Modal.Header>
-        <Box>
+        <Box style={{ maxHeight: "550px", overflowY: "auto" }}>
           <div>
             <Carousel>
               <Carousel.Item style={{ height: "150px", width: "100%" }}>
@@ -386,50 +387,108 @@ export default function ProductCard(props) {
                 </div>
               </div>
               <div>
-                <Typography
-                  id="modal-modal-description"
-                  sx={{
-                    mt: 2,
-                    fontSize: "0.9rem",
-                    fontWeight: "600",
-                    fontFamily: "Arial",
-                    color: "#595959",
-                  }}
-                >
-                  Size
-                </Typography>
-                <div>
-                  <FormControl
-                    sx={{
-                      width: "100%",
-                    }}
-                  >
-                    <RadioGroup
-                      aria-labelledby="demo-controlled-radio-buttons-group"
-                      name="controlled-radio-buttons-group"
-                      value={dishSize}
-                      onChange={handleDishSize}
-                      defaultValue={currentProduct.productSize}
+                {currentProduct.productSize !== "Regular" ? (
+                  <>
+                    <Typography
+                      id="modal-modal-description"
+                      sx={{
+                        mt: 2,
+                        fontSize: "0.9rem",
+                        fontWeight: "600",
+                        fontFamily: "Arial",
+                        color: "#595959",
+                      }}
                     >
-                      {props.products.map((dupProduct) =>
-                        dupProduct.dishType === currentProduct.dishType ? (
+                      Size
+                    </Typography>
+                    <div>
+                      <FormControl
+                        sx={{
+                          width: "100%",
+                        }}
+                      >
+                        <RadioGroup
+                          aria-labelledby="demo-controlled-radio-buttons-group"
+                          name="controlled-radio-buttons-group"
+                          value={dishSize}
+                          onChange={handleDishSize}
+                          defaultValue={currentProduct.productSize}
+                        >
+                          {props.products.map((dupProduct) =>
+                            dupProduct.dishType === currentProduct.dishType ? (
+                              <FormControlLabel
+                                value={dupProduct.productSize}
+                                control={
+                                  <Radio
+                                    onClick={() => {
+                                      handleCurrentProduct(dupProduct);
+                                      replaceCartItem(
+                                        dupProduct,
+                                        currentProduct.productId
+                                      );
+                                      dispatch(
+                                        getMenuIngredientsByProductId(
+                                          dupProduct.productId
+                                        )
+                                      );
+                                      handleClearCheckBox();
+                                    }}
+                                  />
+                                }
+                                label={
+                                  <Typography
+                                    sx={{
+                                      fontSize: "0.75rem !important",
+                                      fontWeight: "400",
+                                      fontFamily: "Arial",
+                                      color: "#595959",
+                                    }}
+                                  >
+                                    {dupProduct.productSize}
+                                    <span style={{ fontWeight: "600" }}>
+                                      {" "}
+                                      + ₹ {dupProduct.price}
+                                    </span>
+                                  </Typography>
+                                }
+                                className="borderRound"
+                                sx={{ marginLeft: "0px" }}
+                              />
+                            ) : null
+                          )}
+                        </RadioGroup>
+                      </FormControl>
+                    </div>
+                  </>
+                ) : null}
+              </div>
+              <div>
+                {extraIngrdients.length > 0 ? (
+                  <>
+                    <Typography
+                      id="modal-modal-description"
+                      sx={{
+                        mt: 2,
+                        fontSize: "0.9rem !important",
+                        fontWeight: "600",
+                        fontFamily: "Arial",
+                        color: "#595959",
+                      }}
+                    >
+                      Extra toppings, Paneer & Cheese
+                    </Typography>
+                    <div>
+                      <FormGroup>
+                        {extraIngrdients.map((ing) => (
                           <FormControlLabel
-                            value={dupProduct.productSize}
                             control={
-                              <Radio
-                                onClick={() => {
-                                  handleCurrentProduct(dupProduct);
-                                  replaceCartItem(
-                                    dupProduct,
-                                    currentProduct.productId
-                                  );
-                                  dispatch(
-                                    getMenuIngredientsByProductId(
-                                      dupProduct.productId
-                                    )
-                                  );
-                                  handleClearCheckBox();
+                              <Checkbox
+                                checked={extra[ing.subProductId] ? true : false}
+                                onChange={(e) => {
+                                  handleCustomization(e);
+                                  handleExtra(ing);
                                 }}
+                                name={ing.ingredientType}
                               />
                             }
                             label={
@@ -441,75 +500,25 @@ export default function ProductCard(props) {
                                   color: "#595959",
                                 }}
                               >
-                                {dupProduct.productSize}
+                                {ing.ingredientType}
                                 <span style={{ fontWeight: "600" }}>
                                   {" "}
-                                  + ₹ {dupProduct.price}
+                                  + ₹ {ing.price}
                                 </span>
                               </Typography>
                             }
-                            className="borderRound"
-                            sx={{ marginLeft: "0px" }}
-                          />
-                        ) : null
-                      )}
-                    </RadioGroup>
-                  </FormControl>
-                </div>
-              </div>
-              <div>
-                <Typography
-                  id="modal-modal-description"
-                  sx={{
-                    mt: 2,
-                    fontSize: "0.9rem !important",
-                    fontWeight: "600",
-                    fontFamily: "Arial",
-                    color: "#595959",
-                  }}
-                >
-                  Extra toppings, Paneer & Cheese
-                </Typography>
-                <div>
-                  <FormGroup>
-                    {extraIngrdients.map((ing) => (
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={extra[ing.subProductId] ? true : false}
-                            onChange={(e) => {
-                              handleCustomization(e);
-                              handleExtra(ing);
-                            }}
-                            name={ing.ingredientType}
-                          />
-                        }
-                        label={
-                          <Typography
                             sx={{
-                              fontSize: "0.75rem !important",
-                              fontWeight: "400",
-                              fontFamily: "Arial",
-                              color: "#595959",
+                              width: "100%",
+                              marginRight: "0px",
+                              marginLeft: "0px",
                             }}
-                          >
-                            {ing.ingredientType}
-                            <span style={{ fontWeight: "600" }}>
-                              {" "}
-                              + ₹ {ing.price}
-                            </span>
-                          </Typography>
-                        }
-                        sx={{
-                          width: "100%",
-                          marginRight: "0px",
-                          marginLeft: "0px",
-                        }}
-                        className="borderRound"
-                      />
-                    ))}
-                  </FormGroup>
-                </div>
+                            className="borderRound"
+                          />
+                        ))}
+                      </FormGroup>
+                    </div>
+                  </>
+                ) : null}
               </div>
 
               <div>

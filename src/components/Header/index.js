@@ -19,6 +19,19 @@ import { Link, NavLink } from "react-router-dom";
 import { useScrollSection } from "react-scroll-section";
 import CartNum from "../UI/CartNum";
 import { ToastContainer } from "react-toastify";
+import styled from "@emotion/styled";
+import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
+
+const CusNavbar = styled(Navbar)`
+  background-color: #fff;
+  box-shadow: 2px 2px #f7f7f7;
+  height: 50px;
+  font-weight: bold;
+
+  @media (max-width: 992px) {
+    height: 60px;
+  }
+`;
 
 export default function Header(props) {
   const [loginModal, setLoginModal] = useState(false);
@@ -208,17 +221,7 @@ export default function Header(props) {
   return (
     <div>
       <ToastContainer />
-      <Navbar
-        fixed="top"
-        style={{
-          backgroundColor: "#FFF",
-          boxShadow: "2px 2px #F7F7F7",
-          height: "50px",
-          fontWeight: "bold",
-        }}
-        variant="light"
-        expand="lg"
-      >
+      <CusNavbar fixed="top" variant="light" expand="lg">
         <Container>
           <Navbar.Brand>
             <Link to="/">
@@ -235,7 +238,10 @@ export default function Header(props) {
             <Button variant="outline-success">Search</Button>
           </Form> */}
           <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
+          <Navbar.Collapse
+            style={{ backgroundColor: "#fff", marginTop: "0px" }}
+            id="navbarScroll"
+          >
             <Nav
               className="mr-auto my-2 my-lg-0 justify-content-end"
               style={{ maxHeight: "200px", width: "100%" }}
@@ -247,7 +253,7 @@ export default function Header(props) {
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
+      </CusNavbar>
 
       {renderLoginModal()}
     </div>
