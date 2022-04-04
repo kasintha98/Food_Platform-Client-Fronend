@@ -10,22 +10,22 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Nav } from "react-bootstrap";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import TextField from '@mui/material/TextField';
-import { Label } from '@mui/icons-material';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import TextField from "@mui/material/TextField";
+import { Label } from "@mui/icons-material";
 import loginImage from "../../img/loginim.JPG";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import firebase from "../../firebase/firebase";
 
 export default function LoginDrawer() {
-    const [state, setState] = React.useState({
-        top: false,
-        left: false,
-        bottom: false,
-        right: false,
-    });
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
 
     const [loginDetails, setLoginDetails] = useState({
         loginCode: 0,
@@ -243,19 +243,17 @@ export default function LoginDrawer() {
         )
     }
 
-    return (
-        <div>
-            <Nav.Link onClick={toggleDrawer('right', true)}>
-                Login
-            </Nav.Link>
-            <SwipeableDrawer
-                anchor={'right'}
-                open={state['right']}
-                onClose={toggleDrawer('right', false)}
-                onOpen={toggleDrawer('right', true)}
-            >
-                {list('right')}
-            </SwipeableDrawer>
-        </div>
-    );
+  return (
+    <div>
+      <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link>
+      <SwipeableDrawer
+        anchor={"right"}
+        open={state["right"]}
+        onClose={toggleDrawer("right", false)}
+        onOpen={toggleDrawer("right", true)}
+      >
+        {list("right")}
+      </SwipeableDrawer>
+    </div>
+  );
 }
