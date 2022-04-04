@@ -699,9 +699,12 @@ export default function ProductCard(props) {
         {props.product.ingredientExistsFalg === "Y" ? (
           <CusomizeBtn
             onClick={() => {
-              dispatch(addToCartNew(currentProduct, 1, extra, extraSubTotal));
+              if (!cart?.cartItems[currentProduct.productId]) {
+                dispatch(addToCartNew(currentProduct, 1, extra, extraSubTotal));
+                calculateSubTotal();
+              }
+
               handleOpen();
-              calculateSubTotal();
             }}
             size="small"
             variant="outlined"
