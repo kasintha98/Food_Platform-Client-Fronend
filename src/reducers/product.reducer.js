@@ -3,6 +3,8 @@ import { productConstants } from "../actions/constants";
 const initState = {
   products: [],
   ingredients: [],
+  sections: [],
+  dishesOfSection: [],
   loading: false,
   product: {},
   error: null,
@@ -53,6 +55,46 @@ export default (state = initState, action) => {
       state = {
         ...state,
         ingredients: action.payload.error,
+        loading: false,
+      };
+      break;
+    case productConstants.GET_ALL_SECTIONS_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case productConstants.GET_ALL_SECTIONS_SUCCESS:
+      state = {
+        ...state,
+        sections: action.payload,
+        loading: false,
+      };
+      break;
+    case productConstants.GET_ALL_SECTIONS_FAILURE:
+      state = {
+        ...state,
+        sections: action.payload.error,
+        loading: false,
+      };
+      break;
+    case productConstants.GET_DISHES_BY_SECTION_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case productConstants.GET_DISHES_BY_SECTION_SUCCESS:
+      state = {
+        ...state,
+        dishesOfSection: action.payload,
+        loading: false,
+      };
+      break;
+    case productConstants.GET_DISHES_BY_SECTION_FAILURE:
+      state = {
+        ...state,
+        dishesOfSection: action.payload.error,
         loading: false,
       };
       break;

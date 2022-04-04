@@ -13,7 +13,11 @@ import CartCard from "../../components/CartCard";
 import ProductCard from "../../components/ProductCard";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsNew } from "../../actions";
+import {
+  getProductsNew,
+  getAllSections,
+  getDishesBySection,
+} from "../../actions";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
@@ -118,7 +122,7 @@ const HeadMod = styled.div`
 `;
 
 export default function NewMenu() {
-  const sections = [
+  /* const sections = [
     "Fast Food",
     "Pizza",
     "Sandwiches",
@@ -129,8 +133,8 @@ export default function NewMenu() {
     "Desserts",
     "Shakes & Drinks",
     "Chinese",
-  ];
-  const dishes = [
+  ]; */
+  /* const dishes = [
     { "Fast Food": ["Burger", "Fries"] },
     {
       Pizza: [
@@ -163,10 +167,12 @@ export default function NewMenu() {
         "Momo's",
       ],
     },
-  ];
+  ]; */
+  const sections = useSelector((state) => state.product.sections);
+  const dishesOfSection = useSelector((state) => state.product.dishesOfSection);
 
   const cart = useSelector((state) => state.cart);
-  const [dishesOfSection, setDishesOfSection] = useState(["Burger", "Fries"]);
+  //const [dishesOfSection, setDishesOfSection] = useState(["Burger", "Fries"]);
   const [value, setValue] = useState(sections[0]);
   const [subTotal, setSubtotal] = useState(0);
   const [extraSubTotal, setExtraSubTotal] = useState(0);
@@ -175,10 +181,15 @@ export default function NewMenu() {
   const [showCartModal, setShowCartModal] = useState(false);
 
   const productList = useSelector((state) => state.product);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProductsNew());
+    dispatch(getAllSections()).then((res) => {
+      setValue(res[0]);
+      dispatch(getDishesBySection(res[0]));
+    });
   }, []);
 
   const handleSubTotal = (total) => {
@@ -195,15 +206,16 @@ export default function NewMenu() {
 
   const handleChange2 = (event, newValue) => {
     setValue2(newValue);
+    console.log("newValue");
+    console.log(newValue);
   };
 
   const getDishesOfSection = (section) => {
-    for (let i = 0; i < dishes.length; i++) {
-      if (section === Object.keys(dishes[i])[0]) {
-        setDishesOfSection(Object.values(dishes[i])[0]);
-        setValue2(Object.values(dishes[i])[0][0]);
-      }
-    }
+    dispatch(getDishesBySection(section)).then((res) => {
+      console.log("dishesOfSection");
+      console.log(res);
+      setValue2(res[0]);
+    });
   };
 
   const handleCartModalClose = () => setShowCartModal(false);
@@ -282,7 +294,7 @@ export default function NewMenu() {
             </CustRow>
             <div>
               <Box sx={{ width: "100%" }}>
-                <TabContext value={value}>
+                <TabContext value={value ? value : sections[0]}>
                   <Box
                     sx={{
                       borderBottom: 1,
@@ -318,7 +330,9 @@ export default function NewMenu() {
                   {sections.map((section) => (
                     <TabPanel sx={{ padding: "0px" }} value={section}>
                       <Box sx={{ width: "100%" }}>
-                        <TabContext value={value2}>
+                        <TabContext
+                          value={value2 ? value2 : dishesOfSection[0]}
+                        >
                           <CusBox1
                             sx={{
                               backgroundColor: "transparent",

@@ -10,3 +10,7 @@
   color: rgb(248, 59, 59);
   opacity: 1;
 }
+
+.LinesEllipsis {
+  min-height: 51px !important;
+}

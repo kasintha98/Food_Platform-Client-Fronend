@@ -88,9 +88,24 @@ const CusFormControlLable = styled(FormControlLabel)`
   }
 `;
 
+const CusCardMedia = styled(CardMedia)`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const CusTypography = styled(Typography)`
+  @media (max-width: 600px) {
+    min-height: 38px;
+  }
+`;
+
 export default function ProductCard(props) {
   const [open, setOpen] = React.useState(false);
+  const [showPictureModal, setshowPictureModal] = React.useState(false);
   const [dishCusType, setDishCusType] = React.useState("1");
+  const [image, setImage] = React.useState("");
+  const [imageName, setImageName] = React.useState("");
   const [defaultIngrdients, setDefaultIngrdients] = React.useState([]);
   const [extraIngrdients, setExtraIngrdients] = React.useState([]);
   const [dishSize, setDishSize] = React.useState(props.product.productSize);
@@ -112,6 +127,9 @@ export default function ProductCard(props) {
     dispatch(getMenuIngredientsByProductId(currentProduct.productId));
   };
   const handleClose = () => setOpen(false);
+
+  const handleClosePictureModal = () => setshowPictureModal(false);
+  const handleShowPictureModal = () => setshowPictureModal(true);
 
   useEffect(() => {
     if (cart?.cartItems && !cart?.cartItems[props.product.productId]) {
@@ -220,6 +238,19 @@ export default function ProductCard(props) {
     }
     console.log(extraTotal);
     setExtraSubTotal(extraTotal);
+  };
+
+  const renderPictureModal = () => {
+    return (
+      <Modal show={showPictureModal} onHide={handleClosePictureModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>{imageName}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img style={{ width: "100%" }} src={image} alt="Product" />
+        </Modal.Body>
+      </Modal>
+    );
   };
 
   const renderCustomizeModal = () => {
@@ -640,23 +671,41 @@ export default function ProductCard(props) {
       <Card sx={{ maxWidth: 345, marginTop: 5, position: "relative" }}>
         {!currentProduct?.imagePath ||
         currentProduct?.imagePath === "No_Image_Found" ? (
-          <CardMedia
+          <CusCardMedia
             component="img"
             height="100px"
             image={noImage}
             alt="product"
+            onClick={() => {
+              handleShowPictureModal();
+              setImage(noImage);
+              setImageName(props.product?.dishType);
+            }}
           />
         ) : (
-          <CardMedia
+          <CusCardMedia
             component="img"
             height="100px"
             image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
             alt="product"
+            onClick={() => {
+              handleShowPictureModal();
+              setImage(`${imagePath}/${currentProduct?.imagePath}${imageExt}`);
+              setImageName(props.product?.dishType);
+            }}
           />
         )}
 
         {props.product.ingredientExistsFalg === "Y" ? (
-          <CusomizeBtn onClick={handleOpen} size="small" variant="outlined">
+          <CusomizeBtn
+            onClick={() => {
+              dispatch(addToCartNew(currentProduct, 1, extra, extraSubTotal));
+              handleOpen();
+              calculateSubTotal();
+            }}
+            size="small"
+            variant="outlined"
+          >
             CUSTOMISE
           </CusomizeBtn>
         ) : null}
@@ -669,7 +718,7 @@ export default function ProductCard(props) {
         <VegImg src={vegSvg} alt="veg" />
 
         <CardContent sx={{ padding: "5px" }}>
-          <Typography
+          <CusTypography
             sx={{
               fontSize: "0.9rem",
               fontWeight: "600",
@@ -730,7 +779,7 @@ export default function ProductCard(props) {
                 />
               </>
             )}
-          </Typography>
+          </CusTypography>
           <Typography
             sx={{
               fontSize: "0.75rem",
@@ -783,6 +832,7 @@ export default function ProductCard(props) {
         </CardActions>
       </Card>
       {renderCustomizeModal()}
+      {renderPictureModal()}
     </div>
   );
 }

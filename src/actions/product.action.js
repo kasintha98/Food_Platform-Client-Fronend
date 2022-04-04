@@ -68,7 +68,42 @@ export const getMenuIngredientsByProductId = (id) => {
         type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
         payload: res.data,
       });
+    } else {
+      console.log("error");
+    }
+  };
+};
+
+export const getAllSections = () => {
+  return async (dispatch) => {
+    const res = await axios.get(`/getAllSections`);
+
+    if (res.status === 200) {
+      dispatch({
+        type: productConstants.GET_ALL_SECTIONS_SUCCESS,
+        payload: res.data,
+      });
       console.log(res.data);
+      return res.data;
+    } else {
+      console.log("error");
+    }
+  };
+};
+
+export const getDishesBySection = (section) => {
+  return async (dispatch) => {
+    const res = await axios.get(`/getDishesBySection`, {
+      params: { section: section },
+    });
+
+    if (res.status === 200) {
+      dispatch({
+        type: productConstants.GET_DISHES_BY_SECTION_SUCCESS,
+        payload: res.data,
+      });
+      //console.log(res.data);
+      return res.data;
     } else {
       console.log("error");
     }
