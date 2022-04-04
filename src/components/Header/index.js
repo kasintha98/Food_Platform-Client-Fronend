@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
 import {
   Navbar,
-  Button,
   Nav,
   FormControl,
   Form,
@@ -21,6 +20,8 @@ import CartNum from "../UI/CartNum";
 import { ToastContainer } from "react-toastify";
 import styled from "@emotion/styled";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
+import LoginDrawer from "../Login";
+
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -165,13 +166,7 @@ export default function Header(props) {
         >
           Contact
         </Nav.Link>
-        <Nav.Link
-          onClick={() => {
-            setLoginModal(true);
-          }}
-        >
-          Login
-        </Nav.Link>
+        <LoginDrawer/>
         <NavLink className="nav-link" to="/cart">
           {Object.keys(cart.cartItems) ? (
             <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
