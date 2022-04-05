@@ -457,7 +457,9 @@ export default function NewMenu() {
               >
                 <SubTotalArea>
                   <SubTotal>Subtotal</SubTotal>
-                  <SubTotal>₹ {subTotal + extraSubTotal}</SubTotal>
+                  <SubTotal>
+                    ₹ {subTotal + (extraSubTotal ? extraSubTotal : 0)}
+                  </SubTotal>
                 </SubTotalArea>
                 <CardActions>
                   <CheckoutButton variant="contained" className="w-100">

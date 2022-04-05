@@ -54,6 +54,21 @@ const CusomizeBtn = styled(Button)`
   }
 `;
 
+const IncButton = styled(Button)`
+  width: 25px !important;
+  height: 25px;
+  min-width: 25px !important;
+  font-size: 1rem !important;
+  font-weight: 600;
+  background-color: #fff;
+  color: #595959;
+  border: none;
+
+  &:hover {
+    background-color: #f2f3f4;
+  }
+`;
+
 const Parent = styled.div`
   font-size: 0.75rem !important;
   font-weight: 400;
@@ -113,6 +128,7 @@ export default function ProductCard(props) {
   const [extraCustomization, setExtraCustomization] = React.useState({});
   const [extraSubTotal, setExtraSubTotal] = React.useState(0);
   const [extra, setExtra] = React.useState({});
+  const [specialText, setSpecialText] = React.useState("");
 
   const cart = useSelector((state) => state.cart);
   const ingredients = useSelector((state) => state.product.ingredients);
@@ -122,9 +138,14 @@ export default function ProductCard(props) {
   const dispatch = useDispatch();
   const prevProduct = useRef();
 
+  const handleSpecialText = (event) => {
+    setSpecialText(event.target.value);
+  };
+
   const handleOpen = () => {
     setOpen(true);
     dispatch(getMenuIngredientsByProductId(currentProduct.productId));
+    //extra topings api comes here(replace ingredients with toppings)
   };
   const handleClose = () => setOpen(false);
 
@@ -170,16 +191,32 @@ export default function ProductCard(props) {
   const onQuantityIncrement = (productId) => {
     if (cart.cartItems[productId]) {
       dispatch(
-        addToCartNew(cart.cartItems[productId], 1, extra, extraSubTotal)
+        addToCartNew(
+          cart.cartItems[productId],
+          1,
+          extra,
+          extraSubTotal,
+          specialText
+        )
       );
     } else {
-      dispatch(addToCartNew(currentProduct, 1, extra, extraSubTotal));
+      dispatch(
+        addToCartNew(currentProduct, 1, extra, extraSubTotal, specialText)
+      );
     }
     calculateSubTotal();
   };
 
   const onQuantityDecrement = (productId) => {
-    dispatch(addToCartNew(cart.cartItems[productId], -1, extra, extraSubTotal));
+    dispatch(
+      addToCartNew(
+        cart.cartItems[productId],
+        -1,
+        extra,
+        extraSubTotal,
+        specialText
+      )
+    );
     calculateSubTotal();
   };
 
@@ -202,8 +239,12 @@ export default function ProductCard(props) {
   const calculateSubTotal = () => {
     let total = 0;
     for (let key of Object.keys(cart?.cartItems)) {
+      console.log(total);
       total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
+      console.log(cart?.cartItems[key].qty);
+      console.log(cart?.cartItems[key].price);
     }
+    console.log(total);
     props.onChangeSubTotal(total);
   };
 
@@ -257,7 +298,10 @@ export default function ProductCard(props) {
     return (
       <Modal
         show={open}
-        onHide={handleClose}
+        onHide={() => {
+          handleClose();
+          //calculateSubTotal();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         style={{ padding: "0px" }}
@@ -453,10 +497,14 @@ export default function ProductCard(props) {
                                   <Radio
                                     onClick={() => {
                                       handleCurrentProduct(dupProduct);
-                                      replaceCartItem(
-                                        dupProduct,
-                                        currentProduct.productId
-                                      );
+                                      if (
+                                        !cart?.cartItems[dupProduct.productId]
+                                      ) {
+                                        replaceCartItem(
+                                          dupProduct,
+                                          currentProduct.productId
+                                        );
+                                      }
                                       dispatch(
                                         getMenuIngredientsByProductId(
                                           dupProduct.productId
@@ -579,6 +627,8 @@ export default function ProductCard(props) {
                       color: "#595959",
                     },
                   }}
+                  value={specialText}
+                  onChange={handleSpecialText}
                 />
               </div>
             </div>
@@ -590,12 +640,8 @@ export default function ProductCard(props) {
                     variant="contained"
                     aria-label="outlined primary button group"
                   >
-                    <Button
-                      sx={{
-                        width: "25px !important",
-                        height: "25px",
-                        minWidth: "25px !important",
-                      }}
+                    <IncButton
+                      sx={{ border: "none !important" }}
                       onClick={() => {
                         onQuantityDecrement(currentProduct?.productId);
                       }}
@@ -605,8 +651,8 @@ export default function ProductCard(props) {
                       ) : (
                         <Remove sx={{ fontSize: "0.9rem" }}></Remove>
                       )}
-                    </Button>
-                    <TextField
+                    </IncButton>
+                    {/* <TextField
                       size="small"
                       id="numberofitems"
                       type="tel"
@@ -617,19 +663,32 @@ export default function ProductCard(props) {
                       }
                       defaultValue={0}
                       InputProps={{ inputProps: { min: 0 } }}
-                    />
-                    <Button
+                    /> */}
+                    <IncButton
                       sx={{
-                        width: "25px !important",
-                        height: "25px",
-                        minWidth: "25px !important",
+                        borderLeft: "1px solid #bdbdbd !important",
+                        borderRight: "1px solid #bdbdbd !important",
                       }}
+                      InputProps={{ disabled: true }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        {cart?.cartItems[currentProduct?.productId]?.qty
+                          ? cart?.cartItems[currentProduct?.productId]?.qty
+                          : 0}
+                      </Typography>{" "}
+                    </IncButton>
+
+                    <IncButton
                       onClick={() => {
                         onQuantityIncrement(currentProduct?.productId);
                       }}
                     >
                       <Add sx={{ fontSize: "0.9rem" }}></Add>
-                    </Button>
+                    </IncButton>
                   </ButtonGroup>
                 </Col>
                 <Col className="col-8">
@@ -642,9 +701,16 @@ export default function ProductCard(props) {
                         ? 0
                         : 0;
                       dispatch(
-                        addToCartNew(currentProduct, qty, extra, extraSubTotal)
+                        addToCartNew(
+                          currentProduct,
+                          qty,
+                          extra,
+                          extraSubTotal,
+                          specialText
+                        )
                       );
                       calculateSubTotal();
+                      setSpecialText("");
                       handleClose();
                     }}
                   >
@@ -700,9 +766,22 @@ export default function ProductCard(props) {
           <CusomizeBtn
             onClick={() => {
               if (!cart?.cartItems[currentProduct.productId]) {
-                dispatch(addToCartNew(currentProduct, 1, extra, extraSubTotal));
+                dispatch(
+                  addToCartNew(
+                    currentProduct,
+                    1,
+                    extra,
+                    extraSubTotal,
+                    specialText
+                  )
+                );
                 calculateSubTotal();
               }
+              setSpecialText(
+                cart?.cartItems[currentProduct?.productId]?.specialText
+                  ? cart?.cartItems[currentProduct?.productId]?.specialText
+                  : ""
+              );
 
               handleOpen();
             }}
@@ -820,7 +899,13 @@ export default function ProductCard(props) {
               <Button
                 onClick={() => {
                   dispatch(
-                    addToCartNew(currentProduct, 1, extra, extraSubTotal)
+                    addToCartNew(
+                      currentProduct,
+                      1,
+                      extra,
+                      extraSubTotal,
+                      specialText
+                    )
                   );
                   calculateSubTotal();
                 }}

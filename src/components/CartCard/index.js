@@ -212,7 +212,9 @@ export default function CartCard(props) {
                             ₹{" "}
                             {cart?.cartItems[key].qty *
                               cart?.cartItems[key].price +
-                              cart?.cartItems[key].extraSubTotal}
+                              (cart?.cartItems[key].extraSubTotal
+                                ? cart?.cartItems[key].extraSubTotal
+                                : 0)}
                             .00
                           </p>
                         </div>
@@ -275,6 +277,31 @@ export default function CartCard(props) {
                             )
                           )
                         : null}
+                      {cart?.cartItems[key].specialText ? (
+                        <p>
+                          <span
+                            style={{
+                              fontSize: "1rem",
+                              fontWeight: "600",
+                              fontFamily: "Arial",
+                              color: "#595959",
+                            }}
+                          >
+                            Special Request:
+                          </span>
+                          <span
+                            style={{
+                              fontSize: "1rem",
+                              fontWeight: "400",
+                              fontFamily: "Arial",
+                              color: "#767171",
+                            }}
+                          >
+                            {" "}
+                            {cart?.cartItems[key].specialText}
+                          </span>
+                        </p>
+                      ) : null}
                     </Typography>
                   ) : null}
                 </Col>

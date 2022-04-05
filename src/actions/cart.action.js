@@ -131,7 +131,13 @@ export const removeCartItem = (payload) => {
 };
 
 //action to add items to cart
-export const addToCartNew = (product, newQty, extra, extraSubTotal) => {
+export const addToCartNew = (
+  product,
+  newQty,
+  extra,
+  extraSubTotal,
+  specialText
+) => {
   return async (dispatch) => {
     const {
       cart: { cartItems },
@@ -155,6 +161,16 @@ export const addToCartNew = (product, newQty, extra, extraSubTotal) => {
         ? cartItems[product.productId]?.extra
         : {};
 
+      let text = "";
+
+      if (specialText) {
+        text = specialText;
+      } else if (cartItems[product.productId]?.specialText) {
+        text = cartItems[product.productId]?.specialText;
+      } else {
+        text = "";
+      }
+
       if (qty < 1) {
         delete cartItems[product.productId];
       } else {
@@ -163,6 +179,7 @@ export const addToCartNew = (product, newQty, extra, extraSubTotal) => {
           qty,
           extra: extraItems,
           extraSubTotal: extraTotal,
+          specialText: text,
         };
       }
 
@@ -207,7 +224,15 @@ export const replaceCartItemNew = (newProduct, oldId) => {
         [newProduct.productId]: cartItems[oldId],
       })[oldId];
       const qty = cartItems[newProduct.productId].qty;
-      cartItems[newProduct.productId] = { ...newProduct, qty };
+      const text = cartItems[newProduct.productId].specialText
+        ? cartItems[newProduct.productId].specialText
+        : "";
+
+      cartItems[newProduct.productId] = {
+        ...newProduct,
+        qty,
+        specialText: text,
+      };
 
       if (auth.authenticate) {
         dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
