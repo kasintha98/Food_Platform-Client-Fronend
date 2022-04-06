@@ -68,6 +68,7 @@ export const getMenuIngredientsByProductId = (id) => {
         type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
         payload: res.data,
       });
+      return res.data;
     } else {
       console.log("error");
     }

@@ -176,6 +176,7 @@ export default function NewMenu() {
   const [value, setValue] = useState(sections[0]);
   const [subTotal, setSubtotal] = useState(0);
   const [extraSubTotal, setExtraSubTotal] = useState(0);
+  const [choiceTotal, setChoiceTotal] = useState(0);
   const [value2, setValue2] = useState(dishesOfSection[0]);
 
   const [showCartModal, setShowCartModal] = useState(false);
@@ -198,6 +199,10 @@ export default function NewMenu() {
 
   const handleExtraTotal = (total) => {
     setExtraSubTotal(total);
+  };
+
+  const handleChoiceTotal = (total) => {
+    setChoiceTotal(total);
   };
 
   const handleChange = (event, newValue) => {
@@ -447,6 +452,7 @@ export default function NewMenu() {
                 <CartCard
                   onChangeSubTotal={handleSubTotal}
                   onChangeExtraSubTotal={handleExtraTotal}
+                  onChangeChoiceTotal={handleChoiceTotal}
                 ></CartCard>
               </CardContent>
               <div
@@ -458,7 +464,10 @@ export default function NewMenu() {
                 <SubTotalArea>
                   <SubTotal>Subtotal</SubTotal>
                   <SubTotal>
-                    ₹ {subTotal + (extraSubTotal ? extraSubTotal : 0)}
+                    ₹{" "}
+                    {subTotal +
+                      (extraSubTotal ? extraSubTotal : 0) +
+                      (choiceTotal ? choiceTotal : 0)}
                   </SubTotal>
                 </SubTotalArea>
                 <CardActions>

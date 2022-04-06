@@ -15,6 +15,10 @@ import { Add, Remove } from "@mui/icons-material";
 import vegSvg from "../../img/veg.svg";
 import chili from "../../img/chili.svg";
 import nonvegSvg from "../../img/non-veg.svg";
+import pizzaPic from "../../img/pizzaPic.jpg";
+import thinImg from "../../img/thin.svg";
+import panImg from "../../img/pan.svg";
+import cheeseImg from "../../img/cheese.svg";
 import noImage from "../../img/no-img.png";
 import Delete from "@mui/icons-material/Delete";
 import {
@@ -38,6 +42,14 @@ import { imagePath } from "../../urlConfig";
 import "./style.css";
 
 const imageExt = ".jpg";
+
+const CheckoutButton = styled(Button)`
+  background-color: rgb(130, 187, 55);
+
+  &:hover {
+    background-color: rgb(130, 187, 55);
+  }
+`;
 
 const CusomizeBtn = styled(Button)`
   position: absolute;
@@ -77,6 +89,13 @@ const Parent = styled.div`
   display: flex !important;
   flex-direction: row !important;
   justify-content: space-evenly !important;
+`;
+
+const ImgContainer = styled.div`
+  height: 6vw;
+  @media (max-width: 992px) {
+    height: 10vw;
+  }
 `;
 
 const CusRadio = styled(Radio)`
@@ -121,19 +140,20 @@ export default function ProductCard(props) {
   const [dishCusType, setDishCusType] = React.useState("1");
   const [image, setImage] = React.useState("");
   const [imageName, setImageName] = React.useState("");
-  const [defaultIngrdients, setDefaultIngrdients] = React.useState([]);
-  const [extraIngrdients, setExtraIngrdients] = React.useState([]);
+  const [choiseIngrdients, setChoiseIngrdients] = React.useState([]);
+  const [toppingIngrdients, setToppingIngrdients] = React.useState([]);
   const [dishSize, setDishSize] = React.useState(props.product.productSize);
   const [currentProduct, setCurrentProduct] = React.useState(props.product);
-  const [extraCustomization, setExtraCustomization] = React.useState({});
-  const [extraSubTotal, setExtraSubTotal] = React.useState(0);
-  const [extra, setExtra] = React.useState({});
+  const [toppingCustomization, setToppingCustomization] = React.useState({});
+  const [toppingSubTotal, setToppingSubTotal] = React.useState(0);
+  const [choice, setChoice] = React.useState("");
+  const [toppings, setToppings] = React.useState({});
   const [specialText, setSpecialText] = React.useState("");
 
   const cart = useSelector((state) => state.cart);
-  const ingredients = useSelector((state) => state.product.ingredients);
+  let ingredients = useSelector((state) => state.product.ingredients);
 
-  let { check } = extraCustomization;
+  let { check } = toppingCustomization;
 
   const dispatch = useDispatch();
   const prevProduct = useRef();
@@ -162,24 +182,25 @@ export default function ProductCard(props) {
       }
     }
 
+    //dispatch(getMenuIngredientsByProductId(currentProduct.productId));
+
     prevProduct.current = currentProduct;
     console.log(currentProduct);
-
-    let filteredArrayDefault = [];
+    let filteredArrayTopping = [];
     for (let i = 0; i < ingredients.length; i++) {
-      if (ingredients[i].category === "Default") {
-        filteredArrayDefault.push(ingredients[i]);
+      if (ingredients[i].category === "Topping") {
+        filteredArrayTopping.push(ingredients[i]);
       }
     }
-    setDefaultIngrdients(filteredArrayDefault);
+    setToppingIngrdients(filteredArrayTopping);
 
-    let filteredArrayExtra = [];
+    let filteredArrayChoise = [];
     for (let i = 0; i < ingredients.length; i++) {
-      if (ingredients[i].category === "Extra") {
-        filteredArrayExtra.push(ingredients[i]);
+      if (ingredients[i].category === "Choise of Base") {
+        filteredArrayChoise.push(ingredients[i]);
       }
     }
-    setExtraIngrdients(filteredArrayExtra);
+    setChoiseIngrdients(filteredArrayChoise);
   }, [
     currentProduct,
     cart?.cartItems,
@@ -194,14 +215,22 @@ export default function ProductCard(props) {
         addToCartNew(
           cart.cartItems[productId],
           1,
-          extra,
-          extraSubTotal,
-          specialText
+          toppings,
+          toppingSubTotal,
+          specialText,
+          null
         )
       );
     } else {
       dispatch(
-        addToCartNew(currentProduct, 1, extra, extraSubTotal, specialText)
+        addToCartNew(
+          currentProduct,
+          1,
+          toppings,
+          toppingSubTotal,
+          specialText,
+          null
+        )
       );
     }
     calculateSubTotal();
@@ -212,9 +241,10 @@ export default function ProductCard(props) {
       addToCartNew(
         cart.cartItems[productId],
         -1,
-        extra,
-        extraSubTotal,
-        specialText
+        toppings,
+        toppingSubTotal,
+        specialText,
+        null
       )
     );
     calculateSubTotal();
@@ -225,6 +255,11 @@ export default function ProductCard(props) {
   };
   const handleDishSize = (event) => {
     setDishSize(event.target.value);
+  };
+
+  const handleChoice = (event) => {
+    setChoice(event.target.value);
+    console.log(event.target.value);
   };
 
   const handleCurrentProduct = (curProduct) => {
@@ -249,36 +284,36 @@ export default function ProductCard(props) {
   };
 
   const handleCustomization = (event) => {
-    setExtraCustomization({
-      ...extraCustomization,
+    setToppingCustomization({
+      ...toppingCustomization,
       [event.target.name]: event.target.checked,
     });
-    console.log(extraCustomization);
+    console.log(toppingCustomization);
   };
 
   const handleClearCheckBox = () => {
-    setExtra({});
-    calculateExtraTotal();
+    setToppings({});
+    calculateToppingTotal();
   };
 
   const handleExtra = (ing) => {
-    const existing = extra[ing.subProductId];
+    const existing = toppings[ing.subProductId];
     if (existing) {
-      delete extra[ing.subProductId];
+      delete toppings[ing.subProductId];
     } else {
-      extra[ing.subProductId] = { ...ing };
+      toppings[ing.subProductId] = { ...ing };
     }
-    calculateExtraTotal();
-    console.log(extra);
+    calculateToppingTotal();
+    console.log(toppings);
   };
 
-  const calculateExtraTotal = () => {
+  const calculateToppingTotal = () => {
     let extraTotal = 0;
-    for (let key of Object.keys(extra)) {
-      extraTotal = extraTotal + extra[key].price;
+    for (let key of Object.keys(toppings)) {
+      extraTotal = extraTotal + toppings[key].price;
     }
     console.log(extraTotal);
-    setExtraSubTotal(extraTotal);
+    setToppingSubTotal(extraTotal);
   };
 
   const renderPictureModal = () => {
@@ -308,84 +343,127 @@ export default function ProductCard(props) {
       >
         <Modal.Header closeButton>Customise Order</Modal.Header>
         <Box style={{ maxHeight: "550px", overflowY: "auto" }}>
-          <div>
-            <Carousel>
-              <Carousel.Item style={{ height: "150px", width: "100%" }}>
-                {!currentProduct?.imagePath ||
-                currentProduct?.imagePath === "No_Image_Found" ? (
-                  <img
-                    className="d-block w-100"
-                    src={noImage}
-                    alt="First slide"
-                    height="150px"
-                    width="100%"
-                    style={{ objectFit: "cover" }}
-                  />
-                ) : (
-                  <img
-                    className="d-block w-100"
-                    src={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
-                    alt="First slide"
-                    height="150px"
-                    width="100%"
-                    style={{ objectFit: "cover" }}
-                  />
-                )}
-              </Carousel.Item>
-            </Carousel>
-          </div>
           <Modal.Body>
-            <Typography
-              sx={{
-                fontSize: "0.9rem",
-                fontWeight: "600",
-                fontFamily: "Arial",
-                color: "#595959",
-              }}
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-            >
-              {currentProduct?.dishType}{" "}
-              {currentProduct.dishSpiceIndicatory === "Less Spicy" && (
-                <>
-                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
-                </>
-              )}
-              {currentProduct.dishSpiceIndicatory === "Medium Spicy" && (
-                <>
-                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
-                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
-                </>
-              )}
-              {currentProduct.dishSpiceIndicatory === "Extra Hot" && (
-                <>
-                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
-                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
-                  <img style={{ width: "15px" }} src={chili} alt="less-spicy" />
-                </>
-              )}
-            </Typography>
-            <Typography
-              id="modal-modal-description"
-              sx={{
-                mt: 2,
-                fontSize: "0.75rem",
-                fontWeight: "400",
-                fontFamily: "Arial",
-                color: "#767171",
-              }}
-            >
-              <LinesEllipsis
-                text={`${currentProduct?.dishDescriptionId}`}
-                maxLine="3"
-                ellipsis="..."
-                trimRight
-                basedOn="letters"
-              />
-            </Typography>
             <div>
-              <div>
+              <Row>
+                <Col className="col-3">
+                  <Carousel>
+                    <Carousel.Item style={{ width: "100%" }}>
+                      {!currentProduct?.imagePath ||
+                      currentProduct?.imagePath === "No_Image_Found" ? (
+                        <img
+                          className="d-block w-100"
+                          src={noImage}
+                          alt="First slide"
+                          height="150px"
+                          width="100%"
+                          style={{ objectFit: "cover" }}
+                        />
+                      ) : (
+                        <img
+                          className="d-block w-100"
+                          src={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
+                          alt="First slide"
+                          height="150px"
+                          width="100%"
+                          style={{ objectFit: "cover" }}
+                        />
+                      )}
+                    </Carousel.Item>
+                  </Carousel>
+                </Col>
+                <Col className="col-9">
+                  <Typography
+                    sx={{
+                      fontSize: "0.9rem",
+                      fontWeight: "600",
+                      fontFamily: "Arial",
+                      color: "#595959",
+                    }}
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                  >
+                    <Row>
+                      <Col className="col-11">
+                        {currentProduct?.dishType}{" "}
+                        {currentProduct.dishSpiceIndicatory ===
+                          "Less Spicy" && (
+                          <>
+                            <img
+                              style={{ width: "15px" }}
+                              src={chili}
+                              alt="less-spicy"
+                            />
+                          </>
+                        )}
+                        {currentProduct.dishSpiceIndicatory ===
+                          "Medium Spicy" && (
+                          <>
+                            <img
+                              style={{ width: "15px" }}
+                              src={chili}
+                              alt="less-spicy"
+                            />
+                            <img
+                              style={{ width: "15px" }}
+                              src={chili}
+                              alt="less-spicy"
+                            />
+                          </>
+                        )}
+                        {currentProduct.dishSpiceIndicatory === "Extra Hot" && (
+                          <>
+                            <img
+                              style={{ width: "15px" }}
+                              src={chili}
+                              alt="less-spicy"
+                            />
+                            <img
+                              style={{ width: "15px" }}
+                              src={chili}
+                              alt="less-spicy"
+                            />
+                            <img
+                              style={{ width: "15px" }}
+                              src={chili}
+                              alt="less-spicy"
+                            />
+                          </>
+                        )}
+                      </Col>
+                      <Col className="col-1">
+                        {currentProduct.dishCategory === "Veg" ? (
+                          <img src={vegSvg} alt="veg" />
+                        ) : (
+                          <img src={nonvegSvg} alt="veg" />
+                        )}
+                      </Col>
+                    </Row>
+                  </Typography>
+                  <Typography
+                    id="modal-modal-description"
+                    sx={{
+                      mt: 2,
+                      fontSize: "0.75rem",
+                      fontWeight: "400",
+                      fontFamily: "Arial",
+                      color: "#AB3C19",
+                    }}
+                  >
+                    <LinesEllipsis
+                      text={`${currentProduct?.dishDescriptionId}`}
+                      maxLine="3"
+                      ellipsis="..."
+                      trimRight
+                      basedOn="letters"
+                    />
+                  </Typography>
+                </Col>
+              </Row>
+            </div>
+            <div>
+              {/* <div>
                 <Typography
                   id="modal-modal-description"
                   sx={{
@@ -438,29 +516,10 @@ export default function ProductCard(props) {
                           marginLeft: "0px",
                         }}
                       />
-                      {/* <FormControlLabel
-                        value="2"
-                        control={<Radio />}
-                        label={
-                          <Typography
-                            sx={{
-                              fontSize: "0.75rem !important",
-                              fontWeight: "400",
-                              fontFamily: "Arial",
-                              color: "#595959",
-                            }}
-                          >
-                            Paradise Veg, Pizza (Baby Corn, Olives)
-                            <span style={{ fontWeight: "600" }}> + ₹ 100</span>
-                          </Typography>
-                        }
-                        className="borderRound"
-                        sx={{ marginLeft: "0px" }}
-                      /> */}
                     </RadioGroup>
                   </FormControl>
                 </div>
-              </div>
+              </div> */}
               <div>
                 {currentProduct.productSize !== "Regular" ? (
                   <>
@@ -489,52 +548,125 @@ export default function ProductCard(props) {
                           onChange={handleDishSize}
                           defaultValue={currentProduct.productSize}
                         >
-                          {props.products.map((dupProduct) =>
-                            dupProduct.dishType === currentProduct.dishType ? (
-                              <FormControlLabel
-                                value={dupProduct.productSize}
-                                control={
-                                  <Radio
-                                    onClick={() => {
-                                      handleCurrentProduct(dupProduct);
-                                      if (
-                                        !cart?.cartItems[dupProduct.productId]
-                                      ) {
-                                        replaceCartItem(
-                                          dupProduct,
-                                          currentProduct.productId
-                                        );
-                                      }
-                                      dispatch(
-                                        getMenuIngredientsByProductId(
-                                          dupProduct.productId
-                                        )
-                                      );
-                                      handleClearCheckBox();
-                                    }}
+                          <Row>
+                            {props.products.map((dupProduct) =>
+                              dupProduct.dishType ===
+                              currentProduct.dishType ? (
+                                <Col className="col-4">
+                                  <FormControlLabel
+                                    value={dupProduct.productSize}
+                                    control={
+                                      <Radio
+                                        onClick={() => {
+                                          handleCurrentProduct(dupProduct);
+                                          if (
+                                            !cart?.cartItems[
+                                              dupProduct.productId
+                                            ]
+                                          ) {
+                                            replaceCartItem(
+                                              dupProduct,
+                                              currentProduct.productId
+                                            );
+                                          }
+                                          dispatch(
+                                            getMenuIngredientsByProductId(
+                                              dupProduct.productId
+                                            )
+                                          );
+                                          handleClearCheckBox();
+                                        }}
+                                      />
+                                    }
+                                    label={
+                                      <Typography
+                                        sx={{
+                                          fontSize: "0.75rem !important",
+                                          fontWeight: "600",
+                                          fontFamily: "Arial",
+                                          color: "#FF0000",
+                                          textAlign: "center",
+                                          paddingBottom: "15px",
+                                        }}
+                                      >
+                                        {dupProduct.productSize === "Small" ? (
+                                          <ImgContainer>
+                                            <img
+                                              style={{ width: "40%" }}
+                                              src={pizzaPic}
+                                              alt="pizza"
+                                            ></img>
+                                          </ImgContainer>
+                                        ) : dupProduct.productSize ===
+                                          "Medium" ? (
+                                          <ImgContainer>
+                                            <img
+                                              style={{ width: "50%" }}
+                                              src={pizzaPic}
+                                              alt="pizza"
+                                            ></img>
+                                          </ImgContainer>
+                                        ) : dupProduct.productSize ===
+                                          "Large" ? (
+                                          <ImgContainer>
+                                            <img
+                                              style={{ width: "60%" }}
+                                              src={pizzaPic}
+                                              alt="pizza"
+                                            ></img>
+                                          </ImgContainer>
+                                        ) : (
+                                          <ImgContainer>
+                                            <img
+                                              style={{ width: "50%" }}
+                                              src={pizzaPic}
+                                              alt="pizza"
+                                            ></img>
+                                          </ImgContainer>
+                                        )}
+
+                                        <br></br>
+                                        {dupProduct.productSize}
+                                        <br></br>
+                                        <div style={{ marginTop: "5px" }}>
+                                          {cart?.cartItems[
+                                            dupProduct.productId
+                                          ] ? (
+                                            <span
+                                              style={{
+                                                fontWeight: "600",
+                                                backgroundColor: "#C29401",
+                                                color: "#fff",
+                                                padding: "6px",
+                                                borderRadius: "5px",
+                                              }}
+                                            >
+                                              + ₹ {dupProduct.price}
+                                            </span>
+                                          ) : (
+                                            <span
+                                              style={{
+                                                fontWeight: "600",
+                                                backgroundColor: "#BFBFBF",
+                                                color: "#fff",
+                                                padding: "6px",
+                                                borderRadius: "5px",
+                                              }}
+                                            >
+                                              + ₹ {dupProduct.price}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </Typography>
+                                    }
+                                    className="pizzaRound"
+                                    sx={{ marginLeft: "0px" }}
+                                    labelPlacement="bottom"
                                   />
-                                }
-                                label={
-                                  <Typography
-                                    sx={{
-                                      fontSize: "0.75rem !important",
-                                      fontWeight: "400",
-                                      fontFamily: "Arial",
-                                      color: "#595959",
-                                    }}
-                                  >
-                                    {dupProduct.productSize}
-                                    <span style={{ fontWeight: "600" }}>
-                                      {" "}
-                                      + ₹ {dupProduct.price}
-                                    </span>
-                                  </Typography>
-                                }
-                                className="borderRound"
-                                sx={{ marginLeft: "0px" }}
-                              />
-                            ) : null
-                          )}
+                                </Col>
+                              ) : null
+                            )}
+                          </Row>
                         </RadioGroup>
                       </FormControl>
                     </div>
@@ -542,7 +674,148 @@ export default function ProductCard(props) {
                 ) : null}
               </div>
               <div>
-                {extraIngrdients.length > 0 ? (
+                {choiseIngrdients.length > 0 ? (
+                  <>
+                    <Typography
+                      id="modal-modal-description"
+                      sx={{
+                        mt: 2,
+                        fontSize: "0.9rem",
+                        fontWeight: "600",
+                        fontFamily: "Arial",
+                        color: "#595959",
+                      }}
+                    >
+                      Choice of Base
+                    </Typography>
+                    <div>
+                      <FormControl
+                        sx={{
+                          width: "100%",
+                        }}
+                      >
+                        <RadioGroup
+                          aria-labelledby="demo-controlled-radio-buttons-group"
+                          name="controlled-radio-buttons-group"
+                          value={choice}
+                          onChange={handleChoice}
+                          //defaultValue={choiseIngrdients[0].ingredientType}
+                        >
+                          <Row>
+                            {choiseIngrdients?.map((choiceIng) => (
+                              <Col className="col-4">
+                                <FormControlLabel
+                                  value={choiceIng.ingredientType}
+                                  control={
+                                    <Radio
+                                      onClick={() => {
+                                        dispatch(
+                                          addToCartNew(
+                                            currentProduct,
+                                            0,
+                                            toppings,
+                                            toppingSubTotal,
+                                            specialText,
+                                            choiceIng
+                                          )
+                                        );
+                                      }}
+                                    />
+                                  }
+                                  label={
+                                    <Typography
+                                      sx={{
+                                        fontSize: "0.75rem !important",
+                                        fontWeight: "600",
+                                        fontFamily: "Arial",
+                                        color: "#FF0000",
+                                        textAlign: "center",
+                                        paddingBottom: "15px",
+                                      }}
+                                    >
+                                      {choiceIng.ingredientType ===
+                                      "Thincrust" ? (
+                                        <ImgContainer>
+                                          <img
+                                            style={{ width: "50%" }}
+                                            src={thinImg}
+                                            alt="thin"
+                                          ></img>
+                                        </ImgContainer>
+                                      ) : choiceIng.ingredientType ===
+                                        "Cheese Burst" ? (
+                                        <ImgContainer>
+                                          <img
+                                            style={{ width: "50%" }}
+                                            src={cheeseImg}
+                                            alt="cheese"
+                                          ></img>
+                                        </ImgContainer>
+                                      ) : choiceIng.ingredientType === "Pan" ? (
+                                        <ImgContainer>
+                                          <img
+                                            style={{ width: "50%" }}
+                                            src={panImg}
+                                            alt="pan"
+                                          ></img>
+                                        </ImgContainer>
+                                      ) : (
+                                        <ImgContainer>
+                                          <img
+                                            style={{ width: "50%" }}
+                                            src={panImg}
+                                            alt="pan"
+                                          ></img>
+                                        </ImgContainer>
+                                      )}
+
+                                      <br></br>
+                                      {choiceIng.ingredientType}
+                                      <br></br>
+                                      <div style={{ marginTop: "5px" }}>
+                                        {choice === choiceIng.ingredientType ? (
+                                          <span
+                                            style={{
+                                              fontWeight: "600",
+                                              backgroundColor: "#C29401",
+                                              color: "#fff",
+                                              padding: "6px",
+                                              borderRadius: "5px",
+                                            }}
+                                          >
+                                            + ₹ {choiceIng.price}
+                                          </span>
+                                        ) : (
+                                          <span
+                                            style={{
+                                              fontWeight: "600",
+                                              backgroundColor: "#BFBFBF",
+                                              color: "#fff",
+                                              padding: "6px",
+                                              borderRadius: "5px",
+                                            }}
+                                          >
+                                            + ₹ {choiceIng.price}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </Typography>
+                                  }
+                                  className="pizzaRound"
+                                  sx={{ marginLeft: "0px" }}
+                                  labelPlacement="bottom"
+                                />
+                              </Col>
+                            ))}
+                          </Row>
+                        </RadioGroup>
+                      </FormControl>
+                    </div>
+                  </>
+                ) : null}
+              </div>
+              <div>
+                {toppingIngrdients.length > 0 ? (
                   <>
                     <Typography
                       id="modal-modal-description"
@@ -554,46 +827,79 @@ export default function ProductCard(props) {
                         color: "#595959",
                       }}
                     >
-                      Extra toppings, Paneer & Cheese
+                      Topping
                     </Typography>
                     <div>
                       <FormGroup>
-                        {extraIngrdients.map((ing) => (
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={extra[ing.subProductId] ? true : false}
-                                onChange={(e) => {
-                                  handleCustomization(e);
-                                  handleExtra(ing);
-                                }}
-                                name={ing.ingredientType}
-                              />
-                            }
-                            label={
-                              <Typography
+                        <Row>
+                          {toppingIngrdients.map((ing) => (
+                            <Col className="col-6">
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    checked={
+                                      toppings[ing.subProductId] ? true : false
+                                    }
+                                    onChange={(e) => {
+                                      handleCustomization(e);
+                                      handleExtra(ing);
+                                    }}
+                                    name={ing.ingredientType}
+                                  />
+                                }
+                                label={
+                                  <Typography
+                                    sx={{
+                                      fontSize: "0.75rem !important",
+                                      fontWeight: "400",
+                                      fontFamily: "Arial",
+                                      color: "#595959",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <Row>
+                                      <Col className="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+                                        {ing.ingredientType}
+                                      </Col>
+                                      <Col className="col-xs-12 col-sm-12 col-md-12 col-lg-5 ">
+                                        {toppings[ing.subProductId] ? (
+                                          <span
+                                            style={{
+                                              fontWeight: "600",
+                                              backgroundColor: "#C29401",
+                                              color: "#fff",
+                                              padding: "6px",
+                                            }}
+                                          >
+                                            + ₹ {ing.price}
+                                          </span>
+                                        ) : (
+                                          <span
+                                            style={{
+                                              fontWeight: "600",
+                                              backgroundColor: "#BFBFBF",
+                                              color: "#fff",
+                                              padding: "6px",
+                                            }}
+                                          >
+                                            {" "}
+                                            + ₹ {ing.price}{" "}
+                                          </span>
+                                        )}
+                                      </Col>
+                                    </Row>
+                                  </Typography>
+                                }
                                 sx={{
-                                  fontSize: "0.75rem !important",
-                                  fontWeight: "400",
-                                  fontFamily: "Arial",
-                                  color: "#595959",
+                                  width: "100%",
+                                  marginRight: "0px",
+                                  marginLeft: "0px",
                                 }}
-                              >
-                                {ing.ingredientType}
-                                <span style={{ fontWeight: "600" }}>
-                                  {" "}
-                                  + ₹ {ing.price}
-                                </span>
-                              </Typography>
-                            }
-                            sx={{
-                              width: "100%",
-                              marginRight: "0px",
-                              marginLeft: "0px",
-                            }}
-                            className="borderRound"
-                          />
-                        ))}
+                                className="borderRound"
+                              />
+                            </Col>
+                          ))}
+                        </Row>
                       </FormGroup>
                     </div>
                   </>
@@ -692,10 +998,9 @@ export default function ProductCard(props) {
                   </ButtonGroup>
                 </Col>
                 <Col className="col-8">
-                  <Button
-                    sx={{ width: "100%" }}
+                  <CheckoutButton
+                    className="w-100"
                     variant="contained"
-                    color="success"
                     onClick={() => {
                       let qty = cart?.cartItems[currentProduct?.productId]?.qty
                         ? 0
@@ -704,9 +1009,10 @@ export default function ProductCard(props) {
                         addToCartNew(
                           currentProduct,
                           qty,
-                          extra,
-                          extraSubTotal,
-                          specialText
+                          toppings,
+                          toppingSubTotal,
+                          specialText,
+                          null
                         )
                       );
                       calculateSubTotal();
@@ -719,10 +1025,15 @@ export default function ProductCard(props) {
                     cart?.cartItems[currentProduct?.productId]?.price
                       ? cart?.cartItems[currentProduct?.productId]?.qty *
                           cart?.cartItems[currentProduct?.productId]?.price +
-                        extraSubTotal
+                        toppingSubTotal +
+                        (cart?.cartItems[currentProduct?.productId]?.choiceIng
+                          .price
+                          ? cart?.cartItems[currentProduct?.productId]
+                              ?.choiceIng.price
+                          : 0)
                       : 0}
                     .00
-                  </Button>
+                  </CheckoutButton>
                 </Col>
               </Row>
             </div>
@@ -770,13 +1081,21 @@ export default function ProductCard(props) {
                   addToCartNew(
                     currentProduct,
                     1,
-                    extra,
-                    extraSubTotal,
-                    specialText
+                    toppings,
+                    toppingSubTotal,
+                    specialText,
+                    //choiseIngrdients[0]
+                    null
                   )
                 );
                 calculateSubTotal();
               }
+              setChoice(
+                cart?.cartItems[currentProduct.productId]?.choiceIng
+                  ? cart?.cartItems[currentProduct.productId]?.choiceIng
+                      ?.ingredientType
+                  : choiseIngrdients[0]?.ingredientType
+              );
               setSpecialText(
                 cart?.cartItems[currentProduct?.productId]?.specialText
                   ? cart?.cartItems[currentProduct?.productId]?.specialText
@@ -898,13 +1217,20 @@ export default function ProductCard(props) {
             <Col className=" col-xl-6">
               <Button
                 onClick={() => {
+                  /* dispatch(
+                    getMenuIngredientsByProductId(currentProduct.productId)
+                  ).then((res) => {
+                    ingredients = res;
+                  }); */
                   dispatch(
                     addToCartNew(
                       currentProduct,
                       1,
-                      extra,
-                      extraSubTotal,
-                      specialText
+                      toppings,
+                      toppingSubTotal,
+                      specialText,
+                      //choiseIngrdients[0]
+                      null
                     )
                   );
                   calculateSubTotal();

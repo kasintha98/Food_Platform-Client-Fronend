@@ -136,7 +136,8 @@ export const addToCartNew = (
   newQty,
   extra,
   extraSubTotal,
-  specialText
+  specialText,
+  choiceIng
 ) => {
   return async (dispatch) => {
     const {
@@ -171,6 +172,16 @@ export const addToCartNew = (
         text = "";
       }
 
+      let choice = {};
+
+      if (choiceIng) {
+        choice = choiceIng;
+      } else if (cartItems[product.productId]?.choiceIng) {
+        choice = cartItems[product.productId]?.choiceIng;
+      } else {
+        choice = {};
+      }
+
       if (qty < 1) {
         delete cartItems[product.productId];
       } else {
@@ -180,6 +191,7 @@ export const addToCartNew = (
           extra: extraItems,
           extraSubTotal: extraTotal,
           specialText: text,
+          choiceIng: choice,
         };
       }
 
