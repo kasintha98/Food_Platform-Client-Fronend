@@ -244,6 +244,7 @@ export const replaceCartItemNew = (newProduct, oldId) => {
         ...newProduct,
         qty,
         specialText: text,
+        choiceIng: {},
       };
 
       if (auth.authenticate) {

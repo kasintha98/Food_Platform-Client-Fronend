@@ -274,12 +274,9 @@ export default function ProductCard(props) {
   const calculateSubTotal = () => {
     let total = 0;
     for (let key of Object.keys(cart?.cartItems)) {
-      console.log(total);
       total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
-      console.log(cart?.cartItems[key].qty);
-      console.log(cart?.cartItems[key].price);
     }
-    console.log(total);
+
     props.onChangeSubTotal(total);
   };
 
@@ -574,6 +571,7 @@ export default function ProductCard(props) {
                                               dupProduct.productId
                                             )
                                           );
+                                          setChoice("");
                                           handleClearCheckBox();
                                         }}
                                       />
