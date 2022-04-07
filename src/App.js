@@ -17,6 +17,7 @@ import SignupPage from "./containers/SignupPage";
 import PdfPage from "./containers/PdfPage";
 import NewMenu from "./containers/NewMenu";
 import NewCheckout from "./containers/NewCheckout";
+import { NewCartPage } from "./containers/NewCartPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function App() {
           <Route path="/" exact component={HomePage} />
           <Route path="/new-menu" exact component={NewMenu} />
           <Route path="/new-checkout" exact component={NewCheckout} />
+          <Route path="/new-cart" component={NewCartPage} />
           <Route path="/cart" component={CartPage} />
           <Route path="/bill" exact component={PdfPage} />
           <Route path="/checkout" component={CheckoutPage} />

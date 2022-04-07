@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import "./style.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -23,6 +24,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import coverImg from "../../img/cover.jpg";
 import { Typography } from "@mui/material";
+import { BottomNav } from "../../components/BottomNav";
+import { NewCart } from "../NewCart";
 
 const CartIconArea = styled.div`
   display: none;
@@ -32,13 +35,14 @@ const CartIconArea = styled.div`
   }
 
   @media (max-width: 992px) {
-    display: block;
+    display: none;
   }
 `;
 
 const CusTabList = styled(TabList)`
   position: relative;
   z-index: 6;
+ 
 
   & .MuiTabs-flexContainer {
     column-gap: 10px;
@@ -50,6 +54,11 @@ const CusTabList = styled(TabList)`
     background-color: #ffc107 !important;
     color: #e71b23;
   }
+
+  /* & .MuiButtonBase-root {
+    margin-bottom: 6px;
+  } */
+  
 `;
 
 const CusTabList2 = styled(TabList)`
@@ -176,8 +185,10 @@ export default function NewMenu() {
   const [value, setValue] = useState(sections[0]);
   const [subTotal, setSubtotal] = useState(0);
   const [extraSubTotal, setExtraSubTotal] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
   const [choiceTotal, setChoiceTotal] = useState(0);
   const [value2, setValue2] = useState(dishesOfSection[0]);
+  const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const [showCartModal, setShowCartModal] = useState(false);
 
@@ -203,6 +214,11 @@ export default function NewMenu() {
 
   const handleChoiceTotal = (total) => {
     setChoiceTotal(total);
+  };
+
+  const handleNavTab = (val) => {
+    console.log(val);
+    setTabValue(val);
   };
 
   const handleChange = (event, newValue) => {
@@ -351,14 +367,18 @@ export default function NewMenu() {
                               }}
                             >
                               {dishesOfSection.map((dish) => (
-                                <CusTab label={dish} value={dish} />
+                                <CusTab
+                                  style={{ marginBottom: "6px" }}
+                                  label={dish}
+                                  value={dish}
+                                />
                               ))}
                             </CusTabList>
                             <hr
                               style={{
                                 zIndex: 1,
                                 position: "relative",
-                                marginTop: "-25px",
+                                marginTop: "-31px",
                               }}
                             ></hr>
                           </CusBox1>
@@ -438,50 +458,14 @@ export default function NewMenu() {
             {/* <Row>
               <img style={{ marginTop: "48px" }} src={coverImg} alt="banner" />
             </Row> */}
-            <Card sx={{ width: "100%", marginTop: "60px" }}>
-              <div
-                style={{ height: "5px", backgroundColor: "rgb(130, 187, 55)" }}
-              ></div>
-              <CardContent
-                sx={{
-                  height: "500px",
-                  overflowY: "auto",
-                  backgroundColor: "#F7F7F7",
-                }}
-              >
-                <CartCard
-                  onChangeSubTotal={handleSubTotal}
-                  onChangeExtraSubTotal={handleExtraTotal}
-                  onChangeChoiceTotal={handleChoiceTotal}
-                ></CartCard>
-              </CardContent>
-              <div
-                style={{
-                  backgroundColor: "rgb(239, 245, 251)",
-                  boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.3)",
-                }}
-              >
-                <SubTotalArea>
-                  <SubTotal>Subtotal</SubTotal>
-                  <SubTotal>
-                    ₹{" "}
-                    {subTotal +
-                      (extraSubTotal ? extraSubTotal : 0) +
-                      (choiceTotal ? choiceTotal : 0)}
-                  </SubTotal>
-                </SubTotalArea>
-                <CardActions>
-                  <CheckoutButton variant="contained" className="w-100">
-                    Checkout
-                  </CheckoutButton>
-                </CardActions>
-              </div>
-            </Card>
+            <NewCart></NewCart>
           </CusCol>
         </Row>
       </CusContainer>
+
       <Footer></Footer>
       {renderCartModal()}
+      {isMobile ? <BottomNav onChangeTab={handleNavTab}></BottomNav> : null}
     </div>
   );
 }

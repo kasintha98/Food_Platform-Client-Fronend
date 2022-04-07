@@ -8,8 +8,11 @@ import Contact from "../../components/Contact";
 import Footer from "../../components/Footer";
 import { Container } from "react-bootstrap";
 import { ScrollingProvider, Section } from "react-scroll-section";
+import { useMediaQuery } from "react-responsive";
+import { BottomNav } from "../../components/BottomNav";
 
 export default function HomePage(props) {
+  const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
   return (
     <div>
       <ScrollingProvider>
@@ -32,6 +35,7 @@ export default function HomePage(props) {
           </Section>
         </Container>
         <Footer></Footer>
+        {isMobile ? <BottomNav></BottomNav> : null}
       </ScrollingProvider>
     </div>
   );

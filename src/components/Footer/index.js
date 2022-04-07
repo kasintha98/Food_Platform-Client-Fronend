@@ -8,6 +8,7 @@ export default function Footer() {
         <p>All right reserved</p>
         <p>Burger Freakz</p>
         <p>2021</p>
+        <br></br>
       </div>
     </div>
   );
