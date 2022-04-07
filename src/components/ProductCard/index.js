@@ -77,6 +77,7 @@ const CusomizeBtn = styled(Button)`
 
   @media (max-width: 576px) {
     font-size: 0.7rem;
+    padding: 0px 4px 0px 4px;
   }
 `;
 
