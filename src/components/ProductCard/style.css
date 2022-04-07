@@ -14,3 +14,25 @@
 .LinesEllipsis {
   min-height: 51px !important;
 }
+
+.w19 {
+  width: 19% !important;
+}
+
+.w81 {
+  width: 81% !important;
+}
+
+.pr-0 {
+  padding-right: 0;
+}
+
+@media (max-width: 576px) {
+  .w19 {
+    width: 27% !important;
+  }
+
+  .w81 {
+    width: 73% !important;
+  }
+}

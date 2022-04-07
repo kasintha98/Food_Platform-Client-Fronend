@@ -74,6 +74,10 @@ const CusomizeBtn = styled(Button)`
   &:hover {
     background-color: rgba(255, 255, 255);
   }
+
+  @media (max-width: 576px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const CusModal = styled(Modal)``;
@@ -140,9 +144,26 @@ const CusCardMedia = styled(CardMedia)`
   }
 `;
 
+const CustRow = styled(Row)`
+  height: 85px;
+  @media (max-width: 600px) {
+    height: 14vw;
+  }
+`;
+
 const CusTypography = styled(Typography)`
   @media (max-width: 600px) {
     min-height: 38px; //55 if three line title
+  }
+`;
+
+const AddButton = styled(Button)`
+  width: 100%;
+  font-size: 1rem;
+
+  @media (max-width: 600px) {
+    width: 80%;
+    font-size: 0.8rem;
   }
 `;
 
@@ -349,11 +370,10 @@ export default function ProductCard(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         style={{ padding: "0px" }}
-        size="lg"
       >
         <Modal.Header closeButton>Customise Order</Modal.Header>
         <Box style={{ maxHeight: "550px", overflowY: "auto" }}>
-          <Modal.Body>
+          <Modal.Body style={{ backgroundColor: "#f7f7f7" }}>
             <div>
               <Row>
                 <Col className="col-3">
@@ -537,6 +557,7 @@ export default function ProductCard(props) {
                       <FormControl
                         sx={{
                           width: "100%",
+                          marginTop: "-20px",
                         }}
                       >
                         <RadioGroup
@@ -598,31 +619,27 @@ export default function ProductCard(props) {
                                           fontFamily: "Arial",
                                           color: "#FF0000",
                                           textAlign: "center",
-                                          paddingBottom: "15px",
                                         }}
                                       >
-                                        <Row
-                                          style={{ height: "7vw" }}
-                                          className="justify-content-center align-items-end"
-                                        >
+                                        <CustRow className="justify-content-center align-items-end">
                                           {dupProduct.productSize ===
                                           "Small" ? (
                                             <img
-                                              style={{ width: "40%" }}
+                                              style={{ width: "80%" }}
                                               src={pizzaPic}
                                               alt="pizza"
                                             ></img>
                                           ) : dupProduct.productSize ===
                                             "Medium" ? (
                                             <img
-                                              style={{ width: "50%" }}
+                                              style={{ width: "90%" }}
                                               src={pizzaPic}
                                               alt="pizza"
                                             ></img>
                                           ) : dupProduct.productSize ===
                                             "Large" ? (
                                             <img
-                                              style={{ width: "60%" }}
+                                              style={{ width: "100%" }}
                                               src={pizzaPic}
                                               alt="pizza"
                                             ></img>
@@ -633,7 +650,7 @@ export default function ProductCard(props) {
                                               alt="pizza"
                                             ></img>
                                           )}
-                                        </Row>
+                                        </CustRow>
                                         <Row className="justify-content-center">
                                           {dupProduct.productSize}
                                           <br></br>
@@ -648,6 +665,8 @@ export default function ProductCard(props) {
                                                   color: "#fff",
                                                   padding: "6px",
                                                   borderRadius: "5px",
+                                                  width: "100%",
+                                                  display: "block",
                                                 }}
                                               >
                                                 + ₹ {dupProduct.price}
@@ -656,10 +675,12 @@ export default function ProductCard(props) {
                                               <span
                                                 style={{
                                                   fontWeight: "600",
-                                                  backgroundColor: "#BFBFBF",
+                                                  backgroundColor: "#696969",
                                                   color: "#fff",
                                                   padding: "6px",
                                                   borderRadius: "5px",
+                                                  width: "100%",
+                                                  display: "block",
                                                 }}
                                               >
                                                 + ₹ {dupProduct.price}
@@ -691,6 +712,7 @@ export default function ProductCard(props) {
                       <FormControl
                         sx={{
                           width: "100%",
+                          marginTop: "-20px",
                         }}
                       >
                         <RadioGroup
@@ -749,27 +771,27 @@ export default function ProductCard(props) {
                                         {choiceIng.ingredientType ===
                                         "Thincrust" ? (
                                           <img
-                                            style={{ width: "50%" }}
+                                            style={{ width: "95%" }}
                                             src={thinImg}
                                             alt="thin"
                                           ></img>
                                         ) : choiceIng.ingredientType ===
                                           "Cheese Burst" ? (
                                           <img
-                                            style={{ width: "50%" }}
+                                            style={{ width: "95%" }}
                                             src={cheeseImg}
                                             alt="cheese"
                                           ></img>
                                         ) : choiceIng.ingredientType ===
                                           "Pan" ? (
                                           <img
-                                            style={{ width: "50%" }}
+                                            style={{ width: "95%" }}
                                             src={panImg}
                                             alt="pan"
                                           ></img>
                                         ) : (
                                           <img
-                                            style={{ width: "50%" }}
+                                            style={{ width: "95%" }}
                                             src={panImg}
                                             alt="pan"
                                           ></img>
@@ -789,6 +811,8 @@ export default function ProductCard(props) {
                                                 color: "#fff",
                                                 padding: "6px",
                                                 borderRadius: "5px",
+                                                width: "100%",
+                                                display: "block",
                                               }}
                                             >
                                               + ₹ {choiceIng.price}
@@ -797,10 +821,12 @@ export default function ProductCard(props) {
                                             <span
                                               style={{
                                                 fontWeight: "600",
-                                                backgroundColor: "#BFBFBF",
+                                                backgroundColor: "#696969",
                                                 color: "#fff",
                                                 padding: "6px",
                                                 borderRadius: "5px",
+                                                width: "100%",
+                                                display: "block",
                                               }}
                                             >
                                               + ₹ {choiceIng.price}
@@ -829,7 +855,7 @@ export default function ProductCard(props) {
                     <div>
                       <FormGroup>
                         <Row className="align-items-center">
-                          <Col className="col-4">
+                          <Col className="col-2">
                             <Typography
                               id="modal-modal-description"
                               sx={{
@@ -842,10 +868,10 @@ export default function ProductCard(props) {
                               Topping
                             </Typography>
                           </Col>
-                          <Col className="col-8">
+                          <Col className="col-10">
                             <Row>
                               {toppingIngrdients.map((ing) => (
-                                <Col className="col-6">
+                                <Col className="col-6 pr-0">
                                   <FormControlLabel
                                     control={
                                       <Checkbox
@@ -871,35 +897,38 @@ export default function ProductCard(props) {
                                           width: "100%",
                                         }}
                                       >
-                                        <Row>
-                                          <Col className="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+                                        <Row className="align-items-center">
+                                          {/* className="col-xs-12 col-sm-12 col-md-12 col-lg-7" */}
+                                          <Col className="col-6">
                                             {ing.ingredientType}
                                           </Col>
-                                          <Col className="col-xs-12 col-sm-12 col-md-12 col-lg-5 ">
-                                            {toppings[ing.subProductId] ? (
-                                              <span
-                                                style={{
-                                                  fontWeight: "600",
-                                                  backgroundColor: "#C29401",
-                                                  color: "#fff",
-                                                  padding: "6px",
-                                                }}
-                                              >
-                                                + ₹ {ing.price}
-                                              </span>
-                                            ) : (
-                                              <span
-                                                style={{
-                                                  fontWeight: "600",
-                                                  backgroundColor: "#BFBFBF",
-                                                  color: "#fff",
-                                                  padding: "6px",
-                                                }}
-                                              >
-                                                {" "}
-                                                + ₹ {ing.price}{" "}
-                                              </span>
-                                            )}
+                                          <Col className="col-6 ">
+                                            <Row className="m-0 p-0 justify-content-end">
+                                              {toppings[ing.subProductId] ? (
+                                                <span
+                                                  style={{
+                                                    fontWeight: "600",
+                                                    backgroundColor: "#C29401",
+                                                    color: "#fff",
+                                                    padding: "6px",
+                                                  }}
+                                                >
+                                                  + ₹ {ing.price}
+                                                </span>
+                                              ) : (
+                                                <span
+                                                  style={{
+                                                    fontWeight: "600",
+                                                    backgroundColor: "#696969",
+                                                    color: "#fff",
+                                                    padding: "6px",
+                                                  }}
+                                                >
+                                                  {" "}
+                                                  + ₹ {ing.price}{" "}
+                                                </span>
+                                              )}
+                                            </Row>
                                           </Col>
                                         </Row>
                                       </Typography>
@@ -924,34 +953,51 @@ export default function ProductCard(props) {
 
               <div>
                 <br></br>
-                <TextField
-                  id="outlined-multiline-static"
-                  label={
+                <Row>
+                  <Col className="col-3 w19">
                     <Typography
+                      id="modal-modal-description"
                       sx={{
-                        fontSize: "0.75rem !important",
-                        fontWeight: "400",
+                        fontSize: "0.9rem !important",
+                        fontWeight: "600",
                         fontFamily: "Arial",
                         color: "#595959",
                       }}
                     >
-                      Special Requests
+                      Special Instructions
                     </Typography>
-                  }
-                  multiline
-                  rows={3}
-                  sx={{ width: "100%" }}
-                  InputProps={{
-                    style: {
-                      fontSize: "1rem",
-                      fontWeight: "400",
-                      fontFamily: "Arial",
-                      color: "#595959",
-                    },
-                  }}
-                  value={specialText}
-                  onChange={handleSpecialText}
-                />
+                  </Col>
+                  <Col className="col-9 w81">
+                    <TextField
+                      id="outlined-multiline-static"
+                      label={
+                        <Typography
+                          sx={{
+                            fontSize: "0.75rem !important",
+                            fontWeight: "400",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
+                          Special Requests
+                        </Typography>
+                      }
+                      multiline
+                      rows={2}
+                      sx={{ width: "100%" }}
+                      InputProps={{
+                        style: {
+                          fontSize: "1rem",
+                          fontWeight: "400",
+                          fontFamily: "Arial",
+                          color: "#595959",
+                        },
+                      }}
+                      value={specialText}
+                      onChange={handleSpecialText}
+                    />
+                  </Col>
+                </Row>
               </div>
             </div>
             <div>
@@ -1217,12 +1263,15 @@ export default function ProductCard(props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Row className="w-100 align-items-center" style={{ margin: "0px" }}>
-            <Col className=" col-xl-6">
+          <Row
+            className="w-100 align-items-center justify-content-start"
+            style={{ margin: "0px" }}
+          >
+            <Col className="col-6 p-0">
               <PriceTypography>₹ {props.product?.price}</PriceTypography>
             </Col>
-            <Col className=" col-xl-6">
-              <Button
+            <Col className="col-6 p-0">
+              <AddButton
                 onClick={() => {
                   /* dispatch(
                     getMenuIngredientsByProductId(currentProduct.productId)
@@ -1244,10 +1293,9 @@ export default function ProductCard(props) {
                 }}
                 variant="contained"
                 color="error"
-                sx={{ width: "100%" }}
               >
                 Add
-              </Button>
+              </AddButton>
             </Col>
           </Row>
         </CardActions>
