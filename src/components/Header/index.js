@@ -22,7 +22,6 @@ import styled from "@emotion/styled";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LoginDrawer from "../Login";
 
-
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
   box-shadow: 2px 2px #f7f7f7;
@@ -106,7 +105,7 @@ export default function Header(props) {
         >
           Contact
         </Nav.Link>
-        <NavLink className="nav-link" to="/cart">
+        <NavLink className="nav-link" to="/new-cart">
           {Object.keys(cart.cartItems).length > 0 ? (
             <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
           ) : (
@@ -166,8 +165,8 @@ export default function Header(props) {
         >
           Contact
         </Nav.Link>
-        <LoginDrawer/>
-        <NavLink className="nav-link" to="/cart">
+        <LoginDrawer />
+        <NavLink className="nav-link" to="/new-cart">
           {Object.keys(cart.cartItems) ? (
             <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
           ) : null}

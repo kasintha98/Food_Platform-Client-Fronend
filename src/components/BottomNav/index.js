@@ -6,10 +6,14 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import HomeIcon from "@mui/icons-material/Home";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
+import CartNum from "../UI/CartNum";
+import { useSelector } from "react-redux";
 
 export const BottomNav = (props) => {
   const pathname = window.location.pathname;
   const [value, setValue] = React.useState(pathname);
+
+  const cart = useSelector((state) => state.cart);
 
   return (
     <div>
@@ -38,7 +42,19 @@ export const BottomNav = (props) => {
             to="/new-cart"
             label="Cart"
             value="/new-cart"
-            icon={<ShoppingCartIcon />}
+            icon={
+              <>
+                {Object.keys(cart.cartItems).length > 0 ? (
+                  <CartNum
+                    count={Object.keys(cart.cartItems).length}
+                    bottom={true}
+                  ></CartNum>
+                ) : (
+                  <CartNum count={0} bottom={true}></CartNum>
+                )}{" "}
+                <ShoppingCartIcon />
+              </>
+            }
           />
           <BottomNavigationAction
             component={Link}
