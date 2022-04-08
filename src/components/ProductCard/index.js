@@ -416,7 +416,7 @@ export default function ProductCard(props) {
                     component="h2"
                   >
                     <Row>
-                      <Col className="col-11">
+                      <Col className="col-10">
                         {currentProduct?.dishType}{" "}
                         {currentProduct.dishSpiceIndicatory ===
                           "Less Spicy" && (
@@ -463,7 +463,7 @@ export default function ProductCard(props) {
                           </>
                         )}
                       </Col>
-                      <Col className="col-1">
+                      <Col className="col-2">
                         {currentProduct.dishCategory === "Veg" ? (
                           <img src={vegSvg} alt="veg" />
                         ) : (
@@ -869,7 +869,7 @@ export default function ProductCard(props) {
                               Topping
                             </Typography>
                           </Col>
-                          <Col className="col-10">
+                          <Col className="col-10 w813">
                             <Row>
                               {toppingIngrdients.map((ing) => (
                                 <Col className="col-6 pr-0">
