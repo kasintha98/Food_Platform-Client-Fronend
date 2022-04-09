@@ -5,19 +5,33 @@
 }
 
 .borderRound {
-  border: 1px #d32f2f solid !important;
+  border: 1px #fff solid !important;
   width: 100%;
   margin-top: 5px;
 }
 
 .borderRound .Mui-checked {
-  color: #343a40 !important;
+  color: #d32f2f !important;
 }
 
 .borderRound:hover {
-  background-color: #ff9191 !important;
+  background-color: #eaeaea !important;
 }
 
 .css-ahj2mt-MuiTypography-root {
   font-size: 10px;
+}
+
+.pizzaRound {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.pizzaRound .MuiSvgIcon-root {
+  color: #343a40 !important;
+  display: none;
+}
+
+.pizzaRound:hover {
+  background-color: #eaeaea !important;
 }

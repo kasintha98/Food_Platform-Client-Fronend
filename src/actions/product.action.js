@@ -61,13 +61,16 @@ export const getProductsNew = () => {
 
 export const getMenuIngredientsByProductId = (id) => {
   return async (dispatch) => {
-    const res = await axios.get(`/getMenuIngredientsByMenuId?productId=${id}`);
+    const res = await axios.get(`/getMenuIngredientsByMenuId`, {
+      params: { productId: id },
+    });
 
     if (res.status === 200) {
       dispatch({
         type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
         payload: res.data,
       });
+      return res.data;
     } else {
       console.log("error");
     }

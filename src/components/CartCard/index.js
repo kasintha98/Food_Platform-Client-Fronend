@@ -35,6 +35,13 @@ const IncButton = styled(Button)`
   }
 `;
 
+const CusRow = styled(Row)`
+  & p {
+    line-height: 1 !important;
+    margin-bottom: 0.3rem;
+  }
+`;
+
 export default function CartCard(props) {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -42,6 +49,7 @@ export default function CartCard(props) {
   useEffect(() => {
     calculateSubTotal();
     calculateExtraTotal();
+    calculateChoiceTotal();
   });
 
   const onQuantityIncrement = (productId) => {
@@ -71,6 +79,16 @@ export default function CartCard(props) {
     props.onChangeExtraSubTotal(total);
   };
 
+  const calculateChoiceTotal = () => {
+    let total = 0;
+    for (let key of Object.keys(cart?.cartItems)) {
+      if (Object.keys(cart?.cartItems[key]?.choiceIng).length > 0) {
+        total = total + cart?.cartItems[key]?.choiceIng.price;
+      }
+    }
+    props.onChangeChoiceTotal(total);
+  };
+
   return (
     <div>
       {Object.keys(cart?.cartItems).length > 0 ? (
@@ -85,7 +103,7 @@ export default function CartCard(props) {
                 backgroundColor: "#F7F7F7",
               }}
             >
-              <Row>
+              <CusRow>
                 <Col className="col-3">
                   {!cart?.cartItems[key].imagePath ||
                   cart?.cartItems[key].imagePath === "No_Image_Found" ? (
@@ -212,7 +230,13 @@ export default function CartCard(props) {
                             ₹{" "}
                             {cart?.cartItems[key].qty *
                               cart?.cartItems[key].price +
-                              cart?.cartItems[key].extraSubTotal}
+                              (cart?.cartItems[key].extraSubTotal
+                                ? cart?.cartItems[key].extraSubTotal
+                                : 0) +
+                              (Object.keys(cart?.cartItems[key]?.choiceIng)
+                                .length > 0
+                                ? cart?.cartItems[key]?.choiceIng.price
+                                : 0)}
                             .00
                           </p>
                         </div>
@@ -226,9 +250,10 @@ export default function CartCard(props) {
                           marginBottom: "0.5rem",
                           marginTop: "1rem",
                           color: "#4285F4",
-                          fontSize: "1rem",
+                          fontSize: "0.9rem",
                           fontWeight: "600",
                           fontFamily: "Arial",
+                          lineHeight: "1",
                         }}
                       >
                         Your Customisation
@@ -236,49 +261,129 @@ export default function CartCard(props) {
                       <p>
                         <span
                           style={{
-                            fontSize: "1rem",
+                            fontSize: "0.8rem",
                             fontWeight: "600",
                             fontFamily: "Arial",
                             color: "#595959",
+                            lineHeight: "1",
                           }}
                         >
                           Size :
                         </span>
                         <span
                           style={{
-                            fontSize: "1rem",
+                            fontSize: "0.8rem",
                             fontWeight: "400",
                             fontFamily: "Arial",
                             color: "#767171",
+                            lineHeight: "1",
                           }}
                         >
                           {" "}
                           {cart?.cartItems[key].productSize}
                         </span>
                       </p>
-                      {cart?.cartItems[key]?.extra
-                        ? Object.keys(cart?.cartItems[key]?.extra).map(
-                            (index) => (
-                              <p
-                                style={{
-                                  fontSize: "1rem",
-                                  fontWeight: "400",
-                                  fontFamily: "Arial",
-                                  color: "#767171",
-                                }}
-                              >
-                                {
-                                  cart?.cartItems[key]?.extra[index]
-                                    .ingredientType
-                                }
-                              </p>
+                      <p>
+                        {cart?.cartItems[key]?.extra &&
+                        Object.keys(cart?.cartItems[key]?.extra).length > 0 ? (
+                          <span
+                            style={{
+                              fontSize: "0.8rem",
+                              fontWeight: "600",
+                              fontFamily: "Arial",
+                              color: "#595959",
+                              lineHeight: "1",
+                            }}
+                          >
+                            Topping :{" "}
+                          </span>
+                        ) : null}
+
+                        {cart?.cartItems[key]?.extra
+                          ? Object.keys(cart?.cartItems[key]?.extra).map(
+                              (index) => (
+                                <span
+                                  style={{
+                                    fontSize: "0.8rem",
+                                    fontWeight: "400",
+                                    fontFamily: "Arial",
+                                    color: "#767171",
+                                    lineHeight: "1",
+                                  }}
+                                >
+                                  {
+                                    cart?.cartItems[key]?.extra[index]
+                                      .ingredientType
+                                  }
+                                  ,{" "}
+                                </span>
+                              )
                             )
-                          )
-                        : null}
+                          : null}
+                      </p>
+
+                      <p>
+                        {cart?.cartItems[key]?.choiceIng &&
+                        Object.keys(cart?.cartItems[key]?.choiceIng).length >
+                          0 ? (
+                          <>
+                            <span
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "600",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                                lineHeight: "1",
+                              }}
+                            >
+                              Choice of Base:{" "}
+                            </span>
+                            <span
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "400",
+                                fontFamily: "Arial",
+                                color: "#767171",
+                                lineHeight: "1",
+                              }}
+                            >
+                              {cart?.cartItems[key]?.choiceIng.ingredientType}
+                            </span>
+                          </>
+                        ) : null}
+                      </p>
+
+                      {cart?.cartItems[key].specialText ? (
+                        <p>
+                          <span
+                            style={{
+                              fontSize: "0.8rem",
+                              fontWeight: "600",
+                              fontFamily: "Arial",
+                              color: "#595959",
+                              lineHeight: "1",
+                            }}
+                          >
+                            Special Request:
+                          </span>
+                          <span
+                            style={{
+                              fontSize: "0.8rem",
+                              fontWeight: "400",
+                              fontFamily: "Arial",
+                              color: "#767171",
+                              lineHeight: "1",
+                            }}
+                          >
+                            {" "}
+                            {cart?.cartItems[key].specialText}
+                          </span>
+                        </p>
+                      ) : null}
                     </Typography>
                   ) : null}
                 </Col>
-              </Row>
+              </CusRow>
               <hr></hr>
             </Card>
           ))}
