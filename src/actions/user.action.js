@@ -1,5 +1,6 @@
-import { cartConstants, userConstants } from "./constants";
+import { cartConstants, userConstants, userDetailsConstants,userAddressConstants } from "./constants";
 import axios from "../helpers/axios";
+import { toast } from "react-toastify";
 
 //action to get addresses of user
 export const getAddress = () => {
@@ -155,6 +156,94 @@ export const getOrder = (payload) => {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+};
+
+
+//action to update user details
+export const UpdateUserDetails = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.put("/customer/update", payload);
+      dispatch({ type: userConstants.ADD_USER_ORDER_SUCCESS });
+
+      if (res) {
+        console.log(res);
+        const { id, firstName, lastName, emailId } = res.data;
+
+        localStorage.setItem("userFistName", firstName);
+        localStorage.setItem("userLastName", lastName);
+        localStorage.setItem("userEmail", emailId);
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: userConstants.ADD_USER_ORDER_FAILURE,
+          payload: { error },
+        });
+
+        toast.error(Error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+};
+
+//action to add address
+export const AddAddress = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.put("/saveCustomerDtls", payload);
+      dispatch({ type: userAddressConstants.ADD_USER_ADDRESS_SUCCESS });
+
+      if (res) {
+        console.log(res);
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: userAddressConstants.ADD_USER_ADDRESS_FAILURE,
+          payload: { error },
+        });
+
+        toast.error(Error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 };

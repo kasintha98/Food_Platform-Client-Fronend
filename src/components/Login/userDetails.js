@@ -21,6 +21,8 @@ import LocalPizzaIcon from '@mui/icons-material/LocalPizza';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import MyAddresses from "./myAddresses";
+import { UpdateUserDetails } from "../../actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const nameBoxStyle = {
     backgroundColor: "#0000CD",
@@ -33,15 +35,18 @@ const nameBoxStyle = {
     borderRadius: "10px"
 }
 
-const UserDetails = () => {
+const UserDetails = (props) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+    const [mobileNumber, setMobileNumber] = useState("");
 
     const [editName, setEditName] = useState("Edit");
     const [editPhone, setEditPhone] = useState("Edit");
     const [editEmail, setEditEmail] = useState("Edit");
-    const [myAddresses, setMyAddresses] = useState(true);
+    const [myAddresses, setMyAddresses] = useState(false);
+
+    const dispatch = useDispatch();
 
     const onUserDetailsSubmit = (e) => {
         e.preventDefault();
@@ -51,10 +56,36 @@ const UserDetails = () => {
 
     }
 
+    useEffect(() => {
+        let localUserId = localStorage.getItem("userId");
+        let localUserMobileNumber = localStorage.getItem("userMobileNumber");
+        let localUserFistName = localStorage.getItem("userFistName");
+        let localUserLastName = localStorage.getItem("userLastName");
+        let localUserEmail = localStorage.getItem("userEmail");
+
+        setFirstName(localUserFistName != null ? localUserFistName : "");
+        setLastName(localUserLastName != "null" ? localUserLastName : "");
+        setEmail(localUserEmail != "null" ? localUserEmail : "");
+        setMobileNumber(localUserMobileNumber);
+        console.log(localUserMobileNumber);
+        console.log(mobileNumber);
+    }, [])
+
     const onNameEditPress = (e) => {
         e.preventDefault();
         if (editName === "Done") {
             setEditName("Edit");
+            let updateUserObj = {
+                mobileNumber: mobileNumber,
+                firstName: firstName,
+                lastName: lastName,
+                email: email
+            }
+            try {
+                dispatch(UpdateUserDetails(updateUserObj));
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             setEditName("Done");
         }
@@ -87,6 +118,11 @@ const UserDetails = () => {
         setMyAddresses(false);
     }
 
+    const onLogoutPress = () => {
+        localStorage.clear();
+        window.location.reload();
+    }
+
     return (
         <div>
             {
@@ -109,6 +145,8 @@ const UserDetails = () => {
                                             onChange={(e) => setFirstName(e.target.value)}
                                             type="search"
                                             variant="standard"
+                                            value={firstName}
+                                            disabled={editName === "Edit" ? true : false}
                                         />
                                     </div>
                                     <div className="row">
@@ -119,6 +157,8 @@ const UserDetails = () => {
                                             onChange={(e) => setLastName(e.target.value)}
                                             type="search"
                                             variant="standard"
+                                            value={lastName}
+                                            disabled={editName === "Edit" ? true : false}
                                         />
                                     </div>
                                 </div>
@@ -140,19 +180,21 @@ const UserDetails = () => {
                                         <TextField
                                             id="standard-search"
                                             label="Phone"
-                                            onChange={(e) => setFirstName(e.target.value)}
+                                            //onChange={(e) => setFirstName(e.target.value)}
                                             type="tel"
                                             variant="standard"
+                                            value={mobileNumber}
+                                            disabled={true}
                                         />
                                     </div>
                                 </div>
-                                <div className="col-2 mt-4">
+                                {/* <div className="col-2 mt-4">
                                     <div class="text-start">
                                         <Button variant="text" disableElevation onClick={(e) => onTelEditPress(e)}>
                                             {editPhone}
                                         </Button>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="row" id="tb">
                                 <div className="col-2 p-4">
@@ -164,9 +206,11 @@ const UserDetails = () => {
                                         <TextField
                                             id="standard-search"
                                             label="Email"
-                                            onChange={(e) => setFirstName(e.target.value)}
+                                            onChange={(e) => setEmail(e.target.value)}
                                             type="mail"
                                             variant="standard"
+                                            value={email}
+                                            disabled={editEmail === "Edit" ? true : false}
                                         />
                                     </div>
                                 </div>
@@ -201,7 +245,7 @@ const UserDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row" id="tb">
+                            <div className="row" id="tb" onClick={onLogoutPress}>
                                 <div className="col-2 p-4">
                                     <LogoutIcon fontSize="large" />
                                     <div className="col"></div>
@@ -216,7 +260,7 @@ const UserDetails = () => {
                     ) :
 
                     (
-                        <MyAddresses onBackPress={onBackPress}/>
+                        <MyAddresses onBackPress={onBackPress} mobileNumber={mobileNumber} />
                     )
             }
         </div>

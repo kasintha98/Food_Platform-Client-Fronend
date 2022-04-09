@@ -26,8 +26,8 @@ import constants from "../../constants/constants";
 import "./style.css";
 import UserDetails from "./userDetails";
 
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { login, signup } from "../../actions";
 
 export default function LoginDrawer() {
     const [state, setState] = React.useState({
@@ -47,9 +47,17 @@ export default function LoginDrawer() {
     const [otpSuccess, setOtpSuccess] = useState(false);
     const [loginCode, setLoginCode] = useState(0);
     const [otpError, setOtpError] = useState("");
-    const [viewUserDetails, setViewUserDetails] = useState(true);
+    const [viewUserDetails, setViewUserDetails] = useState(false);
 
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        var localUserId=localStorage.getItem("userId");
+        if (localUserId){
+            setOtpSuccess(false);
+            setViewUserDetails(true);
+        }
+    }, [])
 
     const toggleDrawer = (anchor, open) => (event) => {
         setState({ ...state, [anchor]: open });
@@ -99,6 +107,8 @@ export default function LoginDrawer() {
     };
 
     const onSignInSubmit = (e) => {
+        //setOtpSuccess(true);
+
         try {
             setLoginDetails({
                 loginCode: 0,
@@ -128,10 +138,22 @@ export default function LoginDrawer() {
             setOtpSuccess(false);
         }
     };
+    //calling action to login the user
+    const userLogin = async () => {
+        try {
+            dispatch(signup(mobileNumber));
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const onOTPSubmit = (e) => {
         e.preventDefault();
         const code = otp;
+        // userLogin();
+        // setOtpSuccess(false);
+        // setViewUserDetails(true);
+
         console.log(code);
         window.confirmationResult
             .confirm(code)
@@ -143,7 +165,9 @@ export default function LoginDrawer() {
                 console.log(JSON.stringify(user.phoneNumber));
                 console.log(user.phoneNumber);
                 setOtpError("User Verified Sucessfully!!");
-
+                userLogin();
+                setOtpSuccess(false);
+                setViewUserDetails(true);
                 //setIsLoginCode(1);
 
                 setLoginDetails({
@@ -192,7 +216,7 @@ export default function LoginDrawer() {
 
                 (
 
-                    <UserDetails/>
+                    <UserDetails fname="loopase" />
 
                 )
 
@@ -283,8 +307,8 @@ export default function LoginDrawer() {
 
     const getMobileOTP = () => {
         return (
-            <div className='jumbotron vertical-center'>
-                <Card sx={{ maxWidth: 600 }}>
+            <div className='jumbotron vertical-center mt-5'>
+                <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
                     <CardContent>
                         <form className='p-3'>
                             <div className="row">
@@ -319,7 +343,7 @@ export default function LoginDrawer() {
         )
     }
 
-   
+
 
     return (
         <div>

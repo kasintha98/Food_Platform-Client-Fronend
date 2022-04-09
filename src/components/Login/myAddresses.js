@@ -15,23 +15,38 @@ import TextField from "@mui/material/TextField";
 import { Label } from "@mui/icons-material";
 import Container from '@mui/material/Container';
 import addressImage from "../../../src/img/addressimg.png";
+import AddNewAddress from "./addNewAddress";
 
 const MyAddresses = (props) => {
-
+    const [addNewAddress, setAddNewAddress] = useState(false);
+    const addNewAddressOnPress = () => {
+        setAddNewAddress(true);
+    }
     return (
         <div>
-            <div className="row" id="add">
-                <h3 class="fw-bold p-4">My Address</h3>
-            </div>
-            <div className="image-container">
-                <img src={addressImage} class="img-fluid" id="addImage" />
-            </div>
-            <div className="button-container">
-                <Button variant="contained" color="success" >Add New Address</Button>
-            </div>
-            <div className="button-container">
-                <Button variant="contained" color="primary" onClick={props.onBackPress}>Back</Button>
-            </div>
+            {
+                !addNewAddress ?
+                    (
+                        <div>
+                            <div className="row" id="add">
+                                <h3 class="fw-bold p-4">My Address</h3>
+                            </div>
+                            <div className="image-container">
+                                <img src={addressImage} class="img-fluid" id="addImage" />
+                            </div>
+                            <div className="button-container">
+                                <Button variant="contained" color="success" onClick={addNewAddressOnPress} >Add New Address</Button>
+                            </div>
+                            <div className="button-container">
+                                <Button variant="contained" color="primary" onClick={props.onBackPress}>Back</Button>
+                            </div>
+                        </div>
+                    ) :
+                    (
+                        <AddNewAddress mobileNumber={props.mobileNumber}/>
+                    )
+            }
+
         </div>
     );
 }
