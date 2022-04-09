@@ -166,7 +166,7 @@ export const UpdateUserDetails = (payload) => {
   return async (dispatch) => {
     try {
       const res = await axios.put("/customer/update", payload);
-      dispatch({ type: userConstants.ADD_USER_ORDER_SUCCESS });
+      dispatch({ type: userDetailsConstants.UPDATE_USER_DETAILS_SUCCESS });
 
       if (res) {
         console.log(res);
@@ -178,7 +178,7 @@ export const UpdateUserDetails = (payload) => {
       } else {
         const { error } = res.data;
         dispatch({
-          type: userConstants.ADD_USER_ORDER_FAILURE,
+          type: userDetailsConstants.UPDATE_USER_DETAILS_FAILURE,
           payload: { error },
         });
 
@@ -211,7 +211,7 @@ export const UpdateUserDetails = (payload) => {
 export const AddAddress = (payload) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put("/saveCustomerDtls", payload);
+      const res = await axios.post("/saveCustomerDtls", payload);
       dispatch({ type: userAddressConstants.ADD_USER_ADDRESS_SUCCESS });
 
       if (res) {
@@ -244,6 +244,32 @@ export const AddAddress = (payload) => {
         draggable: true,
         progress: undefined,
       });
+    }
+  };
+};
+
+//action to get address
+export const GetAddress = (mobileNumber) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/getCustomerAddressDtlsByMobNum", { params: { mobno: mobileNumber } });
+      dispatch({ type: userAddressConstants.GET_USER_ADDRESSS_REQUEST });
+      if (res.status === 200) {
+        console.log(res);
+        //const { addresses } = res.data;
+        dispatch({
+          type: userAddressConstants.GET_USER_ADDRESSS_SUCCESS,
+          payload: res.data ,
+        });
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: userAddressConstants.GET_USER_ADDRESSS_FAILURE,
+          payload: { error },
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };

@@ -1,4 +1,4 @@
-import { userConstants } from "../actions/constants";
+import { userConstants, userAddressConstants } from "../actions/constants";
 
 const initState = {
   addressNew: [],
@@ -7,6 +7,7 @@ const initState = {
   loading: false,
   orderFetching: false,
   message: "",
+  allAddresses:[]
 };
 
 export default (state = initState, action) => {
@@ -104,17 +105,33 @@ export default (state = initState, action) => {
       };
       break;
 
+      //address reducers
     case userConstants.GET_USER_ORDER_DETAILS_REQUEST:
       break;
 
     case userConstants.GET_USER_ORDER_DETAILS_SUCCESS:
       state = {
         ...state,
-        orderDetails: action.payload.order,
+        allAddress: action.payload.addresses,
       };
       break;
 
     case userConstants.GET_USER_ORDER_DETAILS_FAILURE:
+      break;
+
+
+
+    case userAddressConstants.GET_USER_ADDRESSS_REQUEST:
+      break;
+
+    case userAddressConstants.GET_USER_ADDRESSS_SUCCESS:
+      state = {
+        ...state,
+        allAddresses: action.payload,
+      };
+      break;
+
+    case userAddressConstants.GET_USER_ADDRESSS_FAILURE:
       break;
   }
   return state;

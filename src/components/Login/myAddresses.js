@@ -17,7 +17,8 @@ import Container from '@mui/material/Container';
 import addressImage from "../../../src/img/addressimg.png";
 import AddNewAddress from "./addNewAddress";
 
-const MyAddresses = (props) => {
+
+export default function MyAddresses(props) {
     const [addNewAddress, setAddNewAddress] = useState(false);
     const addNewAddressOnPress = () => {
         setAddNewAddress(true);
@@ -43,12 +44,10 @@ const MyAddresses = (props) => {
                         </div>
                     ) :
                     (
-                        <AddNewAddress mobileNumber={props.mobileNumber}/>
+                        <AddNewAddress onBackPress={props.onBackPress} />
                     )
             }
 
         </div>
     );
 }
-
-export default MyAddresses;
