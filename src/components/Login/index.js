@@ -107,36 +107,36 @@ export default function LoginDrawer() {
     };
 
     const onSignInSubmit = (e) => {
-        //setOtpSuccess(true);
+        setOtpSuccess(true);
 
-        try {
-            setLoginDetails({
-                loginCode: 0,
-                mobileNumber: -1,
-            });
+        // try {
+        //     setLoginDetails({
+        //         loginCode: 0,
+        //         mobileNumber: -1,
+        //     });
 
-            e.preventDefault();
-            configureCaptcha();
-            const phoneNumber = "+" + mobileNumber;
-            const appVerifier = window.recaptchaVerifier;
-            firebase
-                .auth()
-                .signInWithPhoneNumber(phoneNumber, appVerifier)
-                .then((confirmationResult) => {
-                    window.confirmationResult = confirmationResult;
-                    console.log("OTP Sent....!!");
-                    setOtpError("OTP Sent! Please check you mobile phone!");
-                    setOtpSuccess(true);
-                })
-                .catch((error) => {
-                    setOtpSuccess(false);
-                    console.log("SMS NOT SENT ERROR....!!");
-                    setOtpError("Error!!! OTP Not Sent! Please add countery code as well!");
-                });
-        } catch (ex) {
-            console.log("error: " + ex);
-            setOtpSuccess(false);
-        }
+        //     e.preventDefault();
+        //     configureCaptcha();
+        //     const phoneNumber = "+" + mobileNumber;
+        //     const appVerifier = window.recaptchaVerifier;
+        //     firebase
+        //         .auth()
+        //         .signInWithPhoneNumber(phoneNumber, appVerifier)
+        //         .then((confirmationResult) => {
+        //             window.confirmationResult = confirmationResult;
+        //             console.log("OTP Sent....!!");
+        //             setOtpError("OTP Sent! Please check you mobile phone!");
+        //             setOtpSuccess(true);
+        //         })
+        //         .catch((error) => {
+        //             setOtpSuccess(false);
+        //             console.log("SMS NOT SENT ERROR....!!");
+        //             setOtpError("Error!!! OTP Not Sent! Please add countery code as well!");
+        //         });
+        // } catch (ex) {
+        //     console.log("error: " + ex);
+        //     setOtpSuccess(false);
+        // }
     };
     //calling action to login the user
     const userLogin = async () => {
@@ -150,44 +150,44 @@ export default function LoginDrawer() {
     const onOTPSubmit = (e) => {
         e.preventDefault();
         const code = otp;
-        // userLogin();
-        // setOtpSuccess(false);
-        // setViewUserDetails(true);
+        userLogin();
+        setOtpSuccess(false);
+        setViewUserDetails(true);
 
-        console.log(code);
-        window.confirmationResult
-            .confirm(code)
-            .then((result) => {
-                // User signed in successfully.
-                const user = result.user;
-                console.log(JSON.stringify(user));
+        // console.log(code);
+        // window.confirmationResult
+        //     .confirm(code)
+        //     .then((result) => {
+        //         // User signed in successfully.
+        //         const user = result.user;
+        //         console.log(JSON.stringify(user));
 
-                console.log(JSON.stringify(user.phoneNumber));
-                console.log(user.phoneNumber);
-                setOtpError("User Verified Sucessfully!!");
-                userLogin();
-                setOtpSuccess(false);
-                setViewUserDetails(true);
-                //setIsLoginCode(1);
+        //         console.log(JSON.stringify(user.phoneNumber));
+        //         console.log(user.phoneNumber);
+        //         setOtpError("User Verified Sucessfully!!");
+        //         userLogin();
+        //         setOtpSuccess(false);
+        //         setViewUserDetails(true);
+        //         //setIsLoginCode(1);
 
-                setLoginDetails({
-                    loginCode: 1,
-                    mobileNumber: user.phoneNumber,
-                });
-                //handleClose();
-                // ...
-            })
-            .catch((error) => {
-                console.log(JSON.stringify(error));
-                //setIsLoginCode(0);
+        //         setLoginDetails({
+        //             loginCode: 1,
+        //             mobileNumber: user.phoneNumber,
+        //         });
+        //         //handleClose();
+        //         // ...
+        //     })
+        //     .catch((error) => {
+        //         console.log(JSON.stringify(error));
+        //         //setIsLoginCode(0);
 
-                setLoginDetails({
-                    loginCode: 0,
-                    mobileNumber: -1,
-                });
+        //         setLoginDetails({
+        //             loginCode: 0,
+        //             mobileNumber: -1,
+        //         });
 
-                setOtpError("OTP is wrong or expired.");
-            });
+        //         setOtpError("OTP is wrong or expired.");
+        //     });
     };
 
 

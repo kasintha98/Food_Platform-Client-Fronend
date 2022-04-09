@@ -149,67 +149,6 @@ export const signup = (mobileNumber) => {
   };
 };
 
-// export const signup = (user) => {
-//   return async (dispatch) => {
-//     try {
-//       dispatch({ type: authConstants.SIGNUP_REQUEST });
-//       console.log(user);
-//       const res = await axios.post("/signup", user);
-
-//       const { address } = user;
-
-//       if (res.status === 201) {
-//         dispatch({ type: authConstants.SIGNUP_SUCCESS });
-
-//         const { token, user } = res.data;
-//         localStorage.setItem("token", token);
-//         localStorage.setItem("user", JSON.stringify(user));
-//         dispatch({
-//           type: authConstants.LOGIN_SUCCESS,
-//           payload: {
-//             token,
-//             user,
-//           },
-//         });
-
-//         const signAdd = {
-//           addressNew: {
-//             addressNew: address,
-//           },
-//         };
-
-//         dispatch(addAddressSign(signAdd));
-
-//         toast.success("Signup Success!", {
-//           position: "top-right",
-//           autoClose: 5000,
-//           hideProgressBar: false,
-//           closeOnClick: true,
-//           pauseOnHover: true,
-//           draggable: true,
-//           progress: undefined,
-//         });
-//       } else {
-//         dispatch({
-//           type: authConstants.SIGNUP_FAILURE,
-//           payload: { errormsg: res.data.errormsg },
-//         });
-//         toast.error(res.data.errormsg, {
-//           position: "top-right",
-//           autoClose: 5000,
-//           hideProgressBar: false,
-//           closeOnClick: true,
-//           pauseOnHover: true,
-//           draggable: true,
-//           progress: undefined,
-//         });
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
-
 //if user is logged in then stop user going again to /signin
 export const isUserLoggedIn = () => {
   return async (dispatch) => {
