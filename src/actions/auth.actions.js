@@ -1,6 +1,7 @@
 import axios from "../helpers/axios";
 import { authConstants, cartConstants, userConstants } from "./constants";
 import { toast } from "react-toastify";
+import axiosnew from "axios";
 
 export const login = (user) => {
   return async (dispatch) => {
@@ -86,36 +87,37 @@ export const addAddressSign = (payload) => {
   };
 };
 
-export const signup = (user) => {
+export const signup = (mobileNumber) => {
   return async (dispatch) => {
     try {
       dispatch({ type: authConstants.SIGNUP_REQUEST });
-      console.log(user);
-      const res = await axios.post("/signup", user);
+      const res = await axios.get("/customer/register", { params: { mobno: mobileNumber } });
+      console.log(res);
 
-      const { address } = user;
-
-      if (res.status === 201) {
+      if (res.data) {
+        console.log(res);
         dispatch({ type: authConstants.SIGNUP_SUCCESS });
+        const { id, mobileNumber, firstName, lastName, emailId } = res.data;
 
-        const { token, user } = res.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        dispatch({
-          type: authConstants.LOGIN_SUCCESS,
-          payload: {
-            token,
-            user,
-          },
-        });
+        localStorage.clear();
+        localStorage.setItem("userId", null);
+        localStorage.setItem("userMobileNumber", null);
+        localStorage.setItem("userFistName", null);
+        localStorage.setItem("userLastName", null);
+        localStorage.setItem("userEmail", null);
 
-        const signAdd = {
-          addressNew: {
-            addressNew: address,
-          },
-        };
 
-        dispatch(addAddressSign(signAdd));
+        localStorage.setItem("userId", id);
+        localStorage.setItem("userMobileNumber", mobileNumber);
+        localStorage.setItem("userFistName", firstName);
+        localStorage.setItem("userLastName", lastName);
+        localStorage.setItem("userEmail", emailId);
+        // dispatch({
+        //   type: authConstants.LOGIN_SUCCESS,
+        //   payload: {
+        //     id
+        //   },
+        // });
 
         toast.success("Signup Success!", {
           position: "top-right",
@@ -146,6 +148,67 @@ export const signup = (user) => {
     }
   };
 };
+
+// export const signup = (user) => {
+//   return async (dispatch) => {
+//     try {
+//       dispatch({ type: authConstants.SIGNUP_REQUEST });
+//       console.log(user);
+//       const res = await axios.post("/signup", user);
+
+//       const { address } = user;
+
+//       if (res.status === 201) {
+//         dispatch({ type: authConstants.SIGNUP_SUCCESS });
+
+//         const { token, user } = res.data;
+//         localStorage.setItem("token", token);
+//         localStorage.setItem("user", JSON.stringify(user));
+//         dispatch({
+//           type: authConstants.LOGIN_SUCCESS,
+//           payload: {
+//             token,
+//             user,
+//           },
+//         });
+
+//         const signAdd = {
+//           addressNew: {
+//             addressNew: address,
+//           },
+//         };
+
+//         dispatch(addAddressSign(signAdd));
+
+//         toast.success("Signup Success!", {
+//           position: "top-right",
+//           autoClose: 5000,
+//           hideProgressBar: false,
+//           closeOnClick: true,
+//           pauseOnHover: true,
+//           draggable: true,
+//           progress: undefined,
+//         });
+//       } else {
+//         dispatch({
+//           type: authConstants.SIGNUP_FAILURE,
+//           payload: { errormsg: res.data.errormsg },
+//         });
+//         toast.error(res.data.errormsg, {
+//           position: "top-right",
+//           autoClose: 5000,
+//           hideProgressBar: false,
+//           closeOnClick: true,
+//           pauseOnHover: true,
+//           draggable: true,
+//           progress: undefined,
+//         });
+//       }
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
 
 //if user is logged in then stop user going again to /signin
 export const isUserLoggedIn = () => {
