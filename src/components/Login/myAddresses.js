@@ -16,17 +16,29 @@ import { Label } from "@mui/icons-material";
 import Container from '@mui/material/Container';
 import addressImage from "../../../src/img/addressimg.png";
 import AddNewAddress from "./addNewAddress";
-
+import { useDispatch, useSelector } from "react-redux";
+import { AddAddress, GetAddress } from "../../actions";
 
 export default function MyAddresses(props) {
     const [addNewAddress, setAddNewAddress] = useState(false);
+    const allAddress = useSelector((state) => state.user.allAddresses);
+    const dispatch = useDispatch();
     const addNewAddressOnPress = () => {
         setAddNewAddress(true);
     }
+    useEffect(() => {
+        const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        let localUserMobileNumber = localStorage.getItem("userMobileNumber");
+
+        if (specialChars.test(localUserMobileNumber)) {
+            encodeURIComponent(localUserMobileNumber);
+        }
+        dispatch(GetAddress(localUserMobileNumber));
+    }, []);
     return (
         <div>
             {
-                !addNewAddress ?
+                allAddress.length < 0 ?
                     (
                         <div>
                             <div className="row" id="add">

@@ -17,8 +17,9 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Box from '@mui/material/Box';
 import { IconButton } from "@mui/material";
 import { AddAddress, GetAddress } from "../../actions";
+import FormControl from '@mui/material/FormControl';
 
-const NewAddress = ({ address}) => {
+const NewAddress = ({ address }) => {
     console.log("address: " + address.city)
     return (
         <div className="mt-3">
@@ -27,7 +28,10 @@ const NewAddress = ({ address}) => {
                     <LocationOnIcon sx={{ height: 38, width: 38 }} />
                 </IconButton>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <h5 className="p-3">{address.city} {address.address1}</h5>
+                    <h5 className="p-3">
+                        {address.customerAddressType}{" "}{address.address1}{" "}{address.address2}
+                        {address.landmark}{" "}{address.state}{" "}{address.city}{" "}{address.zip}
+                    </h5>
                 </Box>
             </Card>
         </div>
@@ -46,12 +50,18 @@ export default function AddNewAddress(props) {
     const [zip, setZip] = useState(0);
 
     const [type, setType] = useState("");
+    const [validateErrror, setValidateErrror] = useState(false);
+
 
     const allAddress = useSelector((state) => state.user.allAddresses);
     const dispatch = useDispatch();
 
 
     useEffect(() => {
+        displayAdresses();
+    }, []);
+
+    const displayAdresses = () => {
         const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
         let localUserMobileNumber = localStorage.getItem("userMobileNumber");
 
@@ -59,9 +69,7 @@ export default function AddNewAddress(props) {
             encodeURIComponent(localUserMobileNumber);
         }
         dispatch(GetAddress(localUserMobileNumber));
-        console.log("allAddress")
-        console.log(allAddress)
-    }, []);
+    }
 
     const onSubmitPress = (e) => {
         try {
@@ -77,8 +85,13 @@ export default function AddNewAddress(props) {
                 landmark: landMark,
                 zip_code: parseInt(zip)
             }
-            console.log(addressObj);
-            dispatch(AddAddress(addressObj));
+            if (address1 != "" || address2 != "" || city != "" || type != "" || landMark != "") {
+                dispatch(AddAddress(addressObj));
+                props.onBackPress();
+            } else {
+                setValidateErrror(true)
+            }
+
         } catch (e) {
             console.log(e);
         }
@@ -92,6 +105,17 @@ export default function AddNewAddress(props) {
                 </div>
                 <div className='p-5'>
                     <form>
+                        {
+                            validateErrror ?
+                                (
+                                    <div className="alert alert-danger" role="alert">
+                                        Please Enter All Field Before Submit
+                                    </div>
+
+                                ) : (
+                                    <></>
+                                )
+                        }
                         <div className="row my-1">
                             <div className="col">
                                 <TextField
@@ -100,6 +124,7 @@ export default function AddNewAddress(props) {
                                     value={address1}
                                     onChange={(e) => setAddress1(e.target.value)}
                                     type="text"
+                                    required
                                 />
                             </div>
                             <div className="col">
@@ -109,6 +134,7 @@ export default function AddNewAddress(props) {
                                     value={address2}
                                     onChange={(e) => setAddress2(e.target.value)}
                                     type="text"
+                                    required
                                 />
                             </div>
                         </div>
@@ -120,6 +146,7 @@ export default function AddNewAddress(props) {
                                     value={city}
                                     onChange={(e) => setCity(e.target.value)}
                                     type="text"
+                                    required
                                 />
                             </div>
                             <div className="col">
@@ -129,26 +156,7 @@ export default function AddNewAddress(props) {
                                     value={landMark}
                                     onChange={(e) => setLandMark(e.target.value)}
                                     type="text"
-                                />
-                            </div>
-                        </div>
-                        <div className="row my-2">
-                            <div className="col">
-                                <TextField
-                                    id="outlined-helperText"
-                                    label="Zip Code"
-                                    value={zip}
-                                    onChange={(e) => setZip(e.target.value)}
-                                    type="number"
-                                />
-                            </div>
-                            <div className="col">
-                                <TextField
-                                    id="outlined-helperText"
-                                    label="Address Type"
-                                    value={type}
-                                    onChange={(e) => setType(e.target.value)}
-                                    type="text"
+                                    required
                                 />
                             </div>
                         </div>
@@ -160,6 +168,29 @@ export default function AddNewAddress(props) {
                                     value={state}
                                     onChange={(e) => setState(e.target.value)}
                                     type="text"
+                                    required
+                                />
+                            </div>
+                            <div className="col">
+                                <TextField
+                                    id="outlined-helperText"
+                                    label="Address Type"
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
+                                    type="text"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="row my-2">
+                            <div className="col">
+                                <TextField
+                                    id="outlined-helperText"
+                                    label="Zip Code"
+                                    value={zip}
+                                    onChange={(e) => setZip(e.target.value)}
+                                    type="number"
+                                    required
                                 />
                             </div>
                         </div>
@@ -168,7 +199,7 @@ export default function AddNewAddress(props) {
                             <div className="col">
                             </div>
                             <div className="col">
-                                <Button variant="contained" disableElevation onClick={(e) => { onSubmitPress(e) }}>
+                                <Button type="submit" variant="contained" disableElevation onClick={(e) => { onSubmitPress(e) }}>
                                     Submit
                                 </Button>
                             </div>
