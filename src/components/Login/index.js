@@ -32,6 +32,7 @@ import { login, signup } from "../../actions";
 const CusSwipeableDrawer = styled(SwipeableDrawer)`
   & .MuiDrawer-paper {
     width: 500px !important;
+    background-color: rgb(233, 237, 239);
   }
 
   @media (max-width: 576px) {
@@ -43,6 +44,14 @@ const CusSwipeableDrawer = styled(SwipeableDrawer)`
 
 const CusImg = styled.img`
   width: 100% !important;
+`;
+
+const SubmitButton = styled(Button)`
+  background-color: rgb(130, 187, 55);
+
+  &:hover {
+    background-color: rgb(130, 187, 55);
+  }
 `;
 
 export default function LoginDrawer() {
@@ -225,7 +234,7 @@ export default function LoginDrawer() {
 
   const getMobileNumber = () => {
     return (
-      <div className="jumbotron align-middle mt-4">
+      <div className="jumbotron align-middle m-4">
         <Card sx={{ maxWidth: 500, margin: "0px auto" }}>
           <CardContent>
             <form className="p-3">
@@ -245,14 +254,14 @@ export default function LoginDrawer() {
                 />
               </div>
               <div className="row mt-4">
-                <div class="text-right">
-                  <Button
+                <div class="text-end">
+                  <SubmitButton
                     variant="contained"
                     disableElevation
                     onClick={onSignInSubmit}
                   >
                     Submit
-                  </Button>
+                  </SubmitButton>
                 </div>
               </div>
             </form>
@@ -274,7 +283,7 @@ export default function LoginDrawer() {
                       callback={responseFacebook}
                       cssClass="btnFacebook"
                       icon="fa fa-facebook"
-                      textButton="&nbsp;&nbsp;Sign In with Facebook"
+                      textButton="&nbsp;&nbsp;Facebook"
                     />
                     {/* <Button variant="contained" color="primary" startIcon={<FacebookIcon />}>
                                             Facebook
@@ -288,7 +297,7 @@ export default function LoginDrawer() {
                       className="btnGoogle"
                     >
                       <i className="fa fa-google-plus" />
-                      <span>&nbsp;&nbsp;Sign In with Google</span>
+                      <span>&nbsp;&nbsp;Google</span>
                     </GoogleLogin>
                     {/* <Button variant="contained" color="success" startIcon={<GoogleIcon />}>
                                             Google
@@ -308,7 +317,7 @@ export default function LoginDrawer() {
 
   const getMobileOTP = () => {
     return (
-      <div className="jumbotron vertical-center mt-5">
+      <div className="jumbotron vertical-center m-4">
         <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
           <CardContent>
             <form className="p-3">
@@ -328,14 +337,14 @@ export default function LoginDrawer() {
                 />
               </div>
               <div className="row mt-4">
-                <div class="text-right">
-                  <Button
+                <div class="text-end">
+                  <SubmitButton
                     variant="contained"
                     disableElevation
                     onClick={onOTPSubmit}
                   >
                     Confirm
-                  </Button>
+                  </SubmitButton>
                 </div>
               </div>
             </form>
