@@ -30,7 +30,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../../actions";
 
 const CusSwipeableDrawer = styled(SwipeableDrawer)`
-  width: 500px;
+  & .MuiDrawer-paper {
+    width: 500px !important;
+  }
+
+  @media (max-width: 576px) {
+    & .MuiDrawer-paper {
+      width: 90% !important;
+    }
+  }
+`;
+
+const CusImg = styled.img`
+  width: 100% !important;
 `;
 
 export default function LoginDrawer() {
@@ -195,18 +207,14 @@ export default function LoginDrawer() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 500 }}
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : "auto" }}
       role="presentation"
       alignItems="center"
       justify="center"
     >
       {!viewUserDetails ? (
         <div>
-          <img
-            className="img-fluid"
-            src={loginImage}
-            style={{ width: "500px" }}
-          />
+          <CusImg className="img-fluid" src={loginImage} alt="banner" />
           {otpSuccess ? getMobileOTP() : getMobileNumber()}
         </div>
       ) : (
@@ -218,7 +226,7 @@ export default function LoginDrawer() {
   const getMobileNumber = () => {
     return (
       <div className="jumbotron align-middle mt-4">
-        <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
+        <Card sx={{ maxWidth: 500, margin: "0px auto" }}>
           <CardContent>
             <form className="p-3">
               <div className="row">
