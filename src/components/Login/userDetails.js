@@ -68,7 +68,7 @@ const UserDetails = (props) => {
         setEmail(localUserEmail != "null" ? localUserEmail : "");
         setMobileNumber(localUserMobileNumber);
         console.log(localUserMobileNumber);
-        console.log(mobileNumber);
+        console.log("mobileNumber: " + mobileNumber);
     }, [])
 
     const onNameEditPress = (e) => {
@@ -79,13 +79,9 @@ const UserDetails = (props) => {
                 mobileNumber: mobileNumber,
                 firstName: firstName,
                 lastName: lastName,
-                email: email
+                emailId: email
             }
-            try {
-                dispatch(UpdateUserDetails(updateUserObj));
-            } catch (error) {
-                console.log(error);
-            }
+            dispatch(UpdateUserDetails(updateUserObj));
         } else {
             setEditName("Done");
         }
@@ -95,6 +91,14 @@ const UserDetails = (props) => {
         e.preventDefault();
         if (editEmail === "Done") {
             setEditEmail("Edit");
+            console.log("email: " + email);
+            let updateUserObj = {
+                mobileNumber: mobileNumber,
+                firstName: firstName,
+                lastName: lastName,
+                emailId: email
+            }
+            dispatch(UpdateUserDetails(updateUserObj));
         } else {
             setEditEmail("Done");
         }

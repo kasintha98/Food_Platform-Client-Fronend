@@ -52,8 +52,8 @@ export default function LoginDrawer() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        var localUserId=localStorage.getItem("userId");
-        if (localUserId){
+        var localUserId = localStorage.getItem("userId");
+        if (localUserId) {
             setOtpSuccess(false);
             setViewUserDetails(true);
         }
@@ -141,18 +141,18 @@ export default function LoginDrawer() {
     //calling action to login the user
     const userLogin = async () => {
         try {
-            dispatch(signup(mobileNumber));
+            await dispatch(signup(mobileNumber));
+            setOtpSuccess(false);
+            setViewUserDetails(true);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const onOTPSubmit = (e) => {
+    const onOTPSubmit = async (e) => {
         e.preventDefault();
         const code = otp;
-        // userLogin();
-        // setOtpSuccess(false);
-        // setViewUserDetails(true);
+        //userLogin();
 
         window.confirmationResult
             .confirm(code)
@@ -165,8 +165,6 @@ export default function LoginDrawer() {
                 console.log(user.phoneNumber);
                 setOtpError("User Verified Sucessfully!!");
                 userLogin();
-                setOtpSuccess(false);
-                setViewUserDetails(true);
                 //setIsLoginCode(1);
 
                 setLoginDetails({
