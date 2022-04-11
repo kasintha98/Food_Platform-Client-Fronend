@@ -37,7 +37,6 @@ function App() {
 
   return (
     <div>
-      <DeliveryTypeModal delay={5000}></DeliveryTypeModal>
       <Router>
         <Switch>
           <Route path="/" exact component={HomePage} />
@@ -64,6 +63,7 @@ function App() {
           />
         </Switch>
       </Router>
+      <DeliveryTypeModal delay={5000}></DeliveryTypeModal>
     </div>
   );
 }

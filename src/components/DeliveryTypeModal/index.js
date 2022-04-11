@@ -32,7 +32,7 @@ export const DeliveryTypeModal = (props) => {
           handleShow();
         }
       },
-      props.delay ? props.delay : 2000
+      props.delay ? props.delay : 1
     );
   }, []);
 
@@ -63,6 +63,9 @@ export const DeliveryTypeModal = (props) => {
       type,
     };
     localStorage.setItem("deliveryType", JSON.stringify(delObj));
+    if (props.onChangeType) {
+      props.onChangeType(delObj);
+    }
     handleClose();
   };
 
@@ -134,7 +137,48 @@ export const DeliveryTypeModal = (props) => {
                   )}
                 </div>
               </TabPanel>
-              <TabPanel value="collect">Item Two</TabPanel>
+              <TabPanel value="collect">
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Please select the store
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={selectedStore}
+                    label="Please select the store"
+                    onChange={handleChangeStore}
+                  >
+                    {stores.map((store) => (
+                      <MenuItem
+                        onClick={() => {
+                          handleSelectedStore(store);
+                        }}
+                        value={store.name}
+                      >
+                        {store.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <div className="mt-2">
+                  {selectedStoreObj ? (
+                    <>
+                      <Typography variant="p" component="p">
+                        Store Name: {selectedStoreObj.name}
+                      </Typography>
+                      <Typography variant="p" component="p">
+                        Store Address: {selectedStoreObj.address}
+                      </Typography>
+                      <Typography variant="p" component="p">
+                        Open Time: {selectedStoreObj.time}
+                      </Typography>
+                    </>
+                  ) : (
+                    <Alert severity="warning">No store is selected!</Alert>
+                  )}
+                </div>
+              </TabPanel>
             </TabContext>
           </Box>
         </Modal.Body>
