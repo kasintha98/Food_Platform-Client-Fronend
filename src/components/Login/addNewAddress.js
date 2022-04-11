@@ -12,17 +12,37 @@ import loginImage from "../../img/loginim.JPG";
 import Container from '@mui/material/Container';
 import MyAddresses from "./myAddresses";
 import { useDispatch, useSelector } from "react-redux";
-
+import styled from "@emotion/styled";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Box from '@mui/material/Box';
 import { IconButton } from "@mui/material";
 import { AddAddress, GetAddress } from "../../actions";
 import FormControl from '@mui/material/FormControl';
 
+const SubmitButton = styled(Button)`
+  background-color: rgb(130, 187, 55);
+    width: 100%; 
+    border:none; 
+    display:inline-block;
+  &:hover {
+    background-color: rgb(130, 187, 55);
+  }
+`;
+
+const BackButton = styled(Button)`
+  background-color: rgb(124, 105, 239);
+    width: 100%; 
+    border:none; 
+    display:inline-block;
+  &:hover {
+    background-color: rgb(124, 105, 239);
+  }
+`;
+
 const NewAddress = ({ address }) => {
     console.log("address: " + address.city)
     return (
-        <div className="mt-3">
+        <div style={{ "width": "88%", "margin": "auto" }} className="mb-2">
             <Card sx={{ display: 'flex', maxWidth: 600, margin: "0px auto" }}>
                 <IconButton aria-label="play/pause">
                     <LocationOnIcon sx={{ height: 38, width: 38 }} />
@@ -193,19 +213,31 @@ export default function AddNewAddress(props) {
                                     required
                                 />
                             </div>
+                            <div className="col"></div>
                         </div>
-
-                        <div className="row mt-4">
+                        <div className="row mt-3">
                             <div className="col">
+                                <SubmitButton
+                                    variant="contained"
+                                    disableElevation
+                                    onClick={(e) => { onSubmitPress(e) }}
+                                >
+                                    Submit
+                                </SubmitButton>
                             </div>
                             <div className="col">
-                                <Button type="submit" variant="contained" disableElevation onClick={(e) => { onSubmitPress(e) }}>
-                                    Submit
-                                </Button>
+                                <BackButton
+                                    variant="contained"
+                                    disableElevation
+                                    onClick={props.onBackPress}
+                                >
+                                    Back
+                                </BackButton>
                             </div>
                         </div>
                     </form>
                 </div>
+                
                 {
                     allAddress?.map((address, index) => {
                         return (
@@ -213,9 +245,6 @@ export default function AddNewAddress(props) {
                         )
                     })
                 }
-                <div className="button-container">
-                    <Button variant="contained" color="primary" onClick={props.onBackPress}>Back</Button>
-                </div>
             </div>
         </div>
 

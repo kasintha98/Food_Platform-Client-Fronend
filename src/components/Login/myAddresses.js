@@ -18,6 +18,23 @@ import addressImage from "../../../src/img/addressimg.png";
 import AddNewAddress from "./addNewAddress";
 import { useDispatch, useSelector } from "react-redux";
 import { AddAddress, GetAddress } from "../../actions";
+import styled from "@emotion/styled";
+
+const SubmitButton = styled(Button)`
+  background-color: rgb(130, 187, 55);
+    width: 40%; 
+  &:hover {
+    background-color: rgb(130, 187, 55);
+  }
+`;
+
+const BackButton = styled(Button)`
+  background-color: rgb(124, 105, 239);
+    width: 40%; 
+  &:hover {
+    background-color: rgb(124, 105, 239);
+  }
+`;
 
 export default function MyAddresses(props) {
     const [addNewAddress, setAddNewAddress] = useState(false);
@@ -48,10 +65,10 @@ export default function MyAddresses(props) {
                                 <img src={addressImage} class="img-fluid" id="addImage" />
                             </div>
                             <div className="button-container">
-                                <Button variant="contained" color="success" onClick={addNewAddressOnPress} >Add New Address</Button>
+                                <SubmitButton variant="contained" color="success" onClick={addNewAddressOnPress} >Add New Address</SubmitButton>
                             </div>
                             <div className="button-container">
-                                <Button variant="contained" color="primary" onClick={props.onBackPress}>Back</Button>
+                                <BackButton variant="contained" color="primary" onClick={props.onBackPress}>Back</BackButton>
                             </div>
                         </div>
                     ) :
@@ -59,7 +76,6 @@ export default function MyAddresses(props) {
                         <AddNewAddress onBackPress={props.onBackPress} />
                     )
             }
-
         </div>
     );
 }
