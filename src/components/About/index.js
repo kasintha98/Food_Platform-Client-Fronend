@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import res from "../../img/res.jpg";
 import logo from "../../img/logo.jpg";
+import about from "../../img/about.jpg";
 
 export default function About() {
   return (
@@ -10,7 +11,8 @@ export default function About() {
       <br></br>
       <br></br>
       <Card style={{ width: "100%" }}>
-        <Row>
+        <Card.Img variant="top" src={about} />
+        {/* <Row>
           <Col sm={5}>
             <Card.Img variant="top" src={res} />
           </Col>
@@ -50,7 +52,7 @@ export default function About() {
               </Card.Text>
             </Card.Body>
           </Col>
-        </Row>
+        </Row> */}
       </Card>
     </div>
   );
