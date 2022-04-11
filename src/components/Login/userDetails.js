@@ -23,6 +23,27 @@ import HomeIcon from '@mui/icons-material/Home';
 import MyAddresses from "./myAddresses";
 import { UpdateUserDetails } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
+import styled from "@emotion/styled";
+
+const Texts = styled(Typography)`
+ font-size: 0.875rem;
+  font-weight: 400;
+  font-family: Arial;
+  @media (max-width: 992px) {
+     font-size: 0.7rem;
+  }
+`;
+
+const BoldTexts = styled(Typography)`
+ font-size: 1rem;
+  font-weight: 600;
+  font-family: Arial;
+  @media (max-width: 992px) {
+    font-size: 0.9rem;
+  }
+`;
+
 
 const nameBoxStyle = {
     backgroundColor: "#0000CD",
@@ -143,6 +164,7 @@ const UserDetails = (props) => {
                                 <div className="col-8">
                                     <div className="row">
                                         <TextField
+                                            inputProps={{ style: { fontSize: "0.875rem" } }}
                                             required
                                             id="standard-search"
                                             label="First Name"
@@ -155,6 +177,7 @@ const UserDetails = (props) => {
                                     </div>
                                     <div className="row">
                                         <TextField
+                                            inputProps={{ style: { fontSize: "0.875rem" } }}
                                             required
                                             id="standard-search"
                                             label="Last Name"
@@ -182,6 +205,7 @@ const UserDetails = (props) => {
                                 <div className="col-8">
                                     <div className="row">
                                         <TextField
+                                            inputProps={{ style: { fontSize: "0.875rem" } }}
                                             id="standard-search"
                                             label="Phone"
                                             //onChange={(e) => setFirstName(e.target.value)}
@@ -208,6 +232,7 @@ const UserDetails = (props) => {
                                 <div className="col-8">
                                     <div className="row">
                                         <TextField
+                                            inputProps={{ style: { fontSize: "0.875rem" } }}
                                             id="standard-search"
                                             label="Email"
                                             onChange={(e) => setEmail(e.target.value)}
@@ -234,7 +259,7 @@ const UserDetails = (props) => {
                                 </div>
                                 <div className="col-8">
                                     <div className="row">
-                                        <p class="fw-bold mt-4">My Orders</p>
+                                        <BoldTexts class="fw-bold mt-4">My Orders</BoldTexts>
                                     </div>
                                 </div>
                             </div>
@@ -245,7 +270,7 @@ const UserDetails = (props) => {
                                 </div>
                                 <div className="col-8" onClick={(e) => onAddressPress(e)}>
                                     <div className="row">
-                                        <p class="fw-bold mt-4">My Addresses</p>
+                                        <BoldTexts class="fw-bold mt-4">My Addresses</BoldTexts>
                                     </div>
                                 </div>
                             </div>
@@ -256,7 +281,7 @@ const UserDetails = (props) => {
                                 </div>
                                 <div className="col-8">
                                     <div className="row">
-                                        <p class="fw-bold mt-4">LogOut</p>
+                                        <BoldTexts class="fw-bold mt-4">LogOut</BoldTexts>
                                     </div>
                                 </div>
                             </div>

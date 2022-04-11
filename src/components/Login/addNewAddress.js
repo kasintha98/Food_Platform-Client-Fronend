@@ -18,11 +18,32 @@ import Box from '@mui/material/Box';
 import { IconButton } from "@mui/material";
 import { AddAddress, GetAddress } from "../../actions";
 import FormControl from '@mui/material/FormControl';
+import Typography from "@mui/material/Typography";
+
+const Texts = styled(Typography)`
+ font-size: 0.875rem;
+  font-weight: 400;
+  font-family: Arial;
+  @media (max-width: 992px) {
+     font-size: 0.7rem;
+  }
+`;
+
+const BoldTexts = styled(Typography)`
+ font-size: 1rem;
+  font-weight: 600;
+  font-family: Arial;
+  @media (max-width: 992px) {
+    font-size: 0.9rem;
+  }
+`;
 
 const SubmitButton = styled(Button)`
   background-color: rgb(130, 187, 55);
     width: 100%; 
     border:none; 
+     font-size: 1rem;
+  font-family: Arial;
     display:inline-block;
   &:hover {
     background-color: rgb(130, 187, 55);
@@ -33,6 +54,8 @@ const BackButton = styled(Button)`
   background-color: rgb(124, 105, 239);
     width: 100%; 
     border:none; 
+     font-size: 1rem;
+       font-family: Arial;
     display:inline-block;
   &:hover {
     background-color: rgb(124, 105, 239);
@@ -48,10 +71,10 @@ const NewAddress = ({ address }) => {
                     <LocationOnIcon sx={{ height: 38, width: 38 }} />
                 </IconButton>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <h5 className="p-3">
+                    <Texts className="p-3">
                         {address.customerAddressType}{" "}{address.address1}{" "}{address.address2}
                         {address.landmark}{" "}{address.state}{" "}{address.city}{" "}{address.zip}
-                    </h5>
+                    </Texts>
                 </Box>
             </Card>
         </div>
@@ -121,7 +144,7 @@ export default function AddNewAddress(props) {
         <div>
             <div className="row">
                 <div className="row" id="add">
-                    <h3 class="fw-bold p-4">My Address</h3>
+                    <BoldTexts class="fw-bold p-4">My Address</BoldTexts>
                 </div>
                 <div className='p-5'>
                     <form>
@@ -139,6 +162,7 @@ export default function AddNewAddress(props) {
                         <div className="row my-1">
                             <div className="col">
                                 <TextField
+                                    inputProps={{ style: { fontSize: "0.875rem" } }}
                                     id="outlined-helperText"
                                     label="Address 1"
                                     value={address1}
@@ -149,6 +173,7 @@ export default function AddNewAddress(props) {
                             </div>
                             <div className="col">
                                 <TextField
+                                    inputProps={{ style: { fontSize: "0.875rem" } }}
                                     id="outlined-helperText"
                                     label="Address 2"
                                     value={address2}
@@ -161,6 +186,7 @@ export default function AddNewAddress(props) {
                         <div className="row my-2">
                             <div className="col">
                                 <TextField
+                                    inputProps={{ style: { fontSize: "0.875rem" } }}
                                     id="outlined-helperText"
                                     label="City"
                                     value={city}
@@ -171,6 +197,7 @@ export default function AddNewAddress(props) {
                             </div>
                             <div className="col">
                                 <TextField
+                                    inputProps={{ style: { fontSize: "0.875rem" } }}
                                     id="outlined-helperText"
                                     label="Land Mark"
                                     value={landMark}
@@ -183,6 +210,7 @@ export default function AddNewAddress(props) {
                         <div className="row my-2">
                             <div className="col">
                                 <TextField
+                                    inputProps={{ style: { fontSize: "0.875rem" } }}
                                     id="outlined-helperText"
                                     label="State"
                                     value={state}
@@ -193,6 +221,7 @@ export default function AddNewAddress(props) {
                             </div>
                             <div className="col">
                                 <TextField
+                                    inputProps={{ style: { fontSize: "0.875rem" } }}
                                     id="outlined-helperText"
                                     label="Address Type"
                                     value={type}
@@ -205,6 +234,7 @@ export default function AddNewAddress(props) {
                         <div className="row my-2">
                             <div className="col">
                                 <TextField
+                                    inputProps={{ style: { fontSize: "0.875rem" } }}
                                     id="outlined-helperText"
                                     label="Zip Code"
                                     value={zip}
@@ -237,7 +267,7 @@ export default function AddNewAddress(props) {
                         </div>
                     </form>
                 </div>
-                
+
                 {
                     allAddress?.map((address, index) => {
                         return (
