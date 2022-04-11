@@ -19,6 +19,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
 import Container from "@mui/material/Container";
 import GoogleIcon from "@mui/icons-material/Google";
+import Typography from "@mui/material/Typography";
 import firebase from "../../firebase/firebase";
 import { GoogleLogin } from "react-google-login";
 import FacebookLogin from "react-facebook-login";
@@ -28,6 +29,36 @@ import UserDetails from "./userDetails";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../../actions";
+
+
+const Texts = styled(Typography)`
+ font-size: 0.875rem;
+  font-weight: 400;
+  font-family: Arial;
+  @media (max-width: 992px) {
+     font-size: 0.7rem;
+  }
+`;
+
+const BoldTexts = styled(Typography)`
+
+ font-size: 1rem;
+  font-weight: 600;
+  font-family: Arial;
+  @media (max-width: 992px) {
+    font-size: 0.9rem;
+  }
+`;
+
+const TermsTexts = styled(Typography)`
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: Arial;
+  font-color:rgb(124, 105, 239),
+  @media (max-width: 992px) {
+     font-size: 0.7rem;
+  }
+`;
 
 const CusSwipeableDrawer = styled(SwipeableDrawer)`
   & .MuiDrawer-paper {
@@ -48,7 +79,8 @@ const CusImg = styled.img`
 
 const SubmitButton = styled(Button)`
   background-color: rgb(130, 187, 55);
-
+ font-size: 1rem;
+  font-family: Arial;
   &:hover {
     background-color: rgb(130, 187, 55);
   }
@@ -239,7 +271,7 @@ export default function LoginDrawer() {
           <CardContent>
             <form className="p-3">
               <div className="row">
-                <p class="fw-bold">Login with your valid mobile number</p>
+                <BoldTexts>Login with your valid mobile number</BoldTexts>
               </div>
               <div className="row">
                 <p class="fw-bold">{otpError}</p>
@@ -248,6 +280,7 @@ export default function LoginDrawer() {
                 <div id="sign-in-button"></div>
                 <TextField
                   id="outlined-helperText"
+                  inputProps={{ style: { fontSize: "0.875rem" } }}
                   label="Mobile Number"
                   onChange={(e) => setMobileNumber(e.target.value)}
                   type="tel"
@@ -271,8 +304,8 @@ export default function LoginDrawer() {
           <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
             <CardContent>
               <form className="p-2">
-                <div className="row">
-                  <p class="fw-bold">Login with social accounts</p>
+                <div className="row mb-2">
+                  <BoldTexts>Login with social accounts</BoldTexts>
                 </div>
                 <div className="row margin-auto">
                   <div className="col text-right">
@@ -322,7 +355,7 @@ export default function LoginDrawer() {
           <CardContent>
             <form className="p-3">
               <div className="row">
-                <p class="fw-bold">Login with your valid mobile number</p>
+                <BoldTexts>Login with your valid mobile number</BoldTexts>
               </div>
               <div className="row">
                 <p class="font-weight-bold">{otpError}</p>
@@ -351,7 +384,7 @@ export default function LoginDrawer() {
           </CardContent>
         </Card>
         <div className="text-center mt-5">
-          <p class="font-weight-bold text-primary">TERMS OF USE</p>
+          <TermsTexts>TERMS OF USE</TermsTexts>
         </div>
       </div>
     );
