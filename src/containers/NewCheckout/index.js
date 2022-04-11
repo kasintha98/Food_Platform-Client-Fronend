@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -33,6 +33,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import CartCard from "../../components/CartCard";
+import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -91,9 +93,43 @@ const CusCol = styled(Col)`
 `;
 
 export default function NewCheckout() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const cart = useSelector((state) => state.cart);
+  const [subTotal, setSubtotal] = useState(0);
+  const [currentType, setCurrentType] = useState(0);
+  const [extraSubTotal, setExtraSubTotal] = useState(0);
+  const [choiceTotal, setChoiceTotal] = useState(0);
+  const [delModalOpen, setDelModalOpen] = useState(false);
+
+  useEffect(() => {
+    const item = localStorage.getItem("deliveryType");
+    console.log(item);
+    if (item) {
+      console.log(JSON.parse(item));
+      setCurrentType(JSON.parse(item));
+    }
+  }, []);
+
+  const handleSubTotal = (total) => {
+    setSubtotal(total);
+  };
+
+  const handleExtraTotal = (total) => {
+    setExtraSubTotal(total);
+  };
+
+  const handleChoiceTotal = (total) => {
+    setChoiceTotal(total);
+  };
+
+  const handleTypeChange = (type) => {
+    setCurrentType(type);
+  };
+
+  const renderDeliveryTypeModal = () => {
+    return setDelModalOpen(true);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -107,7 +143,13 @@ export default function NewCheckout() {
           <Col className="col-7 mt-5">
             <Row>
               <Col className="col-8">
-                <h5>You have selected 3 items</h5>
+                {cart?.cartItems && Object.keys(cart?.cartItems).length > 0 ? (
+                  <h5>
+                    You have selected {Object.keys(cart.cartItems).length} items
+                  </h5>
+                ) : (
+                  <h5>You have no items in the cart</h5>
+                )}
               </Col>
               <Col className="col-4">
                 <Typography sx={{ textAlign: "end" }}>
@@ -118,109 +160,135 @@ export default function NewCheckout() {
             <div>
               <Card sx={{ width: "100%", marginTop: 3 }}>
                 <CardContent sx={{ height: "auto" }}>
-                  <CheckoutCard />
-                  <CheckoutCard />
-                  <CheckoutCard />
+                  <CartCard
+                    onChangeSubTotal={handleSubTotal}
+                    onChangeExtraSubTotal={handleExtraTotal}
+                    onChangeChoiceTotal={handleChoiceTotal}
+                  ></CartCard>
                 </CardContent>
               </Card>
             </div>
           </Col>
           <Col className="col-5 mt-5">
-            <Row>
-              <Col className="col-12">
-                <h5>Choose a delivery address</h5>
-              </Col>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card>
-                    <CardContent>
-                      <div className="row mb-3">
-                        <div className="col-2">
-                          <Typography sx={{ textAlign: "center" }}>
-                            <LocationOnIcon></LocationOnIcon>
-                          </Typography>
+            {currentType && currentType?.type === "delivery" ? (
+              <Row>
+                <Col className="col-12">
+                  <h5>Choose a delivery address</h5>
+                </Col>
+                <Col className="col-12">
+                  <Grid sx={{ width: "100%", marginTop: 3 }}>
+                    <Card>
+                      <CardContent>
+                        <div className="row mb-3">
+                          <div className="col-2">
+                            <Typography sx={{ textAlign: "center" }}>
+                              <LocationOnIcon></LocationOnIcon>
+                            </Typography>
+                          </div>
+                          <div className="col-6">
+                            <Typography
+                              variant="subtitle1"
+                              color="text.secondary"
+                            >
+                              Please select location, so that we can find a
+                              restaurant that delivers to you!
+                            </Typography>
+                          </div>
+                          <div className="col-4">
+                            <Typography
+                              variant="subtitle1"
+                              color="success"
+                              sx={{ textAlign: "end" }}
+                            >
+                              <Button variant="outlined" justifyContent="end">
+                                ADD LOCATION
+                              </Button>
+                            </Typography>
+                          </div>
                         </div>
-                        <div className="col-6">
-                          <Typography
-                            variant="subtitle1"
-                            color="text.secondary"
-                          >
-                            Please select location, so that we can find a
-                            restaurant that delivers to you!
-                          </Typography>
+                        <Divider variant="middle" />
+                        <div className="row mt-3">
+                          <div className="col-2">
+                            <Typography sx={{ textAlign: "center" }}>
+                              <LoginIcon></LoginIcon>
+                            </Typography>
+                          </div>
+                          <div className="col-6">
+                            <Typography variant="subtitle1" paragraph>
+                              Login to use your saved addresses
+                            </Typography>
+                          </div>
+                          <div className="col-4">
+                            <Typography
+                              variant="subtitle1"
+                              color="success"
+                              sx={{ textAlign: "end" }}
+                            >
+                              <Button variant="outlined">MY ADDRESS</Button>
+                            </Typography>
+                          </div>
                         </div>
-                        <div className="col-4">
-                          <Typography
-                            variant="subtitle1"
-                            color="success"
-                            sx={{ textAlign: "end" }}
-                          >
-                            <Button variant="outlined" justifyContent="end">
-                              ADD LOCATION
-                            </Button>
-                          </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Col>
+              </Row>
+            ) : null}
+
+            {currentType && currentType?.type === "collect" ? (
+              <Row>
+                <Col className="col-12 mt-5">
+                  <h5>Order Pick Up</h5>
+                </Col>
+                <Col className="col-12">
+                  <Grid sx={{ width: "100%", marginTop: 3 }}>
+                    <Card>
+                      <CardContent>
+                        <div className="row ">
+                          <div className="col-2">
+                            <Typography sx={{ textAlign: "center" }}>
+                              <PhoneIphoneIcon></PhoneIphoneIcon>
+                            </Typography>
+                          </div>
+                          <div className="col-6">
+                            <Typography variant="subtitle1" paragraph>
+                              Enter your phone number
+                            </Typography>
+                          </div>
+                          <div className="col-4">
+                            <TextField
+                              id=""
+                              label="Phone"
+                              type="text"
+                              variant="standard"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <Divider variant="middle" />
-                      <div className="row mt-3">
-                        <div className="col-2">
-                          <Typography sx={{ textAlign: "center" }}>
-                            <LoginIcon></LoginIcon>
-                          </Typography>
-                        </div>
-                        <div className="col-6">
-                          <Typography variant="subtitle1" paragraph>
-                            Login to use your saved addresses
-                          </Typography>
-                        </div>
-                        <div className="col-4">
-                          <Typography
-                            variant="subtitle1"
-                            color="success"
-                            sx={{ textAlign: "end" }}
-                          >
-                            <Button variant="outlined">MY ADDRESS</Button>
-                          </Typography>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Col>
-            </Row>
-            <Row>
-              <Col className="col-12 mt-5">
-                <h5>Order Pick Up</h5>
-              </Col>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card>
-                    <CardContent>
-                      <div className="row ">
-                        <div className="col-2">
-                          <Typography sx={{ textAlign: "center" }}>
-                            <PhoneIphoneIcon></PhoneIphoneIcon>
-                          </Typography>
-                        </div>
-                        <div className="col-6">
-                          <Typography variant="subtitle1" paragraph>
-                            Enter your phone number
-                          </Typography>
-                        </div>
-                        <div className="col-4">
-                          <TextField
-                            id=""
-                            label="Phone"
-                            type="text"
-                            variant="standard"
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Col>
-            </Row>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Col>
+              </Row>
+            ) : null}
+
+            {!currentType ? (
+              <Row>
+                <Col className="col-12 mt-5">
+                  <h5>Please select a delivery type</h5>
+                </Col>
+                <Col className="col-12">
+                  <Button
+                    onClick={renderDeliveryTypeModal}
+                    variant="contained"
+                    color="success"
+                    sx={{ width: "100%" }}
+                  >
+                    Select Delivery Type
+                  </Button>
+                </Col>
+              </Row>
+            ) : null}
+
             <Row>
               <Col className="col-12 mt-5">
                 <h5>Offers</h5>
@@ -267,7 +335,7 @@ export default function NewCheckout() {
               <Col className="col-12">
                 <Grid sx={{ width: "100%", marginTop: 3 }}>
                   <Card>
-                    <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                    <Table aria-label="simple table">
                       <TableBody>
                         <TableRow>
                           <TableCell component="th" scope="row">
@@ -278,7 +346,10 @@ export default function NewCheckout() {
                             scope="row"
                             sx={{ textAlign: "end" }}
                           >
-                            ₹ 5050.00
+                            ₹{" "}
+                            {subTotal +
+                              (extraSubTotal ? extraSubTotal : 0) +
+                              (choiceTotal ? choiceTotal : 0)}
                           </TableCell>
                         </TableRow>
                         <TableRow>
@@ -302,7 +373,7 @@ export default function NewCheckout() {
                             scope="row"
                             sx={{ textAlign: "end" }}
                           >
-                            ₹ 287.50
+                            -
                           </TableCell>
                         </TableRow>
                         <TableRow>
@@ -314,7 +385,10 @@ export default function NewCheckout() {
                             scope="row"
                             sx={{ textAlign: "end" }}
                           >
-                            ₹ 5337.50
+                            ₹{" "}
+                            {subTotal +
+                              (extraSubTotal ? extraSubTotal : 0) +
+                              (choiceTotal ? choiceTotal : 0)}
                           </TableCell>
                         </TableRow>
                       </TableBody>
@@ -336,6 +410,12 @@ export default function NewCheckout() {
         </Row>
       </CusContainer>
       <Footer></Footer>
+      {delModalOpen ? (
+        <DeliveryTypeModal
+          delay={1}
+          onChangeType={handleTypeChange}
+        ></DeliveryTypeModal>
+      ) : null}
     </div>
   );
 }

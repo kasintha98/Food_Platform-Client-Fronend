@@ -29,20 +29,19 @@ import UserDetails from "./userDetails";
 import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../../actions";
-
+import { toast } from "react-toastify";
 
 const Texts = styled(Typography)`
- font-size: 0.875rem;
+  font-size: 0.875rem;
   font-weight: 400;
   font-family: Arial;
   @media (max-width: 992px) {
-     font-size: 0.7rem;
+    font-size: 0.7rem;
   }
 `;
 
 const BoldTexts = styled(Typography)`
-
- font-size: 1rem;
+  font-size: 1rem;
   font-weight: 600;
   font-family: Arial;
   @media (max-width: 992px) {
@@ -56,7 +55,7 @@ const TermsTexts = styled(Typography)`
   font-family: Arial;
   font-color:rgb(124, 105, 239),
   @media (max-width: 992px) {
-     font-size: 0.7rem;
+    font-size: 0.7rem;
   }
 `;
 
@@ -79,7 +78,7 @@ const CusImg = styled.img`
 
 const SubmitButton = styled(Button)`
   background-color: rgb(130, 187, 55);
- font-size: 1rem;
+  font-size: 1rem;
   font-family: Arial;
   &:hover {
     background-color: rgb(130, 187, 55);
@@ -182,14 +181,18 @@ export default function LoginDrawer() {
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
           console.log("OTP Sent....!!");
-          setOtpError("OTP Sent! Please check you mobile phone!");
+          //setOtpError("OTP Sent! Please check you mobile phone!");
+          toast.success("OTP Sent! Please check you mobile phone!");
           setOtpSuccess(true);
         })
         .catch((error) => {
           setOtpSuccess(false);
           console.log("SMS NOT SENT ERROR....!!");
-          setOtpError(
-            "Error!!! OTP Not Sent! Please add countery code as well!"
+          /* setOtpError(
+            "Error!!! OTP Not Sent! Please add country code as well!"
+          ); */
+          toast.error(
+            "Error!!! OTP Not Sent! Please add country code as well!"
           );
         });
     } catch (ex) {
@@ -222,7 +225,8 @@ export default function LoginDrawer() {
 
         console.log(JSON.stringify(user.phoneNumber));
         console.log(user.phoneNumber);
-        setOtpError("User Verified Sucessfully!!");
+        toast.success("User Verified Sucessfully!!");
+        //setOtpError("User Verified Sucessfully!!");
         userLogin();
         //setIsLoginCode(1);
 
@@ -241,8 +245,8 @@ export default function LoginDrawer() {
           loginCode: 0,
           mobileNumber: -1,
         });
-
-        setOtpError("OTP is wrong or expired.");
+        toast.error("OTP is wrong or expired.");
+        //setOtpError("OTP is wrong or expired.");
       });
   };
 

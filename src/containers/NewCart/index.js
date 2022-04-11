@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
@@ -78,9 +79,14 @@ export const NewCart = () => {
             </SubTotal>
           </SubTotalArea>
           <CardActions>
-            <CheckoutButton variant="contained" className="w-100">
-              Checkout
-            </CheckoutButton>
+            <Link
+              style={{ color: "#fff", textDecoration: "none", width: "100%" }}
+              to="/new-checkout"
+            >
+              <CheckoutButton variant="contained" className="w-100">
+                Checkout
+              </CheckoutButton>
+            </Link>
           </CardActions>
         </div>
       </Card>

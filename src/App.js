@@ -18,6 +18,7 @@ import PdfPage from "./containers/PdfPage";
 import NewMenu from "./containers/NewMenu";
 import NewCheckout from "./containers/NewCheckout";
 import { NewCartPage } from "./containers/NewCartPage";
+import { DeliveryTypeModal } from "./components/DeliveryTypeModal";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ function App() {
           />
         </Switch>
       </Router>
+      <DeliveryTypeModal delay={5000}></DeliveryTypeModal>
     </div>
   );
 }
