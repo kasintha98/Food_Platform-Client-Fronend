@@ -1,9 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   Nav,
-  FormControl,
-  Form,
   Dropdown,
   DropdownButton,
   Container,
@@ -15,12 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 import logo from "../../img/logo.png";
 import { login, signout } from "../../actions";
 import { Link, NavLink } from "react-router-dom";
-import { useScrollSection } from "react-scroll-section";
 import CartNum from "../UI/CartNum";
 import { ToastContainer } from "react-toastify";
 import styled from "@emotion/styled";
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import LoginDrawer from "../Login";
+import { NavHashLink } from "react-router-hash-link";
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -58,59 +55,53 @@ export default function Header(props) {
     dispatch(signout());
   };
 
-  const myRef = useRef(null);
-  const executeScroll = () => myRef.current.scrollIntoView();
-
-  const homeSection = useScrollSection("home");
-  const aboutSection = useScrollSection("about");
-  const chefSection = useScrollSection("chef");
-  const menuSection = useScrollSection("menu");
-  const contactSection = useScrollSection("contact");
-
   const renderLoggedInMenu = () => {
     return (
       <>
-        <NavLink
+        <NavHashLink
           className="nav-link"
-          to="/"
-          onClick={homeSection.onClick}
-          selected={homeSection.selected}
+          to="/#home"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           Home
-        </NavLink>
-        <Nav.Link
-          onClick={aboutSection.onClick}
-          selected={aboutSection.selected}
+        </NavHashLink>
+        <NavHashLink
+          className="nav-link"
+          to="/#about"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           About
-        </Nav.Link>
-        <Nav.Link
+        </NavHashLink>
+        <NavHashLink
           className="nav-link"
-          onClick={chefSection.onClick}
-          selected={chefSection.selected}
+          to="/#chef"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           Chef
-        </Nav.Link>
-        <Nav.Link
+        </NavHashLink>
+        <NavHashLink
           className="nav-link"
-          onClick={menuSection.onClick}
-          selected={menuSection.selected}
+          to="/new-menu"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           Menu
-        </Nav.Link>
-        <Nav.Link
+        </NavHashLink>
+        <NavHashLink
           className="nav-link"
-          onClick={contactSection.onClick}
-          selected={contactSection.selected}
+          to="/#contact"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           Contact
-        </Nav.Link>
+        </NavHashLink>
         <NavLink className="nav-link" to="/new-cart">
-          {Object.keys(cart.cartItems).length > 0 ? (
+          {Object.keys(cart.cartItems) ? (
             <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
-          ) : (
-            <CartNum count={0}></CartNum>
-          )}
+          ) : null}
           <i className="fa fa-cart-plus"></i> Cart
         </NavLink>
         <DropdownButton title={`${auth.user.fullName}`} variant="dark">
@@ -132,39 +123,46 @@ export default function Header(props) {
   const renderNonLoggedInMenu = () => {
     return (
       <>
-        <NavLink className="nav-link" to="/">
+        <NavHashLink
+          className="nav-link"
+          to="/#home"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
+        >
           Home
-        </NavLink>
-        <Nav.Link
-          onClick={aboutSection.onClick}
-          selected={aboutSection.selected}
+        </NavHashLink>
+        <NavHashLink
+          className="nav-link"
+          to="/#about"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           About
-        </Nav.Link>
-        <Nav.Link
+        </NavHashLink>
+        <NavHashLink
           className="nav-link"
-          onClick={chefSection.onClick}
-          selected={chefSection.selected}
+          to="/#chef"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           Chef
-        </Nav.Link>
-        {/* <Nav.Link
+        </NavHashLink>
+        <NavHashLink
           className="nav-link"
-          onClick={menuSection.onClick}
-          selected={menuSection.selected}
+          to="/new-menu"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           Menu
-        </Nav.Link> */}
-        <NavLink to="/new-menu" className="nav-link">
-          Menu
-        </NavLink>
-        <Nav.Link
+        </NavHashLink>
+        <NavHashLink
           className="nav-link"
-          onClick={contactSection.onClick}
-          selected={contactSection.selected}
+          to="/#contact"
+          activeClassName="selected"
+          activeStyle={{ color: "red" }}
         >
           Contact
-        </Nav.Link>
+        </NavHashLink>
         <LoginDrawer />
         <NavLink className="nav-link" to="/new-cart">
           {Object.keys(cart.cartItems) ? (
@@ -219,7 +217,7 @@ export default function Header(props) {
         <Container>
           <Navbar.Brand>
             <Link to="/">
-              <img height="40px" src={logo} alt="logo" />
+              <img height="45px" src={logo} alt="logo" />
             </Link>
           </Navbar.Brand>
           {/* <Form className="d-flex">
