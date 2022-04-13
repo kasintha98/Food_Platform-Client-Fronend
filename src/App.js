@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isUserLoggedIn, updateCart } from "./actions";
+import { isUserLoggedIn, updateCart, getAllStores } from "./actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProductListPage from "./containers/ProductListPage";
@@ -19,6 +19,7 @@ import NewMenu from "./containers/NewMenu";
 import NewCheckout from "./containers/NewCheckout";
 import { NewCartPage } from "./containers/NewCartPage";
 import { DeliveryTypeModal } from "./components/DeliveryTypeModal";
+import { MyOrders } from "./containers/MyOrders";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,7 +34,13 @@ function App() {
   useEffect(() => {
     console.log("App.js - updateCart");
     dispatch(updateCart());
+    dispatch(getAllStores());
   }, [auth.authenticate]);
+
+  useEffect(() => {
+    console.log("App.js - get stores");
+    dispatch(getAllStores());
+  });
 
   return (
     <div>
@@ -41,6 +48,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/new-menu" exact component={NewMenu} />
+          <Route path="/my-orders" exact component={MyOrders} />
           <Route path="/new-checkout" exact component={NewCheckout} />
           <Route path="/new-cart" component={NewCartPage} />
           <Route path="/cart" component={CartPage} />

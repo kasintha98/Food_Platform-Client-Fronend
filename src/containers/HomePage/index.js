@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../components/Header";
-import CategoryGallery from "../../components/CategoryGallery";
+
 import MyCarousel from "../../components/Carousel";
 import About from "../../components/About";
 import Chef from "../../components/Chef";
@@ -13,6 +13,7 @@ import { BottomNav } from "../../components/BottomNav";
 
 export default function HomePage(props) {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
+
   return (
     <div>
       <ScrollingProvider>

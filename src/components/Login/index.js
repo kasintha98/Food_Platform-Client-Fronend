@@ -265,7 +265,12 @@ export default function LoginDrawer() {
           {otpSuccess ? getMobileOTP() : getMobileNumber()}
         </div>
       ) : (
-        <UserDetails fname="loopase" />
+        <UserDetails
+          fname="loopase"
+          onCloseDrawer={() => {
+            toggleDrawer("right", false);
+          }}
+        />
       )}
     </Box>
   );
