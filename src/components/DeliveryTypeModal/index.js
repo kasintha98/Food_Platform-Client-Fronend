@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Modal } from "react-bootstrap";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -12,6 +13,21 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import styled from "@emotion/styled";
+
+const ButtonSave = styled(Button)`
+  background-color: rgb(130, 187, 55);
+
+  &:hover {
+    background-color: rgb(130, 187, 55);
+  }
+`;
+
+const CusTabList = styled(TabList)`
+  & .Mui-selected {
+    background-color: transparent !important;
+  }
+`;
 
 export const DeliveryTypeModal = (props) => {
   const [show, setShow] = useState(false);
@@ -19,10 +35,12 @@ export const DeliveryTypeModal = (props) => {
   const [selectedStore, setSelectedStore] = useState("");
   const [selectedStoreObj, setSelectedStoreObj] = useState(null);
 
-  const stores = [
-    { name: "Store 1", address: "Sore 1 Add", time: "10 AM" },
-    { name: "Store 2", address: "Sore 2 Add", time: "11 AM" },
-  ];
+  const stores = useSelector((state) => state.store.stores);
+
+  /* const stores = [
+    { name: "Store 1", address: "Sore 1 Add", time: "10 AM to 11 AM" },
+    { name: "Store 2", address: "Sore 2 Add", time: "11 AM to 12 AM" },
+  ]; */
 
   useEffect(() => {
     setTimeout(
@@ -72,28 +90,46 @@ export const DeliveryTypeModal = (props) => {
   return (
     <div>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header style={{ backgroundColor: "#d22630" }} closeButton>
           <Modal.Title>Select Delivery Type</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ backgroundColor: "rgb(233,237,239)" }}>
           <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={type}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <TabList
+                <CusTabList
                   onChange={handleChangeTab}
                   aria-label="lab API tabs example"
                 >
                   <Tab
-                    sx={{ width: "50%" }}
+                    sx={{
+                      width: "calc(50% - 25px)",
+                      backgroundColor: "transparent",
+                    }}
                     label="Delivery"
                     value="delivery"
                   />
                   <Tab
-                    sx={{ width: "50%" }}
+                    sx={{
+                      width: "50px",
+                      minWidth: "50px",
+                      backgroundColor: "#ff6a14",
+                      color: "#fff !important",
+                      borderRadius: "50%",
+                    }}
+                    label="OR"
+                    value="or"
+                    disabled
+                  />
+                  <Tab
+                    sx={{
+                      width: "calc(50% - 25px)",
+                      backgroundColor: "transparent",
+                    }}
                     label="Self-Collect"
                     value="collect"
                   />
-                </TabList>
+                </CusTabList>
               </Box>
               <TabPanel value="delivery">
                 <FormControl fullWidth>
@@ -112,9 +148,9 @@ export const DeliveryTypeModal = (props) => {
                         onClick={() => {
                           handleSelectedStore(store);
                         }}
-                        value={store.name}
+                        value={store.resturantName}
                       >
-                        {store.name}
+                        {store.resturantName}
                       </MenuItem>
                     ))}
                   </Select>
@@ -123,13 +159,19 @@ export const DeliveryTypeModal = (props) => {
                   {selectedStoreObj ? (
                     <>
                       <Typography variant="p" component="p">
-                        Store Name: {selectedStoreObj.name}
+                        <span style={{ fontWeight: "bold" }}>Store Name: </span>
+                        {selectedStoreObj.resturantName}
                       </Typography>
                       <Typography variant="p" component="p">
-                        Store Address: {selectedStoreObj.address}
+                        <span style={{ fontWeight: "bold" }}>
+                          Store Address:{" "}
+                        </span>
+                        {selectedStoreObj.address1}
                       </Typography>
                       <Typography variant="p" component="p">
-                        Open Time: {selectedStoreObj.time}
+                        <span style={{ fontWeight: "bold" }}>Timing: </span>
+                        {selectedStoreObj.storeStartTime} to{" "}
+                        {selectedStoreObj.storeEndTime}
                       </Typography>
                     </>
                   ) : (
@@ -165,13 +207,18 @@ export const DeliveryTypeModal = (props) => {
                   {selectedStoreObj ? (
                     <>
                       <Typography variant="p" component="p">
-                        Store Name: {selectedStoreObj.name}
+                        <span style={{ fontWeight: "bold" }}>Store Name: </span>
+                        {selectedStoreObj.name}
                       </Typography>
                       <Typography variant="p" component="p">
-                        Store Address: {selectedStoreObj.address}
+                        <span style={{ fontWeight: "bold" }}>
+                          Store Address:{" "}
+                        </span>
+                        {selectedStoreObj.address}
                       </Typography>
                       <Typography variant="p" component="p">
-                        Open Time: {selectedStoreObj.time}
+                        <span style={{ fontWeight: "bold" }}>Timing: </span>
+                        {selectedStoreObj.time}
                       </Typography>
                     </>
                   ) : (
@@ -182,15 +229,15 @@ export const DeliveryTypeModal = (props) => {
             </TabContext>
           </Box>
         </Modal.Body>
-        <Modal.Footer>
-          <Button
+        <Modal.Footer style={{ backgroundColor: "rgb(233,237,239)" }}>
+          <ButtonSave
             onClick={saveDeliveryType}
             variant="contained"
             color="success"
             disabled={!selectedStoreObj}
           >
             Save
-          </Button>
+          </ButtonSave>
         </Modal.Footer>
       </Modal>
     </div>

@@ -6,3 +6,4 @@ export * from "./auth.actions";
 export * from "./cart.action";
 export * from "./user.action";
 export * from "./feedback.action";
+export * from "./store.actions";

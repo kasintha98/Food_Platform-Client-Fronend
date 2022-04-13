@@ -7,6 +7,7 @@ import cartReducer from "./cart.reducer";
 import authReducer from "./auth.reducer";
 import feedbackReducer from "./feedback.reducer";
 import userReducer from "./user.reducer";
+import storeReducer from "./store.reducer";
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   user: userReducer,
   feedback: feedbackReducer,
+  store: storeReducer,
 });
 
 export default rootReducer;
