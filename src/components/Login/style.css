@@ -79,3 +79,10 @@
   justify-content: center;
   margin-top: 5%;
 }
+
+.drawer-background {
+  background-image: url('../../img/disc.jpg');
+  background-size:     cover;               
+  background-repeat:   no-repeat;
+  /* background-position: center center;   */
+}

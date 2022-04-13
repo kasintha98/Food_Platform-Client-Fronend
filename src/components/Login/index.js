@@ -30,6 +30,8 @@ import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../../actions";
 import { toast } from "react-toastify";
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -59,10 +61,10 @@ const TermsTexts = styled(Typography)`
   }
 `;
 
+   // background-color: rgb(233, 237, 239);
 const CusSwipeableDrawer = styled(SwipeableDrawer)`
   & .MuiDrawer-paper {
     width: 500px !important;
-    background-color: rgb(233, 237, 239);
   }
 
   @media (max-width: 576px) {
@@ -282,13 +284,20 @@ export default function LoginDrawer() {
               </div>
               <div className="row">
                 <div id="sign-in-button"></div>
-                <TextField
+                <PhoneInput
+                  defaultCountry="IN"
+                  style={{"fontSize": "0.875rem"} }
+                  placeholder="Mobile Number"
+                  value={mobileNumber}
+                  onChange={setMobileNumber}
+                />
+                {/* <TextField
                   id="outlined-helperText"
                   inputProps={{ style: { fontSize: "0.875rem" } }}
                   label="Mobile Number"
                   onChange={(e) => setMobileNumber(e.target.value)}
                   type="tel"
-                />
+                /> */}
               </div>
               <div className="row mt-4">
                 <div class="text-end">
@@ -398,6 +407,12 @@ export default function LoginDrawer() {
     <div>
       <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link>
       <CusSwipeableDrawer
+        containerStyle={{ height: 'calc(100% - 64px)', top: 64 }}
+        PaperProps={{
+          sx: {
+            backgroundImage: `url(require("../../img/disc.jpg"))`,
+          }
+        }}
         anchor={"right"}
         open={state["right"]}
         onClose={toggleDrawer("right", false)}

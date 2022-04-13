@@ -254,23 +254,23 @@ const UserDetails = (props) => {
                             <Divider />
                             <div className="row" id="tb">
                                 <div className="col-2 p-4">
-                                    <LocalPizzaIcon fontSize="large" />
-                                    <div className="col"></div>
-                                </div>
-                                <div className="col-8">
-                                    <div className="row">
-                                        <BoldTexts class="fw-bold mt-4">My Orders</BoldTexts>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row" id="tb">
-                                <div className="col-2 p-4">
                                     <HomeIcon fontSize="large" />
                                     <div className="col"></div>
                                 </div>
                                 <div className="col-8" onClick={(e) => onAddressPress(e)}>
                                     <div className="row">
                                         <BoldTexts class="fw-bold mt-4">My Addresses</BoldTexts>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row" id="tb">
+                                <div className="col-2 p-4">
+                                    <LocalPizzaIcon fontSize="large" />
+                                    <div className="col"></div>
+                                </div>
+                                <div className="col-8">
+                                    <div className="row">
+                                        <BoldTexts class="fw-bold mt-4">My Orders</BoldTexts>
                                     </div>
                                 </div>
                             </div>

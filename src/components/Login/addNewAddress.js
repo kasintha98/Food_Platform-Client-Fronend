@@ -19,6 +19,9 @@ import { IconButton } from "@mui/material";
 import { AddAddress, GetAddress } from "../../actions";
 import FormControl from '@mui/material/FormControl';
 import Typography from "@mui/material/Typography";
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 
 const Texts = styled(Typography)`
  font-size: 0.875rem;
@@ -71,10 +74,13 @@ const NewAddress = ({ address }) => {
                     <LocationOnIcon sx={{ height: 38, width: 38 }} />
                 </IconButton>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Texts className="p-3">
-                        {address.customerAddressType}{" "}{address.address1}{" "}{address.address2}
-                        {address.landmark}{" "}{address.state}{" "}{address.city}{" "}{address.zip}
-                    </Texts>
+                    <h6 className="text-center pt-3">
+                        <span className="fw-bold">{address.customerAddressType}{": "}<span /></span>
+                        <span className="font-weight-normal">
+                            {address.address1}{" "}{address.address2}
+                            {address.landmark}{" "}{address.state}{" "}{address.city}{" "}{address.zip}
+                        <span /></span>
+                    </h6>
                 </Box>
             </Card>
         </div>
@@ -128,7 +134,7 @@ export default function AddNewAddress(props) {
                 landmark: landMark,
                 zip_code: parseInt(zip)
             }
-            if (address1 != "" || address2 != "" || city != "" || type != "" || landMark != "") {
+            if (address1 != "" && city != "" && type != "" && state != "") {
                 dispatch(AddAddress(addressObj));
                 props.onBackPress();
             } else {
@@ -159,91 +165,92 @@ export default function AddNewAddress(props) {
                                     <></>
                                 )
                         }
+                        <div className="row mb-1">
+                            <TextField
+                                inputProps={{ style: { fontSize: "0.875rem" } }}
+                                id="outlined-helperText"
+                                label="Address Type"
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                                type="text"
+                                required
+                            />
+                        </div>
+                        <div className="row my-1">
+                            <TextField
+                                inputProps={{ style: { fontSize: "0.875rem" } }}
+                                id="outlined-helperText"
+                                label="Address 1"
+                                value={address1}
+                                onChange={(e) => setAddress1(e.target.value)}
+                                type="text"
+                                required
+                            />
+                        </div>
+                        <div className="row my-1">
+                            <TextField
+                                inputProps={{ style: { fontSize: "0.875rem" } }}
+                                id="outlined-helperText"
+                                label="Address 2 (Optional)"
+                                value={address2}
+                                onChange={(e) => setAddress2(e.target.value)}
+                                type="text"
+                                required
+                            />
+                        </div>
+                        <div className="row my-1">
+                            <TextField
+                                inputProps={{ style: { fontSize: "0.875rem" } }}
+                                id="outlined-helperText"
+                                label="Land Mark (Optional)"
+                                value={landMark}
+                                onChange={(e) => setLandMark(e.target.value)}
+                                type="text"
+                                required
+                            />
+                        </div>
+                        <div className="row my-2">
+                            <TextField
+                                inputProps={{ style: { fontSize: "0.875rem" } }}
+                                id="outlined-helperText"
+                                label="Zip Code"
+                                value={zip}
+                                onChange={(e) => setZip(e.target.value)}
+                                type="number"
+                                required
+                            />
+                        </div>
                         <div className="row my-1">
                             <div className="col">
-                                <TextField
-                                    inputProps={{ style: { fontSize: "0.875rem" } }}
-                                    id="outlined-helperText"
-                                    label="Address 1"
-                                    value={address1}
-                                    onChange={(e) => setAddress1(e.target.value)}
-                                    type="text"
-                                    required
-                                />
+                                <FormControl sx={{ minWidth: 200, minHeight: 20 }}>
+                                    <TextField
+                                        inputProps={{ style: { fontSize: "0.875rem" } }}
+                                        id="outlined-helperText"
+                                        label="City"
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                        type="text"
+                                        required
+                                    />
+                                </FormControl>
                             </div>
                             <div className="col">
-                                <TextField
-                                    inputProps={{ style: { fontSize: "0.875rem" } }}
-                                    id="outlined-helperText"
-                                    label="Address 2"
-                                    value={address2}
-                                    onChange={(e) => setAddress2(e.target.value)}
-                                    type="text"
-                                    required
-                                />
+                                <FormControl sx={{ minWidth: 200, minHeight: 20 }}>
+                                    <InputLabel id="demo-simple-select-autowidth-label">State</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-autowidth-label"
+                                        id="demo-simple-select-autowidth"
+                                        value={state}
+                                        onChange={(e) => setState(e.target.value)}
+                                        autoWidth
+                                        label="State"
+                                    >
+                                        <MenuItem value={"State 1"}>State 1</MenuItem>
+                                        <MenuItem value={"State 2"}>State 2</MenuItem>
+                                        <MenuItem value={"State 3"}>State 3</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
-                        </div>
-                        <div className="row my-2">
-                            <div className="col">
-                                <TextField
-                                    inputProps={{ style: { fontSize: "0.875rem" } }}
-                                    id="outlined-helperText"
-                                    label="City"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                    type="text"
-                                    required
-                                />
-                            </div>
-                            <div className="col">
-                                <TextField
-                                    inputProps={{ style: { fontSize: "0.875rem" } }}
-                                    id="outlined-helperText"
-                                    label="Land Mark"
-                                    value={landMark}
-                                    onChange={(e) => setLandMark(e.target.value)}
-                                    type="text"
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className="row my-2">
-                            <div className="col">
-                                <TextField
-                                    inputProps={{ style: { fontSize: "0.875rem" } }}
-                                    id="outlined-helperText"
-                                    label="State"
-                                    value={state}
-                                    onChange={(e) => setState(e.target.value)}
-                                    type="text"
-                                    required
-                                />
-                            </div>
-                            <div className="col">
-                                <TextField
-                                    inputProps={{ style: { fontSize: "0.875rem" } }}
-                                    id="outlined-helperText"
-                                    label="Address Type"
-                                    value={type}
-                                    onChange={(e) => setType(e.target.value)}
-                                    type="text"
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className="row my-2">
-                            <div className="col">
-                                <TextField
-                                    inputProps={{ style: { fontSize: "0.875rem" } }}
-                                    id="outlined-helperText"
-                                    label="Zip Code"
-                                    value={zip}
-                                    onChange={(e) => setZip(e.target.value)}
-                                    type="number"
-                                    required
-                                />
-                            </div>
-                            <div className="col"></div>
                         </div>
                         <div className="row mt-3">
                             <div className="col">
