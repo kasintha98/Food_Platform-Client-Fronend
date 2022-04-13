@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { isUserLoggedIn, updateCart } from "./actions";
+import { isUserLoggedIn, updateCart, getAllStores } from "./actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ProductListPage from "./containers/ProductListPage";
@@ -33,7 +33,13 @@ function App() {
   useEffect(() => {
     console.log("App.js - updateCart");
     dispatch(updateCart());
+    dispatch(getAllStores());
   }, [auth.authenticate]);
+
+  useEffect(() => {
+    console.log("App.js - get stores");
+    dispatch(getAllStores());
+  });
 
   return (
     <div>
