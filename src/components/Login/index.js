@@ -9,7 +9,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { Nav } from "react-bootstrap";
+import { Nav, Row, Col } from "react-bootstrap";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
@@ -30,9 +30,9 @@ import styled from "@emotion/styled";
 import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../../actions";
 import { toast } from "react-toastify";
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input';
-import CloseIcon from '@mui/icons-material/Close';
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -66,12 +66,23 @@ const TermsTexts = styled(Typography)`
 const CusSwipeableDrawer = styled(SwipeableDrawer)`
   & .MuiDrawer-paper {
     width: 500px !important;
-    background-color: rgb(233, 237, 239);
+    background-color: transparent;
+    margin-top: 50px;
+    box-shadow: none;
+  }
+
+  & .MuiBackdrop-root {
+    top: 50px;
   }
 
   @media (max-width: 576px) {
     & .MuiDrawer-paper {
-      width: 90% !important;
+      width: 100% !important;
+      top: 10px;
+    }
+
+    & .MuiBackdrop-root {
+      top: 60px;
     }
   }
 `;
@@ -294,7 +305,7 @@ export default function LoginDrawer() {
                   <div id="sign-in-button"></div>
                   <PhoneInput
                     defaultCountry="IN"
-                    style={{ "fontSize": "0.875rem" }}
+                    style={{ fontSize: "0.875rem" }}
                     placeholder="Mobile Number"
                     value={mobileNumber}
                     onChange={setMobileNumber}
@@ -418,18 +429,38 @@ export default function LoginDrawer() {
     <div>
       <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link>
       <CusSwipeableDrawer
-        containerStyle={{ height: 'calc(100% - 64px)', top: 64 }}
         anchor={"right"}
         open={state["right"]}
         onClose={toggleDrawer("right", false)}
         onOpen={toggleDrawer("right", true)}
       >
-        <div className={viewUserDetails === false ? "drawer-background" : ""}>
-          {/* <button className="esc-btn">
-            esc
-          </button> */}
-          {list("right")}
-        </div>
+        <Row style={{ height: "100%" }}>
+          <Col
+            style={{ backgroundColor: "transparent", margin: 0, padding: 0 }}
+            className="col-1"
+          >
+            <button
+              onClick={toggleDrawer("right", false)}
+              className="esc-btn w-100 text-end"
+            >
+              esc
+            </button>
+          </Col>
+          <Col
+            className={
+              viewUserDetails === false ? "drawer-background col-11" : "col-11"
+            }
+            style={{
+              backgroundColor: "rgb(233, 237, 239)",
+              boxShadow:
+                "0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)",
+              margin: 0,
+              padding: 0,
+            }}
+          >
+            <div>{list("right")}</div>
+          </Col>
+        </Row>
       </CusSwipeableDrawer>
     </div>
   );

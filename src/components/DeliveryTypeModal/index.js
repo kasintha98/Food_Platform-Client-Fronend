@@ -110,7 +110,7 @@ export const DeliveryTypeModal = (props) => {
   const NewAddress = ({ address }) => {
     console.log("address: " + address.city);
     return (
-      <div style={{ width: "88%", margin: "auto" }} className="mb-2">
+      <div style={{ width: "100%", margin: "auto" }} className="mb-2 mt-2">
         <Card sx={{ display: "flex", maxWidth: 600, margin: "0px auto" }}>
           <IconButton aria-label="play/pause">
             <LocationOnIcon sx={{ height: 38, width: 38 }} />
