@@ -40,7 +40,7 @@ function App() {
   useEffect(() => {
     console.log("App.js - get stores");
     dispatch(getAllStores());
-  });
+  },[]);
 
   return (
     <div>

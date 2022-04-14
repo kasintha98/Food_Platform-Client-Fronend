@@ -53,6 +53,10 @@
   }
 }
 
+#tb {
+  cursor: pointer;
+}
+
 #tb:hover {
   background-color: #dbe5f2;
 }
@@ -82,7 +86,23 @@
 
 .drawer-background {
   background-image: url('../../img/disc.jpg');
-  background-size:     cover;               
+  background-size:    100%;     
   background-repeat:   no-repeat;
   /* background-position: center center;   */
+}
+
+.esc-btn {
+  background-color: white; /* Green */
+  border: none;
+  color: #999999;
+  padding: 15px;
+  text-align: center;
+  width:15%;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
 }

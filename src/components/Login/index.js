@@ -31,7 +31,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../../actions";
 import { toast } from "react-toastify";
 import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
+import PhoneInput from 'react-phone-number-input';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -61,10 +62,11 @@ const TermsTexts = styled(Typography)`
   }
 `;
 
-   // background-color: rgb(233, 237, 239);
+// background-color: rgb(233, 237, 239);
 const CusSwipeableDrawer = styled(SwipeableDrawer)`
   & .MuiDrawer-paper {
     width: 500px !important;
+    background-color: rgb(233, 237, 239);
   }
 
   @media (max-width: 576px) {
@@ -261,7 +263,7 @@ export default function LoginDrawer() {
     >
       {!viewUserDetails ? (
         <div>
-          <CusImg className="img-fluid" src={loginImage} alt="banner" />
+          {/* <CusImg className="img-fluid" src={loginImage} alt="banner" /> */}
           {otpSuccess ? getMobileOTP() : getMobileNumber()}
         </div>
       ) : (
@@ -277,90 +279,92 @@ export default function LoginDrawer() {
 
   const getMobileNumber = () => {
     return (
-      <div className="jumbotron align-middle m-4">
-        <Card sx={{ maxWidth: 500, margin: "0px auto" }}>
-          <CardContent>
-            <form className="p-3">
-              <div className="row">
-                <BoldTexts>Login with your valid mobile number</BoldTexts>
-              </div>
-              <div className="row">
-                <p class="fw-bold">{otpError}</p>
-              </div>
-              <div className="row">
-                <div id="sign-in-button"></div>
-                <PhoneInput
-                  defaultCountry="IN"
-                  style={{"fontSize": "0.875rem"} }
-                  placeholder="Mobile Number"
-                  value={mobileNumber}
-                  onChange={setMobileNumber}
-                />
-                {/* <TextField
+      <div style={{ marginTop: "60%" }}>
+        <div className="jumbotron align-middle m-4">
+          <Card sx={{ maxWidth: 500, margin: "0px auto" }}>
+            <CardContent>
+              <form className="p-3">
+                <div className="row">
+                  <BoldTexts>Login with your valid mobile number</BoldTexts>
+                </div>
+                <div className="row">
+                  <p class="fw-bold">{otpError}</p>
+                </div>
+                <div className="row">
+                  <div id="sign-in-button"></div>
+                  <PhoneInput
+                    defaultCountry="IN"
+                    style={{ "fontSize": "0.875rem" }}
+                    placeholder="Mobile Number"
+                    value={mobileNumber}
+                    onChange={setMobileNumber}
+                  />
+                  {/* <TextField
                   id="outlined-helperText"
                   inputProps={{ style: { fontSize: "0.875rem" } }}
                   label="Mobile Number"
                   onChange={(e) => setMobileNumber(e.target.value)}
                   type="tel"
                 /> */}
-              </div>
-              <div className="row mt-4">
-                <div class="text-end">
-                  <SubmitButton
-                    variant="contained"
-                    disableElevation
-                    onClick={onSignInSubmit}
-                  >
-                    Submit
-                  </SubmitButton>
                 </div>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-        <div className="mt-5">
-          <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
-            <CardContent>
-              <form className="p-2">
-                <div className="row mb-2">
-                  <BoldTexts>Login with social accounts</BoldTexts>
-                </div>
-                <div className="row margin-auto">
-                  <div className="col text-right">
-                    <FacebookLogin
-                      appId="210639471070044"
-                      autoLoad={false}
-                      fields="name,email,picture"
-                      callback={responseFacebook}
-                      cssClass="btnFacebook"
-                      icon="fa fa-facebook"
-                      textButton="&nbsp;&nbsp;Facebook"
-                    />
-                    {/* <Button variant="contained" color="primary" startIcon={<FacebookIcon />}>
-                                            Facebook
-                                        </Button> */}
-                  </div>
-                  <div className="col">
-                    <GoogleLogin
-                      clientId={constants.google_clientId}
-                      onSuccess={responseSuccessGoogle}
-                      onFailure={responseErrorGoogle}
-                      className="btnGoogle"
+                <div className="row mt-4">
+                  <div class="text-end">
+                    <SubmitButton
+                      variant="contained"
+                      disableElevation
+                      onClick={onSignInSubmit}
                     >
-                      <i className="fa fa-google-plus" />
-                      <span>&nbsp;&nbsp;Google</span>
-                    </GoogleLogin>
-                    {/* <Button variant="contained" color="success" startIcon={<GoogleIcon />}>
-                                            Google
-                                        </Button> */}
+                      Submit
+                    </SubmitButton>
                   </div>
                 </div>
               </form>
             </CardContent>
           </Card>
-        </div>
-        <div className="text-center mt-5">
-          <p class="fw-bold text-primary">TERMS OF USE</p>
+          <div className="mt-5">
+            <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
+              <CardContent>
+                <form className="p-2">
+                  <div className="row mb-2">
+                    <BoldTexts>Login with social accounts</BoldTexts>
+                  </div>
+                  <div className="row margin-auto">
+                    <div className="col text-right">
+                      <FacebookLogin
+                        appId="210639471070044"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        callback={responseFacebook}
+                        cssClass="btnFacebook"
+                        icon="fa fa-facebook"
+                        textButton="&nbsp;&nbsp;Facebook"
+                      />
+                      {/* <Button variant="contained" color="primary" startIcon={<FacebookIcon />}>
+                                            Facebook
+                                        </Button> */}
+                    </div>
+                    <div className="col">
+                      <GoogleLogin
+                        clientId={constants.google_clientId}
+                        onSuccess={responseSuccessGoogle}
+                        onFailure={responseErrorGoogle}
+                        className="btnGoogle"
+                      >
+                        <i className="fa fa-google-plus" />
+                        <span>&nbsp;&nbsp;Google</span>
+                      </GoogleLogin>
+                      {/* <Button variant="contained" color="success" startIcon={<GoogleIcon />}>
+                                            Google
+                                        </Button> */}
+                    </div>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="text-center mt-5">
+            <p class="fw-bold text-primary">TERMS OF USE</p>
+          </div>
         </div>
       </div>
     );
@@ -368,41 +372,43 @@ export default function LoginDrawer() {
 
   const getMobileOTP = () => {
     return (
-      <div className="jumbotron vertical-center m-4">
-        <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
-          <CardContent>
-            <form className="p-3">
-              <div className="row">
-                <BoldTexts>Login with your valid mobile number</BoldTexts>
-              </div>
-              <div className="row">
-                <p class="font-weight-bold">{otpError}</p>
-              </div>
-              <div className="row">
-                <div id="sign-in-button"></div>
-                <TextField
-                  id="outlined-helperText"
-                  label="OTP"
-                  onChange={(e) => setOtp(e.target.value)}
-                  type="number"
-                />
-              </div>
-              <div className="row mt-4">
-                <div class="text-end">
-                  <SubmitButton
-                    variant="contained"
-                    disableElevation
-                    onClick={onOTPSubmit}
-                  >
-                    Confirm
-                  </SubmitButton>
+      <div style={{ marginTop: "60%" }}>
+        <div className="jumbotron vertical-center m-4">
+          <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
+            <CardContent>
+              <form className="p-3">
+                <div className="row">
+                  <BoldTexts>Login with your valid mobile number</BoldTexts>
                 </div>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-        <div className="text-center mt-5">
-          <TermsTexts>TERMS OF USE</TermsTexts>
+                <div className="row">
+                  <p class="font-weight-bold">{otpError}</p>
+                </div>
+                <div className="row">
+                  <div id="sign-in-button"></div>
+                  <TextField
+                    id="outlined-helperText"
+                    label="OTP"
+                    onChange={(e) => setOtp(e.target.value)}
+                    type="number"
+                  />
+                </div>
+                <div className="row mt-4">
+                  <div class="text-end">
+                    <SubmitButton
+                      variant="contained"
+                      disableElevation
+                      onClick={onOTPSubmit}
+                    >
+                      Confirm
+                    </SubmitButton>
+                  </div>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+          <div className="text-center mt-5">
+            <TermsTexts>TERMS OF USE</TermsTexts>
+          </div>
         </div>
       </div>
     );
@@ -413,17 +419,17 @@ export default function LoginDrawer() {
       <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link>
       <CusSwipeableDrawer
         containerStyle={{ height: 'calc(100% - 64px)', top: 64 }}
-        PaperProps={{
-          sx: {
-            backgroundImage: `url(require("../../img/disc.jpg"))`,
-          }
-        }}
         anchor={"right"}
         open={state["right"]}
         onClose={toggleDrawer("right", false)}
         onOpen={toggleDrawer("right", true)}
       >
-        {list("right")}
+        <div className={viewUserDetails === false ? "drawer-background" : ""}>
+          {/* <button className="esc-btn">
+            esc
+          </button> */}
+          {list("right")}
+        </div>
       </CusSwipeableDrawer>
     </div>
   );
