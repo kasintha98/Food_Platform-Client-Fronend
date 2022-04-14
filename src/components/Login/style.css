@@ -7,9 +7,8 @@
   border: 0px transparent;
   text-align: center;
   display: inline-block;
-  font-family: -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
   font-size: 1rem !important;
   font-weight: 500 !important;
 }
@@ -23,9 +22,8 @@
   border: 0px transparent;
   text-align: center;
   display: inline-block;
-  font-family: -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Open Sans", "Helvetica Neue", sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
   font-size: 1rem !important;
   font-weight: 500 !important;
 }
@@ -65,7 +63,7 @@
   background-color: #dbe5f2;
 }
 
-#addImage{
+#addImage {
   height: 300px;
   width: 300px;
   box-shadow: 10px 10px 5px 5px #ccc;
@@ -78,31 +76,82 @@
   margin-top: 20%;
 }
 
-.button-container{
+.button-container {
   display: flex;
   justify-content: center;
   margin-top: 5%;
 }
 
 .drawer-background {
-  background-image: url('../../img/disc.jpg');
-  background-size:    100%;     
-  background-repeat:   no-repeat;
+  background-image: url("../../img/disc.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
   /* background-position: center center;   */
 }
 
+.padd-4 {
+  padding: 1.5rem;
+}
+
+.marTop-4 {
+  margin-top: 1.5rem;
+}
+
 .esc-btn {
-  background-color: white; /* Green */
+  background-color: white;
+  font-size: 12px;
   border: none;
   color: #999999;
-  padding: 15px;
+  padding: 5px;
+  margin-top: 10px;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+
+  /* border: none;
+  color: #999999;
+  padding: 5px;
   text-align: center;
-  width:15%;
+
+
   text-decoration: none;
   display: inline-block;
-  font-size: 20px;
-  margin: 4px 2px;
+  
+
   cursor: pointer;
   border-top-left-radius: 100px;
-  border-bottom-left-radius: 100px;
+  border-bottom-left-radius: 100px; */
+
+  /* margin: 4px 2px; */
+  /* height: 50px;
+  width: 15%; */
+}
+
+.MuiDrawer-root {
+  top: 50px !important;
+}
+
+@media (max-width: 992px) {
+  .MuiDrawer-root {
+    top: 60px !important;
+  }
+
+  .esc-btn {
+    font-size: 10px;
+    padding: 3px;
+  }
+}
+
+@media (max-width: 576px) {
+  .padd-4 {
+    padding: 0;
+  }
+
+  .marTop-4 {
+    margin-top: 0.5rem;
+  }
+
+  .plm-0 {
+    margin-left: 0;
+    padding-left: 0;
+  }
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAddress } from "../../actions";
 import { Modal } from "react-bootstrap";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -14,6 +15,9 @@ import Select from "@mui/material/Select";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import styled from "@emotion/styled";
+import Card from "@mui/material/Card";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { IconButton } from "@mui/material";
 
 const ButtonSave = styled(Button)`
   background-color: rgb(130, 187, 55);
@@ -31,11 +35,15 @@ const CusTabList = styled(TabList)`
 
 export const DeliveryTypeModal = (props) => {
   const [show, setShow] = useState(false);
+  const [isLoggedIn, setisLoggedIn] = useState(false);
   const [type, setType] = React.useState("delivery");
   const [selectedStore, setSelectedStore] = useState("");
   const [selectedStoreObj, setSelectedStoreObj] = useState(null);
 
+  const dispatch = useDispatch();
+
   const stores = useSelector((state) => state.store.stores);
+  const allAddress = useSelector((state) => state.user.allAddresses);
 
   /* const stores = [
     { name: "Store 1", address: "Sore 1 Add", time: "10 AM to 11 AM" },
@@ -43,6 +51,18 @@ export const DeliveryTypeModal = (props) => {
   ]; */
 
   useEffect(() => {
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+    let localUserMobileNumber = localStorage.getItem("userMobileNumber");
+
+    if (localUserMobileNumber) {
+      if (specialChars.test(localUserMobileNumber)) {
+        encodeURIComponent(localUserMobileNumber);
+      }
+      dispatch(GetAddress(localUserMobileNumber));
+      setisLoggedIn(true);
+    }
+
     setTimeout(
       function () {
         console.log("Delivery type");
@@ -85,6 +105,33 @@ export const DeliveryTypeModal = (props) => {
       props.onChangeType(delObj);
     }
     handleClose();
+  };
+
+  const NewAddress = ({ address }) => {
+    console.log("address: " + address.city);
+    return (
+      <div style={{ width: "100%", margin: "auto" }} className="mb-2 mt-2">
+        <Card sx={{ display: "flex", maxWidth: 600, margin: "0px auto" }}>
+          <IconButton aria-label="play/pause">
+            <LocationOnIcon sx={{ height: 38, width: 38 }} />
+          </IconButton>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <h6 className="text-center pt-3">
+              <span className="fw-bold">
+                {address.customerAddressType}
+                {": "}
+                <span />
+              </span>
+              <span className="font-weight-normal">
+                {address.address1} {address.address2}
+                {address.landmark} {address.state} {address.city} {address.zip}
+                <span />
+              </span>
+            </h6>
+          </Box>
+        </Card>
+      </div>
+    );
   };
 
   return (
@@ -176,6 +223,33 @@ export const DeliveryTypeModal = (props) => {
                     </>
                   ) : (
                     <Alert severity="warning">No store is selected!</Alert>
+                  )}
+                </div>
+                <div className="mt-2">
+                  {isLoggedIn ? (
+                    <>
+                      <Typography variant="p" component="p">
+                        <span style={{ fontWeight: "bold" }}>
+                          Customer Address:{" "}
+                        </span>
+                      </Typography>
+                      {allAddress ? (
+                        <>
+                          {allAddress?.map((address, index) => {
+                            return <NewAddress address={address} key={index} />;
+                          })}
+                        </>
+                      ) : (
+                        <Alert severity="warning">
+                          You have not added any addresses, Please add an
+                          address to your profile!
+                        </Alert>
+                      )}
+                    </>
+                  ) : (
+                    <Alert severity="warning">
+                      Please login with a valid mobile number for delivery!
+                    </Alert>
                   )}
                 </div>
               </TabPanel>

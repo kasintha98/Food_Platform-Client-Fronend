@@ -30,6 +30,15 @@ const CusNavbar = styled(Navbar)`
   }
 `;
 
+const CusNav = styled(Nav)`
+  height: 50px;
+
+  @media (max-width: 992px) {
+    margin-top: -1px;
+    height: 200px;
+  }
+`;
+
 export default function Header(props) {
   const [loginModal, setLoginModal] = useState(false);
   const [email, setEmail] = useState("");
@@ -234,7 +243,7 @@ export default function Header(props) {
             style={{ backgroundColor: "#fff", marginTop: "0px" }}
             id="navbarScroll"
           >
-            <Nav
+            <CusNav
               className="mr-auto my-2 my-lg-0 justify-content-end"
               style={{ maxHeight: "200px", width: "100%" }}
               navbarScroll
@@ -242,7 +251,7 @@ export default function Header(props) {
               {auth.authenticate
                 ? renderLoggedInMenu()
                 : renderNonLoggedInMenu()}
-            </Nav>
+            </CusNav>
           </Navbar.Collapse>
         </Container>
       </CusNavbar>
