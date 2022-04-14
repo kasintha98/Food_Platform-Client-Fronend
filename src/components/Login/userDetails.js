@@ -9,7 +9,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
@@ -17,9 +18,9 @@ import { Label } from "@mui/icons-material";
 import loginImage from "../../img/loginim.JPG";
 import Container from "@mui/material/Container";
 import GoogleIcon from "@mui/icons-material/Google";
-import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
-import LocalPizzaIcon from "@mui/icons-material/LocalPizza";
-import LogoutIcon from "@mui/icons-material/Logout";
+import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined';
+import LocalPizzaOutlinedIcon from '@mui/icons-material/LocalPizzaOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import HomeIcon from "@mui/icons-material/Home";
 import MyAddresses from "./myAddresses";
 import { UpdateUserDetails } from "../../actions";
@@ -46,10 +47,10 @@ const BoldTexts = styled(Typography)`
 `;
 
 const nameBoxStyle = {
-    backgroundColor: "#0000CD",
+    border: "3px solid black",
     height: "50px",
     width: "50px",
-    color: "white",
+    color: "black",
     textAlign: "center",
     verticalAlign: "middle",
     lineHeight: "50px",
@@ -148,13 +149,13 @@ const UserDetails = (props) => {
     };
 
     return (
-        <div>
+        <div style={{ backgroundColor:"rgb(233, 237, 239)"}}>
             {!myAddresses ? (
                 <div className="ms-3">
                     <div className="row mt-5">
                         <div className="col-2 p-4">
                             <div style={nameBoxStyle}>
-                                <p className="fw-bold">G</p>
+                                <p className="fw-bold">{firstName != "" ? (firstName.charAt(0)).toUpperCase() : "H"}</p>
                             </div>
                             <div className="col"></div>
                         </div>
@@ -200,7 +201,7 @@ const UserDetails = (props) => {
                     </div>
                     <div className="row mt-3" id="tb">
                         <div className="col-2 p-4">
-                            <PhoneInTalkIcon fontSize="large" />
+                            <PhoneInTalkOutlinedIcon fontSize="large" />
                             <div className="col"></div>
                         </div>
                         <div className="col-8">
@@ -217,17 +218,10 @@ const UserDetails = (props) => {
                                 />
                             </div>
                         </div>
-                        {/* <div className="col-2 mt-4">
-                                    <div class="text-start">
-                                        <Button variant="text" disableElevation onClick={(e) => onTelEditPress(e)}>
-                                            {editPhone}
-                                        </Button>
-                                    </div>
-                                </div> */}
                     </div>
                     <div className="row" id="tb">
                         <div className="col-2 p-4">
-                            <MailIcon fontSize="large" />
+                            <EmailOutlinedIcon fontSize="large" />
                             <div className="col"></div>
                         </div>
                         <div className="col-8">
@@ -259,7 +253,7 @@ const UserDetails = (props) => {
                     <Divider />
                     <div className="row" id="tb">
                         <div className="col-2 p-4">
-                            <HomeIcon fontSize="large" />
+                            <HomeOutlinedIcon fontSize="large" />
                             <div className="col"></div>
                         </div>
                         <div className="col-8" onClick={(e) => onAddressPress(e)}>
@@ -270,7 +264,7 @@ const UserDetails = (props) => {
                     </div>
                     <div className="row" id="tb">
                         <div className="col-2 p-4">
-                            <LocalPizzaIcon fontSize="large" />
+                            <LocalPizzaOutlinedIcon fontSize="large" />
                             <div className="col"></div>
                         </div>
                         <div className="col-8">
@@ -287,7 +281,7 @@ const UserDetails = (props) => {
                     </div>
                     <div className="row" id="tb" onClick={onLogoutPress}>
                         <div className="col-2 p-4">
-                            <LogoutIcon fontSize="large" />
+                            <LogoutOutlinedIcon fontSize="large" />
                             <div className="col"></div>
                         </div>
                         <div className="col-8">
