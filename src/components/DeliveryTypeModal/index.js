@@ -270,9 +270,9 @@ export const DeliveryTypeModal = (props) => {
                         onClick={() => {
                           handleSelectedStore(store);
                         }}
-                        value={store.name}
+                        value={store.resturantName}
                       >
-                        {store.name}
+                        {store.resturantName}
                       </MenuItem>
                     ))}
                   </Select>
