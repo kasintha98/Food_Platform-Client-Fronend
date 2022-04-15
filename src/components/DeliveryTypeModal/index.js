@@ -282,17 +282,18 @@ export const DeliveryTypeModal = (props) => {
                     <>
                       <Typography variant="p" component="p">
                         <span style={{ fontWeight: "bold" }}>Store Name: </span>
-                        {selectedStoreObj.name}
+                        {selectedStoreObj.resturantName}
                       </Typography>
                       <Typography variant="p" component="p">
                         <span style={{ fontWeight: "bold" }}>
                           Store Address:{" "}
                         </span>
-                        {selectedStoreObj.address}
+                        {selectedStoreObj.address1}
                       </Typography>
                       <Typography variant="p" component="p">
                         <span style={{ fontWeight: "bold" }}>Timing: </span>
-                        {selectedStoreObj.time}
+                        {selectedStoreObj.storeStartTime} to{" "}
+                        {selectedStoreObj.storeEndTime}
                       </Typography>
                     </>
                   ) : (
