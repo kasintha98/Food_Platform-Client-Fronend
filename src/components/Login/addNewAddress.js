@@ -162,7 +162,7 @@ export default function AddNewAddress(props) {
             ) : (
               <></>
             )}
-            <div className="row mb-1">
+            <div className="row mb-3">
               <TextField
                 inputProps={{ style: { fontSize: "0.875rem" } }}
                 id="outlined-helperText"
@@ -173,7 +173,7 @@ export default function AddNewAddress(props) {
                 required
               />
             </div>
-            <div className="row my-1">
+            <div className="row mb-3">
               <TextField
                 inputProps={{ style: { fontSize: "0.875rem" } }}
                 id="outlined-helperText"
@@ -184,7 +184,7 @@ export default function AddNewAddress(props) {
                 required
               />
             </div>
-            <div className="row my-1">
+            <div className="row mb-3">
               <TextField
                 inputProps={{ style: { fontSize: "0.875rem" } }}
                 id="outlined-helperText"
@@ -195,7 +195,7 @@ export default function AddNewAddress(props) {
                 required
               />
             </div>
-            <div className="row my-1">
+            <div className="row mb-3">
               <TextField
                 inputProps={{ style: { fontSize: "0.875rem" } }}
                 id="outlined-helperText"
@@ -206,7 +206,7 @@ export default function AddNewAddress(props) {
                 required
               />
             </div>
-            <div className="row my-2">
+            <div className="row mb-3">
               <TextField
                 inputProps={{ style: { fontSize: "0.875rem" } }}
                 id="outlined-helperText"
@@ -217,9 +217,9 @@ export default function AddNewAddress(props) {
                 required
               />
             </div>
-            <div className="row my-1">
+            <div className="row mb-3">
               <div className="col-6 pl-0 ml-0" style={{ paddingLeft: 0 }}>
-                <FormControl sx={{ minWidth: "100%", minHeight: 20 }}>
+                <FormControl sx={{ minWidth: "100%" }}>
                   <TextField
                     inputProps={{ style: { fontSize: "0.875rem" } }}
                     id="outlined-helperText"
@@ -232,7 +232,7 @@ export default function AddNewAddress(props) {
                 </FormControl>
               </div>
               <div className="col-6 pr-0 mr-0">
-                <FormControl sx={{ minWidth: "100%", minHeight: 20 }}>
+                <FormControl sx={{ minWidth: "100%" }}>
                   <InputLabel id="demo-simple-select-autowidth-label">
                     State
                   </InputLabel>

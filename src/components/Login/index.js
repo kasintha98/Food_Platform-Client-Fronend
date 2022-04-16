@@ -33,6 +33,8 @@ import { toast } from "react-toastify";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import CloseIcon from "@mui/icons-material/Close";
+import { NavHashLink } from "react-router-hash-link";
+import Countdown from "react-countdown";
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -120,6 +122,8 @@ export default function LoginDrawer() {
   const [otpError, setOtpError] = useState("");
   const [viewUserDetails, setViewUserDetails] = useState(false);
 
+  const auth = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -129,6 +133,8 @@ export default function LoginDrawer() {
       setViewUserDetails(true);
     }
   }, []);
+
+  const Completionist = () => <span>Time is up!</span>;
 
   const toggleDrawer = (anchor, open) => (event) => {
     setState({ ...state, [anchor]: open });
@@ -332,7 +338,7 @@ export default function LoginDrawer() {
               </form>
             </CardContent>
           </Card>
-          <div className="mt-5">
+          {/* <div className="mt-5">
             <Card sx={{ maxWidth: 600, margin: "0px auto" }}>
               <CardContent>
                 <form className="p-2">
@@ -350,9 +356,6 @@ export default function LoginDrawer() {
                         icon="fa fa-facebook"
                         textButton="&nbsp;&nbsp;Facebook"
                       />
-                      {/* <Button variant="contained" color="primary" startIcon={<FacebookIcon />}>
-                                            Facebook
-                                        </Button> */}
                     </div>
                     <div className="col">
                       <GoogleLogin
@@ -364,18 +367,15 @@ export default function LoginDrawer() {
                         <i className="fa fa-google-plus" />
                         <span>&nbsp;&nbsp;Google</span>
                       </GoogleLogin>
-                      {/* <Button variant="contained" color="success" startIcon={<GoogleIcon />}>
-                                            Google
-                                        </Button> */}
                     </div>
                   </div>
                 </form>
               </CardContent>
             </Card>
-          </div>
-          <div className="text-center mt-5">
+          </div> */}
+          {/* <div className="text-center mt-5">
             <p class="fw-bold text-primary">TERMS OF USE</p>
-          </div>
+          </div> */}
         </div>
       </div>
     );
@@ -389,7 +389,7 @@ export default function LoginDrawer() {
             <CardContent>
               <form className="p-3">
                 <div className="row">
-                  <BoldTexts>Login with your valid mobile number</BoldTexts>
+                  <BoldTexts>Please enter the OTP sent to your phone</BoldTexts>
                 </div>
                 <div className="row">
                   <p class="font-weight-bold">{otpError}</p>
@@ -404,15 +404,23 @@ export default function LoginDrawer() {
                   />
                 </div>
                 <div className="row mt-4">
-                  <div class="text-end">
-                    <SubmitButton
-                      variant="contained"
-                      disableElevation
-                      onClick={onOTPSubmit}
-                    >
-                      Confirm
-                    </SubmitButton>
-                  </div>
+                  <Col>
+                    <Countdown
+                      date={Date.now() + 60000}
+                      renderer={rendererTime}
+                    />
+                  </Col>
+                  <Col>
+                    <div class="text-end">
+                      <SubmitButton
+                        variant="contained"
+                        disableElevation
+                        onClick={onOTPSubmit}
+                      >
+                        Confirm
+                      </SubmitButton>
+                    </div>
+                  </Col>
                 </div>
               </form>
             </CardContent>
@@ -425,9 +433,44 @@ export default function LoginDrawer() {
     );
   };
 
+  const rendererTime = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a complete state
+      setOtpSuccess(false);
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return <span>You have {seconds}S to enter the OTP</span>;
+    }
+  };
+
   return (
     <div>
-      <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link>
+      {/* <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link> */}
+      <NavHashLink
+        className="nav-link"
+        to="/#login"
+        activeClassName="selected"
+        activeStyle={{
+          /* color: "red", */ borderBottom: "3px red solid",
+          paddingBottom: "15px",
+        }}
+        onClick={toggleDrawer("right", true)}
+      >
+        {auth.user?.mobileNumber ? (
+          <div>
+            {auth.user?.firstName ? (
+              <>
+                {auth.user?.firstName} <br></br> {auth.user?.mobileNumber}
+              </>
+            ) : (
+              <>{auth.user?.mobileNumber}</>
+            )}
+          </div>
+        ) : (
+          <div>Login</div>
+        )}
+      </NavHashLink>
       <CusSwipeableDrawer
         anchor={"right"}
         open={state["right"]}

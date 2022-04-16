@@ -13,3 +13,7 @@
 .borderRound:hover {
   background-color: #a6d4fa;
 }
+
+.gpay-card-info-container {
+  min-width: 100%;
+}

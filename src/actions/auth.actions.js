@@ -91,13 +91,23 @@ export const signup = (mobileNumber) => {
   return async (dispatch) => {
     try {
       dispatch({ type: authConstants.SIGNUP_REQUEST });
-      const res = await axios.get("/customer/register", { params: { mobno: mobileNumber } });
+      const res = await axios.get("/customer/register", {
+        params: { mobno: mobileNumber },
+      });
       console.log(res);
 
       if (res.data) {
         console.log(res);
-        dispatch({ type: authConstants.SIGNUP_SUCCESS });
+        dispatch({ type: authConstants.SIGNUP_SUCCESS, payload: res.data });
         const { id, mobileNumber, firstName, lastName, emailId } = res.data;
+
+        const user = {
+          id,
+          mobileNumber,
+          firstName,
+          lastName,
+          emailId,
+        };
 
         localStorage.clear();
         localStorage.setItem("userId", null);
@@ -106,12 +116,12 @@ export const signup = (mobileNumber) => {
         localStorage.setItem("userLastName", null);
         localStorage.setItem("userEmail", null);
 
-
         localStorage.setItem("userId", id);
         localStorage.setItem("userMobileNumber", mobileNumber);
         localStorage.setItem("userFistName", firstName);
         localStorage.setItem("userLastName", lastName);
         localStorage.setItem("userEmail", emailId);
+        localStorage.setItem("user", JSON.stringify(user));
         // dispatch({
         //   type: authConstants.LOGIN_SUCCESS,
         //   payload: {
@@ -152,16 +162,20 @@ export const signup = (mobileNumber) => {
 //if user is logged in then stop user going again to /signin
 export const isUserLoggedIn = () => {
   return async (dispatch) => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    //const token = localStorage.getItem("token");
+    const userMobileNumber = localStorage.getItem("userMobileNumber");
+
+    if (userMobileNumber) {
       const user = JSON.parse(localStorage.getItem("user"));
-      dispatch({
+      /* dispatch({
         type: authConstants.LOGIN_SUCCESS,
         payload: {
           token,
           user,
         },
-      });
+      }); */
+
+      dispatch({ type: authConstants.SIGNUP_SUCCESS, payload: user });
     } else {
       dispatch({
         type: authConstants.LOGIN_FAILURE,

@@ -84,8 +84,12 @@
 
 .drawer-background {
   background-image: url("../../img/disc.jpg");
-  background-size: 100%;
+  /* background-size: 100%;
+  background-repeat: no-repeat; */
+  background-size: 100% 100%;
   background-repeat: no-repeat;
+  background-position: left top;
+
   /* background-position: center center;   */
 }
 
@@ -104,8 +108,9 @@
   color: #999999;
   padding: 5px;
   margin-top: 10px;
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
+  height: 40px;
+  /* border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%; */
 
   /* border: none;
   color: #999999;
@@ -154,4 +159,10 @@
     margin-left: 0;
     padding-left: 0;
   }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

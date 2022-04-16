@@ -71,7 +71,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#home"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Home
         </NavHashLink>
@@ -79,7 +79,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#about"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           About
         </NavHashLink>
@@ -87,7 +87,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#chef"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Chef
         </NavHashLink>
@@ -95,7 +95,7 @@ export default function Header(props) {
           className="nav-link"
           to="/new-menu"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Menu
         </NavHashLink>
@@ -103,7 +103,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#contact"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Contact
         </NavHashLink>
@@ -136,7 +136,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#home"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Home
         </NavHashLink>
@@ -144,7 +144,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#about"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           About
         </NavHashLink>
@@ -152,7 +152,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#chef"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Chef
         </NavHashLink>
@@ -160,7 +160,7 @@ export default function Header(props) {
           className="nav-link"
           to="/new-menu"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Menu
         </NavHashLink>
@@ -168,7 +168,7 @@ export default function Header(props) {
           className="nav-link"
           to="/#contact"
           activeClassName="selected"
-          activeStyle={{ color: "red" }}
+          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
           Contact
         </NavHashLink>
