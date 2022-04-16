@@ -20,7 +20,7 @@ body {
   webkit-box-shadow: 0 8px 48px 8px rgba(47, 91, 234, 0.175);
   box-shadow: 0 8px 48px 8px rgba(47, 91, 234, 0.175);
   padding-top: 0px;
-  padding-bottom: 80px;
+  padding-bottom: 0px;
   margin-top: 40px;
 }
 .footer_area .row {
