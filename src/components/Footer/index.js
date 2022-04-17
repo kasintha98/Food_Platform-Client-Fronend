@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="col-12 col-sm-6 col-lg-4">
             <div className="single-footer-widget section_padding_0_130">
               {/* Footer Logo*/}
-              <div className="footer-logo mb-3" />
+              <div className="footer-logo " />
               <img src={footerimg} width="100%" alt="facebook" />
             </div>
           </div>
@@ -55,12 +55,10 @@ export default function Footer() {
                   <div className="footer_menu">
                     <ul>
                       <li>
-                        <a href="#">
-                          Cash on Delivery (Maximum Transaction Value: $200)
-                        </a>
+                        <a href="#">Google Pay</a>
                       </li>
                       <li>
-                        <a href="#">Credit Card</a>
+                        <a href="#">PhonePe</a>
                       </li>
                     </ul>
                   </div>

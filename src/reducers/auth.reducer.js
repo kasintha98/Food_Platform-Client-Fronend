@@ -4,18 +4,13 @@ import { authConstants } from "../actions/constants";
 const initState = {
   token: null,
   user: {
+    id: "",
+    mobileNumber: "",
     firstName: "",
     lastName: "",
-    nic: "",
-    gender: "",
-    email: "",
-    fullName: "",
-    contactNumber: "",
-    address: "",
-    username: "",
-    role: "",
-    picture: "",
+    emailId: "",
   },
+
   authenticate: false,
   authenticating: false,
   loading: false,
@@ -82,6 +77,15 @@ export default (state = initState, action) => {
         ...state,
         error: action.payload.error,
         errormsg: action.payload.errormsg,
+      };
+      break;
+    case authConstants.SIGNUP_SUCCESS:
+      state = {
+        ...state,
+        user: action.payload,
+        authenticate: true,
+        authenticating: false,
+        error: null,
       };
       break;
   }
