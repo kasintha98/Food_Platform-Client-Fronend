@@ -460,9 +460,9 @@ export default function LoginDrawer() {
         {auth.user?.mobileNumber ? (
           <div>
             {auth.user?.firstName ? (
-              <>
+              <div style={{ fontSize: "13px", marginBottom: "-14px" }}>
                 {auth.user?.firstName} <br></br> {auth.user?.mobileNumber}
-              </>
+              </div>
             ) : (
               <>{auth.user?.mobileNumber}</>
             )}

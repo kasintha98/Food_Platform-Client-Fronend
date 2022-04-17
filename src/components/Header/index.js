@@ -67,6 +67,64 @@ export default function Header(props) {
   const renderLoggedInMenu = () => {
     return (
       <>
+        {/* <NavHashLink
+          className="nav-link"
+          to="/#home"
+          activeClassName="selected"
+          activeStyle={{ borderBottom: "3px red solid" }}
+        >
+          Home
+        </NavHashLink>
+        <NavHashLink
+          className="nav-link"
+          to="/#about"
+          activeClassName="selected"
+          activeStyle={{ borderBottom: "3px red solid" }}
+        >
+          About
+        </NavHashLink>
+        <NavHashLink
+          className="nav-link"
+          to="/#chef"
+          activeClassName="selected"
+          activeStyle={{ borderBottom: "3px red solid" }}
+        >
+          Chef
+        </NavHashLink>
+        <NavHashLink
+          className="nav-link"
+          to="/new-menu"
+          activeClassName="selected"
+          activeStyle={{ borderBottom: "3px red solid" }}
+        >
+          Menu
+        </NavHashLink>
+        <NavHashLink
+          className="nav-link"
+          to="/#contact"
+          activeClassName="selected"
+          activeStyle={{ borderBottom: "3px red solid" }}
+        >
+          Contact
+        </NavHashLink>
+        <NavLink className="nav-link" to="/new-cart">
+          {Object.keys(cart.cartItems) ? (
+            <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
+          ) : null}
+          <i className="fa fa-cart-plus"></i> Cart
+        </NavLink>
+        <DropdownButton title={`${auth.user.fullName}`} variant="dark">
+          <Dropdown.Item>
+            <Link to="/profile">
+              <i className="fa fa-id-badge"></i> Profile
+            </Link>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Link onClick={() => logout()} to="/">
+              <i className="fa fa-sign-out"></i> Logout
+            </Link>
+          </Dropdown.Item>
+        </DropdownButton> */}
         <NavHashLink
           className="nav-link"
           to="/#home"
@@ -107,24 +165,13 @@ export default function Header(props) {
         >
           Contact
         </NavHashLink>
+        <LoginDrawer />
         <NavLink className="nav-link" to="/new-cart">
           {Object.keys(cart.cartItems) ? (
             <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
           ) : null}
           <i className="fa fa-cart-plus"></i> Cart
         </NavLink>
-        <DropdownButton title={`${auth.user.fullName}`} variant="dark">
-          <Dropdown.Item>
-            <Link to="/profile">
-              <i className="fa fa-id-badge"></i> Profile
-            </Link>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Link onClick={() => logout()} to="/">
-              <i className="fa fa-sign-out"></i> Logout
-            </Link>
-          </Dropdown.Item>
-        </DropdownButton>
       </>
     );
   };
