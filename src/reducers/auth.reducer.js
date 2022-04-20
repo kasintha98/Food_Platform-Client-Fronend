@@ -1,4 +1,4 @@
-import { authConstants } from "../actions/constants";
+import { authConstants, deliveryTypeConstants } from "../actions/constants";
 
 //initial state of user object
 const initState = {
@@ -17,6 +17,7 @@ const initState = {
   error: null,
   errormsg: null,
   message: "",
+  deliveryType: null,
 };
 
 //check what is the request and returning suitable state for the request
@@ -86,6 +87,12 @@ export default (state = initState, action) => {
         authenticate: true,
         authenticating: false,
         error: null,
+      };
+      break;
+    case deliveryTypeConstants.SET_DELIVERY_TYPE_SUCCESS:
+      state = {
+        ...state,
+        deliveryType: action.payload,
       };
       break;
   }

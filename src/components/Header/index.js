@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import styled from "@emotion/styled";
 import LoginDrawer from "../Login";
 import { NavHashLink } from "react-router-hash-link";
+import { HeaderDeliveryType } from "../HeaderDeliveryType";
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -45,6 +46,7 @@ export default function Header(props) {
   const [password, setPassword] = useState("");
 
   const auth = useSelector((state) => state.auth);
+  const deliveryType = useSelector((state) => state.auth.deliveryType);
   const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
@@ -285,6 +287,11 @@ export default function Header(props) {
             />
             <Button variant="outline-success">Search</Button>
           </Form> */}
+          {deliveryType ? (
+            <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType>
+          ) : (
+            <p>no</p>
+          )}
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse
             style={{ backgroundColor: "#fff", marginTop: "0px" }}

@@ -1,5 +1,10 @@
 import axios from "../helpers/axios";
-import { authConstants, cartConstants, userConstants } from "./constants";
+import {
+  authConstants,
+  cartConstants,
+  userConstants,
+  deliveryTypeConstants,
+} from "./constants";
 import { toast } from "react-toastify";
 import axiosnew from "axios";
 
@@ -193,5 +198,14 @@ export const signout = () => {
 
     dispatch({ type: authConstants.LOGOUT_SUCCESS });
     dispatch({ type: cartConstants.RESET_CART, payload: { cartItems: {} } });
+  };
+};
+
+export const setDeliveryType = (delObj) => {
+  return async (dispatch) => {
+    dispatch({
+      type: deliveryTypeConstants.SET_DELIVERY_TYPE_SUCCESS,
+      payload: delObj,
+    });
   };
 };
