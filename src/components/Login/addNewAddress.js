@@ -65,33 +65,6 @@ const BackButton = styled(Button)`
   }
 `;
 
-const NewAddress = ({ address }) => {
-  console.log("address: " + address.city);
-  return (
-    <div style={{ width: "88%", margin: "auto" }} className="mb-2">
-      <Card sx={{ display: "flex", maxWidth: 600, margin: "0px auto" }}>
-        <IconButton aria-label="play/pause">
-          <LocationOnIcon sx={{ height: 38, width: 38 }} />
-        </IconButton>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <h6 className="text-center pt-3">
-            <span className="fw-bold">
-              {address.customerAddressType}
-              {": "}
-              <span />
-            </span>
-            <span className="font-weight-normal">
-              {address.address1} {address.address2}
-              {address.landmark} {address.state} {address.city} {address.zip}
-              <span />
-            </span>
-          </h6>
-        </Box>
-      </Card>
-    </div>
-  );
-};
-
 export default function AddNewAddress(props) {
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
@@ -100,7 +73,7 @@ export default function AddNewAddress(props) {
   const [state, setState] = useState("");
 
   const [city, setCity] = useState("");
-  const [zip, setZip] = useState(0);
+  const [zip, setZip] = useState();
 
   const [type, setType] = useState("");
   const [validateErrror, setValidateErrror] = useState(false);
@@ -145,6 +118,47 @@ export default function AddNewAddress(props) {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const onEditPress = (address) => {
+    console.log(address);
+    setType(address.customerAddressType);
+    setAddress1(address.address1);
+    setAddress2(address.address2);
+    setLandMark(address.landmark);
+    setZip(address.zip);
+    setCity(address.city);
+    setState(address.state);
+
+  }
+
+  const NewAddress = ({ address }) => {
+    return (
+      <div style={{ width: "88%", margin: "auto" }} className="mb-2">
+        <Card sx={{ display: "flex", maxWidth: 600, margin: "0px auto" }}>
+          <IconButton aria-label="play/pause">
+            <LocationOnIcon sx={{ height: 38, width: 38 }} />
+          </IconButton>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <h6 className="text-center pt-3">
+              <span className="fw-bold">
+                {address.customerAddressType}
+                {": "}
+                <span />
+              </span>
+              <span className="font-weight-normal">
+                {address.address1} {address.address2}
+                {address.landmark} {address.state} {address.city} {address.zipCode}
+                <span />
+              </span>
+            </h6>
+          </Box>
+          <IconButton aria-label="play/pause">
+            <Button variant="text" onClick={(e) => { onEditPress(address) }}>Edit</Button>
+          </IconButton>
+        </Card>
+      </div>
+    );
   };
 
   return (
