@@ -37,6 +37,15 @@ import CartCard from "../../components/CartCard";
 import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
 import GooglePayButton from "@google-pay/button-react";
 import { SettingsApplicationsRounded } from "@mui/icons-material";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
+import InputLabel from "@mui/material/InputLabel";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -105,6 +114,7 @@ export default function NewCheckout() {
   const [delModalOpen, setDelModalOpen] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [show, setShow] = useState(false);
+  const [paymentType, setPaymentType] = React.useState("female");
 
   useEffect(() => {
     const item = localStorage.getItem("deliveryType");
@@ -140,6 +150,10 @@ export default function NewCheckout() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleChangePaymentType = (event) => {
+    setPaymentType(event.target.value);
   };
 
   const renderPayUModal = () => {
@@ -290,7 +304,7 @@ export default function NewCheckout() {
               </Col>
               <Col className="col-4">
                 <Typography sx={{ textAlign: "end" }}>
-                  <a href="">Explore Menu</a>
+                  {/* <a href="/new-menu">Explore Menu</a> */}
                 </Typography>
               </Col>
             </Row>
@@ -305,6 +319,84 @@ export default function NewCheckout() {
                 </CardContent>
               </Card>
             </div>
+            <Row>
+              <Col className="col-12 mt-5">
+                <h5>Price Details</h5>
+              </Col>
+              <Col className="col-12">
+                <Grid sx={{ width: "100%", marginTop: 3 }}>
+                  <Card>
+                    <Table aria-label="simple table">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            Sub Total
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ textAlign: "end" }}
+                          >
+                            ₹{" "}
+                            {subTotal +
+                              (extraSubTotal ? extraSubTotal : 0) +
+                              (choiceTotal ? choiceTotal : 0)}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            Discount
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ textAlign: "end" }}
+                          >
+                            -
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            Taxes and Charges
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ textAlign: "end" }}
+                          >
+                            -
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            Grand Total
+                          </TableCell>
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ textAlign: "end" }}
+                          >
+                            ₹{" "}
+                            {subTotal +
+                              (extraSubTotal ? extraSubTotal : 0) +
+                              (choiceTotal ? choiceTotal : 0)}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                    <CardActions>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        className="w-100"
+                      >
+                        PLACE ORDER
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              </Col>
+            </Row>
           </Col>
           <Col className="col-5 mt-5">
             {currentType && currentType?.type === "delivery" ? (
@@ -427,46 +519,98 @@ export default function NewCheckout() {
             ) : null}
 
             <Row>
-              <Col className="col-12 mt-5">
-                <h5>Offers</h5>
-              </Col>
+              <Col className="col-12 mt-5"></Col>
               <Col className="col-12">
                 <Grid sx={{ width: "100%", marginTop: 3 }}>
                   <Card>
-                    <CardActionArea>
-                      <CardContent>
-                        <div className="row">
-                          <div className="col-3" sx={{ textAlign: "center" }}>
-                            <Typography sx={{ textAlign: "center" }}>
-                              <LocalOfferIcon></LocalOfferIcon>
-                            </Typography>
-                          </div>
-                          <div className="col-6">
-                            <Typography variant="subtitle1" paragraph>
-                              Select offer / Apply coupon
-                            </Typography>
-
-                            <Typography
-                              variant="subtitle1"
-                              color="text.secondary"
-                            >
-                              Get discount with your order
-                            </Typography>
-                          </div>
-                          <div className="col-3" sx={{ textAlign: "end" }}>
-                            <Typography sx={{ textAlign: "center" }}>
-                              <ArrowForwardIosIcon></ArrowForwardIosIcon>
-                            </Typography>
-                          </div>
+                    <CardContent>
+                      <div className="row">
+                        <h5>SELF COLLECT</h5>
+                      </div>
+                      <div className="row">
+                        <div className="col-6" sx={{ textAlign: "center" }}>
+                          <Typography sx={{ textAlign: "left" }}>
+                            <h5>STORE ADDRESS</h5>
+                            <p>
+                              Yammunagar Hangries Store <br />
+                              Plot 1, Central Market, <br />
+                              Yammunagar – 835281 <br />
+                              Phone - +9172653839209
+                            </p>
+                          </Typography>
                         </div>
-                      </CardContent>
-                    </CardActionArea>
+
+                        <div className="col-6" sx={{ textAlign: "end" }}>
+                          <Typography sx={{ textAlign: "center" }}>
+                            <CardActions>
+                              <Button
+                                variant="contained"
+                                color="success"
+                                className="w-100"
+                              >
+                                CHANGE LOCATION
+                              </Button>
+                            </CardActions>
+                          </Typography>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="col-12 mt-5"></Col>
+              <Col className="col-12">
+                <Grid sx={{ width: "100%", marginTop: 3 }}>
+                  <Card sx={{ width: "100%", marginTop: 3 }}>
+                    <CardContent>
+                      <h5>ORDER DATE : 20/APR/2022 </h5>
+                      <h5>TIME : NOW</h5>
+                    </CardContent>
                   </Card>
                 </Grid>
               </Col>
             </Row>
 
             <Row>
+              <Col className="col-12 mt-5">
+                <h5>APPLY COUPON CODE</h5>
+              </Col>
+              <Col className="col-12">
+                <Grid sx={{ width: "100%", marginTop: 3 }}>
+                  <Card>
+                    <CardContent>
+                      <div className="row">
+                        <div className="col-6" sx={{ textAlign: "center" }}>
+                          <Typography sx={{ textAlign: "center" }}>
+                            <Box component="form" noValidate autoComplete="off">
+                              {" "}
+                            </Box>
+                          </Typography>
+                        </div>
+
+                        <div className="col-6" sx={{ textAlign: "end" }}>
+                          <Typography sx={{ textAlign: "center" }}>
+                            <CardActions>
+                              <Button
+                                variant="contained"
+                                color="success"
+                                className="w-100"
+                              >
+                                APPLY COUPON
+                              </Button>
+                            </CardActions>
+                          </Typography>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Col>
+            </Row>
+
+            {/* <Row>
               <Col className="col-12 mt-5">
                 <h5>Payment Options</h5>
               </Col>
@@ -602,14 +746,7 @@ export default function NewCheckout() {
                               </Button>
                             </form>
 
-                            {/* <Button
-                              variant="contained"
-                              color="success"
-                              onClick={handleShow}
-                              className="w-100"
-                            >
-                              Pay with PayU
-                            </Button> */}
+                         
                           </Col>
                         </Row>
                       </CardContent>
@@ -617,80 +754,51 @@ export default function NewCheckout() {
                   </Card>
                 </Grid>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row>
               <Col className="col-12 mt-5">
-                <h5>Price Details</h5>
+                <h5>PAYMENT METHOD</h5>
               </Col>
               <Col className="col-12">
                 <Grid sx={{ width: "100%", marginTop: 3 }}>
                   <Card>
-                    <Table aria-label="simple table">
-                      <TableBody>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Sub Total
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            ₹{" "}
-                            {subTotal +
-                              (extraSubTotal ? extraSubTotal : 0) +
-                              (choiceTotal ? choiceTotal : 0)}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Discount
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            -
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Taxes and Charges
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            -
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Grand Total
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            ₹{" "}
-                            {subTotal +
-                              (extraSubTotal ? extraSubTotal : 0) +
-                              (choiceTotal ? choiceTotal : 0)}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
+                    <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
+                      <RadioGroup
+                        aria-labelledby="demo-controlled-radio-buttons-group"
+                        name="controlled-radio-buttons-group"
+                        value={paymentType}
+                        onChange={handleChangePaymentType}
+                      >
+                        <FormControlLabel
+                          value="PayU (Cards, Net Banking, UPI, Wallet)"
+                          control={<Radio color="success" />}
+                          label="PayU (Cards, Net Banking, UPI, Wallet)"
+                        />
+                        <FormControlLabel
+                          value="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
+                          control={<Radio color="success" />}
+                          label="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
+                        />
+                        <FormControlLabel
+                          value="CASH"
+                          control={<Radio color="success" />}
+                          label="CASH"
+                        />
+                        <FormControlLabel
+                          value="CASH ON DELIVERY"
+                          control={<Radio color="success" />}
+                          label="CASH ON DELIVERY"
+                        />
+                      </RadioGroup>
+                    </FormControl>
                     <CardActions>
                       <Button
                         variant="contained"
                         color="success"
                         className="w-100"
                       >
-                        PLACE ORDER
+                        SELECT PAYMENT METHOD
                       </Button>
                     </CardActions>
                   </Card>
