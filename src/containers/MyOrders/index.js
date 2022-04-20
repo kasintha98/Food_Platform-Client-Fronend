@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import Typography from "@mui/material/Typography";
 import { Container } from "react-bootstrap";
 import styled from "@emotion/styled";
 
@@ -24,11 +25,26 @@ const CusTableCell = styled(TableCell)`
 
 export const MyOrders = () => {
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "rgb(233, 237, 239)",
+      }}
+    >
       <Header></Header>
       <Container
-        style={{ marginTop: "120px", minHeight: "calc(100vh - 500px)" }}
+        style={{
+          marginTop: "50px",
+          paddingTop: "20px",
+          minHeight: "calc(100vh - 500px)",
+        }}
       >
+        <Typography
+          sx={{ textAlign: "center", marginBottom: "20px" }}
+          variant="h4"
+          component="h4"
+        >
+          My Orders
+        </Typography>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
