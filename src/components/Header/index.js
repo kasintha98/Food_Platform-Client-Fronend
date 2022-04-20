@@ -40,6 +40,14 @@ const CusNav = styled(Nav)`
   }
 `;
 
+const CusNav2 = styled(Nav)`
+  height: 50px;
+
+  @media (max-width: 992px) {
+    height: 70px;
+  }
+`;
+
 export default function Header(props) {
   const [loginModal, setLoginModal] = useState(false);
   const [email, setEmail] = useState("");
@@ -287,16 +295,17 @@ export default function Header(props) {
             />
             <Button variant="outline-success">Search</Button>
           </Form> */}
-          {deliveryType ? (
-            <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType>
-          ) : (
-            <p>no</p>
-          )}
+
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse
             style={{ backgroundColor: "#fff", marginTop: "0px" }}
             id="navbarScroll"
           >
+            <CusNav2 className="me-auto">
+              {deliveryType ? (
+                <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType>
+              ) : null}
+            </CusNav2>
             <CusNav
               className="mr-auto my-2 my-lg-0 justify-content-end"
               style={{ maxHeight: "200px", width: "100%" }}

@@ -458,7 +458,7 @@ export default function LoginDrawer() {
         onClick={toggleDrawer("right", true)}
       >
         {auth.user?.mobileNumber ? (
-          <div>
+          <div style={{ color: "#2E75B6" }}>
             {auth.user?.firstName ? (
               <div style={{ fontSize: "13px", marginBottom: "-14px" }}>
                 {auth.user?.firstName} <br></br> {auth.user?.mobileNumber}
