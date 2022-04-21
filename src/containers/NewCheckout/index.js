@@ -17,7 +17,7 @@ import CheckoutCard from "../../components/CheckoutCard/index";
 import ProductCard from "../../components/ProductCard";
 import styled from "@emotion/styled";
 import CartNum from "../../components/UI/CartNum";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Paper } from "@mui/material";
 import { Grid } from "@mui/material";
 import { CardActionArea } from "@mui/material";
@@ -49,6 +49,7 @@ import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { GetAddress } from "../../actions";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -178,6 +179,8 @@ export default function NewCheckout() {
   const [show, setShow] = useState(false);
   const [paymentType, setPaymentType] = React.useState("female");
 
+  const dispatch = useDispatch();
+
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
 
@@ -187,6 +190,16 @@ export default function NewCheckout() {
     if (item) {
       console.log(JSON.parse(item));
       setCurrentType(JSON.parse(item));
+    }
+
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    let localUserMobileNumber = localStorage.getItem("userMobileNumber");
+
+    if (localUserMobileNumber) {
+      if (specialChars.test(localUserMobileNumber)) {
+        encodeURIComponent(localUserMobileNumber);
+      }
+      dispatch(GetAddress(localUserMobileNumber));
     }
   }, []);
 
