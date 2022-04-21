@@ -23,6 +23,37 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 
+const stateList=[
+" Andhra Pradesh",
+"Arunachal Pradesh",
+"Assam",
+"Bihar",
+"Chhattisgarh",
+"Goa",
+"Gujarat",
+"Haryana",
+"Himachal Pradesh",
+"Jharkhand",
+"Karnataka",
+"Kerala",
+"Madhya Pradesh",
+"Maharashtra",
+"Manipur",
+"Meghalaya",
+"Mizoram",
+"Nagaland",
+"Odisha",
+"Punjab",
+"Rajasthan",
+"Sikkim",
+"Tamil Nadu",
+"Telangana",
+"Tripura",
+"Uttar Pradesh",
+"Uttarakhand",
+"West Bengal",
+]
+
 const Texts = styled(Typography)`
   font-size: 0.875rem;
   font-weight: 400;
@@ -258,9 +289,16 @@ export default function AddNewAddress(props) {
                     autoWidth
                     label="State"
                   >
-                    <MenuItem value={"State 1"}>State 1</MenuItem>
+                    {
+                      stateList.map((state,index)=>{
+                        return(
+                          <MenuItem value={state} key={index}>{state}</MenuItem>
+                        )
+                      })
+                    }
+                    {/* <MenuItem value={"State 1"}>State 1</MenuItem>
                     <MenuItem value={"State 2"}>State 2</MenuItem>
-                    <MenuItem value={"State 3"}>State 3</MenuItem>
+                    <MenuItem value={"State 3"}>State 3</MenuItem> */}
                   </Select>
                 </FormControl>
               </div>

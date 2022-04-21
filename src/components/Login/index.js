@@ -185,7 +185,7 @@ export default function LoginDrawer() {
 
   const onSignInSubmit = (e) => {
     //setOtpSuccess(true);
-
+    console.log(mobileNumber)
     try {
       setLoginDetails({
         loginCode: 0,
@@ -209,11 +209,8 @@ export default function LoginDrawer() {
         .catch((error) => {
           setOtpSuccess(false);
           console.log("SMS NOT SENT ERROR....!!");
-          /* setOtpError(
-            "Error!!! OTP Not Sent! Please add country code as well!"
-          ); */
           toast.error(
-            "Error!!! OTP Not Sent! Please add country code as well!"
+            "Invalid Phone Number!"
           );
         });
     } catch (ex) {
@@ -329,7 +326,7 @@ export default function LoginDrawer() {
                     <SubmitButton
                       variant="contained"
                       disableElevation
-                      onClick={onSignInSubmit}
+                      onClick={(e) => { onSignInSubmit(e) }}
                     >
                       Submit
                     </SubmitButton>
