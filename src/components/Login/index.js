@@ -36,6 +36,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { NavHashLink } from "react-router-hash-link";
 import Countdown from "react-countdown";
 import { useLocation } from "react-router-dom";
+import AddNewAddress from "./addNewAddress";
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -52,6 +53,14 @@ const BoldTexts = styled(Typography)`
   font-family: Arial;
   @media (max-width: 992px) {
     font-size: 0.9rem;
+  }
+`;
+
+const CLButton = styled(Button)`
+  background-color: #a6a6a6;
+
+  &:hover {
+    background-color: #616161;
   }
 `;
 
@@ -103,7 +112,7 @@ const SubmitButton = styled(Button)`
   }
 `;
 
-export default function LoginDrawer() {
+export default function LoginDrawer(props) {
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -219,6 +228,7 @@ export default function LoginDrawer() {
         })
         .catch((error) => {
           console.log("SMS NOT SENT ERROR....!!");
+          console.log(error);
           toast.error("Invalid Phone Number!");
         });
     } catch (ex) {
@@ -283,18 +293,30 @@ export default function LoginDrawer() {
       alignItems="center"
       justify="center"
     >
-      {!viewUserDetails ? (
-        <div>
-          {/* <CusImg className="img-fluid" src={loginImage} alt="banner" /> */}
-          {otpSuccess ? getMobileOTP() : getMobileNumber()}
-        </div>
+      {!props.forceAddAddress ? (
+        <>
+          {!viewUserDetails ? (
+            <div>
+              {/* <CusImg className="img-fluid" src={loginImage} alt="banner" /> */}
+              {otpSuccess ? getMobileOTP() : getMobileNumber()}
+            </div>
+          ) : (
+            <UserDetails
+              fname="loopase"
+              onCloseDrawer={() => {
+                toggleDrawer("right", false);
+              }}
+            />
+          )}
+        </>
       ) : (
-        <UserDetails
-          fname="loopase"
-          onCloseDrawer={() => {
+        <AddNewAddress
+          onBackPress={() => {
             toggleDrawer("right", false);
+            console.log("uooooooooo");
           }}
-        />
+          forceAddAddress={true}
+        ></AddNewAddress>
       )}
     </Box>
   );
@@ -463,30 +485,41 @@ export default function LoginDrawer() {
   return (
     <div>
       {/* <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link> */}
-      <NavHashLink
-        className="nav-link"
-        to={`${location.pathname}#login`}
-        activeClassName="selected"
-        activeStyle={{
-          /* color: "red", */ borderBottom: "3px red solid",
-          paddingBottom: "15px",
-        }}
-        onClick={toggleDrawer("right", true)}
-      >
-        {auth.user?.mobileNumber ? (
-          <div style={{ color: "#2E75B6" }}>
-            {auth.user?.firstName ? (
-              <div style={{ fontSize: "13px", marginBottom: "-14px" }}>
-                {auth.user?.firstName} <br></br> {auth.user?.mobileNumber}
-              </div>
-            ) : (
-              <>{auth.user?.mobileNumber}</>
-            )}
-          </div>
-        ) : (
-          <div>Login</div>
-        )}
-      </NavHashLink>
+      {props.forceAddAddress ? (
+        <CLButton
+          onClick={toggleDrawer("right", true)}
+          variant="contained"
+          className="w-100"
+        >
+          ADD NEW ADDRESS
+        </CLButton>
+      ) : (
+        <NavHashLink
+          className="nav-link"
+          to={`${location.pathname}#login`}
+          activeClassName="selected"
+          activeStyle={{
+            /* color: "red", */ borderBottom: "3px red solid",
+            paddingBottom: "15px",
+          }}
+          onClick={toggleDrawer("right", true)}
+        >
+          {auth.user?.mobileNumber ? (
+            <div style={{ color: "#2E75B6" }}>
+              {auth.user?.firstName ? (
+                <div style={{ fontSize: "13px", marginBottom: "-14px" }}>
+                  {auth.user?.firstName} <br></br> {auth.user?.mobileNumber}
+                </div>
+              ) : (
+                <>{auth.user?.mobileNumber}</>
+              )}
+            </div>
+          ) : (
+            <div>Login</div>
+          )}
+        </NavHashLink>
+      )}
+
       <CusSwipeableDrawer
         anchor={"right"}
         open={state["right"]}

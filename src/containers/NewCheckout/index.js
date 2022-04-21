@@ -50,6 +50,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { GetAddress } from "../../actions";
+import LoginDrawer from "../../components/Login";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -588,6 +589,7 @@ export default function NewCheckout() {
                                   >
                                     {allAddress.map((address) => (
                                       <MenuItem
+                                        key={address.customerAddressType}
                                         onClick={() => {
                                           setSelectedAddress(address);
                                         }}
@@ -601,12 +603,15 @@ export default function NewCheckout() {
                               ) : null}
                               <Typography sx={{ textAlign: "center" }}>
                                 <CardActions>
-                                  <CLButton
+                                  {/* <CLButton
                                     variant="contained"
                                     className="w-100"
                                   >
                                     ADD NEW ADDRESS
-                                  </CLButton>
+                                  </CLButton> */}
+                                  <LoginDrawer
+                                    forceAddAddress={true}
+                                  ></LoginDrawer>
                                 </CardActions>
                               </Typography>
                             </div>

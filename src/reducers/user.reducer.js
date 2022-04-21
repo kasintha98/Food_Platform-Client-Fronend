@@ -7,7 +7,7 @@ const initState = {
   loading: false,
   orderFetching: false,
   message: "",
-  allAddresses:[]
+  allAddresses: [],
 };
 
 export default (state = initState, action) => {
@@ -105,7 +105,7 @@ export default (state = initState, action) => {
       };
       break;
 
-      //address reducers
+    //address reducers
     case userConstants.GET_USER_ORDER_DETAILS_REQUEST:
       break;
 
@@ -119,8 +119,6 @@ export default (state = initState, action) => {
     case userConstants.GET_USER_ORDER_DETAILS_FAILURE:
       break;
 
-
-
     case userAddressConstants.GET_USER_ADDRESSS_REQUEST:
       break;
 
@@ -128,6 +126,14 @@ export default (state = initState, action) => {
       state = {
         ...state,
         allAddresses: action.payload,
+      };
+      break;
+
+    case userAddressConstants.ADD_USER_ADDRESS_SUCCESS:
+      const newAllAdd = state.allAddresses.push(action.payload);
+      state = {
+        ...state,
+        allAddresses: newAllAdd,
       };
       break;
 
