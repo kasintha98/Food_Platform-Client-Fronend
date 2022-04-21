@@ -9,6 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
+import Alert from "@mui/material/Alert";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -46,6 +47,8 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -103,6 +106,61 @@ const CusCol = styled(Col)`
   }
 `;
 
+const POButton = styled(Button)`
+  background-color: #00b050;
+  height: 50px;
+  width: 250px;
+
+  &:hover {
+    background-color: #357a38;
+  }
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
+`;
+
+const CLButton = styled(Button)`
+  background-color: #a6a6a6;
+
+  &:hover {
+    background-color: #616161;
+  }
+`;
+
+const ACButton = styled(Button)`
+  background-color: #92d050;
+  height: 40px;
+  &:hover {
+    background-color: #548235;
+  }
+`;
+
+const DTButton = styled(Button)`
+  background-color: #92d050;
+  height: 40px;
+  &:hover {
+    background-color: #548235;
+  }
+`;
+
+const SPMButton = styled(Button)`
+  background-color: #92d050;
+  height: 40px;
+  &:hover {
+    background-color: #548235;
+  }
+`;
+
+const CusTextField = styled(TextField)`
+  border: 1px solid #a5a5a5;
+  height: 40px;
+
+  & .MuiOutlinedInput-notchedOutline {
+    border-style: hidden;
+  }
+`;
+
 export default function NewCheckout() {
   const [value, setValue] = useState(0);
 
@@ -111,10 +169,17 @@ export default function NewCheckout() {
   const [currentType, setCurrentType] = useState(0);
   const [extraSubTotal, setExtraSubTotal] = useState(0);
   const [choiceTotal, setChoiceTotal] = useState(0);
+  const [coupon, setCoupon] = useState("");
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedAddressStr, setSelectedAddressStr] = useState(null);
   const [delModalOpen, setDelModalOpen] = useState(false);
+  const [delModalOpen2, setDelModalOpen2] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [show, setShow] = useState(false);
   const [paymentType, setPaymentType] = React.useState("female");
+
+  const allAddress = useSelector((state) => state.user.allAddresses);
+  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
     const item = localStorage.getItem("deliveryType");
@@ -144,16 +209,46 @@ export default function NewCheckout() {
     setCurrentType(type);
   };
 
+  const handleCloseDelModal = (resp) => {
+    setDelModalOpen(resp);
+    setDelModalOpen2(resp);
+  };
+
   const renderDeliveryTypeModal = () => {
     return setDelModalOpen(true);
+  };
+
+  const renderDeliveryTypeModal2 = () => {
+    console.log(delModalOpen2);
+    return setDelModalOpen2(true);
   };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const handleChangeCoupon = (event) => {
+    setCoupon(event.target.value);
+  };
+
   const handleChangePaymentType = (event) => {
     setPaymentType(event.target.value);
+  };
+
+  const handleChangeSelectedAddressStr = (event) => {
+    setSelectedAddressStr(event.target.value);
+  };
+
+  const renderNowDate = () => {
+    const dateObj = new Date();
+    const month = dateObj.toLocaleString("default", { month: "short" });
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+    return (
+      <span>
+        {day}/{month.toUpperCase()}/{year}
+      </span>
+    );
   };
 
   const renderPayUModal = () => {
@@ -384,79 +479,113 @@ export default function NewCheckout() {
                         </TableRow>
                       </TableBody>
                     </Table>
-                    <CardActions>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        className="w-100"
-                      >
-                        PLACE ORDER
-                      </Button>
+                    <CardActions sx={{ justifyContent: "center" }}>
+                      <POButton variant="contained">PLACE ORDER</POButton>
                     </CardActions>
                   </Card>
                 </Grid>
               </Col>
             </Row>
           </Col>
+
           <Col className="col-5 mt-5">
             {currentType && currentType?.type === "delivery" ? (
               <Row>
-                <Col className="col-12">
-                  <h5>Choose a delivery address</h5>
-                </Col>
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
                     <Card>
                       <CardContent>
                         <div className="row mb-3">
-                          <div className="col-2">
-                            <Typography sx={{ textAlign: "center" }}>
-                              <LocationOnIcon></LocationOnIcon>
-                            </Typography>
-                          </div>
-                          <div className="col-6">
-                            <Typography
-                              variant="subtitle1"
-                              color="text.secondary"
-                            >
-                              Please select location, so that we can find a
-                              restaurant that delivers to you!
-                            </Typography>
-                          </div>
-                          <div className="col-4">
-                            <Typography
-                              variant="subtitle1"
-                              color="success"
-                              sx={{ textAlign: "end" }}
-                            >
-                              <Button variant="outlined" justifyContent="end">
-                                ADD LOCATION
-                              </Button>
-                            </Typography>
-                          </div>
+                          <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                            SELECT DELIVERY ADDRESS
+                          </h5>
                         </div>
-                        <Divider variant="middle" />
-                        <div className="row mt-3">
-                          <div className="col-2">
-                            <Typography sx={{ textAlign: "center" }}>
-                              <LoginIcon></LoginIcon>
-                            </Typography>
+
+                        {auth.authenticate ? (
+                          <div className="row">
+                            <div className="col-6" sx={{ textAlign: "center" }}>
+                              {allAddress.length < 1 ? (
+                                <Alert severity="error">
+                                  You don't have added any addresses. Please add
+                                  a new address!
+                                </Alert>
+                              ) : null}
+                              {selectedAddress ? (
+                                <Typography sx={{ textAlign: "left" }}>
+                                  <h5
+                                    style={{
+                                      fontWeight: "bold",
+                                      color: "#7F7F7F",
+                                    }}
+                                  >
+                                    {selectedAddress.customerAddressType}
+                                  </h5>
+                                  <p
+                                    style={{
+                                      color: "#7F7F7F",
+                                    }}
+                                  >
+                                    {selectedAddress.address1}
+                                    <br />
+                                    {selectedAddress.address2}
+                                    <br />
+                                    {selectedAddress.landmark}
+                                    <br />
+                                    {selectedAddress.state}
+                                    <br />
+                                    {selectedAddress.city}
+                                    <br />
+                                    {selectedAddress.zip}
+                                  </p>
+                                </Typography>
+                              ) : null}
+                            </div>
+
+                            <div className="col-6" sx={{ textAlign: "end" }}>
+                              {allAddress.length > 0 ? (
+                                <FormControl fullWidth className="mb-3">
+                                  <InputLabel id="demo-address-label">
+                                    Address
+                                  </InputLabel>
+                                  <Select
+                                    labelId="demo-address-label"
+                                    id="demo-address"
+                                    value={selectedAddressStr}
+                                    label="Address"
+                                    onChange={handleChangeSelectedAddressStr}
+                                  >
+                                    {allAddress.map((address) => (
+                                      <MenuItem
+                                        onClick={() => {
+                                          setSelectedAddress(address);
+                                        }}
+                                        value={address.customerAddressType}
+                                      >
+                                        {address.customerAddressType}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </FormControl>
+                              ) : null}
+                              <Typography sx={{ textAlign: "center" }}>
+                                <CardActions>
+                                  <CLButton
+                                    variant="contained"
+                                    className="w-100"
+                                  >
+                                    ADD NEW ADDRESS
+                                  </CLButton>
+                                </CardActions>
+                              </Typography>
+                            </div>
                           </div>
-                          <div className="col-6">
-                            <Typography variant="subtitle1" paragraph>
-                              Login to use your saved addresses
-                            </Typography>
+                        ) : (
+                          <div>
+                            <Alert severity="error">
+                              Please login to use your address for delivery!
+                            </Alert>
                           </div>
-                          <div className="col-4">
-                            <Typography
-                              variant="subtitle1"
-                              color="success"
-                              sx={{ textAlign: "end" }}
-                            >
-                              <Button variant="outlined">MY ADDRESS</Button>
-                            </Typography>
-                          </div>
-                        </div>
+                        )}
                       </CardContent>
                     </Card>
                   </Grid>
@@ -466,31 +595,56 @@ export default function NewCheckout() {
 
             {currentType && currentType?.type === "collect" ? (
               <Row>
-                <Col className="col-12 mt-5">
-                  <h5>Order Pick Up</h5>
-                </Col>
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
                     <Card>
                       <CardContent>
-                        <div className="row ">
-                          <div className="col-2">
+                        <div className="row mb-3">
+                          <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                            SELF COLLECT
+                          </h5>
+                        </div>
+                        <div className="row">
+                          <div className="col-6" sx={{ textAlign: "center" }}>
+                            <Typography sx={{ textAlign: "left" }}>
+                              <h5
+                                style={{ fontWeight: "bold", color: "#7F7F7F" }}
+                              >
+                                STORE ADDRESS
+                              </h5>
+                              <p
+                                style={{
+                                  color: "#7F7F7F",
+                                }}
+                              >
+                                {currentType.resturantName} <br />
+                                <span>{currentType.address1}</span>
+                                {currentType.address2 ? (
+                                  <>
+                                    , <span>{currentType.address2}</span>
+                                  </>
+                                ) : null}
+                                {currentType.address3 ? (
+                                  <>
+                                    , <span>{currentType.address3}</span>
+                                  </>
+                                ) : null}
+                              </p>
+                            </Typography>
+                          </div>
+
+                          <div className="col-6" sx={{ textAlign: "end" }}>
                             <Typography sx={{ textAlign: "center" }}>
-                              <PhoneIphoneIcon></PhoneIphoneIcon>
+                              <CardActions>
+                                <CLButton
+                                  onClick={renderDeliveryTypeModal2}
+                                  variant="contained"
+                                  className="w-100"
+                                >
+                                  CHANGE LOCATION
+                                </CLButton>
+                              </CardActions>
                             </Typography>
-                          </div>
-                          <div className="col-6">
-                            <Typography variant="subtitle1" paragraph>
-                              Enter your phone number
-                            </Typography>
-                          </div>
-                          <div className="col-4">
-                            <TextField
-                              id=""
-                              label="Phone"
-                              type="text"
-                              variant="standard"
-                            />
                           </div>
                         </div>
                       </CardContent>
@@ -502,18 +656,26 @@ export default function NewCheckout() {
 
             {!currentType ? (
               <Row>
-                <Col className="col-12 mt-5">
-                  <h5>Please select a delivery type</h5>
+                <Col className="col-12 mt-5 mb-2">
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "1.25rem",
+                      color: "#7F7F7F",
+                    }}
+                  >
+                    PLEASE SELECT A DELIVERY TYPE
+                  </Typography>
                 </Col>
                 <Col className="col-12">
-                  <Button
+                  <DTButton
                     onClick={renderDeliveryTypeModal}
                     variant="contained"
                     color="success"
                     sx={{ width: "100%" }}
                   >
                     Select Delivery Type
-                  </Button>
+                  </DTButton>
                 </Col>
               </Row>
             ) : null}
@@ -522,51 +684,14 @@ export default function NewCheckout() {
               <Col className="col-12 mt-5"></Col>
               <Col className="col-12">
                 <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card>
-                    <CardContent>
-                      <div className="row">
-                        <h5>SELF COLLECT</h5>
-                      </div>
-                      <div className="row">
-                        <div className="col-6" sx={{ textAlign: "center" }}>
-                          <Typography sx={{ textAlign: "left" }}>
-                            <h5>STORE ADDRESS</h5>
-                            <p>
-                              Yammunagar Hangries Store <br />
-                              Plot 1, Central Market, <br />
-                              Yammunagar – 835281 <br />
-                              Phone - +9172653839209
-                            </p>
-                          </Typography>
-                        </div>
-
-                        <div className="col-6" sx={{ textAlign: "end" }}>
-                          <Typography sx={{ textAlign: "center" }}>
-                            <CardActions>
-                              <Button
-                                variant="contained"
-                                color="success"
-                                className="w-100"
-                              >
-                                CHANGE LOCATION
-                              </Button>
-                            </CardActions>
-                          </Typography>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Col>
-            </Row>
-            <Row>
-              <Col className="col-12 mt-5"></Col>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
                   <Card sx={{ width: "100%", marginTop: 3 }}>
                     <CardContent>
-                      <h5>ORDER DATE : 20/APR/2022 </h5>
-                      <h5>TIME : NOW</h5>
+                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                        ORDER DATE : {renderNowDate()}
+                      </h5>
+                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                        TIME : NOW
+                      </h5>
                     </CardContent>
                   </Card>
                 </Grid>
@@ -574,32 +699,28 @@ export default function NewCheckout() {
             </Row>
 
             <Row>
-              <Col className="col-12 mt-5">
-                <h5>APPLY COUPON CODE</h5>
-              </Col>
               <Col className="col-12">
                 <Grid sx={{ width: "100%", marginTop: 3 }}>
                   <Card>
                     <CardContent>
-                      <div className="row">
+                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                        APPLY COUPON CODE
+                      </h5>
+                      <div className="row align-items-center">
                         <div className="col-6" sx={{ textAlign: "center" }}>
-                          <Typography sx={{ textAlign: "center" }}>
-                            <Box component="form" noValidate autoComplete="off">
-                              {" "}
-                            </Box>
-                          </Typography>
+                          <CusTextField
+                            id="outlined-name"
+                            value={coupon}
+                            onChange={handleChangeCoupon}
+                          />
                         </div>
 
                         <div className="col-6" sx={{ textAlign: "end" }}>
                           <Typography sx={{ textAlign: "center" }}>
                             <CardActions>
-                              <Button
-                                variant="contained"
-                                color="success"
-                                className="w-100"
-                              >
+                              <ACButton variant="contained" className="w-100">
                                 APPLY COUPON
-                              </Button>
+                              </ACButton>
                             </CardActions>
                           </Typography>
                         </div>
@@ -757,18 +878,19 @@ export default function NewCheckout() {
             </Row> */}
 
             <Row>
-              <Col className="col-12 mt-5">
-                <h5>PAYMENT METHOD</h5>
-              </Col>
               <Col className="col-12">
                 <Grid sx={{ width: "100%", marginTop: 3 }}>
                   <Card>
                     <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
+                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                        PAYMENT METHOD
+                      </h5>
                       <RadioGroup
                         aria-labelledby="demo-controlled-radio-buttons-group"
                         name="controlled-radio-buttons-group"
                         value={paymentType}
                         onChange={handleChangePaymentType}
+                        sx={{ color: "#7F7F7F" }}
                       >
                         <FormControlLabel
                           value="PayU (Cards, Net Banking, UPI, Wallet)"
@@ -793,13 +915,13 @@ export default function NewCheckout() {
                       </RadioGroup>
                     </FormControl>
                     <CardActions>
-                      <Button
+                      <SPMButton
                         variant="contained"
                         color="success"
                         className="w-100"
                       >
                         SELECT PAYMENT METHOD
-                      </Button>
+                      </SPMButton>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -813,6 +935,15 @@ export default function NewCheckout() {
         <DeliveryTypeModal
           delay={1}
           onChangeType={handleTypeChange}
+          onCloseDelModal={handleCloseDelModal}
+        ></DeliveryTypeModal>
+      ) : null}
+      {delModalOpen2 ? (
+        <DeliveryTypeModal
+          delay={1}
+          onChangeType={handleTypeChange}
+          onCloseDelModal={handleCloseDelModal}
+          forceOpen={true}
         ></DeliveryTypeModal>
       ) : null}
       {renderPayUModal()}
