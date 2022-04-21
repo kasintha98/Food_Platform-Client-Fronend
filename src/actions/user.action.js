@@ -1,4 +1,9 @@
-import { cartConstants, userConstants, userDetailsConstants,userAddressConstants } from "./constants";
+import {
+  cartConstants,
+  userConstants,
+  userDetailsConstants,
+  userAddressConstants,
+} from "./constants";
 import axios from "../helpers/axios";
 import { toast } from "react-toastify";
 
@@ -160,7 +165,6 @@ export const getOrder = (payload) => {
   };
 };
 
-
 //action to update user details
 export const UpdateUserDetails = (payload) => {
   return async (dispatch) => {
@@ -212,9 +216,13 @@ export const AddAddress = (payload) => {
   return async (dispatch) => {
     try {
       const res = await axios.post("/saveCustomerDtls", payload);
-      dispatch({ type: userAddressConstants.ADD_USER_ADDRESS_SUCCESS });
 
       if (res) {
+        dispatch(GetAddress(payload.mobileNumber));
+        dispatch({
+          type: userAddressConstants.ADD_USER_ADDRESS_SUCCESS,
+          payload,
+        });
         console.log(res);
       } else {
         const { error } = res.data;
@@ -252,14 +260,16 @@ export const AddAddress = (payload) => {
 export const GetAddress = (mobileNumber) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get("/getCustomerAddressDtlsByMobNum", { params: { mobno: mobileNumber } });
+      const res = await axios.get("/getCustomerAddressDtlsByMobNum", {
+        params: { mobno: mobileNumber },
+      });
       dispatch({ type: userAddressConstants.GET_USER_ADDRESSS_REQUEST });
       if (res.status === 200) {
         console.log(res);
         //const { addresses } = res.data;
         dispatch({
           type: userAddressConstants.GET_USER_ADDRESSS_SUCCESS,
-          payload: res.data ,
+          payload: res.data,
         });
       } else {
         const { error } = res.data;

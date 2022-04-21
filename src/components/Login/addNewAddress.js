@@ -23,36 +23,36 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 
-const stateList=[
-" Andhra Pradesh",
-"Arunachal Pradesh",
-"Assam",
-"Bihar",
-"Chhattisgarh",
-"Goa",
-"Gujarat",
-"Haryana",
-"Himachal Pradesh",
-"Jharkhand",
-"Karnataka",
-"Kerala",
-"Madhya Pradesh",
-"Maharashtra",
-"Manipur",
-"Meghalaya",
-"Mizoram",
-"Nagaland",
-"Odisha",
-"Punjab",
-"Rajasthan",
-"Sikkim",
-"Tamil Nadu",
-"Telangana",
-"Tripura",
-"Uttar Pradesh",
-"Uttarakhand",
-"West Bengal",
-]
+const stateList = [
+  " Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+];
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -160,8 +160,7 @@ export default function AddNewAddress(props) {
     setZip(address.zip);
     setCity(address.city);
     setState(address.state);
-
-  }
+  };
 
   const NewAddress = ({ address }) => {
     return (
@@ -179,13 +178,21 @@ export default function AddNewAddress(props) {
               </span>
               <span className="font-weight-normal">
                 {address.address1} {address.address2}
-                {address.landmark} {address.state} {address.city} {address.zipCode}
+                {address.landmark} {address.state} {address.city}{" "}
+                {address.zipCode}
                 <span />
               </span>
             </h6>
           </Box>
           <IconButton aria-label="play/pause">
-            <Button variant="text" onClick={(e) => { onEditPress(address) }}>Edit</Button>
+            <Button
+              variant="text"
+              onClick={(e) => {
+                onEditPress(address);
+              }}
+            >
+              Edit
+            </Button>
           </IconButton>
         </Card>
       </div>
@@ -193,11 +200,11 @@ export default function AddNewAddress(props) {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: "rgb(233, 237, 239)" }}>
       <div className="row m-0">
         <div>
           <div className="row" id="add">
-            <BoldTexts class="fw-bold mt-3">My Address</BoldTexts>
+            <BoldTexts class="fw-bold mt-3">Add New Address</BoldTexts>
           </div>
           <form className="p-5">
             {validateErrror ? (
@@ -289,13 +296,13 @@ export default function AddNewAddress(props) {
                     autoWidth
                     label="State"
                   >
-                    {
-                      stateList.map((state,index)=>{
-                        return(
-                          <MenuItem value={state} key={index}>{state}</MenuItem>
-                        )
-                      })
-                    }
+                    {stateList.map((state, index) => {
+                      return (
+                        <MenuItem value={state} key={index}>
+                          {state}
+                        </MenuItem>
+                      );
+                    })}
                     {/* <MenuItem value={"State 1"}>State 1</MenuItem>
                     <MenuItem value={"State 2"}>State 2</MenuItem>
                     <MenuItem value={"State 3"}>State 3</MenuItem> */}
@@ -304,33 +311,52 @@ export default function AddNewAddress(props) {
               </div>
             </div>
             <div className="row mt-3">
-              <div className="col-6 pl-0 ml-0" style={{ paddingLeft: 0 }}>
-                <SubmitButton
-                  variant="contained"
-                  disableElevation
-                  onClick={(e) => {
-                    onSubmitPress(e);
-                  }}
-                >
-                  Submit
-                </SubmitButton>
-              </div>
-              <div className="col-6 pr-0 mr-0">
-                <BackButton
-                  variant="contained"
-                  disableElevation
-                  onClick={props.onBackPress}
-                >
-                  Back
-                </BackButton>
-              </div>
+              {!props.forceAddAddress ? (
+                <>
+                  <div className="col-6 pl-0 ml-0" style={{ paddingLeft: 0 }}>
+                    <SubmitButton
+                      variant="contained"
+                      disableElevation
+                      onClick={(e) => {
+                        onSubmitPress(e);
+                      }}
+                    >
+                      Submit
+                    </SubmitButton>
+                  </div>
+                  <div className="col-6 pr-0 mr-0">
+                    <BackButton
+                      variant="contained"
+                      disableElevation
+                      onClick={props.onBackPress}
+                    >
+                      Back
+                    </BackButton>
+                  </div>
+                </>
+              ) : (
+                <div className="col-12 pl-0 ml-0" style={{ paddingLeft: 0 }}>
+                  <SubmitButton
+                    variant="contained"
+                    disableElevation
+                    onClick={(e) => {
+                      onSubmitPress(e);
+                    }}
+                  >
+                    Submit
+                  </SubmitButton>
+                </div>
+              )}
             </div>
           </form>
         </div>
-
-        {allAddress?.map((address, index) => {
-          return <NewAddress address={address} key={index} />;
-        })}
+        {!props.forceAddAddress ? (
+          <>
+            {allAddress?.map((address, index) => {
+              return <NewAddress address={address} key={index} />;
+            })}
+          </>
+        ) : null}
       </div>
     </div>
   );
