@@ -35,6 +35,7 @@ import PhoneInput from "react-phone-number-input";
 import CloseIcon from "@mui/icons-material/Close";
 import { NavHashLink } from "react-router-hash-link";
 import Countdown from "react-countdown";
+import { useLocation } from "react-router-dom";
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -125,6 +126,7 @@ export default function LoginDrawer() {
   const auth = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     var localUserId = localStorage.getItem("userId");
@@ -134,7 +136,16 @@ export default function LoginDrawer() {
     }
   }, []);
 
-  const Completionist = () => <Button variant="text" onClick={(e) => { onSignInSubmit(e) }}>Resend OTP</Button>;
+  const Completionist = () => (
+    <Button
+      variant="text"
+      onClick={(e) => {
+        onSignInSubmit(e);
+      }}
+    >
+      Resend OTP
+    </Button>
+  );
 
   const toggleDrawer = (anchor, open) => (event) => {
     setState({ ...state, [anchor]: open });
@@ -195,7 +206,7 @@ export default function LoginDrawer() {
       //configureCaptcha();
       const phoneNumber = "+" + mobileNumber;
       const appVerifier = window.recaptchaVerifier;
-      console.log(phoneNumber)
+      console.log(phoneNumber);
       firebase
         .auth()
         .signInWithPhoneNumber(phoneNumber, appVerifier)
@@ -208,9 +219,7 @@ export default function LoginDrawer() {
         })
         .catch((error) => {
           console.log("SMS NOT SENT ERROR....!!");
-          toast.error(
-            "Invalid Phone Number!"
-          );
+          toast.error("Invalid Phone Number!");
         });
     } catch (ex) {
       console.log("error: " + ex);
@@ -325,7 +334,9 @@ export default function LoginDrawer() {
                     <SubmitButton
                       variant="contained"
                       disableElevation
-                      onClick={(e) => { onSignInSubmit(e) }}
+                      onClick={(e) => {
+                        onSignInSubmit(e);
+                      }}
                     >
                       Submit
                     </SubmitButton>
@@ -441,7 +452,9 @@ export default function LoginDrawer() {
           <Button variant="contained" disabled>
             {seconds}S
           </Button>
-          <Button variant="text" disabled>Resend OTP</Button>
+          <Button variant="text" disabled>
+            Resend OTP
+          </Button>
         </div>
       );
     }
@@ -452,7 +465,7 @@ export default function LoginDrawer() {
       {/* <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link> */}
       <NavHashLink
         className="nav-link"
-        to="/#login"
+        to={`${location.pathname}#login`}
         activeClassName="selected"
         activeStyle={{
           /* color: "red", */ borderBottom: "3px red solid",

@@ -72,6 +72,17 @@ export const DeliveryTypeModal = (props) => {
         if (!localStorage.getItem("deliveryType")) {
           handleShow();
         }
+        if (props.forceOpen) {
+          const del = localStorage.getItem("deliveryType");
+          if (del) {
+            const delObj = JSON.parse(del);
+            setType(delObj.type);
+            setSelectedStoreObj(delObj);
+            setSelectedStore(delObj.resturantName);
+          }
+
+          handleShow();
+        }
       },
       props.delay ? props.delay : 1
     );
@@ -92,7 +103,12 @@ export const DeliveryTypeModal = (props) => {
     console.log(store);
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    if (props.onCloseDelModal) {
+      props.onCloseDelModal(false);
+    }
+  };
   const handleShow = () => {
     setShow(true);
   };

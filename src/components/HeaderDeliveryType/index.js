@@ -66,7 +66,7 @@ export const HeaderDeliveryType = (props) => {
               <span style={{ fontWeight: "bold" }}>Address</span> :{" "}
               {props.typeObj.address1}
               {props.typeObj.address2 ? <> ,{props.typeObj.address2}</> : null}
-              {props.typeObj.address3 ? <> ,{props.typeObj.address2}</> : null}
+              {props.typeObj.address3 ? <> ,{props.typeObj.address3}</> : null}
             </p>
           </Col>
         </Col>
