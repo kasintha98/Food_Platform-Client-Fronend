@@ -134,7 +134,7 @@ export default function LoginDrawer() {
     }
   }, []);
 
-  const Completionist = () => <span>Time is up!</span>;
+  const Completionist = () => <Button variant="text" onClick={(e) => { onSignInSubmit(e) }}>Resend OTP</Button>;
 
   const toggleDrawer = (anchor, open) => (event) => {
     setState({ ...state, [anchor]: open });
@@ -185,7 +185,6 @@ export default function LoginDrawer() {
 
   const onSignInSubmit = (e) => {
     //setOtpSuccess(true);
-    console.log(mobileNumber)
     try {
       setLoginDetails({
         loginCode: 0,
@@ -193,9 +192,10 @@ export default function LoginDrawer() {
       });
 
       e.preventDefault();
-      configureCaptcha();
+      //configureCaptcha();
       const phoneNumber = "+" + mobileNumber;
       const appVerifier = window.recaptchaVerifier;
+      console.log(phoneNumber)
       firebase
         .auth()
         .signInWithPhoneNumber(phoneNumber, appVerifier)
@@ -207,7 +207,6 @@ export default function LoginDrawer() {
           setOtpSuccess(true);
         })
         .catch((error) => {
-          setOtpSuccess(false);
           console.log("SMS NOT SENT ERROR....!!");
           toast.error(
             "Invalid Phone Number!"
@@ -403,7 +402,7 @@ export default function LoginDrawer() {
                 <div className="row mt-4">
                   <Col>
                     <Countdown
-                      date={Date.now() + 60000}
+                      date={Date.now() + 6000}
                       renderer={rendererTime}
                     />
                   </Col>
@@ -433,11 +432,18 @@ export default function LoginDrawer() {
   const rendererTime = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a complete state
-      setOtpSuccess(false);
+      //setOtpSuccess(false);
       return <Completionist />;
     } else {
       // Render a countdown
-      return <span>You have {seconds}S to enter the OTP</span>;
+      return (
+        <div>
+          <Button variant="contained" disabled>
+            {seconds}S
+          </Button>
+          <Button variant="text" disabled>Resend OTP</Button>
+        </div>
+      );
     }
   };
 
