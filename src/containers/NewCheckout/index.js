@@ -51,6 +51,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { GetAddress } from "../../actions";
 import LoginDrawer from "../../components/Login";
+import { useMediaQuery } from "react-responsive";
+import { BottomNav } from "../../components/BottomNav";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -161,6 +163,10 @@ const CusTextField = styled(TextField)`
   & .MuiOutlinedInput-notchedOutline {
     border-style: hidden;
   }
+
+  & .MuiOutlinedInput-root {
+    height: 40px;
+  }
 `;
 
 export default function NewCheckout() {
@@ -177,8 +183,10 @@ export default function NewCheckout() {
   const [delModalOpen, setDelModalOpen] = useState(false);
   const [delModalOpen2, setDelModalOpen2] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
+  const [tabValue, setTabValue] = useState(0);
   const [show, setShow] = useState(false);
   const [paymentType, setPaymentType] = React.useState("PayU");
+  const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
 
@@ -214,14 +222,20 @@ export default function NewCheckout() {
       (choiceTotal ? choiceTotal : 0);
 
     const order = {
-      items: cart,
+      items: cart?.cartItems,
       total: total,
       deliveryType: currentType,
       coupon: coupon,
       address: selectedAddress,
       paymentType: paymentType,
+      orderTime: new Date(),
     };
     console.log(order);
+  };
+
+  const handleNavTab = (val) => {
+    console.log(val);
+    setTabValue(val);
   };
 
   const handleSubTotal = (total) => {
@@ -417,9 +431,9 @@ export default function NewCheckout() {
       <Header></Header>
       <CusContainer>
         <Row>
-          <Col className="col-7 mt-5">
+          <Col xs={12} md={7} className="mt-5">
             <Row>
-              <Col className="col-8">
+              <Col className="col-12">
                 {cart?.cartItems && Object.keys(cart?.cartItems).length > 0 ? (
                   <h5>
                     You have selected {Object.keys(cart.cartItems).length} items
@@ -428,11 +442,11 @@ export default function NewCheckout() {
                   <h5>You have no items in the cart</h5>
                 )}
               </Col>
-              <Col className="col-4">
+              {/* <Col className="col-4">
                 <Typography sx={{ textAlign: "end" }}>
-                  {/* <a href="/new-menu">Explore Menu</a> */}
+                  <a href="/new-menu">Explore Menu</a>
                 </Typography>
-              </Col>
+              </Col> */}
             </Row>
             <div>
               <Card sx={{ width: "100%", marginTop: 3 }}>
@@ -521,7 +535,7 @@ export default function NewCheckout() {
             </Row>
           </Col>
 
-          <Col className="col-5 mt-5">
+          <Col xs={12} md={5} className="mt-5">
             {currentType && currentType?.type === "delivery" ? (
               <Row>
                 <Col className="col-12">
@@ -984,6 +998,7 @@ export default function NewCheckout() {
         ></DeliveryTypeModal>
       ) : null}
       {renderPayUModal()}
+      {isMobile ? <BottomNav onChangeTab={handleNavTab}></BottomNav> : null}
     </div>
   );
 }

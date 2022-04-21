@@ -131,6 +131,7 @@ export default function LoginDrawer(props) {
   const [loginCode, setLoginCode] = useState(0);
   const [otpError, setOtpError] = useState("");
   const [viewUserDetails, setViewUserDetails] = useState(false);
+  const inputRef = React.useRef(null);
 
   const auth = useSelector((state) => state.auth);
 
@@ -286,6 +287,10 @@ export default function LoginDrawer(props) {
       });
   };
 
+  const handleForceClose = () => {
+    inputRef.current.click();
+  };
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : "auto" }}
@@ -311,10 +316,7 @@ export default function LoginDrawer(props) {
         </>
       ) : (
         <AddNewAddress
-          onBackPress={() => {
-            toggleDrawer("right", false);
-            console.log("uooooooooo");
-          }}
+          onBackPress={handleForceClose}
           forceAddAddress={true}
         ></AddNewAddress>
       )}
@@ -534,6 +536,7 @@ export default function LoginDrawer(props) {
             <button
               onClick={toggleDrawer("right", false)}
               className="esc-btn w-100 text-end"
+              ref={inputRef}
             >
               esc
             </button>
