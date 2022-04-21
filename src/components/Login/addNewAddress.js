@@ -197,7 +197,7 @@ export default function AddNewAddress(props) {
       <div className="row m-0">
         <div>
           <div className="row" id="add">
-            <BoldTexts class="fw-bold p-4">My Address</BoldTexts>
+            <BoldTexts class="fw-bold mt-3">My Address</BoldTexts>
           </div>
           <form className="p-5">
             {validateErrror ? (
