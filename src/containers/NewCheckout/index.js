@@ -177,7 +177,7 @@ export default function NewCheckout() {
   const [delModalOpen2, setDelModalOpen2] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [show, setShow] = useState(false);
-  const [paymentType, setPaymentType] = React.useState("female");
+  const [paymentType, setPaymentType] = React.useState("PayU");
 
   const dispatch = useDispatch();
 
@@ -205,6 +205,23 @@ export default function NewCheckout() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const placeOrder = () => {
+    const total =
+      subTotal +
+      (extraSubTotal ? extraSubTotal : 0) +
+      (choiceTotal ? choiceTotal : 0);
+
+    const order = {
+      items: cart,
+      total: total,
+      deliveryType: currentType,
+      coupon: coupon,
+      address: selectedAddress,
+      paymentType: paymentType,
+    };
+    console.log(order);
+  };
 
   const handleSubTotal = (total) => {
     setSubtotal(total);
@@ -493,7 +510,9 @@ export default function NewCheckout() {
                       </TableBody>
                     </Table>
                     <CardActions sx={{ justifyContent: "center" }}>
-                      <POButton variant="contained">PLACE ORDER</POButton>
+                      <POButton onClick={placeOrder} variant="contained">
+                        PLACE ORDER
+                      </POButton>
                     </CardActions>
                   </Card>
                 </Grid>
@@ -906,12 +925,12 @@ export default function NewCheckout() {
                         sx={{ color: "#7F7F7F" }}
                       >
                         <FormControlLabel
-                          value="PayU (Cards, Net Banking, UPI, Wallet)"
+                          value="PayU"
                           control={<Radio color="success" />}
                           label="PayU (Cards, Net Banking, UPI, Wallet)"
                         />
                         <FormControlLabel
-                          value="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
+                          value="Paytm"
                           control={<Radio color="success" />}
                           label="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
                         />
@@ -921,7 +940,7 @@ export default function NewCheckout() {
                           label="CASH"
                         />
                         <FormControlLabel
-                          value="CASH ON DELIVERY"
+                          value="COD"
                           control={<Radio color="success" />}
                           label="CASH ON DELIVERY"
                         />
