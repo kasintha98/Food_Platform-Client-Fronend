@@ -40,75 +40,91 @@ export const getSpecificProductBySlug = (slug) => {
 
 export const getProductsNew = () => {
   return async (dispatch) => {
-    const res = await axios.get(`/getAllMenuItems`);
-    //const res = await stockAxios.get(`products.json`);
+    try {
+      const res = await axios.get(`/getAllMenuItems`);
+      //const res = await stockAxios.get(`products.json`);
 
-    if (res.status === 200) {
-      const productsList = {
-        products: res.data,
-      };
-      console.log(productsList);
+      if (res.status === 200) {
+        const productsList = {
+          products: res.data,
+        };
+        console.log(productsList);
 
-      dispatch({
-        type: productConstants.GET_PRODUCTS_BY_SLUG_SUCCESS,
-        payload: productsList,
-      });
-    } else {
-      console.log("error");
+        dispatch({
+          type: productConstants.GET_PRODUCTS_BY_SLUG_SUCCESS,
+          payload: productsList,
+        });
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };
 
 export const getMenuIngredientsByProductId = (id) => {
   return async (dispatch) => {
-    const res = await axios.get(`/getMenuIngredientsByMenuId`, {
-      params: { productId: id },
-    });
-
-    if (res.status === 200) {
-      dispatch({
-        type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
-        payload: res.data,
+    try {
+      const res = await axios.get(`/getMenuIngredientsByMenuId`, {
+        params: { productId: id },
       });
-      return res.data;
-    } else {
-      console.log("error");
+
+      if (res.status === 200) {
+        dispatch({
+          type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
+          payload: res.data,
+        });
+        return res.data;
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };
 
 export const getAllSections = () => {
   return async (dispatch) => {
-    const res = await axios.get(`/getAllSections`);
+    try {
+      const res = await axios.get(`/getAllSections`);
 
-    if (res.status === 200) {
-      dispatch({
-        type: productConstants.GET_ALL_SECTIONS_SUCCESS,
-        payload: res.data,
-      });
-      console.log(res.data);
-      return res.data;
-    } else {
-      console.log("error");
+      if (res.status === 200) {
+        dispatch({
+          type: productConstants.GET_ALL_SECTIONS_SUCCESS,
+          payload: res.data,
+        });
+        console.log(res.data);
+        return res.data;
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };
 
 export const getDishesBySection = (section) => {
   return async (dispatch) => {
-    const res = await axios.get(`/getDishesBySection`, {
-      params: { section: section },
-    });
-
-    if (res.status === 200) {
-      dispatch({
-        type: productConstants.GET_DISHES_BY_SECTION_SUCCESS,
-        payload: res.data,
+    try {
+      const res = await axios.get(`/getDishesBySection`, {
+        params: { section: section },
       });
-      //console.log(res.data);
-      return res.data;
-    } else {
-      console.log("error");
+
+      if (res.status === 200) {
+        dispatch({
+          type: productConstants.GET_DISHES_BY_SECTION_SUCCESS,
+          payload: res.data,
+        });
+        //console.log(res.data);
+        return res.data;
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };
