@@ -156,10 +156,17 @@ export const DeliveryTypeModal = (props) => {
 
   return (
     <div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header style={{ backgroundColor: "#d22630" }} closeButton>
-          <Modal.Title>Select Delivery Type</Modal.Title>
-        </Modal.Header>
+      <Modal show={show} onHide={props.forceOpen ? handleClose : handleShow}>
+        {props.forceOpen ? (
+          <Modal.Header style={{ backgroundColor: "#d22630" }} closeButton>
+            <Modal.Title>Select Delivery Type</Modal.Title>
+          </Modal.Header>
+        ) : (
+          <Modal.Header style={{ backgroundColor: "#d22630" }}>
+            <Modal.Title>Select Delivery Type</Modal.Title>
+          </Modal.Header>
+        )}
+
         <Modal.Body style={{ backgroundColor: "rgb(233,237,239)" }}>
           <Box sx={{ width: "100%", typography: "body1" }}>
             <TabContext value={type}>

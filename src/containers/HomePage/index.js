@@ -10,6 +10,7 @@ import { Container } from "react-bootstrap";
 import { ScrollingProvider, Section } from "react-scroll-section";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
+import { Restaurants } from "../../components/Restaurants";
 
 export default function HomePage(props) {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
@@ -25,15 +26,15 @@ export default function HomePage(props) {
           <Section id="about">
             <About></About>
           </Section>
-          <Section id="chef">
-            <Chef></Chef>
+          <Section id="restaurants">
+            <Restaurants></Restaurants>
           </Section>
           {/* <Section id="menu">
             <CategoryGallery></CategoryGallery>
           </Section> */}
-          <Section id="contact">
+          {/* <Section id="contact">
             <Contact></Contact>
-          </Section>
+          </Section> */}
         </Container>
         <Footer></Footer>
         {isMobile ? <BottomNav></BottomNav> : null}

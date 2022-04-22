@@ -4,13 +4,17 @@ import {
   Nav,
   Dropdown,
   DropdownButton,
+  Row,
+  Col,
   Container,
+  Button,
 } from "react-bootstrap";
 import "./style.css";
 import NewModal from "../Modal";
 import Input from "../Input";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../../img/logo.png";
+import del from "../../img/deliveryType.jpg";
 import { login, signout } from "../../actions";
 import { Link, NavLink } from "react-router-dom";
 import CartNum from "../UI/CartNum";
@@ -19,6 +23,8 @@ import styled from "@emotion/styled";
 import LoginDrawer from "../Login";
 import { NavHashLink } from "react-router-hash-link";
 import { HeaderDeliveryType } from "../HeaderDeliveryType";
+import { DeliveryTypeModal } from "../DeliveryTypeModal";
+import { Typography } from "@mui/material";
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -28,6 +34,25 @@ const CusNavbar = styled(Navbar)`
 
   @media (max-width: 992px) {
     height: 60px;
+  }
+`;
+
+const CLButton = styled(Button)``;
+
+const CusDropdown = styled(Dropdown.Toggle)`
+  border: none;
+  background-color: transparent;
+
+  &:hover {
+    background-color: transparent;
+  }
+`;
+
+const CusDropMenu = styled(Dropdown.Menu)`
+  width: 350px;
+
+  @media (max-width: 992px) {
+    width: 100%;
   }
 `;
 
@@ -41,10 +66,18 @@ const CusNav = styled(Nav)`
 `;
 
 const CusNav2 = styled(Nav)`
-  height: 50px;
-
+  height: 40px;
   @media (max-width: 992px) {
-    height: 70px;
+    width: 100%;
+    height: auto;
+  }
+`;
+
+const CusImage = styled.img`
+  height: 40px;
+  @media (max-width: 992px) {
+    width: 100%;
+    height: auto;
   }
 `;
 
@@ -52,6 +85,7 @@ export default function Header(props) {
   const [loginModal, setLoginModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [delModalOpen2, setDelModalOpen2] = useState(false);
 
   const auth = useSelector((state) => state.auth);
   const deliveryType = useSelector((state) => state.auth.deliveryType);
@@ -72,6 +106,27 @@ export default function Header(props) {
   //calling the action to logout the user
   const logout = () => {
     dispatch(signout());
+  };
+
+  const renderNowDate = () => {
+    const dateObj = new Date();
+    const month = dateObj.toLocaleString("default", { month: "short" });
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+    return (
+      <span>
+        {day}/{month.toUpperCase()}/{year}
+      </span>
+    );
+  };
+
+  const renderDeliveryTypeModal2 = () => {
+    console.log(delModalOpen2);
+    return setDelModalOpen2(true);
+  };
+
+  const handleCloseDelModal = (resp) => {
+    setDelModalOpen2(resp);
   };
 
   const renderLoggedInMenu = () => {
@@ -153,11 +208,11 @@ export default function Header(props) {
         </NavHashLink>
         <NavHashLink
           className="nav-link"
-          to="/#chef"
+          to="/#restaurants"
           activeClassName="selected"
           activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
-          Chef
+          Restaurants
         </NavHashLink>
         <NavHashLink
           className="nav-link"
@@ -167,14 +222,14 @@ export default function Header(props) {
         >
           Menu
         </NavHashLink>
-        <NavHashLink
+        {/* <NavHashLink
           className="nav-link"
           to="/#contact"
           activeClassName="selected"
-          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
+          activeStyle={{ borderBottom: "3px red solid" }}
         >
           Contact
-        </NavHashLink>
+        </NavHashLink> */}
         <LoginDrawer />
         <NavLink className="nav-link" to="/new-cart">
           {Object.keys(cart.cartItems) ? (
@@ -207,11 +262,11 @@ export default function Header(props) {
         </NavHashLink>
         <NavHashLink
           className="nav-link"
-          to="/#chef"
+          to="/#restaurants"
           activeClassName="selected"
           activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
         >
-          Chef
+          Restaurants
         </NavHashLink>
         <NavHashLink
           className="nav-link"
@@ -221,14 +276,14 @@ export default function Header(props) {
         >
           Menu
         </NavHashLink>
-        <NavHashLink
+        {/* <NavHashLink
           className="nav-link"
           to="/#contact"
           activeClassName="selected"
-          activeStyle={{ /* color: "red", */ borderBottom: "3px red solid" }}
+          activeStyle={{ borderBottom: "3px red solid" }}
         >
           Contact
-        </NavHashLink>
+        </NavHashLink> */}
         <LoginDrawer />
         <NavLink className="nav-link" to="/new-cart">
           {Object.keys(cart.cartItems) ? (
@@ -303,7 +358,128 @@ export default function Header(props) {
           >
             <CusNav2 className="me-auto">
               {deliveryType ? (
-                <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType>
+                <>
+                  {/* <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType> */}
+                  <Dropdown>
+                    <CusDropdown
+                      variant="success"
+                      id="dropdown-basic"
+                      className="p-0 m-0"
+                    >
+                      <CusImage src={del} alt="del logo" />
+                    </CusDropdown>
+
+                    <CusDropMenu>
+                      <Row
+                        className="p-1"
+                        style={{
+                          width: "100%",
+                          marginLeft: 0,
+                          borderBottom: "1px #D9D9D9 solid",
+                        }}
+                      >
+                        <Col className="col-5">
+                          {" "}
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            Method
+                          </Typography>
+                        </Col>
+                        <Col className="col-7">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            {deliveryType.type === "delivery" ? (
+                              <span>Delivery</span>
+                            ) : (
+                              <span>Self-Collect</span>
+                            )}
+                          </Typography>
+                        </Col>
+                      </Row>
+                      <Row
+                        className="p-1"
+                        style={{
+                          width: "100%",
+                          marginLeft: 0,
+                          borderBottom: "1px #D9D9D9 solid",
+                        }}
+                      >
+                        <Col className="col-5">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            Date
+                          </Typography>
+                        </Col>
+                        <Col className="col-7">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            {renderNowDate()}
+                          </Typography>
+                        </Col>
+                      </Row>
+                      <Row
+                        className="p-1"
+                        style={{
+                          width: "100%",
+                          marginLeft: 0,
+                          borderBottom: "1px #D9D9D9 solid",
+                        }}
+                      >
+                        <Col className="col-5">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            Resturant Name
+                          </Typography>
+                        </Col>
+                        <Col className="col-7">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            {deliveryType.resturantName}
+                          </Typography>
+                        </Col>
+                      </Row>
+                      <Row
+                        className="p-1"
+                        style={{
+                          width: "100%",
+                          marginLeft: 0,
+                          borderBottom: "1px #D9D9D9 solid",
+                        }}
+                      >
+                        <Col className="col-5">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            Address
+                          </Typography>
+                        </Col>
+                        <Col className="col-7">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            <span>{deliveryType.address1}</span>
+                            {deliveryType.address2 ? (
+                              <>
+                                , <span>{deliveryType.address2}</span>
+                              </>
+                            ) : null}
+                            {deliveryType.address3 ? (
+                              <>
+                                , <span>{deliveryType.address3}</span>
+                              </>
+                            ) : null}
+                          </Typography>
+                        </Col>
+                      </Row>
+                      <Row
+                        style={{
+                          width: "100%",
+                          marginLeft: 0,
+                          borderBottom: "1px #D9D9D9 solid",
+                        }}
+                        className="p-1"
+                      >
+                        <CLButton
+                          className="w-100"
+                          onClick={renderDeliveryTypeModal2}
+                          variant="primary"
+                        >
+                          <Typography>CHANGE</Typography>
+                        </CLButton>
+                      </Row>
+                    </CusDropMenu>
+                  </Dropdown>
+                </>
               ) : null}
             </CusNav2>
             <CusNav
@@ -320,6 +496,14 @@ export default function Header(props) {
       </CusNavbar>
 
       {renderLoginModal()}
+      {delModalOpen2 ? (
+        <DeliveryTypeModal
+          delay={1}
+          /* onChangeType={handleTypeChange} */
+          onCloseDelModal={handleCloseDelModal}
+          forceOpen={true}
+        ></DeliveryTypeModal>
+      ) : null}
     </div>
   );
 }
