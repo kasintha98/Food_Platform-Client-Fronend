@@ -140,140 +140,148 @@ export const addToCartNew = (
   choiceIng
 ) => {
   return async (dispatch) => {
-    const {
-      cart: { cartItems },
-      auth,
-    } = store.getState();
+    try {
+      const {
+        cart: { cartItems },
+        auth,
+      } = store.getState();
 
-    if (product) {
-      const qty = cartItems[product.productId]
-        ? parseInt(cartItems[product.productId].qty) + newQty
-        : newQty;
+      if (product) {
+        const qty = cartItems[product.productId]
+          ? parseInt(cartItems[product.productId].qty) + newQty
+          : newQty;
 
-      const extraTotal = extraSubTotal
-        ? extraSubTotal
-        : cartItems[product.productId]?.extraSubTotal
-        ? cartItems[product.productId]?.extraSubTotal
-        : 0;
+        const extraTotal = extraSubTotal
+          ? extraSubTotal
+          : cartItems[product.productId]?.extraSubTotal
+          ? cartItems[product.productId]?.extraSubTotal
+          : 0;
 
-      const extraItems = extra
-        ? extra
-        : cartItems[product.productId]?.extra
-        ? cartItems[product.productId]?.extra
-        : {};
+        const extraItems = extra
+          ? extra
+          : cartItems[product.productId]?.extra
+          ? cartItems[product.productId]?.extra
+          : {};
 
-      let text = "";
+        let text = "";
 
-      if (specialText) {
-        text = specialText;
-      } else if (cartItems[product.productId]?.specialText) {
-        text = cartItems[product.productId]?.specialText;
-      } else {
-        text = "";
+        if (specialText) {
+          text = specialText;
+        } else if (cartItems[product.productId]?.specialText) {
+          text = cartItems[product.productId]?.specialText;
+        } else {
+          text = "";
+        }
+
+        let choice = {};
+
+        if (choiceIng) {
+          choice = choiceIng;
+        } else if (cartItems[product.productId]?.choiceIng) {
+          choice = cartItems[product.productId]?.choiceIng;
+        } else {
+          choice = {};
+        }
+
+        if (qty < 1) {
+          delete cartItems[product.productId];
+        } else {
+          cartItems[product.productId] = {
+            ...product,
+            qty,
+            extra: extraItems,
+            extraSubTotal: extraTotal,
+            specialText: text,
+            choiceIng: choice,
+          };
+        }
+
+        if (auth.authenticate) {
+          dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
+          const payload = {
+            cartItems: [
+              {
+                product: product.productId,
+                quantity: qty,
+              },
+            ],
+          };
+          console.log(payload);
+          /* const res = await axios.post("/user/cart/addtocart", payload);
+          console.log(res);
+          if (res.status === 201) {
+            dispatch(getCartItems());
+          } */
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+        } else {
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+        }
+
+        console.log("addToCart:", cartItems);
+
+        dispatch({
+          type: cartConstants.ADD_TO_CART_SUCCESS,
+          payload: { cartItems },
+        });
       }
-
-      let choice = {};
-
-      if (choiceIng) {
-        choice = choiceIng;
-      } else if (cartItems[product.productId]?.choiceIng) {
-        choice = cartItems[product.productId]?.choiceIng;
-      } else {
-        choice = {};
-      }
-
-      if (qty < 1) {
-        delete cartItems[product.productId];
-      } else {
-        cartItems[product.productId] = {
-          ...product,
-          qty,
-          extra: extraItems,
-          extraSubTotal: extraTotal,
-          specialText: text,
-          choiceIng: choice,
-        };
-      }
-
-      if (auth.authenticate) {
-        dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
-        const payload = {
-          cartItems: [
-            {
-              product: product.productId,
-              quantity: qty,
-            },
-          ],
-        };
-        console.log(payload);
-        /* const res = await axios.post("/user/cart/addtocart", payload);
-        console.log(res);
-        if (res.status === 201) {
-          dispatch(getCartItems());
-        } */
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-      } else {
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-      }
-
-      console.log("addToCart:", cartItems);
-
-      dispatch({
-        type: cartConstants.ADD_TO_CART_SUCCESS,
-        payload: { cartItems },
-      });
+    } catch (error) {
+      console.log(error);
     }
   };
 };
 
 export const replaceCartItemNew = (newProduct, oldId) => {
   return async (dispatch) => {
-    const {
-      cart: { cartItems },
-      auth,
-    } = store.getState();
-    if (cartItems[oldId]) {
-      delete Object.assign(cartItems, {
-        [newProduct.productId]: cartItems[oldId],
-      })[oldId];
-      const qty = cartItems[newProduct.productId].qty;
-      const text = cartItems[newProduct.productId].specialText
-        ? cartItems[newProduct.productId].specialText
-        : "";
+    try {
+      const {
+        cart: { cartItems },
+        auth,
+      } = store.getState();
+      if (cartItems[oldId]) {
+        delete Object.assign(cartItems, {
+          [newProduct.productId]: cartItems[oldId],
+        })[oldId];
+        const qty = cartItems[newProduct.productId].qty;
+        const text = cartItems[newProduct.productId].specialText
+          ? cartItems[newProduct.productId].specialText
+          : "";
 
-      cartItems[newProduct.productId] = {
-        ...newProduct,
-        qty,
-        specialText: text,
-        choiceIng: {},
-      };
-
-      if (auth.authenticate) {
-        dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
-        const payload = {
-          cartItems: [
-            {
-              product: newProduct.productId,
-            },
-          ],
+        cartItems[newProduct.productId] = {
+          ...newProduct,
+          qty,
+          specialText: text,
+          choiceIng: {},
         };
-        console.log(payload);
-        /* const res = await axios.post("/user/cart/addtocart", payload);
-        console.log(res);
-        if (res.status === 201) {
-          dispatch(getCartItems());
-        } */
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-      } else {
-        localStorage.setItem("cart", JSON.stringify(cartItems));
+
+        if (auth.authenticate) {
+          dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
+          const payload = {
+            cartItems: [
+              {
+                product: newProduct.productId,
+              },
+            ],
+          };
+          console.log(payload);
+          /* const res = await axios.post("/user/cart/addtocart", payload);
+      console.log(res);
+      if (res.status === 201) {
+        dispatch(getCartItems());
+      } */
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+        } else {
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+        }
+
+        console.log("addToCart:", cartItems);
+
+        dispatch({
+          type: cartConstants.ADD_TO_CART_SUCCESS,
+          payload: { cartItems },
+        });
       }
-
-      console.log("addToCart:", cartItems);
-
-      dispatch({
-        type: cartConstants.ADD_TO_CART_SUCCESS,
-        payload: { cartItems },
-      });
+    } catch (error) {
+      console.log(error);
     }
   };
 };
