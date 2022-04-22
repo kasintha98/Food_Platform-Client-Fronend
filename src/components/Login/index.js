@@ -36,7 +36,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { NavHashLink } from "react-router-hash-link";
 import Countdown from "react-countdown";
 import TimerButton from "./timerButton";
-import validator from 'validator'
+import validator from "validator";
 import { useLocation } from "react-router-dom";
 import AddNewAddress from "./addNewAddress";
 
@@ -178,10 +178,9 @@ export default function LoginDrawer(props) {
   };
 
   const validatePhoneNumber = (number) => {
-    const isValidPhoneNumber = validator.isMobilePhone(number)
-    return (isValidPhoneNumber)
-  }
-
+    const isValidPhoneNumber = validator.isMobilePhone(number);
+    return isValidPhoneNumber;
+  };
 
   const responseFacebook = (res) => {
     try {
@@ -215,10 +214,8 @@ export default function LoginDrawer(props) {
   const onSignInSubmit = (e) => {
     //setOtpSuccess(true);
     if (!validatePhoneNumber(mobileNumber)) {
-      return toast.error(
-        "Invalid Phone Number"
-      );
-    } 
+      return toast.error("Invalid Phone Number");
+    }
 
     try {
       setLoginDetails({
@@ -243,9 +240,7 @@ export default function LoginDrawer(props) {
         })
         .catch((error) => {
           console.log("SMS not sent error....!!");
-          toast.error(
-            "SMS not sent error....!!"
-          );
+          toast.error("SMS not sent error....!!");
         });
     } catch (ex) {
       console.log("error: " + ex);
@@ -451,11 +446,11 @@ export default function LoginDrawer(props) {
                 </div>
                 <div className="row mt-4">
                   <Col>
-                    <TimerButton />
-                    {/* <Countdown
-                      date={Date.now() + 6000}
+                    {/* <TimerButton /> */}
+                    <Countdown
+                      date={Date.now() + 60000}
                       renderer={rendererTime}
-                    /> */}
+                    />
                   </Col>
                   <Col>
                     <div class="text-end">
@@ -472,9 +467,9 @@ export default function LoginDrawer(props) {
               </form>
             </CardContent>
           </Card>
-          <div className="text-center mt-5">
+          {/* <div className="text-center mt-5">
             <TermsTexts>TERMS OF USE</TermsTexts>
-          </div>
+          </div> */}
         </div>
       </div>
     );
