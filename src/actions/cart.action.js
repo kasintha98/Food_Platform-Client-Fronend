@@ -90,10 +90,10 @@ export const updateCart = () => {
           }),
         };
         if (Object.keys(cartItems).length > 0) {
-          const res = await axios.post("/user/cart/addtocart", payload);
+          /* const res = await axios.post("/user/cart/addtocart", payload);
           if (res.status === 201) {
             dispatch(getCartItems());
-          }
+          } */
         }
       }
     } else {
@@ -206,11 +206,12 @@ export const addToCartNew = (
           ],
         };
         console.log(payload);
-        const res = await axios.post("/user/cart/addtocart", payload);
+        /* const res = await axios.post("/user/cart/addtocart", payload);
         console.log(res);
         if (res.status === 201) {
           dispatch(getCartItems());
-        }
+        } */
+        localStorage.setItem("cart", JSON.stringify(cartItems));
       } else {
         localStorage.setItem("cart", JSON.stringify(cartItems));
       }
@@ -257,11 +258,12 @@ export const replaceCartItemNew = (newProduct, oldId) => {
           ],
         };
         console.log(payload);
-        const res = await axios.post("/user/cart/addtocart", payload);
+        /* const res = await axios.post("/user/cart/addtocart", payload);
         console.log(res);
         if (res.status === 201) {
           dispatch(getCartItems());
-        }
+        } */
+        localStorage.setItem("cart", JSON.stringify(cartItems));
       } else {
         localStorage.setItem("cart", JSON.stringify(cartItems));
       }

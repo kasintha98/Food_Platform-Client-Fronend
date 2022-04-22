@@ -37,6 +37,8 @@ import { NavHashLink } from "react-router-hash-link";
 import Countdown from "react-countdown";
 import TimerButton from "./timerButton";
 import validator from 'validator'
+import { useLocation } from "react-router-dom";
+import AddNewAddress from "./addNewAddress";
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -53,6 +55,14 @@ const BoldTexts = styled(Typography)`
   font-family: Arial;
   @media (max-width: 992px) {
     font-size: 0.9rem;
+  }
+`;
+
+const CLButton = styled(Button)`
+  background-color: #a6a6a6;
+
+  &:hover {
+    background-color: #616161;
   }
 `;
 
@@ -104,7 +114,7 @@ const SubmitButton = styled(Button)`
   }
 `;
 
-export default function LoginDrawer() {
+export default function LoginDrawer(props) {
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -123,10 +133,12 @@ export default function LoginDrawer() {
   const [loginCode, setLoginCode] = useState(0);
   const [otpError, setOtpError] = useState("");
   const [viewUserDetails, setViewUserDetails] = useState(false);
+  const inputRef = React.useRef(null);
 
   const auth = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     var localUserId = localStorage.getItem("userId");
@@ -136,7 +148,16 @@ export default function LoginDrawer() {
     }
   }, []);
 
-  const Completionist = () => <Button variant="text" onClick={(e) => { onSignInSubmit(e) }}>Resend OTP</Button>;
+  const Completionist = () => (
+    <Button
+      variant="text"
+      onClick={(e) => {
+        onSignInSubmit(e);
+      }}
+    >
+      Resend OTP
+    </Button>
+  );
 
   const toggleDrawer = (anchor, open) => (event) => {
     setState({ ...state, [anchor]: open });
@@ -209,7 +230,7 @@ export default function LoginDrawer() {
       configureCaptcha();
       const phoneNumber = "+" + mobileNumber;
       const appVerifier = window.recaptchaVerifier;
-      console.log(phoneNumber)
+      console.log(phoneNumber);
       firebase
         .auth()
         .signInWithPhoneNumber(phoneNumber, appVerifier)
@@ -281,6 +302,10 @@ export default function LoginDrawer() {
       });
   };
 
+  const handleForceClose = () => {
+    inputRef.current.click();
+  };
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : "auto" }}
@@ -288,18 +313,27 @@ export default function LoginDrawer() {
       alignItems="center"
       justify="center"
     >
-      {!viewUserDetails ? (
-        <div>
-          {/* <CusImg className="img-fluid" src={loginImage} alt="banner" /> */}
-          {otpSuccess ? getMobileOTP() : getMobileNumber()}
-        </div>
+      {!props.forceAddAddress ? (
+        <>
+          {!viewUserDetails ? (
+            <div>
+              {/* <CusImg className="img-fluid" src={loginImage} alt="banner" /> */}
+              {otpSuccess ? getMobileOTP() : getMobileNumber()}
+            </div>
+          ) : (
+            <UserDetails
+              fname="loopase"
+              onCloseDrawer={() => {
+                toggleDrawer("right", false);
+              }}
+            />
+          )}
+        </>
       ) : (
-        <UserDetails
-          fname="loopase"
-          onCloseDrawer={() => {
-            toggleDrawer("right", false);
-          }}
-        />
+        <AddNewAddress
+          onBackPress={handleForceClose}
+          forceAddAddress={true}
+        ></AddNewAddress>
       )}
     </Box>
   );
@@ -339,7 +373,9 @@ export default function LoginDrawer() {
                     <SubmitButton
                       variant="contained"
                       disableElevation
-                      onClick={(e) => { onSignInSubmit(e) }}
+                      onClick={(e) => {
+                        onSignInSubmit(e);
+                      }}
                     >
                       Submit
                     </SubmitButton>
@@ -456,7 +492,9 @@ export default function LoginDrawer() {
           <Button variant="contained" disabled>
             {seconds}S
           </Button>
-          <Button variant="text" disabled>Resend OTP</Button>
+          <Button variant="text" disabled>
+            Resend OTP
+          </Button>
         </div>
       );
     }
@@ -465,30 +503,41 @@ export default function LoginDrawer() {
   return (
     <div>
       {/* <Nav.Link onClick={toggleDrawer("right", true)}>Login</Nav.Link> */}
-      <NavHashLink
-        className="nav-link"
-        to="/#login"
-        activeClassName="selected"
-        activeStyle={{
-          /* color: "red", */ borderBottom: "3px red solid",
-          paddingBottom: "15px",
-        }}
-        onClick={toggleDrawer("right", true)}
-      >
-        {auth.user?.mobileNumber ? (
-          <div>
-            {auth.user?.firstName ? (
-              <div style={{ fontSize: "13px", marginBottom: "-14px" }}>
-                {auth.user?.firstName} <br></br> {auth.user?.mobileNumber}
-              </div>
-            ) : (
-              <>{auth.user?.mobileNumber}</>
-            )}
-          </div>
-        ) : (
-          <div>Login</div>
-        )}
-      </NavHashLink>
+      {props.forceAddAddress ? (
+        <CLButton
+          onClick={toggleDrawer("right", true)}
+          variant="contained"
+          className="w-100"
+        >
+          ADD NEW ADDRESS
+        </CLButton>
+      ) : (
+        <NavHashLink
+          className="nav-link"
+          to={`${location.pathname}#login`}
+          activeClassName="selected"
+          activeStyle={{
+            /* color: "red", */ borderBottom: "3px red solid",
+            paddingBottom: "15px",
+          }}
+          onClick={toggleDrawer("right", true)}
+        >
+          {auth.user?.mobileNumber ? (
+            <div style={{ color: "#2E75B6" }}>
+              {auth.user?.firstName ? (
+                <div style={{ fontSize: "13px", marginBottom: "-14px" }}>
+                  {auth.user?.firstName} <br></br> {auth.user?.mobileNumber}
+                </div>
+              ) : (
+                <>{auth.user?.mobileNumber}</>
+              )}
+            </div>
+          ) : (
+            <div>Login</div>
+          )}
+        </NavHashLink>
+      )}
+
       <CusSwipeableDrawer
         anchor={"right"}
         open={state["right"]}
@@ -503,6 +552,7 @@ export default function LoginDrawer() {
             <button
               onClick={toggleDrawer("right", false)}
               className="esc-btn w-100 text-end"
+              ref={inputRef}
             >
               esc
             </button>

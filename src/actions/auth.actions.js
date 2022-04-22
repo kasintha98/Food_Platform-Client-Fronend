@@ -1,7 +1,13 @@
 import axios from "../helpers/axios";
-import { authConstants, cartConstants, userConstants } from "./constants";
+import {
+  authConstants,
+  cartConstants,
+  userConstants,
+  deliveryTypeConstants,
+} from "./constants";
 import { toast } from "react-toastify";
 import axiosnew from "axios";
+import { GetAddress } from "./user.action";
 
 export const login = (user) => {
   return async (dispatch) => {
@@ -99,7 +105,10 @@ export const signup = (mobileNumber) => {
       if (res.data) {
         console.log(res);
         dispatch({ type: authConstants.SIGNUP_SUCCESS, payload: res.data });
+
         const { id, mobileNumber, firstName, lastName, emailId } = res.data;
+
+        dispatch(GetAddress(mobileNumber));
 
         const user = {
           id,
@@ -193,5 +202,14 @@ export const signout = () => {
 
     dispatch({ type: authConstants.LOGOUT_SUCCESS });
     dispatch({ type: cartConstants.RESET_CART, payload: { cartItems: {} } });
+  };
+};
+
+export const setDeliveryType = (delObj) => {
+  return async (dispatch) => {
+    dispatch({
+      type: deliveryTypeConstants.SET_DELIVERY_TYPE_SUCCESS,
+      payload: delObj,
+    });
   };
 };

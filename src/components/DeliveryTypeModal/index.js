@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAddress } from "../../actions";
+import { GetAddress, setDeliveryType } from "../../actions";
 import { Modal } from "react-bootstrap";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -18,6 +18,7 @@ import styled from "@emotion/styled";
 import Card from "@mui/material/Card";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { IconButton } from "@mui/material";
+import "./style.css";
 
 const ButtonSave = styled(Button)`
   background-color: rgb(130, 187, 55);
@@ -32,6 +33,8 @@ const CusTabList = styled(TabList)`
     background-color: transparent !important;
   }
 `;
+
+const CusMenuItem = styled(MenuItem)``;
 
 export const DeliveryTypeModal = (props) => {
   const [show, setShow] = useState(false);
@@ -69,6 +72,17 @@ export const DeliveryTypeModal = (props) => {
         if (!localStorage.getItem("deliveryType")) {
           handleShow();
         }
+        if (props.forceOpen) {
+          const del = localStorage.getItem("deliveryType");
+          if (del) {
+            const delObj = JSON.parse(del);
+            setType(delObj.type);
+            setSelectedStoreObj(delObj);
+            setSelectedStore(delObj.resturantName);
+          }
+
+          handleShow();
+        }
       },
       props.delay ? props.delay : 1
     );
@@ -89,7 +103,12 @@ export const DeliveryTypeModal = (props) => {
     console.log(store);
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    if (props.onCloseDelModal) {
+      props.onCloseDelModal(false);
+    }
+  };
   const handleShow = () => {
     setShow(true);
   };
@@ -100,6 +119,7 @@ export const DeliveryTypeModal = (props) => {
       ...selectedStoreObj,
       type,
     };
+    dispatch(setDeliveryType(delObj));
     localStorage.setItem("deliveryType", JSON.stringify(delObj));
     if (props.onChangeType) {
       props.onChangeType(delObj);
@@ -191,14 +211,48 @@ export const DeliveryTypeModal = (props) => {
                     onChange={handleChangeStore}
                   >
                     {stores.map((store) => (
-                      <MenuItem
+                      <CusMenuItem
                         onClick={() => {
                           handleSelectedStore(store);
                         }}
                         value={store.resturantName}
                       >
-                        {store.resturantName}
-                      </MenuItem>
+                        <span>
+                          {store.resturantName}
+                          <br></br>
+                          <span
+                            style={{ fontSize: "0.70rem", color: "#767171" }}
+                          >
+                            {store.address1}
+                          </span>
+                          {store.address2 ? (
+                            <>
+                              ,{" "}
+                              <span
+                                style={{
+                                  fontSize: "0.70rem",
+                                  color: "#767171",
+                                }}
+                              >
+                                {store.address2}
+                              </span>
+                            </>
+                          ) : null}
+                          {store.address3 ? (
+                            <>
+                              ,{" "}
+                              <span
+                                style={{
+                                  fontSize: "0.70rem",
+                                  color: "#767171",
+                                }}
+                              >
+                                {store.address3}
+                              </span>
+                            </>
+                          ) : null}
+                        </span>
+                      </CusMenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -214,6 +268,12 @@ export const DeliveryTypeModal = (props) => {
                           Store Address:{" "}
                         </span>
                         {selectedStoreObj.address1}
+                        {selectedStoreObj.address2 ? (
+                          <>, {selectedStoreObj.address2}</>
+                        ) : null}
+                        {selectedStoreObj.address2 ? (
+                          <>, {selectedStoreObj.address2}</>
+                        ) : null}
                       </Typography>
                       <Typography variant="p" component="p">
                         <span style={{ fontWeight: "bold" }}>Timing: </span>
@@ -246,11 +306,7 @@ export const DeliveryTypeModal = (props) => {
                         </Alert>
                       )}
                     </>
-                  ) : (
-                    <Alert severity="warning">
-                      Please login with a valid mobile number for delivery!
-                    </Alert>
-                  )}
+                  ) : null}
                 </div>
               </TabPanel>
               <TabPanel value="collect">
@@ -266,14 +322,48 @@ export const DeliveryTypeModal = (props) => {
                     onChange={handleChangeStore}
                   >
                     {stores.map((store) => (
-                      <MenuItem
+                      <CusMenuItem
                         onClick={() => {
                           handleSelectedStore(store);
                         }}
                         value={store.resturantName}
                       >
-                        {store.resturantName}
-                      </MenuItem>
+                        <span>
+                          {store.resturantName}
+                          <br></br>
+                          <span
+                            style={{ fontSize: "0.70rem", color: "#767171" }}
+                          >
+                            {store.address1}
+                          </span>
+                          {store.address2 ? (
+                            <>
+                              ,{" "}
+                              <span
+                                style={{
+                                  fontSize: "0.70rem",
+                                  color: "#767171",
+                                }}
+                              >
+                                {store.address2}
+                              </span>
+                            </>
+                          ) : null}
+                          {store.address3 ? (
+                            <>
+                              ,{" "}
+                              <span
+                                style={{
+                                  fontSize: "0.70rem",
+                                  color: "#767171",
+                                }}
+                              >
+                                {store.address3}
+                              </span>
+                            </>
+                          ) : null}
+                        </span>
+                      </CusMenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -289,6 +379,12 @@ export const DeliveryTypeModal = (props) => {
                           Store Address:{" "}
                         </span>
                         {selectedStoreObj.address1}
+                        {selectedStoreObj.address2 ? (
+                          <>, {selectedStoreObj.address2}</>
+                        ) : null}
+                        {selectedStoreObj.address2 ? (
+                          <>, {selectedStoreObj.address2}</>
+                        ) : null}
                       </Typography>
                       <Typography variant="p" component="p">
                         <span style={{ fontWeight: "bold" }}>Timing: </span>

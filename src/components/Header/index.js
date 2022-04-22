@@ -18,6 +18,7 @@ import { ToastContainer } from "react-toastify";
 import styled from "@emotion/styled";
 import LoginDrawer from "../Login";
 import { NavHashLink } from "react-router-hash-link";
+import { HeaderDeliveryType } from "../HeaderDeliveryType";
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -39,12 +40,21 @@ const CusNav = styled(Nav)`
   }
 `;
 
+const CusNav2 = styled(Nav)`
+  height: 50px;
+
+  @media (max-width: 992px) {
+    height: 70px;
+  }
+`;
+
 export default function Header(props) {
   const [loginModal, setLoginModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const auth = useSelector((state) => state.auth);
+  const deliveryType = useSelector((state) => state.auth.deliveryType);
   const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
@@ -285,11 +295,17 @@ export default function Header(props) {
             />
             <Button variant="outline-success">Search</Button>
           </Form> */}
+
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse
             style={{ backgroundColor: "#fff", marginTop: "0px" }}
             id="navbarScroll"
           >
+            <CusNav2 className="me-auto">
+              {deliveryType ? (
+                <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType>
+              ) : null}
+            </CusNav2>
             <CusNav
               className="mr-auto my-2 my-lg-0 justify-content-end"
               style={{ maxHeight: "200px", width: "100%" }}

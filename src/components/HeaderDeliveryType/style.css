@@ -1,0 +1,17 @@
+.hg50 {
+  height: 50px;
+}
+
+.hg25 {
+  height: 25px;
+}
+
+@media (max-width: 992px) {
+  .hg50 {
+    height: 80px;
+  }
+
+  .hg25 {
+    height: 40px;
+  }
+}
