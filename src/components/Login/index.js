@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
@@ -35,6 +35,8 @@ import PhoneInput from "react-phone-number-input";
 import CloseIcon from "@mui/icons-material/Close";
 import { NavHashLink } from "react-router-hash-link";
 import Countdown from "react-countdown";
+import TimerButton from "./timerButton";
+import validator from 'validator'
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -154,6 +156,12 @@ export default function LoginDrawer() {
     );
   };
 
+  const validatePhoneNumber = (number) => {
+    const isValidPhoneNumber = validator.isMobilePhone(number)
+    return (isValidPhoneNumber)
+  }
+
+
   const responseFacebook = (res) => {
     try {
       const data = {
@@ -185,6 +193,12 @@ export default function LoginDrawer() {
 
   const onSignInSubmit = (e) => {
     //setOtpSuccess(true);
+    if (!validatePhoneNumber(mobileNumber)) {
+      return toast.error(
+        "Invalid Phone Number"
+      );
+    } 
+
     try {
       setLoginDetails({
         loginCode: 0,
@@ -192,7 +206,7 @@ export default function LoginDrawer() {
       });
 
       e.preventDefault();
-      //configureCaptcha();
+      configureCaptcha();
       const phoneNumber = "+" + mobileNumber;
       const appVerifier = window.recaptchaVerifier;
       console.log(phoneNumber)
@@ -207,9 +221,9 @@ export default function LoginDrawer() {
           setOtpSuccess(true);
         })
         .catch((error) => {
-          console.log("SMS NOT SENT ERROR....!!");
+          console.log("SMS not sent error....!!");
           toast.error(
-            "Invalid Phone Number!"
+            "SMS not sent error....!!"
           );
         });
     } catch (ex) {
@@ -401,10 +415,11 @@ export default function LoginDrawer() {
                 </div>
                 <div className="row mt-4">
                   <Col>
-                    <Countdown
+                    <TimerButton />
+                    {/* <Countdown
                       date={Date.now() + 6000}
                       renderer={rendererTime}
-                    />
+                    /> */}
                   </Col>
                   <Col>
                     <div class="text-end">
