@@ -11,10 +11,31 @@ import { Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 
 const CusCol = styled(Col)`
-  height: 90vh;
+  height: 95vh;
   @media (max-width: 992px) {
     height: 50vh;
     margin-top: 20px;
+  }
+`;
+
+const Typography1 = styled(Typography)`
+  font-size: 1.25rem;
+  @media (max-width: 992px) {
+    font-size: 1rem;
+  }
+`;
+
+const Typography2 = styled(Typography)`
+  font-size: 1rem;
+  @media (max-width: 992px) {
+    font-size: 0.875rem;
+  }
+`;
+
+const CusAlert = styled(Alert)`
+  margin-top: 45vh;
+  @media (max-width: 992px) {
+    margin-top: 27vh;
   }
 `;
 
@@ -26,8 +47,11 @@ const CusDiv = styled.div`
   padding: 20px;
   border-top-left-radius: 20%;
   border-bottom-right-radius: 20%;
+  max-height: 50vh;
+  overflow-y: auto;
   @media (max-width: 992px) {
     margin-top: 22vh;
+    max-height: 25vh;
   }
 `;
 const CusMenuItem = styled(MenuItem)``;
@@ -121,12 +145,12 @@ export const Restaurants = () => {
           {selectedStoreObj ? (
             <CusDiv>
               <div>
-                <Typography>
-                  <span style={{ fontSize: "1.5rem", color: "#595959" }}>
+                <Typography1>
+                  <span style={{ color: "#595959" }}>
                     {selectedStoreObj.resturantName}
                   </span>
                   <br></br>
-                  <span style={{ fontSize: "1.5rem", color: "#595959" }}>
+                  <span style={{ color: "#595959" }}>
                     {selectedStoreObj.address1}
                   </span>
                   {selectedStoreObj.address2 ? (
@@ -134,7 +158,6 @@ export const Restaurants = () => {
                       ,<br></br>
                       <span
                         style={{
-                          fontSize: "1.5rem",
                           color: "#595959",
                         }}
                       >
@@ -147,7 +170,6 @@ export const Restaurants = () => {
                       ,<br></br>
                       <span
                         style={{
-                          fontSize: "1.5rem",
                           color: "#595959",
                         }}
                       >
@@ -155,14 +177,13 @@ export const Restaurants = () => {
                       </span>
                     </>
                   ) : null}
-                </Typography>
+                </Typography1>
               </div>
               <br></br>
               <div>
-                <Typography>
+                <Typography1>
                   <span
                     style={{
-                      fontSize: "1.5rem",
                       color: "#595959",
                       fontWeight: "bold",
                     }}
@@ -181,7 +202,6 @@ export const Restaurants = () => {
                   <br></br>
                   <span
                     style={{
-                      fontSize: "1.5rem",
                       color: "#595959",
                       fontWeight: "bold",
                     }}
@@ -197,12 +217,12 @@ export const Restaurants = () => {
                       </span>
                     )}
                   </span>
-                </Typography>
+                </Typography1>
               </div>
               <br></br>
               <div>
-                <Typography>
-                  <span style={{ fontSize: "1.25rem", color: "#595959" }}>
+                <Typography2>
+                  <span style={{ color: "#595959" }}>
                     <span style={{ fontWeight: "bold" }}>
                       Restaurant Timing
                     </span>{" "}
@@ -210,11 +230,11 @@ export const Restaurants = () => {
                     {selectedStoreObj.storeEndTime}PM
                   </span>
                   <br></br>
-                </Typography>
+                </Typography2>
               </div>
             </CusDiv>
           ) : (
-            <Alert severity="warning">No store is selected!</Alert>
+            <CusAlert severity="warning">No store is selected!</CusAlert>
           )}
         </CusCol>
       </Row>
