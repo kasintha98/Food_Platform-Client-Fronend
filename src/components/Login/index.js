@@ -273,6 +273,7 @@ export default function LoginDrawer(props) {
         console.log(JSON.stringify(user.phoneNumber));
         console.log(user.phoneNumber);
         toast.success("User Verified Sucessfully!!");
+        localStorage.removeItem("otpTime");
         //setOtpError("User Verified Sucessfully!!");
         userLogin();
         //setIsLoginCode(1);
@@ -448,7 +449,12 @@ export default function LoginDrawer(props) {
                   <Col>
                     {/* <TimerButton /> */}
                     <Countdown
-                      date={Date.now() + 60000}
+                      date={
+                        localStorage.getItem("otpTime")
+                          ? Date.now() +
+                            Number(localStorage.getItem("otpTime") * 1000)
+                          : Date.now() + 60000
+                      }
                       renderer={rendererTime}
                     />
                   </Col>
@@ -479,9 +485,13 @@ export default function LoginDrawer(props) {
     if (completed) {
       // Render a complete state
       //setOtpSuccess(false);
+      if (seconds === 0) {
+        localStorage.removeItem("otpTime");
+      }
       return <Completionist />;
     } else {
       // Render a countdown
+      localStorage.setItem("otpTime", seconds);
       return (
         <div>
           <Button variant="contained" disabled>
