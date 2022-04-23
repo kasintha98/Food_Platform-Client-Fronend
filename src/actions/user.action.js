@@ -283,3 +283,50 @@ export const GetAddress = (mobileNumber) => {
     }
   };
 };
+
+//action to add new order
+export const saveNewOrder = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post("/saveNewOrder", payload);
+      dispatch({ type: userConstants.ADD_USER_ORDER_REQUEST });
+
+      if (res.status === 200) {
+        console.log(res);
+        dispatch({
+          type: cartConstants.RESET_CART,
+          payload: { cartItems: {} },
+        });
+        localStorage.removeItem("cart");
+        //dispatch(getCartItems());
+        toast.success("Order Placed Successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return true;
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: userConstants.ADD_USER_ORDER_FAILURE,
+          payload: { error },
+        });
+        toast.error("There was an error!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
