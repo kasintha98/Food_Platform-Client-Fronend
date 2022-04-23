@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import "./style.css";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
@@ -49,7 +50,7 @@ import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { GetAddress } from "../../actions";
+import { GetAddress, saveNewOrder } from "../../actions";
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
@@ -192,6 +193,7 @@ export default function NewCheckout() {
 
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
+  const history = useHistory();
 
   useEffect(() => {
     const item = localStorage.getItem("deliveryType");
@@ -216,21 +218,85 @@ export default function NewCheckout() {
   const handleShow = () => setShow(true);
 
   const placeOrder = () => {
-    const total =
-      subTotal +
-      (extraSubTotal ? extraSubTotal : 0) +
-      (choiceTotal ? choiceTotal : 0);
+    try {
+      const total =
+        subTotal +
+        (extraSubTotal ? extraSubTotal : 0) +
+        (choiceTotal ? choiceTotal : 0);
 
-    const order = {
-      items: cart?.cartItems,
-      total: total,
-      deliveryType: currentType,
-      coupon: coupon,
-      address: selectedAddress,
-      paymentType: paymentType,
-      orderTime: new Date(),
-    };
-    console.log(order);
+      let orderDetails = [];
+      const allItems = Object.values(cart?.cartItems);
+
+      for (let i = 0; i < allItems.length; i++) {
+        const obj = {
+          productId: allItems[i].productId,
+          quantity: allItems[i].qty,
+          storeId: allItems[i].storeId,
+          price: allItems[i].price,
+          remarks: allItems[i].specialText,
+        };
+        orderDetails.push(obj);
+      }
+
+      /* const OldOrder = {
+        items: cart?.cartItems,
+        total: total,
+        deliveryType: currentType,
+        coupon: coupon,
+        address: selectedAddress,
+        paymentType: paymentType,
+        orderTime: new Date(),
+      }; */
+
+      const NewOrder = {
+        id: 0,
+        orderId: "EMPTY",
+        restaurantId: currentType.restaurantId,
+        storeId: currentType.storeId,
+        orderSource: "M",
+        customerId: auth.user.id,
+        orderReceivedDateTime: new Date(),
+        orderDeliveryType:
+          currentType.type === "delivery" ? "delivery" : "pickup",
+        storeTableId: "testStore",
+        orderStatus: "Placed",
+        taxRuleId: 1,
+        totalPrice: total,
+        customerAddressId: selectedAddress.id,
+        cgstCaluclatedValue: null,
+        sgstCalculatedValue: null,
+        overallPriceWithTax: null,
+        orderDetails: orderDetails,
+      };
+
+      /* [
+        {
+          productId: "P001",
+          orderId: "44",
+          quantity: 10,
+          storeId: "S001",
+          price: 4.5,
+          remarks: "Burger Order",
+        },
+        {
+          productId: "P002",
+          quantity: 2,
+          orderId: "44",
+          storeId: "S001",
+          price: 8.5,
+          remarks: "Pizza Order",
+        },
+      ] */
+
+      //console.log(NewOrder);
+      dispatch(saveNewOrder(NewOrder)).then((res) => {
+        if (res) {
+          //history.push("/");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleNavTab = (val) => {
@@ -525,9 +591,32 @@ export default function NewCheckout() {
                       </TableBody>
                     </Table>
                     <CardActions sx={{ justifyContent: "center" }}>
-                      <POButton onClick={placeOrder} variant="contained">
-                        PLACE ORDER
-                      </POButton>
+                      {currentType?.type === "delivery" ? (
+                        <POButton
+                          onClick={placeOrder}
+                          variant="contained"
+                          disabled={
+                            selectedAddress &&
+                            Object.keys(cart?.cartItems).length > 0
+                              ? false
+                              : true
+                          }
+                        >
+                          PLACE ORDER
+                        </POButton>
+                      ) : (
+                        <POButton
+                          onClick={placeOrder}
+                          variant="contained"
+                          disabled={
+                            Object.keys(cart?.cartItems).length > 0
+                              ? false
+                              : true
+                          }
+                        >
+                          PLACE ORDER
+                        </POButton>
+                      )}
                     </CardActions>
                   </Card>
                 </Grid>
@@ -578,11 +667,11 @@ export default function NewCheckout() {
                                     <br />
                                     {selectedAddress.landmark}
                                     <br />
-                                    {selectedAddress.state}
-                                    <br />
                                     {selectedAddress.city}
                                     <br />
-                                    {selectedAddress.zip}
+                                    {selectedAddress.zipCode}
+                                    <br />
+                                    {selectedAddress.state}
                                   </p>
                                 </Typography>
                               ) : null}
