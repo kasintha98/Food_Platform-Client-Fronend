@@ -1,3 +1,7 @@
 .MuiMenu-list {
   max-height: 300px !important;
 }
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #7f7f7f !important;
+}

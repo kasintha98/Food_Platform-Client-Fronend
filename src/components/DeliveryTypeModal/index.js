@@ -143,8 +143,8 @@ export const DeliveryTypeModal = (props) => {
                 <span />
               </span>
               <span className="font-weight-normal">
-                {address.address1} {address.address2}
-                {address.landmark} {address.state} {address.city} {address.zip}
+                {address.address1}, {address.address2},{address.landmark},{" "}
+                {address.city}, {address.state}, {address.zipCode}
                 <span />
               </span>
             </h6>
@@ -278,9 +278,14 @@ export const DeliveryTypeModal = (props) => {
                         {selectedStoreObj.address2 ? (
                           <>, {selectedStoreObj.address2}</>
                         ) : null}
-                        {selectedStoreObj.address2 ? (
-                          <>, {selectedStoreObj.address2}</>
+                        {selectedStoreObj.address3 ? (
+                          <>, {selectedStoreObj.address3}</>
                         ) : null}
+                        , {selectedStoreObj.city}
+                        {selectedStoreObj.zipCode ? (
+                          <>, {selectedStoreObj.zipCode}</>
+                        ) : null}
+                        , {selectedStoreObj.country}
                       </Typography>
                       <Typography variant="p" component="p">
                         <span style={{ fontWeight: "bold" }}>Timing: </span>
@@ -389,9 +394,14 @@ export const DeliveryTypeModal = (props) => {
                         {selectedStoreObj.address2 ? (
                           <>, {selectedStoreObj.address2}</>
                         ) : null}
-                        {selectedStoreObj.address2 ? (
-                          <>, {selectedStoreObj.address2}</>
+                        {selectedStoreObj.address3 ? (
+                          <>, {selectedStoreObj.address3}</>
                         ) : null}
+                        , {selectedStoreObj.city}
+                        {selectedStoreObj.zipCode ? (
+                          <>, {selectedStoreObj.zipCode}</>
+                        ) : null}
+                        , {selectedStoreObj.country}
                       </Typography>
                       <Typography variant="p" component="p">
                         <span style={{ fontWeight: "bold" }}>Timing: </span>

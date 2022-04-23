@@ -1,6 +1,10 @@
 .col-background {
-  background-image: url("../../img/res-back.jpg");
+  background-image: url("../../img/res-back2.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: left top;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #7f7f7f !important;
 }
