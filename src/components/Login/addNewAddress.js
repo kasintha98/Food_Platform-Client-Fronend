@@ -138,7 +138,7 @@ export default function AddNewAddress(props) {
         city: city,
         state: state,
         landmark: landMark,
-        zip_code: parseInt(zip),
+        zipCode: parseInt(zip),
       };
       if (address1 != "" && city != "" && type != "" && state != "") {
         dispatch(AddAddress(addressObj));
@@ -177,9 +177,8 @@ export default function AddNewAddress(props) {
                 <span />
               </span>
               <span className="font-weight-normal">
-                {address.address1} {address.address2}
-                {address.landmark} {address.state} {address.city}{" "}
-                {address.zipCode}
+                {address.address1}, {address.address2},{address.landmark},{" "}
+                {address.city}, {address.state}, {address.zipCode}
                 <span />
               </span>
             </h6>
@@ -200,7 +199,7 @@ export default function AddNewAddress(props) {
   };
 
   return (
-    <div style={{ backgroundColor: "rgb(233, 237, 239)" }}>
+    <div style={{ backgroundColor: "rgb(233, 237, 239)" }} className="mb-5">
       <div className="row m-0">
         <div>
           <div className="row" id="add">
@@ -218,11 +217,12 @@ export default function AddNewAddress(props) {
               <TextField
                 inputProps={{ style: { fontSize: "0.875rem" } }}
                 id="outlined-helperText"
-                label="Address Type"
+                label="Address Type like Home, Office etc."
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 type="text"
                 required
+                variant="standard"
               />
             </div>
             <div className="row mb-3">
@@ -234,6 +234,7 @@ export default function AddNewAddress(props) {
                 onChange={(e) => setAddress1(e.target.value)}
                 type="text"
                 required
+                variant="standard"
               />
             </div>
             <div className="row mb-3">
@@ -245,6 +246,7 @@ export default function AddNewAddress(props) {
                 onChange={(e) => setAddress2(e.target.value)}
                 type="text"
                 required
+                variant="standard"
               />
             </div>
             <div className="row mb-3">
@@ -256,6 +258,7 @@ export default function AddNewAddress(props) {
                 onChange={(e) => setLandMark(e.target.value)}
                 type="text"
                 required
+                variant="standard"
               />
             </div>
             <div className="row mb-3">
@@ -267,6 +270,7 @@ export default function AddNewAddress(props) {
                 onChange={(e) => setZip(e.target.value)}
                 type="number"
                 required
+                variant="standard"
               />
             </div>
             <div className="row mb-3">
@@ -280,11 +284,12 @@ export default function AddNewAddress(props) {
                     onChange={(e) => setCity(e.target.value)}
                     type="text"
                     required
+                    variant="standard"
                   />
                 </FormControl>
               </div>
               <div className="col-6 pr-0 mr-0">
-                <FormControl sx={{ minWidth: "100%" }}>
+                <FormControl sx={{ minWidth: "100%" }} variant="standard">
                   <InputLabel id="demo-simple-select-autowidth-label">
                     State
                   </InputLabel>

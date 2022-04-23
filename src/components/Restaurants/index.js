@@ -13,7 +13,7 @@ import Alert from "@mui/material/Alert";
 const CusCol = styled(Col)`
   height: 95vh;
   @media (max-width: 992px) {
-    height: 50vh;
+    height: 70vh;
     margin-top: 20px;
   }
 `;
@@ -39,18 +39,20 @@ const CusAlert = styled(Alert)`
   }
 `;
 
+const CusSelect = styled(Select)``;
+
 const CusDiv = styled.div`
   background-color: #fff;
-  margin-top: 40vh;
+  margin-top: 50vh;
   margin-left: 6%;
   width: 60%;
   padding: 20px;
   border-top-left-radius: 20%;
   border-bottom-right-radius: 20%;
-  max-height: 50vh;
+  max-height: 42vh;
   overflow-y: auto;
   @media (max-width: 992px) {
-    margin-top: 22vh;
+    margin-top: 40vh;
     max-height: 25vh;
   }
 `;
@@ -89,7 +91,7 @@ export const Restaurants = () => {
             <InputLabel id="demo-simple-select-label">
               Please select the store
             </InputLabel>
-            <Select
+            <CusSelect
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={selectedStore}
@@ -138,7 +140,7 @@ export const Restaurants = () => {
                   </span>
                 </CusMenuItem>
               ))}
-            </Select>
+            </CusSelect>
           </FormControl>
         </Col>
         <CusCol className="col-background" sm={12} md={7}>
@@ -226,16 +228,14 @@ export const Restaurants = () => {
                     <span style={{ fontWeight: "bold" }}>
                       Restaurant Timing
                     </span>{" "}
-                    - {selectedStoreObj.storeStartTime}AM to{" "}
-                    {selectedStoreObj.storeEndTime}PM
+                    - {selectedStoreObj.storeStartTime} to{" "}
+                    {selectedStoreObj.storeEndTime}
                   </span>
                   <br></br>
                 </Typography2>
               </div>
             </CusDiv>
-          ) : (
-            <CusAlert severity="warning">No store is selected!</CusAlert>
-          )}
+          ) : null}
         </CusCol>
       </Row>
     </div>
