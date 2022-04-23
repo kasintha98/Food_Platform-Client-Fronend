@@ -41,8 +41,19 @@ export const getSpecificProductBySlug = (slug) => {
 export const getProductsNew = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`/getAllMenuItems`);
-      //const res = await stockAxios.get(`products.json`);
+      const delLoc = localStorage.getItem("deliveryType");
+      let res = {};
+      if (delLoc) {
+        const delObj = JSON.parse(delLoc);
+        res = await axios.get(`/getMenuItemsByRestroAndStore`, {
+          params: {
+            restaurantId: delObj.restaurantId,
+            storeId: delObj.storeId,
+          },
+        });
+      } else {
+        res = await axios.get(`/getAllMenuItems`);
+      }
 
       if (res.status === 200) {
         const productsList = {
