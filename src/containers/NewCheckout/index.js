@@ -54,6 +54,7 @@ import { GetAddress, saveNewOrder } from "../../actions";
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
+import { Paytm } from "../../components/Paytm";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -186,7 +187,9 @@ export default function NewCheckout() {
   const [isPaid, setIsPaid] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [show, setShow] = useState(false);
-  const [paymentType, setPaymentType] = React.useState("PayU");
+  const [paymentType, setPaymentType] = useState("");
+  const [currentPaymentType, setCurrentPaymentType] = useState("");
+
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
@@ -213,6 +216,11 @@ export default function NewCheckout() {
       dispatch(GetAddress(localUserMobileNumber));
     }
   }, []);
+
+  const handlePaymentType = () => {
+    console.log(paymentType);
+    setCurrentPaymentType(paymentType);
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -1020,50 +1028,74 @@ export default function NewCheckout() {
             <Row>
               <Col className="col-12">
                 <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card>
-                    <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
-                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                        PAYMENT METHOD
-                      </h5>
-                      <RadioGroup
-                        aria-labelledby="demo-controlled-radio-buttons-group"
-                        name="controlled-radio-buttons-group"
-                        value={paymentType}
-                        onChange={handleChangePaymentType}
-                        sx={{ color: "#7F7F7F" }}
-                      >
-                        <FormControlLabel
-                          value="PayU"
-                          control={<Radio color="success" />}
-                          label="PayU (Cards, Net Banking, UPI, Wallet)"
-                        />
-                        <FormControlLabel
-                          value="Paytm"
-                          control={<Radio color="success" />}
-                          label="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
-                        />
-                        <FormControlLabel
-                          value="CASH"
-                          control={<Radio color="success" />}
-                          label="CASH"
-                        />
-                        <FormControlLabel
-                          value="COD"
-                          control={<Radio color="success" />}
-                          label="CASH ON DELIVERY"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                    <CardActions>
-                      <SPMButton
-                        variant="contained"
-                        color="success"
-                        className="w-100"
-                      >
-                        SELECT PAYMENT METHOD
-                      </SPMButton>
-                    </CardActions>
-                  </Card>
+                  {!currentPaymentType ? (
+                    <Card>
+                      <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
+                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                          PAYMENT METHOD
+                        </h5>
+                        <RadioGroup
+                          aria-labelledby="demo-controlled-radio-buttons-group"
+                          name="controlled-radio-buttons-group"
+                          value={paymentType}
+                          onChange={handleChangePaymentType}
+                          sx={{ color: "#7F7F7F" }}
+                        >
+                          <FormControlLabel
+                            value="PayU"
+                            control={<Radio color="success" />}
+                            label="PayU (Cards, Net Banking, UPI, Wallet)"
+                          />
+                          <FormControlLabel
+                            value="Paytm"
+                            control={<Radio color="success" />}
+                            label="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
+                          />
+                          <FormControlLabel
+                            value="CASH"
+                            control={<Radio color="success" />}
+                            label="CASH"
+                          />
+                          <FormControlLabel
+                            value="COD"
+                            control={<Radio color="success" />}
+                            label="CASH ON DELIVERY"
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                      <CardActions>
+                        <SPMButton
+                          variant="contained"
+                          color="success"
+                          className="w-100"
+                          onClick={handlePaymentType}
+                          disabled={paymentType ? false : true}
+                        >
+                          SELECT PAYMENT METHOD
+                        </SPMButton>
+                      </CardActions>
+                    </Card>
+                  ) : null}
+                  {currentPaymentType === "Paytm" ? (
+                    <Card>
+                      <Paytm></Paytm>
+                    </Card>
+                  ) : null}
+                  {currentPaymentType === "PayU" ? (
+                    <Card>
+                      <p>PayU</p>
+                    </Card>
+                  ) : null}
+                  {currentPaymentType === "CASH" ? (
+                    <Card>
+                      <p>CASH</p>
+                    </Card>
+                  ) : null}
+                  {currentPaymentType === "COD" ? (
+                    <Card>
+                      <p>COD</p>
+                    </Card>
+                  ) : null}
                 </Grid>
               </Col>
             </Row>
