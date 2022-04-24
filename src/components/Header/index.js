@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Navbar,
   Nav,
@@ -92,6 +93,7 @@ export default function Header(props) {
   const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
   //calling action to login the user
   const userLogin = () => {
@@ -502,6 +504,7 @@ export default function Header(props) {
           /* onChangeType={handleTypeChange} */
           onCloseDelModal={handleCloseDelModal}
           forceOpen={true}
+          fromCheckout={location.pathname === "/new-checkout" ? true : false}
         ></DeliveryTypeModal>
       ) : null}
     </div>

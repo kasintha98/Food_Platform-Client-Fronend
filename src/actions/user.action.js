@@ -4,6 +4,7 @@ import {
   userDetailsConstants,
   userAddressConstants,
 } from "./constants";
+import { resetCart } from "./cart.action";
 import axios from "../helpers/axios";
 import { toast } from "react-toastify";
 
@@ -293,10 +294,7 @@ export const saveNewOrder = (payload) => {
 
       if (res.status === 200) {
         console.log(res);
-        dispatch({
-          type: cartConstants.RESET_CART,
-          payload: { cartItems: {} },
-        });
+        dispatch(resetCart());
         localStorage.removeItem("cart");
         //dispatch(getCartItems());
         toast.success("Order Placed Successfully!", {

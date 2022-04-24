@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAddress, setDeliveryType } from "../../actions";
+import { useHistory } from "react-router-dom";
+import {
+  GetAddress,
+  setDeliveryType,
+  getProductsNew,
+  resetCart,
+} from "../../actions";
 import { Modal } from "react-bootstrap";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -47,6 +53,7 @@ export const DeliveryTypeModal = (props) => {
 
   const stores = useSelector((state) => state.store.stores);
   const allAddress = useSelector((state) => state.user.allAddresses);
+  const history = useHistory();
 
   /* const stores = [
     { name: "Store 1", address: "Sore 1 Add", time: "10 AM to 11 AM" },
@@ -124,7 +131,13 @@ export const DeliveryTypeModal = (props) => {
     if (props.onChangeType) {
       props.onChangeType(delObj);
     }
+    dispatch(getProductsNew());
+    dispatch(resetCart());
+    localStorage.removeItem("cart");
     handleClose();
+    if (props.fromCheckout && props.forceOpen) {
+      history.push("/new-menu");
+    }
   };
 
   const NewAddress = ({ address }) => {
