@@ -262,7 +262,7 @@ export default function NewCheckout() {
         orderStatus: "Placed",
         taxRuleId: 1,
         totalPrice: total,
-        customerAddressId: selectedAddress.id,
+        customerAddressId: selectedAddress ? selectedAddress.id : null,
         cgstCaluclatedValue: null,
         sgstCalculatedValue: null,
         overallPriceWithTax: null,
@@ -1084,6 +1084,7 @@ export default function NewCheckout() {
           onChangeType={handleTypeChange}
           onCloseDelModal={handleCloseDelModal}
           forceOpen={true}
+          fromCheckout={true}
         ></DeliveryTypeModal>
       ) : null}
       {renderPayUModal()}

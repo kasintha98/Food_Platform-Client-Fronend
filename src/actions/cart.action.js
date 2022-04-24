@@ -286,4 +286,17 @@ export const replaceCartItemNew = (newProduct, oldId) => {
   };
 };
 
+export const resetCart = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: cartConstants.RESET_CART,
+        payload: { cartItems: {} },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export { getCartItems };

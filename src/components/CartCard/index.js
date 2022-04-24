@@ -17,6 +17,7 @@ import LinesEllipsis from "react-lines-ellipsis";
 import emptyCartImg from "./../../img/empty-cart.jpg";
 import { imagePath } from "../../urlConfig";
 import noImage from "../../img/no-img.png";
+import "./style.css";
 
 const imageExt = ".jpg";
 
@@ -100,7 +101,7 @@ export default function CartCard(props) {
                 maxWidth: "100%",
                 marginBottom: "15px",
                 boxShadow: "none",
-                backgroundColor: "#F7F7F7",
+                backgroundColor: "#fff",
               }}
             >
               <CusRow>
@@ -258,75 +259,9 @@ export default function CartCard(props) {
                       >
                         Your Customisation
                       </p>
-                      <p>
-                        <span
-                          style={{
-                            fontSize: "0.8rem",
-                            fontWeight: "600",
-                            fontFamily: "Arial",
-                            color: "#595959",
-                            lineHeight: "1",
-                          }}
-                        >
-                          Size :
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "0.8rem",
-                            fontWeight: "400",
-                            fontFamily: "Arial",
-                            color: "#767171",
-                            lineHeight: "1",
-                          }}
-                        >
-                          {" "}
-                          {cart?.cartItems[key].productSize}
-                        </span>
-                      </p>
-                      <p>
-                        {cart?.cartItems[key]?.extra &&
-                        Object.keys(cart?.cartItems[key]?.extra).length > 0 ? (
-                          <span
-                            style={{
-                              fontSize: "0.8rem",
-                              fontWeight: "600",
-                              fontFamily: "Arial",
-                              color: "#595959",
-                              lineHeight: "1",
-                            }}
-                          >
-                            Topping :{" "}
-                          </span>
-                        ) : null}
-
-                        {cart?.cartItems[key]?.extra
-                          ? Object.keys(cart?.cartItems[key]?.extra).map(
-                              (index) => (
-                                <span
-                                  style={{
-                                    fontSize: "0.8rem",
-                                    fontWeight: "400",
-                                    fontFamily: "Arial",
-                                    color: "#767171",
-                                    lineHeight: "1",
-                                  }}
-                                >
-                                  {
-                                    cart?.cartItems[key]?.extra[index]
-                                      .ingredientType
-                                  }
-                                  ,{" "}
-                                </span>
-                              )
-                            )
-                          : null}
-                      </p>
-
-                      <p>
-                        {cart?.cartItems[key]?.choiceIng &&
-                        Object.keys(cart?.cartItems[key]?.choiceIng).length >
-                          0 ? (
-                          <>
+                      <Typography>
+                        <Row>
+                          <div className="w625">
                             <span
                               style={{
                                 fontSize: "0.8rem",
@@ -336,8 +271,22 @@ export default function CartCard(props) {
                                 lineHeight: "1",
                               }}
                             >
-                              Choice of Base:{" "}
+                              Size :
                             </span>
+                            <span
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "400",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                                lineHeight: "1",
+                              }}
+                            >
+                              {" "}
+                              {cart?.cartItems[key].productSize}
+                            </span>
+                          </div>
+                          <div className="w375">
                             <span
                               style={{
                                 fontSize: "0.8rem",
@@ -347,11 +296,138 @@ export default function CartCard(props) {
                                 lineHeight: "1",
                               }}
                             >
-                              {cart?.cartItems[key]?.choiceIng.ingredientType}
+                              {"₹"}
+                              {cart?.cartItems[key].price}
                             </span>
-                          </>
-                        ) : null}
-                      </p>
+                          </div>
+                        </Row>
+                      </Typography>
+                      <Typography>
+                        <Row>
+                          <Col className="pr-0 mr-0 col-3">
+                            {cart?.cartItems[key]?.extra &&
+                            Object.keys(cart?.cartItems[key]?.extra).length >
+                              0 ? (
+                              <span
+                                style={{
+                                  fontSize: "0.8rem",
+                                  fontWeight: "600",
+                                  fontFamily: "Arial",
+                                  color: "#595959",
+                                  lineHeight: "1",
+                                }}
+                              >
+                                Topping :{" "}
+                              </span>
+                            ) : null}
+                          </Col>
+                          <Col className="p-0 mr-0  col-9">
+                            <Row>
+                              {cart?.cartItems[key]?.extra ? (
+                                <>
+                                  {Object.keys(cart?.cartItems[key]?.extra).map(
+                                    (index) => (
+                                      <>
+                                        <Col className="col-6">
+                                          <span
+                                            style={{
+                                              fontSize: "0.8rem",
+                                              fontWeight: "400",
+                                              fontFamily: "Arial",
+                                              color: "#767171",
+                                              lineHeight: "1",
+                                            }}
+                                          >
+                                            {
+                                              cart?.cartItems[key]?.extra[index]
+                                                .ingredientType
+                                            }
+                                          </span>
+                                        </Col>
+                                        <Col className="col-6">
+                                          <span
+                                            style={{
+                                              fontSize: "0.8rem",
+                                              fontWeight: "400",
+                                              fontFamily: "Arial",
+                                              color: "#767171",
+                                              lineHeight: "1",
+                                            }}
+                                          >
+                                            {"₹"}
+                                            {
+                                              cart?.cartItems[key]?.extra[index]
+                                                .price
+                                            }
+                                          </span>
+                                        </Col>
+                                      </>
+                                    )
+                                  )}
+                                </>
+                              ) : null}
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Typography>
+
+                      <Typography>
+                        <Row>
+                          {cart?.cartItems[key]?.choiceIng &&
+                          Object.keys(cart?.cartItems[key]?.choiceIng).length >
+                            0 ? (
+                            <>
+                              <div className="w625">
+                                <Row>
+                                  <Col className="pr-0 mr-0 col-7">
+                                    <span
+                                      style={{
+                                        fontSize: "0.8rem",
+                                        fontWeight: "600",
+                                        fontFamily: "Arial",
+                                        color: "#595959",
+                                        lineHeight: "1",
+                                      }}
+                                    >
+                                      Choice of Base:{" "}
+                                    </span>
+                                  </Col>
+                                  <Col className="p-0 col-5">
+                                    <span
+                                      style={{
+                                        fontSize: "0.8rem",
+                                        fontWeight: "400",
+                                        fontFamily: "Arial",
+                                        color: "#767171",
+                                        lineHeight: "1",
+                                      }}
+                                    >
+                                      {
+                                        cart?.cartItems[key]?.choiceIng
+                                          .ingredientType
+                                      }
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </div>
+                              <div className="w375">
+                                <span
+                                  style={{
+                                    fontSize: "0.8rem",
+                                    fontWeight: "400",
+                                    fontFamily: "Arial",
+                                    color: "#767171",
+                                    lineHeight: "1",
+                                  }}
+                                >
+                                  {"₹"}
+                                  {cart?.cartItems[key]?.choiceIng.price}
+                                </span>
+                              </div>
+                            </>
+                          ) : null}
+                        </Row>
+                      </Typography>
 
                       {cart?.cartItems[key].specialText ? (
                         <p>

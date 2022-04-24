@@ -7,6 +7,7 @@ import CartCard from "../../components/CartCard";
 import CardContent from "@mui/material/CardContent";
 import { Typography } from "@mui/material";
 import styled from "@emotion/styled";
+import { Row, Col } from "react-bootstrap";
 
 const CheckoutButton = styled(Button)`
   background-color: rgb(130, 187, 55);
@@ -54,7 +55,7 @@ export const NewCart = () => {
           sx={{
             height: "500px",
             overflowY: "auto",
-            backgroundColor: "#F7F7F7",
+            backgroundColor: "#fff",
           }}
         >
           <CartCard
@@ -69,15 +70,39 @@ export const NewCart = () => {
             boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.3)",
           }}
         >
-          <SubTotalArea>
-            <SubTotal>Subtotal</SubTotal>
-            <SubTotal>
-              ₹{" "}
-              {subTotal +
-                (extraSubTotal ? extraSubTotal : 0) +
-                (choiceTotal ? choiceTotal : 0)}
-            </SubTotal>
-          </SubTotalArea>
+          <Typography>
+            <Row className="p-2">
+              <Col className="col-8">Subtotal</Col>
+              <Col className="col-4">
+                ₹{" "}
+                {subTotal +
+                  (extraSubTotal ? extraSubTotal : 0) +
+                  (choiceTotal ? choiceTotal : 0)}
+              </Col>
+            </Row>
+            <Row className="p-2">
+              <Col className="col-8">Taxes (CGST)</Col>
+              <Col className="col-4">₹ {0}</Col>
+            </Row>
+            <Row className="p-2">
+              <Col className="col-8">Taxes (SGST)</Col>
+              <Col className="col-4">₹ {0}</Col>
+            </Row>
+            <Row className="p-2">
+              <Col className="col-8">Delivery Charges</Col>
+              <Col className="col-4">₹ {0}</Col>
+            </Row>
+            <Row className="p-2">
+              <Col className="col-8">Grand Total</Col>
+              <Col className="col-4">
+                ₹{" "}
+                {subTotal +
+                  (extraSubTotal ? extraSubTotal : 0) +
+                  (choiceTotal ? choiceTotal : 0)}
+              </Col>
+            </Row>
+          </Typography>
+
           <CardActions>
             <Link
               style={{ color: "#fff", textDecoration: "none", width: "100%" }}
