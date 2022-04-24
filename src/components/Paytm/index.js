@@ -13,8 +13,8 @@ export const Paytm = () => {
     let orderId = "Order_" + new Date().getTime();
 
     // Sandbox Credentials
-    let mid = "wHNUTH68224456779429"; // Merchant ID
-    let mkey = "aaaaaaaaaaaaaaaa"; // Merchant Key
+    let mid = "881690070"; // Merchant ID
+    let mkey = "Ricky@1984"; // Merchant Key
     var paytmParams = {};
 
     paytmParams.body = {

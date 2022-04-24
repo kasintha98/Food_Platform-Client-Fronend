@@ -55,6 +55,7 @@ import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
 import { Paytm } from "../../components/Paytm";
+import { PayU } from "../../components/PayU";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -1077,23 +1078,23 @@ export default function NewCheckout() {
                     </Card>
                   ) : null}
                   {currentPaymentType === "Paytm" ? (
-                    <Card>
+                    <Card className="p-3">
                       <Paytm></Paytm>
                     </Card>
                   ) : null}
                   {currentPaymentType === "PayU" ? (
-                    <Card>
-                      <p>PayU</p>
+                    <Card className="p-3">
+                      <PayU></PayU>
                     </Card>
                   ) : null}
                   {currentPaymentType === "CASH" ? (
-                    <Card>
-                      <p>CASH</p>
+                    <Card className="p-3">
+                      <p>You selected CASH!</p>
                     </Card>
                   ) : null}
                   {currentPaymentType === "COD" ? (
-                    <Card>
-                      <p>COD</p>
+                    <Card className="p-3">
+                      <p>You selected Cash On Delivery!</p>
                     </Card>
                   ) : null}
                 </Grid>
