@@ -11,10 +11,19 @@ import { Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 
 const CusCol = styled(Col)`
-  height: 95vh;
+  height: 125vh;
   @media (max-width: 992px) {
-    height: 70vh;
+    height: 73vh;
     margin-top: 20px;
+  }
+`;
+
+const CusFormControl = styled(FormControl)`
+  margin-top: 67vh;
+  width: 50%;
+  @media (max-width: 992px) {
+    width: 100%;
+    margin-top: 39vh;
   }
 `;
 
@@ -43,17 +52,17 @@ const CusSelect = styled(Select)``;
 
 const CusDiv = styled.div`
   background-color: #fff;
-  margin-top: 50vh;
-  margin-left: 6%;
-  width: 60%;
+  margin-top: 10px;
+  margin-left: 20%;
+  width: 50%;
   padding: 20px;
   border-top-left-radius: 20%;
   border-bottom-right-radius: 20%;
   max-height: 42vh;
   overflow-y: auto;
   @media (max-width: 992px) {
-    margin-top: 40vh;
-    max-height: 25vh;
+    margin-top: 10px;
+    max-height: 18vh;
   }
 `;
 const CusMenuItem = styled(MenuItem)``;
@@ -75,9 +84,9 @@ export const Restaurants = () => {
 
   return (
     <div style={{ marginTop: "40px" }}>
-      <Row className="align-items-center">
-        <Col sm={12} md={5}>
-          <Typography
+      <Row className="align-items-center" style={{ margin: 0, width: "100%" }}>
+        <CusCol className="col-background" sm={12} md={12}>
+          {/* <Typography
             sx={{
               fontSize: "2rem",
               color: "#C00000",
@@ -86,8 +95,8 @@ export const Restaurants = () => {
             }}
           >
             Select Restaurant
-          </Typography>
-          <FormControl fullWidth>
+          </Typography> */}
+          <CusFormControl>
             <InputLabel id="demo-simple-select-label">
               Please select the store
             </InputLabel>
@@ -141,9 +150,8 @@ export const Restaurants = () => {
                 </CusMenuItem>
               ))}
             </CusSelect>
-          </FormControl>
-        </Col>
-        <CusCol className="col-background" sm={12} md={7}>
+          </CusFormControl>
+
           {selectedStoreObj ? (
             <CusDiv>
               <div>
