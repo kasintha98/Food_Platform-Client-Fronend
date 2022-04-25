@@ -23,7 +23,7 @@ import LocalPizzaOutlinedIcon from "@mui/icons-material/LocalPizzaOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import MyAddresses from "./myAddresses";
-import { UpdateUserDetails } from "../../actions";
+import { UpdateUserDetails, resetCart } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import styled from "@emotion/styled";
@@ -144,6 +144,7 @@ const UserDetails = (props) => {
   };
 
   const onLogoutPress = () => {
+    dispatch(resetCart());
     localStorage.clear();
     window.location.reload();
   };

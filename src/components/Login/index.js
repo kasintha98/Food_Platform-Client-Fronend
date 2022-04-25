@@ -39,6 +39,8 @@ import TimerButton from "./timerButton";
 import validator from "validator";
 import { useLocation } from "react-router-dom";
 import AddNewAddress from "./addNewAddress";
+import { Otp } from "react-otp-timer";
+import OtpInput from "react-otp-input";
 
 const Texts = styled(Typography)`
   font-size: 0.875rem;
@@ -114,6 +116,18 @@ const SubmitButton = styled(Button)`
   }
 `;
 
+let style = {
+  otpTimer: {
+    margin: "10px",
+    color: "blue",
+  },
+  resendBtn: {
+    backgroundColor: "#5cb85c",
+    color: "white",
+    border: "1 px solid #ccc",
+  },
+};
+
 export default function LoginDrawer(props) {
   const [state, setState] = React.useState({
     top: false,
@@ -152,6 +166,8 @@ export default function LoginDrawer(props) {
     <Button
       variant="text"
       onClick={(e) => {
+        setOtp("");
+        localStorage.setItem("otpTime", 60);
         onSignInSubmit(e);
       }}
     >
@@ -274,6 +290,7 @@ export default function LoginDrawer(props) {
         console.log(user.phoneNumber);
         toast.success("User Verified Sucessfully!!");
         localStorage.removeItem("otpTime");
+        setOtp("");
         //setOtpError("User Verified Sucessfully!!");
         userLogin();
         //setIsLoginCode(1);
@@ -438,11 +455,20 @@ export default function LoginDrawer(props) {
                 </div>
                 <div className="row">
                   <div id="sign-in-button"></div>
-                  <TextField
+                  {/* <TextField
                     id="outlined-helperText"
                     label="OTP"
                     onChange={(e) => setOtp(e.target.value)}
                     type="number"
+                    InputProps={{ inputProps: { maxLength: 6 } }}
+                    inputProps={{ maxLength: 6 }}
+                  /> */}
+                  <OtpInput
+                    value={otp}
+                    onChange={(otp) => setOtp(otp)}
+                    numInputs={6}
+                    separator={<span>&nbsp;-&nbsp;</span>}
+                    inputStyle={{ width: "2rem" }}
                   />
                 </div>
                 <div className="row mt-4">
@@ -491,17 +517,34 @@ export default function LoginDrawer(props) {
       return <Completionist />;
     } else {
       // Render a countdown
-      localStorage.setItem("otpTime", seconds);
-      return (
-        <div>
-          <Button variant="contained" disabled>
-            {seconds}S
-          </Button>
-          <Button variant="text" disabled>
-            Resend OTP
-          </Button>
-        </div>
-      );
+      if (seconds !== 0) {
+        localStorage.setItem("otpTime", seconds);
+        return (
+          <div>
+            <Button variant="contained" disabled>
+              {seconds}S
+            </Button>
+            <Button variant="text" disabled>
+              Resend OTP
+            </Button>
+          </div>
+        );
+      } else {
+        return (
+          <>
+            <Button
+              variant="text"
+              onClick={(e) => {
+                setOtp("");
+                localStorage.setItem("otpTime", 60);
+                onSignInSubmit(e);
+              }}
+            >
+              Resend OTP
+            </Button>
+          </>
+        );
+      }
     }
   };
 
