@@ -558,110 +558,112 @@ export default function NewCheckout() {
                   </CardContent>
                 </Card>
               </div>
-              <Row>
-                <Col className="col-12">
-                  <div className="mt-3">
-                    <Card>
-                      <Typography>
-                        <Row className="ps-2">
-                          <div className="w75">
-                            <Typography
-                              sx={{
-                                fontWeight: "600",
-                                color: "rgb(127, 127, 127)",
-                              }}
-                            >
-                              Subtotal
-                            </Typography>
-                          </div>
-                          <div className="w25">
-                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                              ₹{" "}
-                              {subTotal +
-                                (extraSubTotal ? extraSubTotal : 0) +
-                                (choiceTotal ? choiceTotal : 0)}
-                              .00
-                            </Typography>
-                          </div>
-                        </Row>
-                        <Row className="ps-2">
-                          <div className="w75">
-                            <Typography
-                              sx={{
-                                fontWeight: "600",
-                                color: "rgb(127, 127, 127)",
-                              }}
-                            >
-                              Taxes (CGST)
-                            </Typography>
-                          </div>
-                          <div className="w25">
-                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                              ₹ {0}.00
-                            </Typography>
-                          </div>
-                        </Row>
-                        <Row className="ps-2">
-                          <div className="w75">
-                            <Typography
-                              sx={{
-                                fontWeight: "600",
-                                color: "rgb(127, 127, 127)",
-                              }}
-                            >
-                              Taxes (SGST)
-                            </Typography>
-                          </div>
-                          <div className="w25">
-                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                              ₹ {0}.00
-                            </Typography>
-                          </div>
-                        </Row>
-                        <Row className="ps-2">
-                          <div className="w75">
-                            <Typography
-                              sx={{
-                                fontWeight: "600",
-                                color: "rgb(127, 127, 127)",
-                              }}
-                            >
-                              Delivery Charges
-                            </Typography>
-                          </div>
-                          <div className="w25">
-                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                              ₹ {0}.00
-                            </Typography>
-                          </div>
-                        </Row>
-                        <Row className="ps-2">
-                          <div className="w75 mt-2">
-                            <Typography
-                              sx={{
-                                fontWeight: "600",
-                                color: "rgb(127, 127, 127)",
-                              }}
-                            >
-                              Grand Total
-                            </Typography>
-                          </div>
-                          <div className="w25 mt-2">
-                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                              {" "}
-                              ₹{" "}
-                              {subTotal +
-                                (extraSubTotal ? extraSubTotal : 0) +
-                                (choiceTotal ? choiceTotal : 0)}
-                              .00
-                            </Typography>
-                          </div>
-                        </Row>
-                      </Typography>
-                    </Card>
-                  </div>
-                </Col>
-              </Row>
+              {Object.keys(cart.cartItems).length > 0 ? (
+                <Row>
+                  <Col className="col-12">
+                    <div className="mt-3">
+                      <Card>
+                        <Typography>
+                          <Row className="ps-2">
+                            <div className="w75">
+                              <Typography
+                                sx={{
+                                  fontWeight: "600",
+                                  color: "rgb(127, 127, 127)",
+                                }}
+                              >
+                                Subtotal
+                              </Typography>
+                            </div>
+                            <div className="w25">
+                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                                ₹{" "}
+                                {subTotal +
+                                  (extraSubTotal ? extraSubTotal : 0) +
+                                  (choiceTotal ? choiceTotal : 0)}
+                                .00
+                              </Typography>
+                            </div>
+                          </Row>
+                          <Row className="ps-2">
+                            <div className="w75">
+                              <Typography
+                                sx={{
+                                  fontWeight: "600",
+                                  color: "rgb(127, 127, 127)",
+                                }}
+                              >
+                                Taxes (CGST)
+                              </Typography>
+                            </div>
+                            <div className="w25">
+                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                                ₹ {0}.00
+                              </Typography>
+                            </div>
+                          </Row>
+                          <Row className="ps-2">
+                            <div className="w75">
+                              <Typography
+                                sx={{
+                                  fontWeight: "600",
+                                  color: "rgb(127, 127, 127)",
+                                }}
+                              >
+                                Taxes (SGST)
+                              </Typography>
+                            </div>
+                            <div className="w25">
+                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                                ₹ {0}.00
+                              </Typography>
+                            </div>
+                          </Row>
+                          <Row className="ps-2">
+                            <div className="w75">
+                              <Typography
+                                sx={{
+                                  fontWeight: "600",
+                                  color: "rgb(127, 127, 127)",
+                                }}
+                              >
+                                Delivery Charges
+                              </Typography>
+                            </div>
+                            <div className="w25">
+                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                                ₹ {0}.00
+                              </Typography>
+                            </div>
+                          </Row>
+                          <Row className="ps-2">
+                            <div className="w75 mt-2">
+                              <Typography
+                                sx={{
+                                  fontWeight: "600",
+                                  color: "rgb(127, 127, 127)",
+                                }}
+                              >
+                                Grand Total
+                              </Typography>
+                            </div>
+                            <div className="w25 mt-2">
+                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                                {" "}
+                                ₹{" "}
+                                {subTotal +
+                                  (extraSubTotal ? extraSubTotal : 0) +
+                                  (choiceTotal ? choiceTotal : 0)}
+                                .00
+                              </Typography>
+                            </div>
+                          </Row>
+                        </Typography>
+                      </Card>
+                    </div>
+                  </Col>
+                </Row>
+              ) : null}
             </Col>
             <Col md={12} lg={4} className="mar-tp">
               <Row>
