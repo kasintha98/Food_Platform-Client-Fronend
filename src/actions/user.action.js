@@ -306,7 +306,7 @@ export const saveNewOrder = (payload) => {
           draggable: true,
           progress: undefined,
         });
-        return true;
+        return res;
       } else {
         const { error } = res.data;
         dispatch({

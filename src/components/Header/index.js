@@ -444,7 +444,7 @@ export default function Header(props) {
                       >
                         <Col className="col-5">
                           <Typography sx={{ color: "#A6A6A6" }}>
-                            Address
+                            Resturant Address
                           </Typography>
                         </Col>
                         <Col className="col-7">
@@ -463,6 +463,45 @@ export default function Header(props) {
                           </Typography>
                         </Col>
                       </Row>
+                      {deliveryType.type === "delivery" &&
+                      deliveryType.selectedAddress ? (
+                        <Row
+                          className="p-1"
+                          style={{
+                            width: "100%",
+                            marginLeft: 0,
+                            borderBottom: "1px #D9D9D9 solid",
+                          }}
+                        >
+                          <Col className="col-5">
+                            <Typography sx={{ color: "#A6A6A6" }}>
+                              Customer Address
+                            </Typography>
+                          </Col>
+                          <Col className="col-7">
+                            <Typography sx={{ color: "#A6A6A6" }}>
+                              <span className="fw-bold">
+                                {
+                                  deliveryType.selectedAddress
+                                    .customerAddressType
+                                }
+                                {": "}
+                                <span />
+                              </span>
+                              <span className="font-weight-normal">
+                                {deliveryType.selectedAddress.address1},{" "}
+                                {deliveryType.selectedAddress.address2},
+                                {deliveryType.selectedAddress.landmark},{" "}
+                                {deliveryType.selectedAddress.city},{" "}
+                                {deliveryType.selectedAddress.state},{" "}
+                                {deliveryType.selectedAddress.zipCode}
+                                <span />
+                              </span>
+                            </Typography>
+                          </Col>
+                        </Row>
+                      ) : null}
+
                       <Row
                         style={{
                           width: "100%",

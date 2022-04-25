@@ -207,6 +207,7 @@ export const signout = () => {
 
 export const setDeliveryType = (delObj) => {
   return async (dispatch) => {
+    localStorage.setItem("deliveryType", JSON.stringify(delObj));
     dispatch({
       type: deliveryTypeConstants.SET_DELIVERY_TYPE_SUCCESS,
       payload: delObj,

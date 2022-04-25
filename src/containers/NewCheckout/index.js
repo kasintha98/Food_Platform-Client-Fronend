@@ -50,7 +50,7 @@ import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { GetAddress, saveNewOrder } from "../../actions";
+import { GetAddress, saveNewOrder, setDeliveryType } from "../../actions";
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
@@ -99,11 +99,11 @@ const CartIconArea = styled.div`
 `;
 
 const CusContainer = styled(Container)`
-  margin-top: 65px;
+  margin-top: 50px;
   min-height: calc(100vh - 180px);
-
+  margin-bottom: -40px;
   @media (max-width: 992px) {
-    margin-top: 80px;
+    margin-top: 60px;
   }
 `;
 
@@ -128,11 +128,11 @@ const POButton = styled(Button)`
 `;
 
 const CLButton = styled(Button)`
-  background-color: #a6a6a6;
+  /* background-color: #a6a6a6;
 
   &:hover {
     background-color: #616161;
-  }
+  } */
 `;
 
 const ACButton = styled(Button)`
@@ -173,16 +173,25 @@ const CusTextField = styled(TextField)`
 `;
 
 export default function NewCheckout() {
-  const [value, setValue] = useState(0);
+  const defDel = useSelector((state) => state.auth.deliveryType);
 
+  const [value, setValue] = useState(0);
   const cart = useSelector((state) => state.cart);
   const [subTotal, setSubtotal] = useState(0);
   const [currentType, setCurrentType] = useState(0);
   const [extraSubTotal, setExtraSubTotal] = useState(0);
   const [choiceTotal, setChoiceTotal] = useState(0);
   const [coupon, setCoupon] = useState("");
-  const [selectedAddress, setSelectedAddress] = useState(null);
-  const [selectedAddressStr, setSelectedAddressStr] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState(
+    defDel ? defDel.selectedAddress : null
+  );
+  const [selectedAddressStr, setSelectedAddressStr] = useState(
+    defDel
+      ? defDel.selectedAddress
+        ? defDel.selectedAddress.customerAddressType
+        : null
+      : null
+  );
   const [delModalOpen, setDelModalOpen] = useState(false);
   const [delModalOpen2, setDelModalOpen2] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
@@ -197,6 +206,7 @@ export default function NewCheckout() {
 
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -217,6 +227,23 @@ export default function NewCheckout() {
       dispatch(GetAddress(localUserMobileNumber));
     }
   }, []);
+
+  useEffect(() => {
+    console.log("setSelectedAddress");
+    if (defDel) {
+      setCurrentType(defDel);
+      if (defDel.selectedAddress) {
+        setSelectedAddress(defDel.selectedAddress);
+        setSelectedAddressStr(defDel.selectedAddress.customerAddressType);
+      }
+    }
+  }, [defDel]);
+
+  const handleCusAdDChange = (address) => {
+    const newDel = { ...defDel, selectedAddress: address };
+    setSelectedAddress(address);
+    dispatch(setDeliveryType(newDel));
+  };
 
   const handlePaymentType = () => {
     console.log(paymentType);
@@ -246,16 +273,6 @@ export default function NewCheckout() {
         };
         orderDetails.push(obj);
       }
-
-      /* const OldOrder = {
-        items: cart?.cartItems,
-        total: total,
-        deliveryType: currentType,
-        coupon: coupon,
-        address: selectedAddress,
-        paymentType: paymentType,
-        orderTime: new Date(),
-      }; */
 
       const NewOrder = {
         id: 0,
@@ -300,7 +317,7 @@ export default function NewCheckout() {
       //console.log(NewOrder);
       dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res) {
-          //history.push("/");
+          console.log(res);
         }
       });
     } catch (error) {
@@ -504,294 +521,409 @@ export default function NewCheckout() {
   return (
     <div>
       <Header></Header>
-      <CusContainer>
-        <Row>
-          <Col xs={12} md={7} className="mt-5">
-            <Row>
-              <Col className="col-12">
-                {cart?.cartItems && Object.keys(cart?.cartItems).length > 0 ? (
-                  <h5>
-                    You have selected {Object.keys(cart.cartItems).length} items
+      <div className="wh-background">
+        <CusContainer>
+          <Row>
+            <Col md={12} lg={4} className="mar-tp-f">
+              <Row>
+                <Col className="col-12 text-center">
+                  {/* {cart?.cartItems &&
+                  Object.keys(cart?.cartItems).length > 0 ? (
+                    <h5>
+                      You have selected {Object.keys(cart.cartItems).length}{" "}
+                      items
+                    </h5>
+                  ) : (
+                    <h5>You have no items in the cart</h5>
+                  )} */}
+
+                  <h5 style={{ fontWeight: "bold", color: "#000" }}>
+                    VALIDATE YOUR ORDER
                   </h5>
-                ) : (
-                  <h5>You have no items in the cart</h5>
-                )}
-              </Col>
-              {/* <Col className="col-4">
+                </Col>
+                {/* <Col className="col-4">
                 <Typography sx={{ textAlign: "end" }}>
                   <a href="/new-menu">Explore Menu</a>
                 </Typography>
               </Col> */}
-            </Row>
-            <div>
-              <Card sx={{ width: "100%", marginTop: 3 }}>
-                <CardContent sx={{ height: "auto" }}>
-                  <CartCard
-                    onChangeSubTotal={handleSubTotal}
-                    onChangeExtraSubTotal={handleExtraTotal}
-                    onChangeChoiceTotal={handleChoiceTotal}
-                  ></CartCard>
-                </CardContent>
-              </Card>
-            </div>
-            <Row>
-              <Col className="col-12 mt-5">
-                <h5>Price Details</h5>
-              </Col>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card>
-                    <Table aria-label="simple table">
-                      <TableBody>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Sub Total
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            ₹{" "}
-                            {subTotal +
-                              (extraSubTotal ? extraSubTotal : 0) +
-                              (choiceTotal ? choiceTotal : 0)}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Discount
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            -
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Taxes and Charges
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            -
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            Grand Total
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            sx={{ textAlign: "end" }}
-                          >
-                            ₹{" "}
-                            {subTotal +
-                              (extraSubTotal ? extraSubTotal : 0) +
-                              (choiceTotal ? choiceTotal : 0)}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                    <CardActions sx={{ justifyContent: "center" }}>
-                      {currentType?.type === "delivery" ? (
-                        <POButton
-                          onClick={placeOrder}
-                          variant="contained"
-                          disabled={
-                            selectedAddress &&
-                            Object.keys(cart?.cartItems).length > 0
-                              ? false
-                              : true
-                          }
-                        >
-                          PLACE ORDER
-                        </POButton>
-                      ) : (
-                        <POButton
-                          onClick={placeOrder}
-                          variant="contained"
-                          disabled={
-                            Object.keys(cart?.cartItems).length > 0
-                              ? false
-                              : true
-                          }
-                        >
-                          PLACE ORDER
-                        </POButton>
-                      )}
-                    </CardActions>
-                  </Card>
-                </Grid>
-              </Col>
-            </Row>
-          </Col>
-
-          <Col xs={12} md={5} className="mt-5">
-            {currentType && currentType?.type === "delivery" ? (
+              </Row>
+              <div>
+                <Card sx={{ width: "100%", marginTop: 3 }}>
+                  <CardContent sx={{ height: "auto" }}>
+                    <CartCard
+                      onChangeSubTotal={handleSubTotal}
+                      onChangeExtraSubTotal={handleExtraTotal}
+                      onChangeChoiceTotal={handleChoiceTotal}
+                    ></CartCard>
+                  </CardContent>
+                </Card>
+              </div>
+              <Row>
+                <Col className="col-12">
+                  <div className="mt-3">
+                    <Card>
+                      <Typography>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontWeight: "600",
+                                color: "rgb(127, 127, 127)",
+                              }}
+                            >
+                              Subtotal
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                              ₹{" "}
+                              {subTotal +
+                                (extraSubTotal ? extraSubTotal : 0) +
+                                (choiceTotal ? choiceTotal : 0)}
+                              .00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontWeight: "600",
+                                color: "rgb(127, 127, 127)",
+                              }}
+                            >
+                              Taxes (CGST)
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                              ₹ {0}.00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontWeight: "600",
+                                color: "rgb(127, 127, 127)",
+                              }}
+                            >
+                              Taxes (SGST)
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                              ₹ {0}.00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontWeight: "600",
+                                color: "rgb(127, 127, 127)",
+                              }}
+                            >
+                              Delivery Charges
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                              ₹ {0}.00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75 mt-2">
+                            <Typography
+                              sx={{
+                                fontWeight: "600",
+                                color: "rgb(127, 127, 127)",
+                              }}
+                            >
+                              Grand Total
+                            </Typography>
+                          </div>
+                          <div className="w25 mt-2">
+                            <Typography sx={{ color: "rgb(46, 125, 50)" }}>
+                              {" "}
+                              ₹{" "}
+                              {subTotal +
+                                (extraSubTotal ? extraSubTotal : 0) +
+                                (choiceTotal ? choiceTotal : 0)}
+                              .00
+                            </Typography>
+                          </div>
+                        </Row>
+                      </Typography>
+                    </Card>
+                  </div>
+                </Col>
+              </Row>
+            </Col>
+            <Col md={12} lg={4} className="mar-tp">
+              <Row>
+                <Col className="col-12 text-center">
+                  <h5 style={{ fontWeight: "bold", color: "#000" }}>
+                    CONFIRM YOUR ORDER DETAILS
+                  </h5>
+                </Col>
+              </Row>
               <Row>
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
-                    <Card>
+                    <Card sx={{ width: "100%", marginTop: 3 }}>
                       <CardContent>
-                        <div className="row mb-3">
-                          <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                            SELECT DELIVERY ADDRESS
-                          </h5>
-                        </div>
-
-                        {auth.authenticate ? (
-                          <div className="row">
-                            <div className="col-6" sx={{ textAlign: "center" }}>
-                              {allAddress.length < 1 ? (
-                                <Alert severity="error">
-                                  You don't have added any addresses. Please add
-                                  a new address!
-                                </Alert>
-                              ) : null}
-                              {selectedAddress ? (
-                                <Typography sx={{ textAlign: "left" }}>
-                                  <h5
-                                    style={{
-                                      fontWeight: "bold",
-                                      color: "#7F7F7F",
-                                    }}
-                                  >
-                                    {selectedAddress.customerAddressType}
-                                  </h5>
-                                  <p
-                                    style={{
-                                      color: "#7F7F7F",
-                                    }}
-                                  >
-                                    {selectedAddress.address1}
-                                    <br />
-                                    {selectedAddress.address2}
-                                    <br />
-                                    {selectedAddress.landmark}
-                                    <br />
-                                    {selectedAddress.city}
-                                    <br />
-                                    {selectedAddress.zipCode}
-                                    <br />
-                                    {selectedAddress.state}
-                                  </p>
-                                </Typography>
-                              ) : null}
-                            </div>
-
-                            <div className="col-6" sx={{ textAlign: "end" }}>
-                              {allAddress.length > 0 ? (
-                                <FormControl fullWidth className="mb-3">
-                                  <InputLabel id="demo-address-label">
-                                    Address
-                                  </InputLabel>
-                                  <Select
-                                    labelId="demo-address-label"
-                                    id="demo-address"
-                                    value={selectedAddressStr}
-                                    label="Address"
-                                    onChange={handleChangeSelectedAddressStr}
-                                  >
-                                    {allAddress.map((address) => (
-                                      <MenuItem
-                                        key={address.customerAddressType}
-                                        onClick={() => {
-                                          setSelectedAddress(address);
-                                        }}
-                                        value={address.customerAddressType}
-                                      >
-                                        {address.customerAddressType}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </FormControl>
-                              ) : null}
-                              <Typography sx={{ textAlign: "center" }}>
-                                <CardActions>
-                                  {/* <CLButton
-                                    variant="contained"
-                                    className="w-100"
-                                  >
-                                    ADD NEW ADDRESS
-                                  </CLButton> */}
-                                  <LoginDrawer
-                                    forceAddAddress={true}
-                                  ></LoginDrawer>
-                                </CardActions>
-                              </Typography>
-                            </div>
-                          </div>
-                        ) : (
-                          <div>
-                            <Alert severity="error">
-                              Please login to use your address for delivery!
-                            </Alert>
-                          </div>
-                        )}
+                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                          DELIVERY TYPE :{" "}
+                          {currentType?.type === "delivery" ? (
+                            <span>Delivery</span>
+                          ) : (
+                            <span>Self-Collect</span>
+                          )}
+                        </h5>
+                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                          ORDER DATE : {renderNowDate()}
+                        </h5>
                       </CardContent>
                     </Card>
                   </Grid>
                 </Col>
               </Row>
-            ) : null}
+              {currentType && currentType?.type === "delivery" ? (
+                <Row>
+                  <Col className="col-12">
+                    <Grid sx={{ width: "100%", marginTop: 3 }}>
+                      <Card>
+                        <CardContent>
+                          <div className="row mb-3">
+                            <h5
+                              style={{ fontWeight: "bold", color: "#7F7F7F" }}
+                            >
+                              SELECT DELIVERY ADDRESS
+                            </h5>
+                          </div>
 
-            {currentType && currentType?.type === "collect" ? (
-              <Row>
+                          {auth.authenticate ? (
+                            <div className="row">
+                              <div
+                                className="col-6"
+                                sx={{ textAlign: "center" }}
+                              >
+                                {allAddress.length < 1 ? (
+                                  <Alert severity="error">
+                                    You don't have added any addresses. Please
+                                    add a new address!
+                                  </Alert>
+                                ) : null}
+                                {selectedAddress ? (
+                                  <Typography sx={{ textAlign: "left" }}>
+                                    <h5
+                                      style={{
+                                        fontWeight: "bold",
+                                        color: "#7F7F7F",
+                                      }}
+                                    >
+                                      {selectedAddress.customerAddressType}
+                                    </h5>
+                                    <p
+                                      style={{
+                                        color: "#7F7F7F",
+                                      }}
+                                    >
+                                      {selectedAddress.address1}
+                                      <br />
+                                      {selectedAddress.address2}
+                                      <br />
+                                      {selectedAddress.landmark}
+                                      <br />
+                                      {selectedAddress.city}
+                                      <br />
+                                      {selectedAddress.zipCode}
+                                      <br />
+                                      {selectedAddress.state}
+                                    </p>
+                                  </Typography>
+                                ) : null}
+                              </div>
+
+                              <div className="col-6" sx={{ textAlign: "end" }}>
+                                {allAddress.length > 0 ? (
+                                  <FormControl fullWidth className="mb-3">
+                                    <InputLabel id="demo-address-label">
+                                      Address
+                                    </InputLabel>
+                                    <Select
+                                      labelId="demo-address-label"
+                                      id="demo-address"
+                                      value={selectedAddressStr}
+                                      label="Address"
+                                      onChange={handleChangeSelectedAddressStr}
+                                    >
+                                      {allAddress.map((address) => (
+                                        <MenuItem
+                                          key={address.customerAddressType}
+                                          onClick={() => {
+                                            handleCusAdDChange(address);
+                                          }}
+                                          value={address.customerAddressType}
+                                        >
+                                          {address.customerAddressType}
+                                        </MenuItem>
+                                      ))}
+                                    </Select>
+                                  </FormControl>
+                                ) : null}
+                                <Typography sx={{ textAlign: "center" }}>
+                                  <CardActions>
+                                    {/* <CLButton
+                                    variant="contained"
+                                    className="w-100"
+                                  >
+                                    ADD NEW ADDRESS
+                                  </CLButton> */}
+                                    <LoginDrawer
+                                      forceAddAddress={true}
+                                    ></LoginDrawer>
+                                  </CardActions>
+                                </Typography>
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <Alert severity="error">
+                                Please login to use your address for delivery!
+                              </Alert>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </Col>
+                </Row>
+              ) : null}
+
+              {currentType && currentType?.type === "collect" ? (
+                <Row>
+                  <Col className="col-12">
+                    <Grid sx={{ width: "100%", marginTop: 3 }}>
+                      <Card>
+                        <CardContent>
+                          <div className="row mb-3">
+                            <h5
+                              style={{ fontWeight: "bold", color: "#7F7F7F" }}
+                            >
+                              SELF COLLECT
+                            </h5>
+                          </div>
+                          <div className="row">
+                            <div
+                              className="col-12"
+                              sx={{ textAlign: "center" }}
+                            >
+                              <Typography sx={{ textAlign: "left" }}>
+                                <h5
+                                  style={{
+                                    fontWeight: "bold",
+                                    color: "#7F7F7F",
+                                  }}
+                                >
+                                  STORE ADDRESS
+                                </h5>
+                                <p
+                                  style={{
+                                    color: "#7F7F7F",
+                                  }}
+                                >
+                                  {currentType.resturantName} <br />
+                                  <span>{currentType.address1}</span>
+                                  {currentType.address2 ? (
+                                    <>
+                                      , <span>{currentType.address2}</span>
+                                    </>
+                                  ) : null}
+                                  {currentType.address3 ? (
+                                    <>
+                                      , <span>{currentType.address3}</span>
+                                    </>
+                                  ) : null}
+                                </p>
+                              </Typography>
+                            </div>
+
+                            <div className="col-12" sx={{ textAlign: "end" }}>
+                              <Typography sx={{ textAlign: "center" }}>
+                                <CardActions>
+                                  <CLButton
+                                    onClick={renderDeliveryTypeModal2}
+                                    variant="contained"
+                                    className="w-100"
+                                    color="warning"
+                                  >
+                                    CHANGE LOCATION
+                                  </CLButton>
+                                </CardActions>
+                              </Typography>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  </Col>
+                </Row>
+              ) : null}
+
+              {!currentType ? (
+                <Row>
+                  <Col className="col-12 mt-5 mb-2">
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: "1.25rem",
+                        color: "#7F7F7F",
+                      }}
+                    >
+                      PLEASE SELECT A DELIVERY TYPE
+                    </Typography>
+                  </Col>
+                  <Col className="col-12">
+                    <DTButton
+                      onClick={renderDeliveryTypeModal}
+                      variant="contained"
+                      color="success"
+                      sx={{ width: "100%" }}
+                    >
+                      Select Delivery Type
+                    </DTButton>
+                  </Col>
+                </Row>
+              ) : null}
+
+              {/* <Row>
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
                     <Card>
                       <CardContent>
-                        <div className="row mb-3">
-                          <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                            SELF COLLECT
-                          </h5>
-                        </div>
-                        <div className="row">
+                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                          APPLY COUPON CODE
+                        </h5>
+                        <div className="row align-items-center">
                           <div className="col-6" sx={{ textAlign: "center" }}>
-                            <Typography sx={{ textAlign: "left" }}>
-                              <h5
-                                style={{ fontWeight: "bold", color: "#7F7F7F" }}
-                              >
-                                STORE ADDRESS
-                              </h5>
-                              <p
-                                style={{
-                                  color: "#7F7F7F",
-                                }}
-                              >
-                                {currentType.resturantName} <br />
-                                <span>{currentType.address1}</span>
-                                {currentType.address2 ? (
-                                  <>
-                                    , <span>{currentType.address2}</span>
-                                  </>
-                                ) : null}
-                                {currentType.address3 ? (
-                                  <>
-                                    , <span>{currentType.address3}</span>
-                                  </>
-                                ) : null}
-                              </p>
-                            </Typography>
+                            <CusTextField
+                              id="outlined-name"
+                              value={coupon}
+                              onChange={handleChangeCoupon}
+                            />
                           </div>
 
                           <div className="col-6" sx={{ textAlign: "end" }}>
                             <Typography sx={{ textAlign: "center" }}>
                               <CardActions>
-                                <CLButton
-                                  onClick={renderDeliveryTypeModal2}
-                                  variant="contained"
-                                  className="w-100"
-                                >
-                                  CHANGE LOCATION
-                                </CLButton>
+                                <ACButton variant="contained" className="w-100">
+                                  APPLY COUPON
+                                </ACButton>
                               </CardActions>
                             </Typography>
                           </div>
@@ -800,87 +932,17 @@ export default function NewCheckout() {
                     </Card>
                   </Grid>
                 </Col>
-              </Row>
-            ) : null}
-
-            {!currentType ? (
+              </Row> */}
+            </Col>
+            <Col md={12} lg={4} className="mar-tp">
               <Row>
-                <Col className="col-12 mt-5 mb-2">
-                  <Typography
-                    sx={{
-                      fontWeight: "bold",
-                      fontSize: "1.25rem",
-                      color: "#7F7F7F",
-                    }}
-                  >
-                    PLEASE SELECT A DELIVERY TYPE
-                  </Typography>
-                </Col>
-                <Col className="col-12">
-                  <DTButton
-                    onClick={renderDeliveryTypeModal}
-                    variant="contained"
-                    color="success"
-                    sx={{ width: "100%" }}
-                  >
-                    Select Delivery Type
-                  </DTButton>
+                <Col className="col-12 text-center">
+                  <h5 style={{ fontWeight: "bold", color: "#000" }}>
+                    PAYMENT MODE
+                  </h5>
                 </Col>
               </Row>
-            ) : null}
-
-            <Row>
-              <Col className="col-12 mt-5"></Col>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card sx={{ width: "100%", marginTop: 3 }}>
-                    <CardContent>
-                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                        ORDER DATE : {renderNowDate()}
-                      </h5>
-                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                        TIME : NOW
-                      </h5>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card>
-                    <CardContent>
-                      <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                        APPLY COUPON CODE
-                      </h5>
-                      <div className="row align-items-center">
-                        <div className="col-6" sx={{ textAlign: "center" }}>
-                          <CusTextField
-                            id="outlined-name"
-                            value={coupon}
-                            onChange={handleChangeCoupon}
-                          />
-                        </div>
-
-                        <div className="col-6" sx={{ textAlign: "end" }}>
-                          <Typography sx={{ textAlign: "center" }}>
-                            <CardActions>
-                              <ACButton variant="contained" className="w-100">
-                                APPLY COUPON
-                              </ACButton>
-                            </CardActions>
-                          </Typography>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Col>
-            </Row>
-
-            {/* <Row>
+              {/* <Row>
               <Col className="col-12 mt-5">
                 <h5>Payment Options</h5>
               </Col>
@@ -1026,83 +1088,111 @@ export default function NewCheckout() {
               </Col>
             </Row> */}
 
-            <Row>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  {!currentPaymentType ? (
-                    <Card>
-                      <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
-                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                          PAYMENT METHOD
-                        </h5>
-                        <RadioGroup
-                          aria-labelledby="demo-controlled-radio-buttons-group"
-                          name="controlled-radio-buttons-group"
-                          value={paymentType}
-                          onChange={handleChangePaymentType}
-                          sx={{ color: "#7F7F7F" }}
-                        >
-                          <FormControlLabel
-                            value="PayU"
-                            control={<Radio color="success" />}
-                            label="PayU (Cards, Net Banking, UPI, Wallet)"
-                          />
-                          <FormControlLabel
-                            value="Paytm"
-                            control={<Radio color="success" />}
-                            label="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
-                          />
-                          <FormControlLabel
-                            value="CASH"
-                            control={<Radio color="success" />}
-                            label="CASH"
-                          />
-                          <FormControlLabel
-                            value="COD"
-                            control={<Radio color="success" />}
-                            label="CASH ON DELIVERY"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                      <CardActions>
-                        <SPMButton
-                          variant="contained"
-                          color="success"
-                          className="w-100"
-                          onClick={handlePaymentType}
-                          disabled={paymentType ? false : true}
-                        >
-                          SELECT PAYMENT METHOD
-                        </SPMButton>
-                      </CardActions>
-                    </Card>
-                  ) : null}
-                  {currentPaymentType === "Paytm" ? (
-                    <Card className="p-3">
-                      <Paytm></Paytm>
-                    </Card>
-                  ) : null}
-                  {currentPaymentType === "PayU" ? (
-                    <Card className="p-3">
-                      <PayU></PayU>
-                    </Card>
-                  ) : null}
-                  {currentPaymentType === "CASH" ? (
-                    <Card className="p-3">
-                      <p>You selected CASH!</p>
-                    </Card>
-                  ) : null}
-                  {currentPaymentType === "COD" ? (
-                    <Card className="p-3">
-                      <p>You selected Cash On Delivery!</p>
-                    </Card>
-                  ) : null}
-                </Grid>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </CusContainer>
+              <Row>
+                <Col className="col-12">
+                  <Grid sx={{ width: "100%", marginTop: 3 }}>
+                    {!currentPaymentType ? (
+                      <Card>
+                        <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
+                          <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                            PAYMENT METHOD
+                          </h5>
+                          <RadioGroup
+                            aria-labelledby="demo-controlled-radio-buttons-group"
+                            name="controlled-radio-buttons-group"
+                            value={paymentType}
+                            onChange={handleChangePaymentType}
+                            sx={{ color: "#7F7F7F" }}
+                          >
+                            <FormControlLabel
+                              value="PayU"
+                              control={<Radio color="success" />}
+                              label="PayU (Cards, Net Banking, UPI, Wallet)"
+                            />
+                            <FormControlLabel
+                              value="Paytm"
+                              control={<Radio color="success" />}
+                              label="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
+                            />
+                            <FormControlLabel
+                              value="CASH"
+                              control={<Radio color="success" />}
+                              label="CASH"
+                            />
+                            <FormControlLabel
+                              value="COD"
+                              control={<Radio color="success" />}
+                              label="CASH ON DELIVERY"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                        <CardActions>
+                          <SPMButton
+                            variant="contained"
+                            color="success"
+                            className="w-100"
+                            onClick={handlePaymentType}
+                            disabled={paymentType ? false : true}
+                          >
+                            SELECT PAYMENT METHOD
+                          </SPMButton>
+                        </CardActions>
+                      </Card>
+                    ) : null}
+                    {currentPaymentType === "Paytm" ? (
+                      <Card className="p-3">
+                        <Paytm></Paytm>
+                      </Card>
+                    ) : null}
+                    {currentPaymentType === "PayU" ? (
+                      <Card className="p-3">
+                        <PayU></PayU>
+                      </Card>
+                    ) : null}
+                    {currentPaymentType === "CASH" ? (
+                      <Card className="p-3">
+                        <p>You selected CASH!</p>
+                      </Card>
+                    ) : null}
+                    {currentPaymentType === "COD" ? (
+                      <Card className="p-3">
+                        <p>You selected Cash On Delivery!</p>
+                      </Card>
+                    ) : null}
+                  </Grid>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col className="text-center p-3">
+              {currentType?.type === "delivery" ? (
+                <POButton
+                  onClick={placeOrder}
+                  variant="contained"
+                  disabled={
+                    selectedAddress && Object.keys(cart?.cartItems).length > 0
+                      ? false
+                      : true
+                  }
+                >
+                  PLACE ORDER
+                </POButton>
+              ) : (
+                <POButton
+                  onClick={placeOrder}
+                  variant="contained"
+                  disabled={
+                    Object.keys(cart?.cartItems).length > 0 ? false : true
+                  }
+                >
+                  PLACE ORDER
+                </POButton>
+              )}
+            </Col>
+          </Row>
+        </CusContainer>
+      </div>
       <Footer></Footer>
       {delModalOpen ? (
         <DeliveryTypeModal
