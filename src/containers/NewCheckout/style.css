@@ -17,3 +17,36 @@
 .gpay-card-info-container {
   min-width: 100%;
 }
+
+.wh-background {
+  background-image: url("../../img/ch-bg.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.mar-tp {
+  margin-top: 25vh;
+}
+
+.mar-tp-f {
+  margin-top: 25vh;
+}
+
+.w75 {
+  width: 75% !important;
+}
+
+.w25 {
+  width: 25% !important;
+}
+
+@media (max-width: 992px) {
+  .mar-tp {
+    margin-top: 5vh;
+  }
+
+  .mar-tp-f {
+    margin-top: 40vh;
+  }
+}

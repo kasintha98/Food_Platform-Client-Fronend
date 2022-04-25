@@ -61,11 +61,11 @@ const BoldTexts = styled(Typography)`
 `;
 
 const CLButton = styled(Button)`
-  background-color: #a6a6a6;
+  /*   background-color: #a6a6a6;
 
   &:hover {
     background-color: #616161;
-  }
+  } */
 `;
 
 const TermsTexts = styled(Typography)`
@@ -556,6 +556,7 @@ export default function LoginDrawer(props) {
           onClick={toggleDrawer("right", true)}
           variant="contained"
           className="w-100"
+          color="warning"
         >
           ADD NEW ADDRESS
         </CLButton>

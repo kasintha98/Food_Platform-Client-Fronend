@@ -105,7 +105,7 @@ export default function CartCard(props) {
               }}
             >
               <CusRow>
-                <Col className="col-3">
+                {/* <Col className="col-3">
                   {!cart?.cartItems[key].imagePath ||
                   cart?.cartItems[key].imagePath === "No_Image_Found" ? (
                     <CardMedia
@@ -124,46 +124,26 @@ export default function CartCard(props) {
                       style={{ borderRadius: "6px" }}
                     />
                   )}
-                </Col>
-                <Col className="col-9">
-                  <Typography variant="body2" color="text.secondary">
-                    <p
-                      style={{
-                        marginBottom: "0.5rem",
-                        fontSize: "0.9rem",
-                        fontWeight: "600",
-                        fontFamily: "Arial",
-                        color: "#595959",
-                      }}
-                    >
-                      {cart?.cartItems[key].dishType}
-                    </p>
-                    {/* <p
-                      style={{
-                        fontSize: "0.8rem",
-                        fontWeight: "400",
-                        fontFamily: "Arial",
-                        color: "#767171",
-                      }}
-                    >
-                      <LinesEllipsis
-                        text={`${cart?.cartItems[key].dish_description_id} The real dish discription can
-  be added when have the get discription by productId API. The real dish discription can
-  be added when have the get discription by productId API.The real dish discription can
-  be added when have the get discription by productId API.The real dish discription can
-  be added when have the get discription by productId API.The real dish discription can
-  be added when have the get discription by productId API.
-  ea commodo consequat.`}
-                        maxLine="3"
-                        ellipsis="..."
-                        trimRight
-                        basedOn="letters"
-                      />
-                    </p> */}
-                  </Typography>
+                </Col> */}
+                <Col className="col-12">
                   <div>
                     <Row className="align-items-center">
-                      <Col className="col-6">
+                      <div className="w375 mr-0 pr-0">
+                        <Typography variant="body2" color="text.secondary">
+                          <p
+                            style={{
+                              marginBottom: "0.5rem",
+                              fontSize: "0.9rem",
+                              fontWeight: "600",
+                              fontFamily: "Arial",
+                              color: "#595959",
+                            }}
+                          >
+                            {cart?.cartItems[key].dishType}
+                          </p>
+                        </Typography>
+                      </div>
+                      <div className="w375 p-0 m-0 text-center">
                         <ButtonGroup
                           variant="contained"
                           aria-label="outlined primary button group"
@@ -216,8 +196,8 @@ export default function CartCard(props) {
                             <Add sx={{ fontSize: "0.9rem" }}></Add>
                           </IncButton>
                         </ButtonGroup>
-                      </Col>
-                      <Col className="col-6">
+                      </div>
+                      <Col className="col-3" style={{ paddingLeft: 0 }}>
                         <div>
                           <p
                             style={{
@@ -246,7 +226,7 @@ export default function CartCard(props) {
                   </div>
                   {cart?.cartItems[key].ingredientExistsFalg === "Y" ? (
                     <Typography variant="body2" color="text.secondary">
-                      <p
+                      {/* <p
                         style={{
                           marginBottom: "0.5rem",
                           marginTop: "1rem",
@@ -258,10 +238,10 @@ export default function CartCard(props) {
                         }}
                       >
                         Your Customisation
-                      </p>
-                      <Typography>
+                      </p> */}
+                      <Typography className="mt-2">
                         <Row>
-                          <div className="w625">
+                          <div className="w75">
                             <span
                               style={{
                                 fontSize: "0.8rem",
@@ -276,7 +256,7 @@ export default function CartCard(props) {
                             <span
                               style={{
                                 fontSize: "0.8rem",
-                                fontWeight: "400",
+                                fontWeight: "600",
                                 fontFamily: "Arial",
                                 color: "#595959",
                                 lineHeight: "1",
@@ -286,25 +266,25 @@ export default function CartCard(props) {
                               {cart?.cartItems[key].productSize}
                             </span>
                           </div>
-                          <div className="w375">
+                          <div className="w25">
                             <span
                               style={{
                                 fontSize: "0.8rem",
-                                fontWeight: "400",
+                                fontWeight: "600",
                                 fontFamily: "Arial",
-                                color: "#767171",
+                                color: "rgb(46, 125, 50)",
                                 lineHeight: "1",
                               }}
                             >
                               {"₹"}
-                              {cart?.cartItems[key].price}
+                              {cart?.cartItems[key].price}.00
                             </span>
                           </div>
                         </Row>
                       </Typography>
                       <Typography>
                         <Row>
-                          <Col className="pr-0 mr-0 col-3">
+                          <Col className="pr-0 mr-0 col-12">
                             {cart?.cartItems[key]?.extra &&
                             Object.keys(cart?.cartItems[key]?.extra).length >
                               0 ? (
@@ -321,14 +301,16 @@ export default function CartCard(props) {
                               </span>
                             ) : null}
                           </Col>
-                          <Col className="p-0 mr-0  col-9">
-                            <Row>
+                        </Row>
+                        <Row>
+                          <Col className="p-0 mr-0  col-12">
+                            <Row className="m-0">
                               {cart?.cartItems[key]?.extra ? (
                                 <>
                                   {Object.keys(cart?.cartItems[key]?.extra).map(
                                     (index) => (
                                       <>
-                                        <Col className="col-6">
+                                        <div className="w75">
                                           <span
                                             style={{
                                               fontSize: "0.8rem",
@@ -343,14 +325,14 @@ export default function CartCard(props) {
                                                 .ingredientType
                                             }
                                           </span>
-                                        </Col>
-                                        <Col className="col-6">
+                                        </div>
+                                        <div className="w25">
                                           <span
                                             style={{
                                               fontSize: "0.8rem",
-                                              fontWeight: "400",
+                                              fontWeight: "600",
                                               fontFamily: "Arial",
-                                              color: "#767171",
+                                              color: "rgb(46, 125, 50)",
                                               lineHeight: "1",
                                             }}
                                           >
@@ -359,8 +341,9 @@ export default function CartCard(props) {
                                               cart?.cartItems[key]?.extra[index]
                                                 .price
                                             }
+                                            .00
                                           </span>
-                                        </Col>
+                                        </div>
                                       </>
                                     )
                                   )}
@@ -370,63 +353,56 @@ export default function CartCard(props) {
                           </Col>
                         </Row>
                       </Typography>
-
                       <Typography>
-                        <Row>
-                          {cart?.cartItems[key]?.choiceIng &&
-                          Object.keys(cart?.cartItems[key]?.choiceIng).length >
-                            0 ? (
-                            <>
-                              <div className="w625">
-                                <Row>
-                                  <Col className="pr-0 mr-0 col-7">
-                                    <span
-                                      style={{
-                                        fontSize: "0.8rem",
-                                        fontWeight: "600",
-                                        fontFamily: "Arial",
-                                        color: "#595959",
-                                        lineHeight: "1",
-                                      }}
-                                    >
-                                      Choice of Base:{" "}
-                                    </span>
-                                  </Col>
-                                  <Col className="p-0 col-5">
-                                    <span
-                                      style={{
-                                        fontSize: "0.8rem",
-                                        fontWeight: "400",
-                                        fontFamily: "Arial",
-                                        color: "#767171",
-                                        lineHeight: "1",
-                                      }}
-                                    >
-                                      {
-                                        cart?.cartItems[key]?.choiceIng
-                                          .ingredientType
-                                      }
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </div>
-                              <div className="w375">
+                        {cart?.cartItems[key]?.choiceIng &&
+                        Object.keys(cart?.cartItems[key]?.choiceIng).length >
+                          0 ? (
+                          <>
+                            <Row>
+                              <Col className="pr-0 mr-0 col-9">
                                 <span
                                   style={{
                                     fontSize: "0.8rem",
-                                    fontWeight: "400",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                    color: "#595959",
+                                    lineHeight: "1",
+                                  }}
+                                >
+                                  Base:{" "}
+                                </span>
+                                <span
+                                  style={{
+                                    fontSize: "0.8rem",
+                                    fontWeight: "600",
                                     fontFamily: "Arial",
                                     color: "#767171",
                                     lineHeight: "1",
                                   }}
                                 >
+                                  {
+                                    cart?.cartItems[key]?.choiceIng
+                                      .ingredientType
+                                  }
+                                </span>
+                              </Col>
+                              <div className="w25">
+                                <span
+                                  style={{
+                                    fontSize: "0.8rem",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                    color: "rgb(46, 125, 50)",
+                                    lineHeight: "1",
+                                  }}
+                                >
                                   {"₹"}
-                                  {cart?.cartItems[key]?.choiceIng.price}
+                                  {cart?.cartItems[key]?.choiceIng.price}.00
                                 </span>
                               </div>
-                            </>
-                          ) : null}
-                        </Row>
+                            </Row>
+                          </>
+                        ) : null}
                       </Typography>
 
                       {cart?.cartItems[key].specialText ? (

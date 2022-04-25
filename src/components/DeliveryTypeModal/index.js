@@ -48,6 +48,9 @@ export const DeliveryTypeModal = (props) => {
   const [type, setType] = React.useState("delivery");
   const [selectedStore, setSelectedStore] = useState("");
   const [selectedStoreObj, setSelectedStoreObj] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedAddressStr, setSelectedAddressStr] = useState(null);
+  const [isStoreChanged, setIsStoreChanged] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -86,6 +89,14 @@ export const DeliveryTypeModal = (props) => {
             setType(delObj.type);
             setSelectedStoreObj(delObj);
             setSelectedStore(delObj.resturantName);
+            setSelectedAddress(delObj.selectedAddress);
+            setSelectedAddressStr(
+              delObj
+                ? delObj.selectedAddress
+                  ? delObj.selectedAddress.customerAddressType
+                  : null
+                : null
+            );
           }
 
           handleShow();
@@ -94,6 +105,10 @@ export const DeliveryTypeModal = (props) => {
       props.delay ? props.delay : 1
     );
   }, []);
+
+  const handleChangeSelectedAddressStr = (event) => {
+    setSelectedAddressStr(event.target.value);
+  };
 
   const handleChangeStore = (event) => {
     setSelectedStore(event.target.value);
@@ -106,6 +121,7 @@ export const DeliveryTypeModal = (props) => {
   };
 
   const handleSelectedStore = (store) => {
+    setIsStoreChanged(true);
     setSelectedStoreObj(store);
     console.log(store);
   };
@@ -125,17 +141,21 @@ export const DeliveryTypeModal = (props) => {
     const delObj = {
       ...selectedStoreObj,
       type,
+      selectedAddress,
     };
     dispatch(setDeliveryType(delObj));
-    localStorage.setItem("deliveryType", JSON.stringify(delObj));
+
     if (props.onChangeType) {
       props.onChangeType(delObj);
     }
     dispatch(getProductsNew());
-    dispatch(resetCart());
-    localStorage.removeItem("cart");
+    if (isStoreChanged) {
+      dispatch(resetCart());
+      localStorage.removeItem("cart");
+    }
+
     handleClose();
-    if (props.fromCheckout && props.forceOpen) {
+    if (props.fromCheckout && props.forceOpen && isStoreChanged) {
       history.push("/new-menu");
     }
   };
@@ -313,16 +333,51 @@ export const DeliveryTypeModal = (props) => {
                 <div className="mt-2">
                   {isLoggedIn ? (
                     <>
-                      <Typography variant="p" component="p">
-                        <span style={{ fontWeight: "bold" }}>
-                          Customer Address:{" "}
-                        </span>
-                      </Typography>
-                      {allAddress ? (
+                      {allAddress.length > 0 ? (
                         <>
-                          {allAddress?.map((address, index) => {
-                            return <NewAddress address={address} key={index} />;
-                          })}
+                          <Typography
+                            variant="p"
+                            component="p"
+                            className="mb-2"
+                          >
+                            <span style={{ fontWeight: "bold" }}>
+                              Select Your Preferred Address:{" "}
+                            </span>
+                          </Typography>
+                          <FormControl fullWidth className="mb-3">
+                            <InputLabel id="demo-address-label">
+                              Address
+                            </InputLabel>
+                            <Select
+                              labelId="demo-address-label"
+                              id="demo-address"
+                              value={selectedAddressStr}
+                              label="Address"
+                              onChange={handleChangeSelectedAddressStr}
+                            >
+                              {allAddress.map((address) => (
+                                <MenuItem
+                                  key={address.customerAddressType}
+                                  onClick={() => {
+                                    setSelectedAddress(address);
+                                  }}
+                                  value={address.customerAddressType}
+                                >
+                                  <span className="fw-bold">
+                                    {address.customerAddressType}
+                                    {": "}
+                                    <span />
+                                  </span>
+                                  <span className="font-weight-normal">
+                                    {address.address1}, {address.address2},
+                                    {address.landmark}, {address.city},{" "}
+                                    {address.state}, {address.zipCode}
+                                    <span />
+                                  </span>
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
                         </>
                       ) : (
                         <Alert severity="warning">
@@ -330,6 +385,10 @@ export const DeliveryTypeModal = (props) => {
                           address to your profile!
                         </Alert>
                       )}
+
+                      {selectedAddress ? (
+                        <NewAddress address={selectedAddress} />
+                      ) : null}
                     </>
                   ) : null}
                 </div>
@@ -435,7 +494,9 @@ export const DeliveryTypeModal = (props) => {
             onClick={saveDeliveryType}
             variant="contained"
             color="success"
-            disabled={!selectedStoreObj}
+            disabled={
+              !selectedStoreObj || (type === "delivery" && !selectedAddress)
+            }
           >
             Save
           </ButtonSave>

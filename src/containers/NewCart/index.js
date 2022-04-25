@@ -53,7 +53,7 @@ export const NewCart = () => {
         ></div>
         <CardContent
           sx={{
-            height: "500px",
+            height: "375px",
             overflowY: "auto",
             backgroundColor: "#fff",
           }}
@@ -71,7 +71,7 @@ export const NewCart = () => {
           }}
         >
           <Typography>
-            <Row className="p-2">
+            <Row className="ps-2">
               <Col className="col-8">Subtotal</Col>
               <Col className="col-4">
                 ₹{" "}
@@ -80,19 +80,19 @@ export const NewCart = () => {
                   (choiceTotal ? choiceTotal : 0)}
               </Col>
             </Row>
-            <Row className="p-2">
+            <Row className="ps-2">
               <Col className="col-8">Taxes (CGST)</Col>
               <Col className="col-4">₹ {0}</Col>
             </Row>
-            <Row className="p-2">
+            <Row className="ps-2">
               <Col className="col-8">Taxes (SGST)</Col>
               <Col className="col-4">₹ {0}</Col>
             </Row>
-            <Row className="p-2">
+            <Row className="ps-2">
               <Col className="col-8">Delivery Charges</Col>
               <Col className="col-4">₹ {0}</Col>
             </Row>
-            <Row className="p-2">
+            <Row className="ps-2">
               <Col className="col-8">Grand Total</Col>
               <Col className="col-4">
                 ₹{" "}
