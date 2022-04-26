@@ -22,6 +22,7 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
+import { toast } from "react-toastify";
 
 const stateList = [
   " Andhra Pradesh",
@@ -108,6 +109,7 @@ export default function AddNewAddress(props) {
 
   const [type, setType] = useState("");
   const [validateErrror, setValidateErrror] = useState(false);
+  const [editPress, setEditPress] = useState(false);
 
   const allAddress = useSelector((state) => state.user.allAddresses);
   const dispatch = useDispatch();
@@ -126,6 +128,28 @@ export default function AddNewAddress(props) {
     dispatch(GetAddress(localUserMobileNumber));
   };
 
+  const onSubmitDelete = (address) => {
+    try {
+      let localUserMobileNumber = localStorage.getItem("userMobileNumber");
+      let addressObj = {
+        mobileNumber: localUserMobileNumber,
+        customerAddressType: address.customerAddressType,
+        address1: address.address1,
+        address2: address.address2,
+        city: address.city,
+        state: address.state,
+        landmark: address.landmark,
+        zipCode: parseInt(zip),
+        active: "N",
+      };
+      dispatch(AddAddress(addressObj));
+      toast.success("Successfully Deleted!");
+      //props.onBackPress();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const onSubmitPress = (e) => {
     try {
       e.preventDefault();
@@ -142,7 +166,13 @@ export default function AddNewAddress(props) {
       };
       if (address1 != "" && city != "" && type != "" && state != "") {
         dispatch(AddAddress(addressObj));
-        props.onBackPress();
+        clearFileds();
+        if(editPress){
+          toast.success("Successfully Updated!");
+          setEditPress(false);
+        }else{
+          toast.success("Successfully Added!");
+        }
       } else {
         setValidateErrror(true);
       }
@@ -151,8 +181,17 @@ export default function AddNewAddress(props) {
     }
   };
 
+  const clearFileds=()=>{
+    setType("");
+    setAddress1("");
+    setAddress2("");
+    setLandMark("");
+    setZip(0);
+    setCity("");
+    setState("");
+  }
+
   const onEditPress = (address) => {
-    console.log(address);
     setType(address.customerAddressType);
     setAddress1(address.address1);
     setAddress2(address.address2);
@@ -160,6 +199,7 @@ export default function AddNewAddress(props) {
     setZip(address.zip);
     setCity(address.city);
     setState(address.state);
+    setEditPress(true);
   };
 
   const NewAddress = ({ address }) => {
@@ -178,11 +218,12 @@ export default function AddNewAddress(props) {
               </span>
               <span className="font-weight-normal">
                 {address.address1}, {address.address2},{address.landmark},{" "}
-                {address.city}, {address.state}, {address.zipCode}
+                {address.city}, {address.zipCode}, {address.state}
                 <span />
               </span>
             </h6>
           </Box>
+          {/* <p>{address.active}</p> */}
           <IconButton aria-label="play/pause">
             <Button
               variant="text"
@@ -191,6 +232,14 @@ export default function AddNewAddress(props) {
               }}
             >
               Edit
+            </Button>
+            <Button
+              variant="text"
+              onClick={(e) => {
+                onSubmitDelete(address);
+              }}
+            >
+              Delete
             </Button>
           </IconButton>
         </Card>
@@ -358,7 +407,9 @@ export default function AddNewAddress(props) {
         {!props.forceAddAddress ? (
           <>
             {allAddress?.map((address, index) => {
-              return <NewAddress address={address} key={index} />;
+              if (address.active ==="Y"){
+                return <NewAddress address={address} key={index} />;
+              }
             })}
           </>
         ) : null}
