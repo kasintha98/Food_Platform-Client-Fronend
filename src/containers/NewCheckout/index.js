@@ -56,6 +56,8 @@ import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
 import { Paytm } from "../../components/Paytm";
 import { PayU } from "../../components/PayU";
+import { InvoiceTable } from "../../components/InvoiceTable";
+import Pdf from "react-to-pdf";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -182,6 +184,7 @@ export default function NewCheckout() {
   const [extraSubTotal, setExtraSubTotal] = useState(0);
   const [choiceTotal, setChoiceTotal] = useState(0);
   const [coupon, setCoupon] = useState("");
+  const [orderResp, setOrderResp] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(
     defDel ? defDel.selectedAddress : null
   );
@@ -199,10 +202,12 @@ export default function NewCheckout() {
   const [show, setShow] = useState(false);
   const [paymentType, setPaymentType] = useState("");
   const [currentPaymentType, setCurrentPaymentType] = useState("");
+  const [showInvoice, setShowInvoice] = useState(false);
 
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
+  const ref = React.createRef();
 
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
@@ -252,6 +257,9 @@ export default function NewCheckout() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleCloseInvoice = () => setShowInvoice(false);
+  const handleShowInvoice = () => setShowInvoice(true);
 
   const placeOrder = () => {
     try {
@@ -316,8 +324,10 @@ export default function NewCheckout() {
 
       //console.log(NewOrder);
       dispatch(saveNewOrder(NewOrder)).then((res) => {
-        if (res) {
-          console.log(res);
+        if (res && res.data) {
+          console.log(res.data);
+          setOrderResp(res.data);
+          handleShowInvoice();
         }
       });
     } catch (error) {
@@ -385,6 +395,151 @@ export default function NewCheckout() {
       <span>
         {day}/{month.toUpperCase()}/{year}
       </span>
+    );
+  };
+
+  const renderNowTime = () => {
+    const dateObj = new Date();
+    const time = dateObj.toLocaleString("en-US", {
+      hour: "numeric",
+      hour12: true,
+      minute: "numeric",
+    });
+
+    return <span>{time}</span>;
+  };
+
+  const renderInvoiceModal = () => {
+    return (
+      <Modal show={showInvoice} onHide={handleCloseInvoice}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <Typography>Invoice</Typography>
+          </Modal.Title>
+        </Modal.Header>
+        {orderResp ? (
+          <Modal.Body ref={ref}>
+            {defDel ? (
+              <>
+                <div className="text-center">
+                  <Typography sx={{ fontWeight: "600" }}>Hangries</Typography>
+                  <Typography sx={{ color: "#A6A6A6" }}>
+                    <span>{defDel.address1}</span>
+                    {defDel.address2 ? (
+                      <>
+                        , <span>{defDel.address2}</span>
+                      </>
+                    ) : null}
+                    {defDel.address3 ? (
+                      <>
+                        , <br></br>
+                        <span>{defDel.address3}</span>
+                      </>
+                    ) : null}
+                    , {defDel.city}
+                    {defDel.zipCode ? <>, {defDel.zipCode}</> : null},{" "}
+                    {defDel.country}
+                  </Typography>
+                  <Typography sx={{ fontWeight: "600" }}>
+                    Order ID: {orderResp ? orderResp.orderId : null}
+                  </Typography>
+                  <Typography sx={{ fontWeight: "600" }}>
+                    Order No: {orderResp ? orderResp.id : null}
+                  </Typography>
+                  <Typography sx={{ fontWeight: "600" }}>
+                    {defDel.type === "delivery" ? (
+                      <span>Delivery</span>
+                    ) : (
+                      <span>Self-Collect</span>
+                    )}
+                    <span> [Paid]</span>
+                  </Typography>
+                </div>
+                <hr></hr>
+                <div>
+                  <Typography>
+                    Name: {auth.user?.firstName} {auth.user?.lastName}
+                  </Typography>
+                  {selectedAddress ? (
+                    <Typography>
+                      {/* <p
+                                      style={{
+                                        fontWeight: "bold",
+                     
+                                      }}
+                                    >
+                                      {selectedAddress.customerAddressType}
+                                    </p> */}
+                      <p
+                        style={{
+                          color: "#7F7F7F",
+                        }}
+                      >
+                        {selectedAddress.address1}
+                        {", "}
+                        {selectedAddress.address2}
+                        {", "}
+                        {selectedAddress.landmark}
+                        {", "}
+                        {selectedAddress.city}
+                        {", "}
+                        {selectedAddress.zipCode}
+                        {", "}
+                        {selectedAddress.state}
+                      </p>
+                    </Typography>
+                  ) : null}
+                  <Typography>Mob No: {auth.user?.mobileNumber}</Typography>
+                </div>
+                <hr></hr>
+                <div>
+                  <Typography>
+                    <Row>
+                      <Col>Time: {renderNowTime()}</Col>
+                      <Col>Date: {renderNowDate()}</Col>
+                    </Row>
+                  </Typography>
+                </div>
+                <hr></hr>
+                <div>
+                  <InvoiceTable
+                    allProducts={orderResp.orderDetails}
+                  ></InvoiceTable>
+                </div>
+              </>
+            ) : null}
+          </Modal.Body>
+        ) : null}
+
+        <Modal.Footer>
+          <Row className="w-100">
+            <Col className="col-6">
+              <Button
+                color="secondary"
+                onClick={handleCloseInvoice}
+                className="w-100"
+                variant="contained"
+              >
+                Close
+              </Button>
+            </Col>
+            <Col className="col-6">
+              <Pdf targetRef={ref} filename="invoice.pdf">
+                {({ toPdf }) => (
+                  <Button
+                    color="primary"
+                    onClick={toPdf}
+                    className="w-100"
+                    variant="contained"
+                  >
+                    Download Invoice
+                  </Button>
+                )}
+              </Pdf>
+            </Col>
+          </Row>
+        </Modal.Footer>
+      </Modal>
     );
   };
 
@@ -1212,6 +1367,7 @@ export default function NewCheckout() {
           fromCheckout={true}
         ></DeliveryTypeModal>
       ) : null}
+      {renderInvoiceModal()}
       {renderPayUModal()}
       {isMobile ? <BottomNav onChangeTab={handleNavTab}></BottomNav> : null}
     </div>

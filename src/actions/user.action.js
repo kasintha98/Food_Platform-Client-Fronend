@@ -3,6 +3,7 @@ import {
   userConstants,
   userDetailsConstants,
   userAddressConstants,
+  orderConstantsNew,
 } from "./constants";
 import { resetCart } from "./cart.action";
 import axios from "../helpers/axios";
@@ -314,6 +315,42 @@ export const saveNewOrder = (payload) => {
           payload: { error },
         });
         toast.error("There was an error!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const GetUserOrdersNew = (userId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/getOrderByCustomerId", {
+        params: { customerId: userId },
+      });
+      dispatch({ type: orderConstantsNew.GET_USER_ORDERS_REQUEST });
+
+      if (res.status === 200) {
+        console.log(res);
+        dispatch({
+          type: orderConstantsNew.GET_USER_ORDERS_SUCCESS,
+          payload: res.data,
+        });
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: orderConstantsNew.GET_USER_ORDERS_FAILURE,
+          payload: { error },
+        });
+        toast.error("There was an error when getting data!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

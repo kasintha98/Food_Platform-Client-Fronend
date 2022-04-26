@@ -1,8 +1,13 @@
-import { userConstants, userAddressConstants } from "../actions/constants";
+import {
+  userConstants,
+  userAddressConstants,
+  orderConstantsNew,
+} from "../actions/constants";
 
 const initState = {
   addressNew: [],
   orders: [],
+  userOrders: [],
   error: null,
   loading: false,
   orderFetching: false,
@@ -138,6 +143,29 @@ export default (state = initState, action) => {
       break;
 
     case userAddressConstants.GET_USER_ADDRESSS_FAILURE:
+      break;
+
+    case orderConstantsNew.GET_USER_ORDERS_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+
+    case orderConstantsNew.GET_USER_ORDERS_SUCCESS:
+      state = {
+        ...state,
+        userOrders: action.payload,
+        loading: false,
+      };
+      break;
+
+    case orderConstantsNew.GET_USER_ORDERS_FAILURE:
+      state = {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
       break;
   }
   return state;
