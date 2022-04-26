@@ -15,6 +15,7 @@ import Delete from "@mui/icons-material/Delete";
 import styled from "@emotion/styled";
 import LinesEllipsis from "react-lines-ellipsis";
 import emptyCartImg from "./../../img/empty-cart.jpg";
+import emptyCartImg2 from "./../../img/empty-cart2.jpg";
 import { imagePath } from "../../urlConfig";
 import noImage from "../../img/no-img.png";
 import "./style.css";
@@ -443,8 +444,8 @@ export default function CartCard(props) {
       ) : (
         <div>
           <img
-            style={{ width: "100%", maxHeight: "468px" }}
-            src={emptyCartImg}
+            style={{ width: "100%", maxHeight: "343px" }}
+            src={emptyCartImg2}
             alt="Empty Cart"
           />
         </div>

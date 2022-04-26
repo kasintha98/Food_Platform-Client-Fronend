@@ -81,16 +81,40 @@ export const NewCart = () => {
               </Col>
             </Row>
             <Row className="ps-2">
-              <Col className="col-8">Taxes (CGST)</Col>
-              <Col className="col-4">₹ {0}</Col>
+              <Col className="col-8">
+                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                  Taxes (CGST)
+                </span>
+              </Col>
+              <Col className="col-4">
+                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                  ₹ {0}
+                </span>
+              </Col>
             </Row>
             <Row className="ps-2">
-              <Col className="col-8">Taxes (SGST)</Col>
-              <Col className="col-4">₹ {0}</Col>
+              <Col className="col-8">
+                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                  Taxes (SGST)
+                </span>
+              </Col>
+              <Col className="col-4">
+                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                  ₹ {0}
+                </span>
+              </Col>
             </Row>
             <Row className="ps-2">
-              <Col className="col-8">Delivery Charges</Col>
-              <Col className="col-4">₹ {0}</Col>
+              <Col className="col-8">
+                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                  Delivery Charges
+                </span>
+              </Col>
+              <Col className="col-4">
+                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                  ₹ {0}
+                </span>
+              </Col>
             </Row>
             <Row className="ps-2">
               <Col className="col-8">Grand Total</Col>

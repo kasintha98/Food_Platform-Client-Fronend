@@ -494,9 +494,7 @@ export const DeliveryTypeModal = (props) => {
             onClick={saveDeliveryType}
             variant="contained"
             color="success"
-            disabled={
-              !selectedStoreObj || (type === "delivery" && !selectedAddress)
-            }
+            disabled={!selectedStoreObj}
           >
             Save
           </ButtonSave>

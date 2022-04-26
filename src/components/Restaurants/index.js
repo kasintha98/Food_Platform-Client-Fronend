@@ -20,7 +20,7 @@ const CusCol = styled(Col)`
 
 const CusFormControl = styled(FormControl)`
   margin-top: 67vh;
-  width: 50%;
+  width: 100%;
   @media (max-width: 992px) {
     width: 100%;
     margin-top: 39vh;
@@ -48,17 +48,21 @@ const CusAlert = styled(Alert)`
   }
 `;
 
-const CusSelect = styled(Select)``;
+const CusSelect = styled(Select)`
+  & .MuiOutlinedInput-notchedOutline legend {
+    display: none;
+  }
+`;
 
 const CusDiv = styled.div`
   background-color: #fff;
-  margin-top: 10px;
+  margin-top: 65vh;
   margin-left: 20%;
   width: 50%;
   padding: 20px;
   border-top-left-radius: 20%;
   border-bottom-right-radius: 20%;
-  max-height: 42vh;
+  max-height: 55vh;
   overflow-y: auto;
   @media (max-width: 992px) {
     margin-top: 10px;
@@ -86,7 +90,9 @@ export const Restaurants = () => {
     <div style={{ marginTop: "40px" }}>
       <Row className="align-items-center" style={{ margin: 0, width: "100%" }}>
         <CusCol className="col-background" sm={12} md={12}>
-          {/* <Typography
+          <Row>
+            <Col md={12} lg={4}>
+              {/* <Typography
             sx={{
               fontSize: "2rem",
               color: "#C00000",
@@ -96,154 +102,168 @@ export const Restaurants = () => {
           >
             Select Restaurant
           </Typography> */}
-          <CusFormControl>
-            <InputLabel id="demo-simple-select-label">
-              Please select the store
-            </InputLabel>
-            <CusSelect
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedStore}
-              label="Please select the store"
-              onChange={handleChangeStore}
-            >
-              {stores.map((store) => (
-                <CusMenuItem
-                  onClick={() => {
-                    handleSelectedStore(store);
-                  }}
-                  value={store.resturantName}
-                >
-                  <span>
-                    {store.resturantName}
-                    <br></br>
-                    <span style={{ fontSize: "0.70rem", color: "#767171" }}>
-                      {store.address1}
-                    </span>
-                    {store.address2 ? (
-                      <>
-                        ,{" "}
-                        <span
-                          style={{
-                            fontSize: "0.70rem",
-                            color: "#767171",
-                          }}
-                        >
-                          {store.address2}
-                        </span>
-                      </>
-                    ) : null}
-                    {store.address3 ? (
-                      <>
-                        ,{" "}
-                        <span
-                          style={{
-                            fontSize: "0.70rem",
-                            color: "#767171",
-                          }}
-                        >
-                          {store.address3}
-                        </span>
-                      </>
-                    ) : null}
-                  </span>
-                </CusMenuItem>
-              ))}
-            </CusSelect>
-          </CusFormControl>
+              <CusFormControl>
+                {!selectedStoreObj ? (
+                  <InputLabel shrink={false} id="demo-simple-select-label">
+                    Please select the store
+                  </InputLabel>
+                ) : null}
 
-          {selectedStoreObj ? (
-            <CusDiv>
-              <div>
-                <Typography1>
-                  <span style={{ color: "#595959" }}>
-                    {selectedStoreObj.resturantName}
-                  </span>
+                <CusSelect
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedStore}
+                  label="Please select the store"
+                  onChange={handleChangeStore}
+                >
+                  {stores.map((store) => (
+                    <CusMenuItem
+                      onClick={() => {
+                        handleSelectedStore(store);
+                      }}
+                      value={store.resturantName}
+                    >
+                      <span>
+                        {store.resturantName}
+                        <br></br>
+                        <span style={{ fontSize: "0.70rem", color: "#767171" }}>
+                          {store.address1}
+                        </span>
+                        {store.address2 ? (
+                          <>
+                            ,{" "}
+                            <span
+                              style={{
+                                fontSize: "0.70rem",
+                                color: "#767171",
+                              }}
+                            >
+                              {store.address2}
+                            </span>
+                          </>
+                        ) : null}
+                        {store.address3 ? (
+                          <>
+                            ,{" "}
+                            <span
+                              style={{
+                                fontSize: "0.70rem",
+                                color: "#767171",
+                              }}
+                            >
+                              {store.address3}
+                            </span>
+                          </>
+                        ) : null}
+                      </span>
+                    </CusMenuItem>
+                  ))}
+                </CusSelect>
+              </CusFormControl>
+            </Col>
+            <Col md={12} lg={8}>
+              {selectedStoreObj ? (
+                <CusDiv>
+                  <div>
+                    <Typography1>
+                      <span style={{ color: "#595959" }}>
+                        {selectedStoreObj.resturantName}
+                      </span>
+                      <br></br>
+                      <span style={{ color: "#595959" }}>
+                        {selectedStoreObj.address1}
+                      </span>
+                      {selectedStoreObj.address2 ? (
+                        <>
+                          ,<br></br>
+                          <span
+                            style={{
+                              color: "#595959",
+                            }}
+                          >
+                            {selectedStoreObj.address2}
+                          </span>
+                        </>
+                      ) : null}
+                      {selectedStoreObj.address3 ? (
+                        <>
+                          ,<br></br>
+                          <span
+                            style={{
+                              color: "#595959",
+                            }}
+                          >
+                            {selectedStoreObj.address3}
+                          </span>
+                        </>
+                      ) : null}
+                    </Typography1>
+                  </div>
                   <br></br>
-                  <span style={{ color: "#595959" }}>
-                    {selectedStoreObj.address1}
-                  </span>
-                  {selectedStoreObj.address2 ? (
-                    <>
-                      ,<br></br>
+                  <div>
+                    <Typography1>
                       <span
                         style={{
                           color: "#595959",
+                          fontWeight: "bold",
                         }}
                       >
-                        {selectedStoreObj.address2}
+                        Delivery :{" "}
+                        {selectedStoreObj.storeAvailableForDelivery === "Y" ? (
+                          <span
+                            style={{ fontWeight: "bold", color: "#00B050" }}
+                          >
+                            Open
+                          </span>
+                        ) : (
+                          <span
+                            style={{ fontWeight: "bold", color: "#C00000" }}
+                          >
+                            Close
+                          </span>
+                        )}
                       </span>
-                    </>
-                  ) : null}
-                  {selectedStoreObj.address3 ? (
-                    <>
-                      ,<br></br>
+                      <br></br>
                       <span
                         style={{
                           color: "#595959",
+                          fontWeight: "bold",
                         }}
                       >
-                        {selectedStoreObj.address3}
+                        Self-Collect :{" "}
+                        {selectedStoreObj.storeAvailableForPickup === "Y" ? (
+                          <span
+                            style={{ fontWeight: "bold", color: "#00B050" }}
+                          >
+                            Open
+                          </span>
+                        ) : (
+                          <span
+                            style={{ fontWeight: "bold", color: "#C00000" }}
+                          >
+                            Close
+                          </span>
+                        )}
                       </span>
-                    </>
-                  ) : null}
-                </Typography1>
-              </div>
-              <br></br>
-              <div>
-                <Typography1>
-                  <span
-                    style={{
-                      color: "#595959",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Delivery :{" "}
-                    {selectedStoreObj.storeAvailableForDelivery === "Y" ? (
-                      <span style={{ fontWeight: "bold", color: "#00B050" }}>
-                        Open
-                      </span>
-                    ) : (
-                      <span style={{ fontWeight: "bold", color: "#C00000" }}>
-                        Close
-                      </span>
-                    )}
-                  </span>
+                    </Typography1>
+                  </div>
                   <br></br>
-                  <span
-                    style={{
-                      color: "#595959",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Self-Collect :{" "}
-                    {selectedStoreObj.storeAvailableForPickup === "Y" ? (
-                      <span style={{ fontWeight: "bold", color: "#00B050" }}>
-                        Open
+                  <div>
+                    <Typography2>
+                      <span style={{ color: "#595959" }}>
+                        <span style={{ fontWeight: "bold" }}>
+                          Restaurant Timing
+                        </span>{" "}
+                        - {selectedStoreObj.storeStartTime} to{" "}
+                        {selectedStoreObj.storeEndTime}
                       </span>
-                    ) : (
-                      <span style={{ fontWeight: "bold", color: "#C00000" }}>
-                        Close
-                      </span>
-                    )}
-                  </span>
-                </Typography1>
-              </div>
-              <br></br>
-              <div>
-                <Typography2>
-                  <span style={{ color: "#595959" }}>
-                    <span style={{ fontWeight: "bold" }}>
-                      Restaurant Timing
-                    </span>{" "}
-                    - {selectedStoreObj.storeStartTime} to{" "}
-                    {selectedStoreObj.storeEndTime}
-                  </span>
-                  <br></br>
-                </Typography2>
-              </div>
-            </CusDiv>
-          ) : null}
+                      <br></br>
+                    </Typography2>
+                  </div>
+                </CusDiv>
+              ) : null}
+            </Col>
+          </Row>
         </CusCol>
       </Row>
     </div>
