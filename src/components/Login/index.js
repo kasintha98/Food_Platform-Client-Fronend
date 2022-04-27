@@ -179,14 +179,15 @@ export default function LoginDrawer(props) {
     setState({ ...state, [anchor]: open });
   };
 
-  const configureCaptcha = () => {
+  const configureCaptcha = (sendButton) => {
+    console.log(sendButton);
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      "sign-in-button",
+      sendButton,
       {
         size: "invisible",
         callback: (response) => {
           // reCAPTCHA solved, allow signInWithPhoneNumber.
-          onSignInSubmit();
+          //onSignInSubmit();
           console.log("reCAPTCHA verified");
         },
       }
@@ -240,7 +241,9 @@ export default function LoginDrawer(props) {
       });
 
       e.preventDefault();
-      configureCaptcha();
+      if(!otpSuccess){
+        configureCaptcha("sign-in-button");
+      }
       const phoneNumber = "+" + mobileNumber;
       const appVerifier = window.recaptchaVerifier;
       console.log(phoneNumber);
@@ -255,6 +258,7 @@ export default function LoginDrawer(props) {
           setOtpSuccess(true);
         })
         .catch((error) => {
+          console.log(error);
           console.log("SMS not sent error....!!");
           toast.error("SMS not sent error....!!");
         });
@@ -454,7 +458,7 @@ export default function LoginDrawer(props) {
                   <p class="font-weight-bold">{otpError}</p>
                 </div>
                 <div className="row">
-                  <div id="sign-in-button"></div>
+                  <div id="resend-button"></div>
                   {/* <TextField
                     id="outlined-helperText"
                     label="OTP"
@@ -479,7 +483,7 @@ export default function LoginDrawer(props) {
                         localStorage.getItem("otpTime")
                           ? Date.now() +
                             Number(localStorage.getItem("otpTime") * 1000)
-                          : Date.now() + 60000
+                          : Date.now() + 600
                       }
                       renderer={rendererTime}
                     />
