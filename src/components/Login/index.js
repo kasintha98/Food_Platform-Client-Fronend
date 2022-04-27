@@ -480,7 +480,7 @@ export default function LoginDrawer(props) {
                         localStorage.getItem("otpTime")
                           ? Date.now() +
                             Number(localStorage.getItem("otpTime") * 1000)
-                          : Date.now() + 60000
+                          : Date.now() + 6000
                       }
                       renderer={rendererTime}
                     />
@@ -515,7 +515,17 @@ export default function LoginDrawer(props) {
       if (seconds === 0) {
         localStorage.removeItem("otpTime");
       }
-      return <Completionist />;
+      localStorage.setItem("otpTime", seconds);
+      return (
+        <div>
+          <Button variant="contained" disabled>
+            {seconds}S
+          </Button>
+          <Button variant="text" disabled>
+            Resend OTP
+          </Button>
+        </div>
+      );
     } else {
       // Render a countdown
       if (seconds !== 0) {
