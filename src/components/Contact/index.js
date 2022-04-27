@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import Input from "../Input";
-import {
+/* import {
   GoogleMap,
   withScriptjs,
   withGoogleMap,
   Marker,
-} from "react-google-maps";
+} from "react-google-maps"; */
 import { key } from "../../apikey";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Map(props) {
-  return (
+  /* return (
     <GoogleMap
       defaultZoom={16}
       defaultCenter={{ lat: 6.841273, lng: 80.003059 }}
@@ -22,10 +22,10 @@ function Map(props) {
         <Marker position={{ lat: 6.841273, lng: 80.003059 }} />
       )}
     </GoogleMap>
-  );
+  ); */
 }
 
-const WrappedMap = withScriptjs(withGoogleMap(Map));
+/* const WrappedMap = withScriptjs(withGoogleMap(Map)); */
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -112,13 +112,13 @@ export default function Contact() {
       </div>
       <Row>
         <Col sm={6}>
-          <WrappedMap
+          {/* <WrappedMap
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `400px` }} />}
             mapElement={<div style={{ height: `100%` }} />}
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${key}`}
             isMarkerShown
-          ></WrappedMap>
+          ></WrappedMap> */}
         </Col>
         <Col sm={6}>
           <Input
