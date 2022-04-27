@@ -52,6 +52,10 @@ function App() {
   useEffect(() => {
     console.log("App.js - get stores");
     dispatch(getAllStores());
+    const time = localStorage.getItem("otpTime");
+    if (time) {
+      localStorage.setItem("otpTime", 60);
+    }
   }, []);
 
   return (

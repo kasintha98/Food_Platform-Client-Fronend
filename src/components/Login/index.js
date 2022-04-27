@@ -181,17 +181,14 @@ export default function LoginDrawer(props) {
 
   const configureCaptcha = (sendButton) => {
     console.log(sendButton);
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      sendButton,
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          //onSignInSubmit();
-          console.log("reCAPTCHA verified");
-        },
-      }
-    );
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(sendButton, {
+      size: "invisible",
+      callback: (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        //onSignInSubmit();
+        console.log("reCAPTCHA verified");
+      },
+    });
   };
 
   const validatePhoneNumber = (number) => {
@@ -241,7 +238,7 @@ export default function LoginDrawer(props) {
       });
 
       e.preventDefault();
-      if(!otpSuccess){
+      if (!otpSuccess) {
         configureCaptcha("sign-in-button");
       }
       const phoneNumber = "+" + mobileNumber;
@@ -483,7 +480,7 @@ export default function LoginDrawer(props) {
                         localStorage.getItem("otpTime")
                           ? Date.now() +
                             Number(localStorage.getItem("otpTime") * 1000)
-                          : Date.now() + 600
+                          : Date.now() + 60000
                       }
                       renderer={rendererTime}
                     />
