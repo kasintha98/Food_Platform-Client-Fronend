@@ -176,6 +176,7 @@ const CusTextField = styled(TextField)`
 
 export default function NewCheckout() {
   const defDel = useSelector((state) => state.auth.deliveryType);
+  const deliveryPrice = useSelector((state) => state.auth.deliveryPrice);
 
   const [value, setValue] = useState(0);
   const cart = useSelector((state) => state.cart);
@@ -203,6 +204,7 @@ export default function NewCheckout() {
   const [paymentType, setPaymentType] = useState("");
   const [currentPaymentType, setCurrentPaymentType] = useState("");
   const [showInvoice, setShowInvoice] = useState(false);
+  const [delCharge, setDelCharge] = useState(0);
 
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
@@ -211,6 +213,7 @@ export default function NewCheckout() {
 
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
+  const taxDetails = useSelector((state) => state.auth.taxDetails);
 
   const history = useHistory();
 
@@ -243,6 +246,62 @@ export default function NewCheckout() {
       }
     }
   }, [defDel]);
+
+  const renderAllSub = () => {
+    const all =
+      subTotal +
+      (extraSubTotal ? extraSubTotal : 0) +
+      (choiceTotal ? choiceTotal : 0);
+    return <span>₹ {all.toFixed(2)}</span>;
+  };
+
+  const calcDeliveryPrice = () => {
+    const allSub =
+      subTotal +
+      (extraSubTotal ? extraSubTotal : 0) +
+      (choiceTotal ? choiceTotal : 0);
+
+    let deliveryCharge = 0;
+
+    if (deliveryPrice) {
+      deliveryPrice.forEach((delivery) => {
+        if (allSub >= delivery.minAmount && allSub <= delivery.maxAmount) {
+          deliveryCharge = delivery.deliveryFee;
+        }
+      });
+    }
+
+    setDelCharge(deliveryCharge.toFixed(2));
+  };
+
+  const renderTax = (tax) => {
+    const all = (
+      (subTotal +
+        (extraSubTotal ? extraSubTotal : 0) +
+        (choiceTotal ? choiceTotal : 0)) *
+      (tax.taxPercentage / 100)
+    ).toFixed(2);
+    return <span>₹ {all}</span>;
+  };
+
+  const renderGrandTot = () => {
+    const allSub =
+      subTotal +
+      (extraSubTotal ? extraSubTotal : 0) +
+      (choiceTotal ? choiceTotal : 0);
+
+    let allTax = 0;
+
+    if (taxDetails) {
+      taxDetails.forEach((tax) => {
+        allTax = allTax + allSub * (tax.taxPercentage / 100);
+      });
+    }
+
+    const grantTot = allSub + allTax + Number(delCharge);
+
+    return <span>₹ {grantTot.toFixed(2)}</span>;
+  };
 
   const handleCusAdDChange = (address) => {
     const newDel = { ...defDel, selectedAddress: address };
@@ -282,6 +341,19 @@ export default function NewCheckout() {
         orderDetails.push(obj);
       }
 
+      let cgstCaluclatedValue = 0;
+      let sgstCalculatedValue = 0;
+
+      if (taxDetails) {
+        taxDetails.forEach((tax) => {
+          if (tax.taxCategory.toUpperCase() === "CGST") {
+            cgstCaluclatedValue = total * (tax.taxPercentage / 100);
+          }
+          if (tax.taxCategory.toUpperCase() === "SGST") {
+            cgstCaluclatedValue = total * (tax.taxPercentage / 100);
+          }
+        });
+      }
       const NewOrder = {
         id: 0,
         orderId: "EMPTY",
@@ -293,12 +365,12 @@ export default function NewCheckout() {
         orderDeliveryType:
           currentType.type === "delivery" ? "delivery" : "pickup",
         storeTableId: "testStore",
-        orderStatus: "Placed",
+        orderStatus: "SUBMITTED",
         taxRuleId: 1,
         totalPrice: total,
         customerAddressId: selectedAddress ? selectedAddress.id : null,
-        cgstCaluclatedValue: null,
-        sgstCalculatedValue: null,
+        cgstCaluclatedValue: cgstCaluclatedValue.toFixed(2),
+        sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
         overallPriceWithTax: null,
         orderDetails: orderDetails,
       };
@@ -346,14 +418,17 @@ export default function NewCheckout() {
 
   const handleSubTotal = (total) => {
     setSubtotal(total);
+    calcDeliveryPrice();
   };
 
   const handleExtraTotal = (total) => {
     setExtraSubTotal(total);
+    calcDeliveryPrice();
   };
 
   const handleChoiceTotal = (total) => {
     setChoiceTotal(total);
+    calcDeliveryPrice();
   };
 
   const handleTypeChange = (type) => {
@@ -737,64 +812,45 @@ export default function NewCheckout() {
                                 color: "#2e7d32",
                               }}
                             >
-                              ₹{" "}
-                              {subTotal +
-                                (extraSubTotal ? extraSubTotal : 0) +
-                                (choiceTotal ? choiceTotal : 0)}
-                              .00
+                              {renderAllSub()}
                             </Typography>
                           </div>
                         </Row>
                         <Row className="ps-2">
-                          <div className="w75">
-                            <Typography
-                              sx={{
-                                fontSize: "0.9rem",
-                                fontWeight: "600",
-                                fontFamily: "Arial",
-                                color: "#595959",
-                              }}
-                            >
-                              Taxes (CGST)
-                            </Typography>
-                          </div>
-                          <div className="w25">
-                            <Typography
-                              sx={{
-                                fontSize: "0.9rem",
-                                fontWeight: "600",
-                                color: "#2e7d32",
-                              }}
-                            >
-                              ₹ {0}.00
-                            </Typography>
-                          </div>
+                          {taxDetails ? (
+                            <>
+                              {taxDetails.map((tax) => (
+                                <>
+                                  <div className="w75">
+                                    <Typography
+                                      sx={{
+                                        fontSize: "0.9rem",
+                                        fontWeight: "600",
+                                        fontFamily: "Arial",
+                                        color: "#595959",
+                                      }}
+                                    >
+                                      Taxes ({tax.taxCategory}{" "}
+                                      {tax.taxPercentage}%)
+                                    </Typography>
+                                  </div>
+                                  <div className="w25">
+                                    <Typography
+                                      sx={{
+                                        fontSize: "0.9rem",
+                                        fontWeight: "600",
+                                        color: "#2e7d32",
+                                      }}
+                                    >
+                                      {renderTax(tax)}
+                                    </Typography>
+                                  </div>
+                                </>
+                              ))}
+                            </>
+                          ) : null}
                         </Row>
-                        <Row className="ps-2">
-                          <div className="w75">
-                            <Typography
-                              sx={{
-                                fontSize: "0.9rem",
-                                fontWeight: "600",
-                                fontFamily: "Arial",
-                                color: "#595959",
-                              }}
-                            >
-                              Taxes (SGST)
-                            </Typography>
-                          </div>
-                          <div className="w25">
-                            <Typography
-                              sx={{
-                                fontSize: "0.9rem",
-                                fontWeight: "600",
-                                color: "#2e7d32",
-                              }}
-                            >
-                              ₹ {0}.00
-                            </Typography>
-                          </div>
-                        </Row>
+
                         <Row className="ps-2">
                           <div className="w75">
                             <Typography
@@ -816,7 +872,7 @@ export default function NewCheckout() {
                                 color: "#2e7d32",
                               }}
                             >
-                              ₹ {0}.00
+                              ₹ {delCharge}
                             </Typography>
                           </div>
                         </Row>
@@ -841,12 +897,7 @@ export default function NewCheckout() {
                                 color: "#2e7d32",
                               }}
                             >
-                              {" "}
-                              ₹{" "}
-                              {subTotal +
-                                (extraSubTotal ? extraSubTotal : 0) +
-                                (choiceTotal ? choiceTotal : 0)}
-                              .00
+                              {renderGrandTot()}
                             </Typography>
                           </div>
                         </Row>
