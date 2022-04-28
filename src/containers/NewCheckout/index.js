@@ -58,6 +58,7 @@ import { Paytm } from "../../components/Paytm";
 import { PayU } from "../../components/PayU";
 import { InvoiceTable } from "../../components/InvoiceTable";
 import Pdf from "react-to-pdf";
+import { PayUTest } from "../../components/PayUTest";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -1477,7 +1478,8 @@ export default function NewCheckout() {
                       <Card className="p-3">
                         <Row>
                           <Col>
-                            <PayU></PayU>
+                            {/* <PayU></PayU> */}
+                            <PayUTest></PayUTest>
                           </Col>
                           <Col>
                             <Button
