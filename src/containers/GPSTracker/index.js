@@ -77,19 +77,76 @@ export const GPSTracker = () => {
           </Col>
         </Row>
         <Row className="mt-2">
-          {!orderStatus ? (
-            <Col className="col-12">
-              <Alert severity="error">No Information Found!</Alert>
-            </Col>
-          ) : null}
-          {!id ? (
+          {!orderStatus && !id ? (
             <Col className="col-12">
               <Alert severity="error">Please Enter A Valid ID!</Alert>
             </Col>
           ) : null}
           {orderStatus ? (
             <>
-              <Col className="col-2"></Col>
+              {orderStatus.orderStatus === "SUBMITTED" && (
+                <Col className="col-2">
+                  <img
+                    src={OrderSubmitted}
+                    alt="SUBMITTED"
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+              )}
+              {orderStatus.orderStatus === "ACCEPTED" && (
+                <Col className="col-2">
+                  <img
+                    src={OrderAccepted}
+                    alt="ACCEPTED"
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+              )}
+              {orderStatus.orderStatus === "PREPARING" && (
+                <Col className="col-2">
+                  <img
+                    src={FoodPreparing}
+                    alt="PREPARING"
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+              )}
+              {orderStatus.orderStatus === "FOOD READY" && (
+                <Col className="col-2">
+                  <img
+                    src={FoodReady}
+                    alt="FOOD READY"
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+              )}
+              {orderStatus.orderStatus === "OUT FOR DELIVERY" && (
+                <Col className="col-2">
+                  <img
+                    src={OutforDelivery}
+                    alt="OUT FOR DELIVERY"
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+              )}
+              {orderStatus.orderStatus === "DELIVERED" && (
+                <Col className="col-2">
+                  <img
+                    src={Delivered}
+                    alt="DELIVERED"
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+              )}
+              {orderStatus.orderStatus === "CANCELLED" && (
+                <Col className="col-12">
+                  <img
+                    src={OrderCancelled}
+                    alt="CANCELLED"
+                    style={{ width: "100%" }}
+                  />
+                </Col>
+              )}
             </>
           ) : null}
         </Row>

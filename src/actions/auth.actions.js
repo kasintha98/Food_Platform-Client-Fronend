@@ -4,6 +4,8 @@ import {
   cartConstants,
   userConstants,
   deliveryTypeConstants,
+  taxConstants,
+  deliPriceConstants,
 } from "./constants";
 import { toast } from "react-toastify";
 import axiosnew from "axios";
@@ -207,10 +209,94 @@ export const signout = () => {
 
 export const setDeliveryType = (delObj) => {
   return async (dispatch) => {
-    localStorage.setItem("deliveryType", JSON.stringify(delObj));
-    dispatch({
-      type: deliveryTypeConstants.SET_DELIVERY_TYPE_SUCCESS,
-      payload: delObj,
-    });
+    try {
+      localStorage.setItem("deliveryType", JSON.stringify(delObj));
+      dispatch({
+        type: deliveryTypeConstants.SET_DELIVERY_TYPE_SUCCESS,
+        payload: delObj,
+      });
+      if (delObj) {
+        dispatch(GetTaxDetails(delObj.restaurantId, delObj.storeId));
+        dispatch(GetDeliveryPrice(delObj.restaurantId, delObj.storeId));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const GetTaxDetails = (restaurantId, storeId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/getTaxDetailsByRestroAndStore", {
+        params: { restaurantId: restaurantId, storeId: storeId },
+      });
+      dispatch({ type: taxConstants.GET_TAX_REQUEST });
+
+      if (res.status === 200) {
+        console.log(res);
+        dispatch({
+          type: taxConstants.GET_TAX_SUCCESS,
+          payload: res.data,
+        });
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: taxConstants.GET_TAX_FAILURE,
+          payload: { error },
+        });
+        toast.error("There was an error when getting data!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const GetDeliveryPrice = (restaurantId, storeId) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/getDeliveryConfigByCriteria", {
+        params: {
+          restaurantId: restaurantId,
+          storeId: storeId,
+          criteria: "AMOUNT",
+        },
+      });
+      dispatch({ type: deliPriceConstants.GET_DELIVERY_PRICE_REQUEST });
+
+      if (res.status === 200) {
+        console.log(res);
+        dispatch({
+          type: deliPriceConstants.GET_DELIVERY_PRICE_SUCCESS,
+          payload: res.data,
+        });
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: deliPriceConstants.GET_DELIVERY_PRICE_FAILURE,
+          payload: { error },
+        });
+        toast.error("There was an error when getting data!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };

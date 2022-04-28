@@ -1,4 +1,9 @@
-import { authConstants, deliveryTypeConstants } from "../actions/constants";
+import {
+  authConstants,
+  deliveryTypeConstants,
+  taxConstants,
+  deliPriceConstants,
+} from "../actions/constants";
 
 //initial state of user object
 const initState = {
@@ -18,6 +23,8 @@ const initState = {
   errormsg: null,
   message: "",
   deliveryType: null,
+  taxDetails: null,
+  deliveryPrice: null,
 };
 
 //check what is the request and returning suitable state for the request
@@ -89,10 +96,25 @@ export default (state = initState, action) => {
         error: null,
       };
       break;
+
     case deliveryTypeConstants.SET_DELIVERY_TYPE_SUCCESS:
       state = {
         ...state,
         deliveryType: action.payload,
+      };
+      break;
+
+    case taxConstants.GET_TAX_SUCCESS:
+      state = {
+        ...state,
+        taxDetails: action.payload,
+      };
+      break;
+
+    case deliPriceConstants.GET_DELIVERY_PRICE_SUCCESS:
+      state = {
+        ...state,
+        deliveryPrice: action.payload,
       };
       break;
   }
