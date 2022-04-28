@@ -77,7 +77,6 @@ export const GPSTracker = () => {
           </Col>
         </Row>
         <Row className="mt-2">
-          <Col className="col-2"></Col>
           {!orderStatus ? (
             <Col className="col-12">
               <Alert severity="error">No Information Found!</Alert>
@@ -87,6 +86,11 @@ export const GPSTracker = () => {
             <Col className="col-12">
               <Alert severity="error">Please Enter A Valid ID!</Alert>
             </Col>
+          ) : null}
+          {orderStatus ? (
+            <>
+              <Col className="col-2"></Col>
+            </>
           ) : null}
         </Row>
       </Container>
