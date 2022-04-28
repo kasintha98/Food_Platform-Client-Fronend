@@ -1,6 +1,7 @@
 import {
   userConstants,
   userAddressConstants,
+  orderStatusConstantsNew,
   orderConstantsNew,
 } from "../actions/constants";
 
@@ -13,6 +14,7 @@ const initState = {
   orderFetching: false,
   message: "",
   allAddresses: [],
+  orderStatus: null,
 };
 
 export default (state = initState, action) => {
@@ -161,6 +163,29 @@ export default (state = initState, action) => {
       break;
 
     case orderConstantsNew.GET_USER_ORDERS_FAILURE:
+      state = {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+      break;
+
+    case orderStatusConstantsNew.GET_ORDER_STATUS_REQUEST:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+
+    case orderStatusConstantsNew.GET_ORDER_STATUS_SUCCESS:
+      state = {
+        ...state,
+        orderStatus: action.payload,
+        loading: false,
+      };
+      break;
+
+    case orderStatusConstantsNew.GET_ORDER_STATUS_FAILURE:
       state = {
         ...state,
         loading: false,

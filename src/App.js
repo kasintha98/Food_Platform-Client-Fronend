@@ -25,6 +25,7 @@ import NewCheckout from "./containers/NewCheckout";
 import { NewCartPage } from "./containers/NewCartPage";
 import { DeliveryTypeModal } from "./components/DeliveryTypeModal";
 import { MyOrders } from "./containers/MyOrders";
+import { GPSTracker } from "./containers/GPSTracker";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={HomePage} />
           <Route path="/new-menu" exact component={NewMenu} />
+          <Route path="/gps" exact component={GPSTracker} />
           <Route path="/my-orders" exact component={MyOrders} />
           <Route path="/new-checkout" exact component={NewCheckout} />
           <Route path="/new-cart" component={NewCartPage} />

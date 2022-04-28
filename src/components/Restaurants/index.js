@@ -21,6 +21,28 @@ const CusCol = styled(Col)`
 const CusFormControl = styled(FormControl)`
   margin-top: 67vh;
   width: 100%;
+  height: 50px;
+
+  & .MuiOutlinedInput-notchedOutline {
+    /* background-color: red; */
+    /* border-radius: 50px; */
+    border: none;
+  }
+
+  & .MuiSelect-select {
+    background-color: red;
+    border-radius: 50px;
+  }
+
+  & .MuiSelect-select:focus {
+    background-color: red;
+    border-radius: 50px;
+  }
+
+  & .Mui-focused {
+    color: #000;
+  }
+
   @media (max-width: 992px) {
     width: 100%;
     margin-top: 39vh;
@@ -125,7 +147,7 @@ export const Restaurants = () => {
                     >
                       <span>
                         {store.resturantName}
-                        <br></br>
+                        {/* <br></br>
                         <span style={{ fontSize: "0.70rem", color: "#767171" }}>
                           {store.address1}
                         </span>
@@ -154,7 +176,7 @@ export const Restaurants = () => {
                               {store.address3}
                             </span>
                           </>
-                        ) : null}
+                        ) : null} */}
                       </span>
                     </CusMenuItem>
                   ))}

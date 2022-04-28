@@ -25,6 +25,7 @@ import LoginDrawer from "../Login";
 import { NavHashLink } from "react-router-hash-link";
 import { HeaderDeliveryType } from "../HeaderDeliveryType";
 import { DeliveryTypeModal } from "../DeliveryTypeModal";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 import { Typography } from "@mui/material";
 
 const CusNavbar = styled(Navbar)`
@@ -68,6 +69,15 @@ const CusNav = styled(Nav)`
 
 const CusNav2 = styled(Nav)`
   height: 40px;
+  @media (max-width: 992px) {
+    width: 100%;
+    height: auto;
+  }
+`;
+
+const CusNav3 = styled(Nav)`
+  height: 50px;
+  width: 100%;
   @media (max-width: 992px) {
     width: 100%;
     height: auto;
@@ -523,6 +533,18 @@ export default function Header(props) {
                 </>
               ) : null}
             </CusNav2>
+            <CusNav3 className="me-auto ms-2">
+              <NavHashLink
+                className="nav-link"
+                to="/gps"
+                activeClassName="selected"
+                activeStyle={{
+                  /* color: "red", */ borderBottom: "3px red solid",
+                }}
+              >
+                <PinDropIcon></PinDropIcon> GPS Tracker
+              </NavHashLink>
+            </CusNav3>
             <CusNav
               className="mr-auto my-2 my-lg-0 justify-content-end"
               style={{ maxHeight: "200px", width: "100%" }}
