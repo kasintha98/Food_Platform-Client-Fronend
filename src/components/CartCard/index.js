@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -16,6 +16,7 @@ import styled from "@emotion/styled";
 import LinesEllipsis from "react-lines-ellipsis";
 import emptyCartImg from "./../../img/empty-cart.jpg";
 import emptyCartImg2 from "./../../img/empty-cart2.jpg";
+import emptyCartImg3 from "./../../img/empty-cart3.jpg";
 import { imagePath } from "../../urlConfig";
 import noImage from "../../img/no-img.png";
 import "./style.css";
@@ -47,12 +48,20 @@ const CusRow = styled(Row)`
 export default function CartCard(props) {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const ref = useRef(null);
+
+  const [divWidth, setDivWidth] = useState(0);
 
   useEffect(() => {
     calculateSubTotal();
     calculateExtraTotal();
     calculateChoiceTotal();
   });
+
+  useEffect(() => {
+    const width = ref.current ? ref.current.offsetWidth : 0;
+    setDivWidth(width);
+  }, [ref.current]);
 
   const onQuantityIncrement = (productId) => {
     console.log({ productId });
@@ -92,7 +101,7 @@ export default function CartCard(props) {
   };
 
   return (
-    <div>
+    <div ref={ref}>
       {Object.keys(cart?.cartItems).length > 0 ? (
         <>
           {Object.keys(cart?.cartItems).map((key, index) => (
@@ -277,7 +286,7 @@ export default function CartCard(props) {
                                 lineHeight: "1",
                               }}
                             >
-                              {"₹"}
+                              {"₹ "}
                               {cart?.cartItems[key].price}.00
                             </span>
                           </div>
@@ -337,7 +346,7 @@ export default function CartCard(props) {
                                               lineHeight: "1",
                                             }}
                                           >
-                                            {"₹"}
+                                            {"₹ "}
                                             {
                                               cart?.cartItems[key]?.extra[index]
                                                 .price
@@ -397,7 +406,7 @@ export default function CartCard(props) {
                                     lineHeight: "1",
                                   }}
                                 >
-                                  {"₹"}
+                                  {"₹ "}
                                   {cart?.cartItems[key]?.choiceIng.price}.00
                                 </span>
                               </div>
@@ -442,13 +451,12 @@ export default function CartCard(props) {
           ))}
         </>
       ) : (
-        <div>
-          <img
-            style={{ width: "100%", maxHeight: "343px" }}
-            src={emptyCartImg2}
-            alt="Empty Cart"
-          />
-        </div>
+        <img
+          style={{ width: "100%" }}
+          height={"393px"}
+          src={emptyCartImg3}
+          alt="Empty Cart"
+        />
       )}
     </div>
   );

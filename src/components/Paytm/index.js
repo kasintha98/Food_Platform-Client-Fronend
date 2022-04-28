@@ -32,7 +32,7 @@ export const Paytm = () => {
       },
     };
 
-    PaytmChecksum.generateSignature(
+    /* PaytmChecksum.generateSignature(
       JSON.stringify(paytmParams.body),
       mkey
     ).then(function (checksum) {
@@ -44,9 +44,10 @@ export const Paytm = () => {
       var post_data = JSON.stringify(paytmParams);
 
       var options = {
-        /* for Staging */
-        // hostname: "securegw-stage.paytm.in" /* for Production */,
+        //for Staging
+        // hostname: "securegw-stage.paytm.in" ,
 
+        //for Production
         hostname: "securegw.paytm.in",
 
         port: 443,
@@ -78,7 +79,7 @@ export const Paytm = () => {
 
       post_req.write(post_data);
       post_req.end();
-    });
+    }); */
   };
 
   const makePayment = () => {

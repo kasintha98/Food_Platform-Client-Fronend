@@ -335,6 +335,10 @@ export default function NewCheckout() {
     }
   };
 
+  const resetPaymentMethod = () => {
+    setCurrentPaymentType("");
+  };
+
   const handleNavTab = (val) => {
     console.log(val);
     setTabValue(val);
@@ -710,115 +714,147 @@ export default function NewCheckout() {
                       onChangeExtraSubTotal={handleExtraTotal}
                       onChangeChoiceTotal={handleChoiceTotal}
                     ></CartCard>
+                    {Object.keys(cart.cartItems).length > 0 ? (
+                      <Typography>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                              }}
+                            >
+                              Subtotal
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                color: "#2e7d32",
+                              }}
+                            >
+                              ₹{" "}
+                              {subTotal +
+                                (extraSubTotal ? extraSubTotal : 0) +
+                                (choiceTotal ? choiceTotal : 0)}
+                              .00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                              }}
+                            >
+                              Taxes (CGST)
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                color: "#2e7d32",
+                              }}
+                            >
+                              ₹ {0}.00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                              }}
+                            >
+                              Taxes (SGST)
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                color: "#2e7d32",
+                              }}
+                            >
+                              ₹ {0}.00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                              }}
+                            >
+                              Delivery Charges
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                color: "#2e7d32",
+                              }}
+                            >
+                              ₹ {0}.00
+                            </Typography>
+                          </div>
+                        </Row>
+                        <Row className="ps-2">
+                          <div className="w75 mt-2">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                              }}
+                            >
+                              Grand Total
+                            </Typography>
+                          </div>
+                          <div className="w25 mt-2">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                color: "#2e7d32",
+                              }}
+                            >
+                              {" "}
+                              ₹{" "}
+                              {subTotal +
+                                (extraSubTotal ? extraSubTotal : 0) +
+                                (choiceTotal ? choiceTotal : 0)}
+                              .00
+                            </Typography>
+                          </div>
+                        </Row>
+                      </Typography>
+                    ) : null}
                   </CardContent>
                 </Card>
               </div>
-              {Object.keys(cart.cartItems).length > 0 ? (
-                <Row>
-                  <Col className="col-12">
-                    <div className="mt-3">
-                      <Card>
-                        <Typography>
-                          <Row className="ps-2">
-                            <div className="w75">
-                              <Typography
-                                sx={{
-                                  fontWeight: "600",
-                                  color: "rgb(127, 127, 127)",
-                                }}
-                              >
-                                Subtotal
-                              </Typography>
-                            </div>
-                            <div className="w25">
-                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                                ₹{" "}
-                                {subTotal +
-                                  (extraSubTotal ? extraSubTotal : 0) +
-                                  (choiceTotal ? choiceTotal : 0)}
-                                .00
-                              </Typography>
-                            </div>
-                          </Row>
-                          <Row className="ps-2">
-                            <div className="w75">
-                              <Typography
-                                sx={{
-                                  fontWeight: "600",
-                                  color: "rgb(127, 127, 127)",
-                                }}
-                              >
-                                Taxes (CGST)
-                              </Typography>
-                            </div>
-                            <div className="w25">
-                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                                ₹ {0}.00
-                              </Typography>
-                            </div>
-                          </Row>
-                          <Row className="ps-2">
-                            <div className="w75">
-                              <Typography
-                                sx={{
-                                  fontWeight: "600",
-                                  color: "rgb(127, 127, 127)",
-                                }}
-                              >
-                                Taxes (SGST)
-                              </Typography>
-                            </div>
-                            <div className="w25">
-                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                                ₹ {0}.00
-                              </Typography>
-                            </div>
-                          </Row>
-                          <Row className="ps-2">
-                            <div className="w75">
-                              <Typography
-                                sx={{
-                                  fontWeight: "600",
-                                  color: "rgb(127, 127, 127)",
-                                }}
-                              >
-                                Delivery Charges
-                              </Typography>
-                            </div>
-                            <div className="w25">
-                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                                ₹ {0}.00
-                              </Typography>
-                            </div>
-                          </Row>
-                          <Row className="ps-2">
-                            <div className="w75 mt-2">
-                              <Typography
-                                sx={{
-                                  fontWeight: "600",
-                                  color: "rgb(127, 127, 127)",
-                                }}
-                              >
-                                Grand Total
-                              </Typography>
-                            </div>
-                            <div className="w25 mt-2">
-                              <Typography sx={{ color: "rgb(46, 125, 50)" }}>
-                                {" "}
-                                ₹{" "}
-                                {subTotal +
-                                  (extraSubTotal ? extraSubTotal : 0) +
-                                  (choiceTotal ? choiceTotal : 0)}
-                                .00
-                              </Typography>
-                            </div>
-                          </Row>
-                        </Typography>
-                      </Card>
-                    </div>
-                  </Col>
-                </Row>
-              ) : null}
             </Col>
             <Col md={12} lg={4} className="mar-tp">
               <Row>
@@ -833,7 +869,14 @@ export default function NewCheckout() {
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
                     <Card sx={{ width: "100%", marginTop: 3 }}>
                       <CardContent>
-                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                        <h5
+                          style={{
+                            fontSize: "0.9rem",
+                            fontWeight: "600",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
                           DELIVERY TYPE :{" "}
                           {currentType?.type === "delivery" ? (
                             <span>Delivery</span>
@@ -841,222 +884,236 @@ export default function NewCheckout() {
                             <span>Self-Collect</span>
                           )}
                         </h5>
-                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                        <h5
+                          style={{
+                            fontSize: "0.9rem",
+                            fontWeight: "600",
+                            fontFamily: "Arial",
+                            color: "#595959",
+                          }}
+                        >
                           ORDER DATE : {renderNowDate()}
                         </h5>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Col>
-              </Row>
-              {currentType && currentType?.type === "delivery" ? (
-                <Row>
-                  <Col className="col-12">
-                    <Grid sx={{ width: "100%", marginTop: 3 }}>
-                      <Card>
-                        <CardContent>
-                          <div className="row mb-3">
-                            <h5
-                              style={{ fontWeight: "bold", color: "#7F7F7F" }}
-                            >
-                              SELECT DELIVERY ADDRESS
-                            </h5>
-                          </div>
-
-                          {auth.authenticate ? (
-                            <div className="row">
-                              <div
-                                className="col-6"
-                                sx={{ textAlign: "center" }}
+                        {currentType && currentType?.type === "delivery" ? (
+                          <div style={{ width: "100%", marginTop: 3 }}>
+                            <div className="row mb-3">
+                              <h5
+                                style={{
+                                  fontSize: "0.9rem",
+                                  fontWeight: "600",
+                                  fontFamily: "Arial",
+                                  color: "#595959",
+                                }}
                               >
-                                {allAddress.length < 1 ? (
-                                  <Alert severity="error">
-                                    You don't have added any addresses. Please
-                                    add a new address!
-                                  </Alert>
-                                ) : null}
-                                {selectedAddress ? (
-                                  <Typography sx={{ textAlign: "left" }}>
-                                    <h5
-                                      style={{
-                                        fontWeight: "bold",
-                                        color: "#7F7F7F",
-                                      }}
-                                    >
-                                      {selectedAddress.customerAddressType}
-                                    </h5>
-                                    <p
-                                      style={{
-                                        color: "#7F7F7F",
-                                      }}
-                                    >
-                                      {selectedAddress.address1}
-                                      <br />
-                                      {selectedAddress.address2}
-                                      <br />
-                                      {selectedAddress.landmark}
-                                      <br />
-                                      {selectedAddress.city}
-                                      <br />
-                                      {selectedAddress.zipCode}
-                                      <br />
-                                      {selectedAddress.state}
-                                    </p>
-                                  </Typography>
-                                ) : null}
-                              </div>
+                                SELECT DELIVERY ADDRESS
+                              </h5>
+                            </div>
 
-                              <div className="col-6" sx={{ textAlign: "end" }}>
-                                {allAddress.length > 0 ? (
-                                  <FormControl fullWidth className="mb-3">
-                                    <InputLabel id="demo-address-label">
-                                      Address
-                                    </InputLabel>
-                                    <Select
-                                      labelId="demo-address-label"
-                                      id="demo-address"
-                                      value={selectedAddressStr}
-                                      label="Address"
-                                      onChange={handleChangeSelectedAddressStr}
-                                    >
-                                      {allAddress.map((address) => (
-                                        <MenuItem
-                                          key={address.customerAddressType}
-                                          onClick={() => {
-                                            handleCusAdDChange(address);
-                                          }}
-                                          value={address.customerAddressType}
-                                        >
-                                          {address.customerAddressType}
-                                        </MenuItem>
-                                      ))}
-                                    </Select>
-                                  </FormControl>
-                                ) : null}
-                                <Typography sx={{ textAlign: "center" }}>
-                                  <CardActions>
-                                    {/* <CLButton
+                            {auth.authenticate ? (
+                              <div className="row">
+                                <div
+                                  className="col-6"
+                                  sx={{ textAlign: "center" }}
+                                >
+                                  {allAddress.length < 1 ? (
+                                    <Alert severity="error">
+                                      You don't have added any addresses. Please
+                                      add a new address!
+                                    </Alert>
+                                  ) : null}
+                                  {selectedAddress ? (
+                                    <Typography sx={{ textAlign: "left" }}>
+                                      <h5
+                                        style={{
+                                          fontSize: "0.9rem",
+                                          fontWeight: "600",
+                                          fontFamily: "Arial",
+                                          color: "#595959",
+                                        }}
+                                      >
+                                        {selectedAddress.customerAddressType}
+                                      </h5>
+                                      <p
+                                        style={{
+                                          fontSize: "0.9rem",
+                                          fontFamily: "Arial",
+                                          color: "#595959",
+                                        }}
+                                      >
+                                        {selectedAddress.address1}
+                                        <br />
+                                        {selectedAddress.address2}
+                                        <br />
+                                        {selectedAddress.landmark}
+                                        <br />
+                                        {selectedAddress.city}
+                                        <br />
+                                        {selectedAddress.zipCode}
+                                        <br />
+                                        {selectedAddress.state}
+                                      </p>
+                                    </Typography>
+                                  ) : null}
+                                </div>
+
+                                <div
+                                  className="col-6"
+                                  sx={{ textAlign: "end" }}
+                                >
+                                  {allAddress.length > 0 ? (
+                                    <FormControl fullWidth className="mb-3">
+                                      <InputLabel id="demo-address-label">
+                                        Address
+                                      </InputLabel>
+                                      <Select
+                                        labelId="demo-address-label"
+                                        id="demo-address"
+                                        value={selectedAddressStr}
+                                        label="Address"
+                                        onChange={
+                                          handleChangeSelectedAddressStr
+                                        }
+                                      >
+                                        {allAddress.map((address) => (
+                                          <MenuItem
+                                            key={address.customerAddressType}
+                                            onClick={() => {
+                                              handleCusAdDChange(address);
+                                            }}
+                                            value={address.customerAddressType}
+                                          >
+                                            {address.customerAddressType}
+                                          </MenuItem>
+                                        ))}
+                                      </Select>
+                                    </FormControl>
+                                  ) : null}
+                                  <Typography sx={{ textAlign: "center" }}>
+                                    <CardActions>
+                                      {/* <CLButton
                                     variant="contained"
                                     className="w-100"
                                   >
                                     ADD NEW ADDRESS
                                   </CLButton> */}
-                                    <LoginDrawer
-                                      forceAddAddress={true}
-                                    ></LoginDrawer>
+                                      <LoginDrawer
+                                        forceAddAddress={true}
+                                      ></LoginDrawer>
+                                    </CardActions>
+                                  </Typography>
+                                </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <Alert severity="error">
+                                  Please login to use your address for delivery!
+                                </Alert>
+                              </div>
+                            )}
+                          </div>
+                        ) : null}
+                        {currentType && currentType?.type === "collect" ? (
+                          <div style={{ width: "100%", marginTop: 3 }}>
+                            <div className="row mb-3">
+                              <h5
+                                style={{
+                                  fontSize: "0.9rem",
+                                  fontWeight: "600",
+                                  fontFamily: "Arial",
+                                  color: "#595959",
+                                }}
+                              >
+                                SELF COLLECT
+                              </h5>
+                            </div>
+                            <div className="row">
+                              <div
+                                className="col-12"
+                                sx={{ textAlign: "center" }}
+                              >
+                                <Typography sx={{ textAlign: "left" }}>
+                                  <h5
+                                    style={{
+                                      fontSize: "0.9rem",
+                                      fontWeight: "600",
+                                      fontFamily: "Arial",
+                                      color: "#595959",
+                                    }}
+                                  >
+                                    STORE ADDRESS
+                                  </h5>
+                                  <p
+                                    style={{
+                                      fontSize: "0.9rem",
+                                      fontFamily: "Arial",
+                                      color: "#595959",
+                                    }}
+                                  >
+                                    {currentType.resturantName} <br />
+                                    <span>{currentType.address1}</span>
+                                    {currentType.address2 ? (
+                                      <>
+                                        , <span>{currentType.address2}</span>
+                                      </>
+                                    ) : null}
+                                    {currentType.address3 ? (
+                                      <>
+                                        , <span>{currentType.address3}</span>
+                                      </>
+                                    ) : null}
+                                  </p>
+                                </Typography>
+                              </div>
+
+                              <div className="col-12" sx={{ textAlign: "end" }}>
+                                <Typography sx={{ textAlign: "center" }}>
+                                  <CardActions>
+                                    <CLButton
+                                      onClick={renderDeliveryTypeModal2}
+                                      variant="contained"
+                                      className="w-100"
+                                      color="warning"
+                                    >
+                                      CHANGE LOCATION
+                                    </CLButton>
                                   </CardActions>
                                 </Typography>
                               </div>
                             </div>
-                          ) : (
-                            <div>
-                              <Alert severity="error">
-                                Please login to use your address for delivery!
-                              </Alert>
-                            </div>
-                          )}
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </Col>
-                </Row>
-              ) : null}
-
-              {currentType && currentType?.type === "collect" ? (
-                <Row>
-                  <Col className="col-12">
-                    <Grid sx={{ width: "100%", marginTop: 3 }}>
-                      <Card>
-                        <CardContent>
-                          <div className="row mb-3">
-                            <h5
-                              style={{ fontWeight: "bold", color: "#7F7F7F" }}
-                            >
-                              SELF COLLECT
-                            </h5>
                           </div>
-                          <div className="row">
-                            <div
-                              className="col-12"
-                              sx={{ textAlign: "center" }}
-                            >
-                              <Typography sx={{ textAlign: "left" }}>
-                                <h5
-                                  style={{
+                        ) : null}
+                        {!currentType ? (
+                          <div>
+                            <Row>
+                              <Col className="col-12 mt-5 mb-2">
+                                <Typography
+                                  sx={{
                                     fontWeight: "bold",
+                                    fontSize: "1.25rem",
                                     color: "#7F7F7F",
                                   }}
                                 >
-                                  STORE ADDRESS
-                                </h5>
-                                <p
-                                  style={{
-                                    color: "#7F7F7F",
-                                  }}
+                                  PLEASE SELECT A DELIVERY TYPE
+                                </Typography>
+                              </Col>
+                              <Col className="col-12">
+                                <DTButton
+                                  onClick={renderDeliveryTypeModal}
+                                  variant="contained"
+                                  color="success"
+                                  sx={{ width: "100%" }}
                                 >
-                                  {currentType.resturantName} <br />
-                                  <span>{currentType.address1}</span>
-                                  {currentType.address2 ? (
-                                    <>
-                                      , <span>{currentType.address2}</span>
-                                    </>
-                                  ) : null}
-                                  {currentType.address3 ? (
-                                    <>
-                                      , <span>{currentType.address3}</span>
-                                    </>
-                                  ) : null}
-                                </p>
-                              </Typography>
-                            </div>
-
-                            <div className="col-12" sx={{ textAlign: "end" }}>
-                              <Typography sx={{ textAlign: "center" }}>
-                                <CardActions>
-                                  <CLButton
-                                    onClick={renderDeliveryTypeModal2}
-                                    variant="contained"
-                                    className="w-100"
-                                    color="warning"
-                                  >
-                                    CHANGE LOCATION
-                                  </CLButton>
-                                </CardActions>
-                              </Typography>
-                            </div>
+                                  Select Delivery Type
+                                </DTButton>
+                              </Col>
+                            </Row>
                           </div>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </Col>
-                </Row>
-              ) : null}
-
-              {!currentType ? (
-                <Row>
-                  <Col className="col-12 mt-5 mb-2">
-                    <Typography
-                      sx={{
-                        fontWeight: "bold",
-                        fontSize: "1.25rem",
-                        color: "#7F7F7F",
-                      }}
-                    >
-                      PLEASE SELECT A DELIVERY TYPE
-                    </Typography>
-                  </Col>
-                  <Col className="col-12">
-                    <DTButton
-                      onClick={renderDeliveryTypeModal}
-                      variant="contained"
-                      color="success"
-                      sx={{ width: "100%" }}
-                    >
-                      Select Delivery Type
-                    </DTButton>
-                  </Col>
-                </Row>
-              ) : null}
+                        ) : null}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Col>
+              </Row>
 
               {/* <Row>
                 <Col className="col-12">
@@ -1251,35 +1308,85 @@ export default function NewCheckout() {
                     {!currentPaymentType ? (
                       <Card>
                         <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
-                          <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
+                          {/* <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
                             PAYMENT METHOD
-                          </h5>
+                          </h5> */}
                           <RadioGroup
                             aria-labelledby="demo-controlled-radio-buttons-group"
                             name="controlled-radio-buttons-group"
                             value={paymentType}
                             onChange={handleChangePaymentType}
-                            sx={{ color: "#7F7F7F" }}
                           >
                             <FormControlLabel
                               value="PayU"
                               control={<Radio color="success" />}
-                              label="PayU (Cards, Net Banking, UPI, Wallet)"
+                              label={
+                                <Typography
+                                  sx={{
+                                    color: "#595959",
+                                    fontSize: "0.9rem",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                  }}
+                                >
+                                  PayU (Cards, Net Banking, UPI, Wallet)
+                                </Typography>
+                              }
                             />
                             <FormControlLabel
                               value="Paytm"
                               control={<Radio color="success" />}
-                              label="Paytm (UPI, Net Banking, Credit card, Debit Card, Patm wallet)"
+                              label={
+                                <Typography
+                                  sx={{
+                                    color: "#595959",
+                                    fontSize: "0.9rem",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                  }}
+                                >
+                                  Paytm (UPI, Net Banking, Credit card, Debit
+                                  Card, Patm wallet)
+                                </Typography>
+                              }
                             />
                             <FormControlLabel
                               value="CASH"
                               control={<Radio color="success" />}
-                              label="CASH"
+                              label={
+                                <Typography
+                                  sx={{
+                                    color: "#595959",
+                                    fontSize: "0.9rem",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                  }}
+                                >
+                                  Cash
+                                </Typography>
+                              }
+                              disabled={
+                                currentType?.type === "delivery" ? true : false
+                              }
                             />
                             <FormControlLabel
                               value="COD"
                               control={<Radio color="success" />}
-                              label="CASH ON DELIVERY"
+                              label={
+                                <Typography
+                                  sx={{
+                                    color: "#595959",
+                                    fontSize: "0.9rem",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                  }}
+                                >
+                                  Cash On Delivery
+                                </Typography>
+                              }
+                              disabled={
+                                currentType?.type === "collect" ? true : false
+                              }
                             />
                           </RadioGroup>
                         </FormControl>
@@ -1298,22 +1405,78 @@ export default function NewCheckout() {
                     ) : null}
                     {currentPaymentType === "Paytm" ? (
                       <Card className="p-3">
-                        <Paytm></Paytm>
+                        <Row>
+                          <Col>
+                            <Paytm></Paytm>
+                          </Col>
+                          <Col>
+                            <Button
+                              onClick={resetPaymentMethod}
+                              variant="contained"
+                              color="warning"
+                              sx={{ width: "100%", height: "100%" }}
+                            >
+                              Reset
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card>
                     ) : null}
                     {currentPaymentType === "PayU" ? (
                       <Card className="p-3">
-                        <PayU></PayU>
+                        <Row>
+                          <Col>
+                            <PayU></PayU>
+                          </Col>
+                          <Col>
+                            <Button
+                              onClick={resetPaymentMethod}
+                              variant="contained"
+                              color="warning"
+                              sx={{ width: "100%", height: "100%" }}
+                            >
+                              Reset
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card>
                     ) : null}
                     {currentPaymentType === "CASH" ? (
                       <Card className="p-3">
-                        <p>You selected CASH!</p>
+                        <Row>
+                          <Col>
+                            <p>You selected CASH!</p>
+                          </Col>
+                          <Col>
+                            <Button
+                              onClick={resetPaymentMethod}
+                              variant="contained"
+                              color="warning"
+                              sx={{ width: "100%", height: "100%" }}
+                            >
+                              Reset
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card>
                     ) : null}
                     {currentPaymentType === "COD" ? (
                       <Card className="p-3">
-                        <p>You selected Cash On Delivery!</p>
+                        <Row>
+                          <Col>
+                            <p>You selected Cash On Delivery!</p>
+                          </Col>
+                          <Col>
+                            <Button
+                              onClick={resetPaymentMethod}
+                              variant="contained"
+                              color="warning"
+                              sx={{ width: "100%", height: "100%" }}
+                            >
+                              Reset
+                            </Button>
+                          </Col>
+                        </Row>
                       </Card>
                     ) : null}
                   </Grid>

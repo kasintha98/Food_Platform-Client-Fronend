@@ -53,7 +53,7 @@ export const NewCart = () => {
         ></div>
         <CardContent
           sx={{
-            height: "375px",
+            height: "425px",
             overflowY: "auto",
             backgroundColor: "#fff",
           }}
@@ -66,14 +66,14 @@ export const NewCart = () => {
         </CardContent>
         <div
           style={{
-            backgroundColor: "rgb(239, 245, 251)",
+            backgroundColor: "#fff",
             boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.3)",
           }}
         >
           <Typography>
             <Row className="ps-2">
-              <Col className="col-8">Subtotal</Col>
-              <Col className="col-4">
+              <Col className="col-9 pr-0">Subtotal</Col>
+              <Col className="col-3 ps-0">
                 ₹{" "}
                 {subTotal +
                   (extraSubTotal ? extraSubTotal : 0) +
@@ -81,44 +81,44 @@ export const NewCart = () => {
               </Col>
             </Row>
             <Row className="ps-2">
-              <Col className="col-8">
+              <Col className="col-9 pr-0">
                 <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
                   Taxes (CGST)
                 </span>
               </Col>
-              <Col className="col-4">
+              <Col className="col-3 ps-0">
                 <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
                   ₹ {0}
                 </span>
               </Col>
             </Row>
             <Row className="ps-2">
-              <Col className="col-8">
+              <Col className="col-9 pr-0">
                 <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
                   Taxes (SGST)
                 </span>
               </Col>
-              <Col className="col-4">
+              <Col className="col-3 ps-0">
                 <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
                   ₹ {0}
                 </span>
               </Col>
             </Row>
             <Row className="ps-2">
-              <Col className="col-8">
+              <Col className="col-9 pr-0">
                 <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
                   Delivery Charges
                 </span>
               </Col>
-              <Col className="col-4">
+              <Col className="col-3 ps-0">
                 <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
                   ₹ {0}
                 </span>
               </Col>
             </Row>
             <Row className="ps-2">
-              <Col className="col-8">Grand Total</Col>
-              <Col className="col-4">
+              <Col className="col-9 pr-0">Grand Total</Col>
+              <Col className="col-3 ps-0">
                 ₹{" "}
                 {subTotal +
                   (extraSubTotal ? extraSubTotal : 0) +
