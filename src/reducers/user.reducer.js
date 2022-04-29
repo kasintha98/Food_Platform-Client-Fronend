@@ -14,7 +14,7 @@ const initState = {
   orderFetching: false,
   message: "",
   allAddresses: [],
-  orderStatus: null,
+  orderStatus: [],
 };
 
 export default (state = initState, action) => {
