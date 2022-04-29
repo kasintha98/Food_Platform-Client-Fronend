@@ -100,8 +100,8 @@ export const GPSTracker = () => {
           </Col>
         </Row>
         <Row className="mt-2">
-          {orderStatus && orderStatus.length < 1 && !id ? (
-            <Col className="col-12">
+          {!id ? (
+            <Col className="col-12 m-2">
               <Alert severity="error">Please Enter A Valid ID!</Alert>
             </Col>
           ) : null}
