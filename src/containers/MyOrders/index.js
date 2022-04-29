@@ -88,7 +88,7 @@ export const MyOrders = () => {
               <TableBody>
                 {userOrders.map((order) => (
                   <TableRow>
-                    <CusTableCell align="right">{order.id}</CusTableCell>
+                    <CusTableCell align="right">{order.orderId}</CusTableCell>
                     <CusTableCell align="right">
                       {order.orderDeliveryType}
                     </CusTableCell>

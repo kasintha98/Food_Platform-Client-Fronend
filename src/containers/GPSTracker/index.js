@@ -77,76 +77,101 @@ export const GPSTracker = () => {
           </Col>
         </Row>
         <Row className="mt-2">
-          {!orderStatus && !id ? (
+          {orderStatus && orderStatus.length < 1 && !id ? (
             <Col className="col-12">
               <Alert severity="error">Please Enter A Valid ID!</Alert>
             </Col>
           ) : null}
           {orderStatus ? (
             <>
-              {orderStatus.orderStatus === "SUBMITTED" && (
-                <Col className="col-2">
-                  <img
-                    src={OrderSubmitted}
-                    alt="SUBMITTED"
-                    style={{ width: "100%" }}
-                  />
-                </Col>
-              )}
-              {orderStatus.orderStatus === "ACCEPTED" && (
-                <Col className="col-2">
-                  <img
-                    src={OrderAccepted}
-                    alt="ACCEPTED"
-                    style={{ width: "100%" }}
-                  />
-                </Col>
-              )}
-              {orderStatus.orderStatus === "PREPARING" && (
-                <Col className="col-2">
-                  <img
-                    src={FoodPreparing}
-                    alt="PREPARING"
-                    style={{ width: "100%" }}
-                  />
-                </Col>
-              )}
-              {orderStatus.orderStatus === "FOOD READY" && (
-                <Col className="col-2">
-                  <img
-                    src={FoodReady}
-                    alt="FOOD READY"
-                    style={{ width: "100%" }}
-                  />
-                </Col>
-              )}
-              {orderStatus.orderStatus === "OUT FOR DELIVERY" && (
-                <Col className="col-2">
-                  <img
-                    src={OutforDelivery}
-                    alt="OUT FOR DELIVERY"
-                    style={{ width: "100%" }}
-                  />
-                </Col>
-              )}
-              {orderStatus.orderStatus === "DELIVERED" && (
-                <Col className="col-2">
-                  <img
-                    src={Delivered}
-                    alt="DELIVERED"
-                    style={{ width: "100%" }}
-                  />
-                </Col>
-              )}
-              {orderStatus.orderStatus === "CANCELLED" && (
-                <Col className="col-12">
-                  <img
-                    src={OrderCancelled}
-                    alt="CANCELLED"
-                    style={{ width: "100%" }}
-                  />
-                </Col>
-              )}
+              {orderStatus.map((status) => (
+                <>
+                  {status.orderStatus === "SUBMITTED" && (
+                    <Col md={2} sm={12} className="mb-2">
+                      <img
+                        src={OrderSubmitted}
+                        alt="SUBMITTED"
+                        style={{ width: "100%" }}
+                      />
+                      <div className="text-center">
+                        <Typography>SUBMITTED</Typography>
+                      </div>
+                    </Col>
+                  )}
+                  {status.orderStatus === "ACCEPTED" && (
+                    <Col md={2} sm={12} className="mb-2">
+                      <img
+                        src={OrderAccepted}
+                        alt="ACCEPTED"
+                        style={{ width: "100%" }}
+                      />
+                      <div className="text-center">
+                        <Typography>ACCEPTED</Typography>
+                      </div>
+                    </Col>
+                  )}
+                  {status.orderStatus === "PREPARING" && (
+                    <Col md={2} sm={12} className="mb-2">
+                      <img
+                        src={FoodPreparing}
+                        alt="PREPARING"
+                        style={{ width: "100%" }}
+                      />
+                      <div className="text-center">
+                        <Typography>PREPARING</Typography>
+                      </div>
+                    </Col>
+                  )}
+                  {status.orderStatus === "FOOD READY" && (
+                    <Col md={2} sm={12} className="mb-2">
+                      <img
+                        src={FoodReady}
+                        alt="FOOD READY"
+                        style={{ width: "100%" }}
+                      />
+                      <div className="text-center">
+                        <Typography>FOOD READY</Typography>
+                      </div>
+                    </Col>
+                  )}
+                  {status.orderStatus === "OUT FOR DELIVERY" && (
+                    <Col md={2} sm={12} className="mb-2">
+                      <img
+                        src={OutforDelivery}
+                        alt="OUT FOR DELIVERY"
+                        style={{ width: "100%" }}
+                      />
+                      <div className="text-center">
+                        <Typography>OUT FOR DELIVERY</Typography>
+                      </div>
+                    </Col>
+                  )}
+                  {status.orderStatus === "DELIVERED" && (
+                    <Col md={2} sm={12} className="mb-2">
+                      <img
+                        src={Delivered}
+                        alt="DELIVERED"
+                        style={{ width: "100%" }}
+                      />
+                      <div className="text-center">
+                        <Typography>DELIVERED</Typography>
+                      </div>
+                    </Col>
+                  )}
+                  {status.orderStatus === "CANCELLED" && (
+                    <Col md={2} sm={12} className="mb-2">
+                      <img
+                        src={OrderCancelled}
+                        alt="CANCELLED"
+                        style={{ width: "100%" }}
+                      />
+                      <div className="text-center">
+                        <Typography>CANCELLED</Typography>
+                      </div>
+                    </Col>
+                  )}
+                </>
+              ))}
             </>
           ) : null}
         </Row>
