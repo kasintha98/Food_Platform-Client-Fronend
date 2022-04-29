@@ -381,6 +381,18 @@ export const GetOrderProcessStatus = (id) => {
           type: orderStatusConstantsNew.GET_ORDER_STATUS_SUCCESS,
           payload: res.data,
         });
+
+        if (res.data && res.data.length < 1) {
+          toast.error("No details found! Please enter a correct ID!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       } else {
         const { error } = res.data;
         dispatch({
