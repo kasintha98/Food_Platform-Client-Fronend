@@ -34,6 +34,29 @@ export const GPSTracker = () => {
     dispatch(GetOrderProcessStatus(id));
   };
 
+  const renderDate = (date) => {
+    const dateObj = new Date(date);
+    const month = dateObj.toLocaleString("default", { month: "short" });
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+    return (
+      <span>
+        {day}/{month.toUpperCase()}/{year}
+      </span>
+    );
+  };
+
+  const renderTime = (date) => {
+    const dateObj = new Date(date);
+    const time = dateObj.toLocaleString("en-US", {
+      hour: "numeric",
+      hour12: true,
+      minute: "numeric",
+    });
+
+    return <span>{time}</span>;
+  };
+
   return (
     <div>
       <Header></Header>
@@ -95,6 +118,10 @@ export const GPSTracker = () => {
                       />
                       <div className="text-center">
                         <Typography>SUBMITTED</Typography>
+                        <Typography>
+                          {renderDate(status.updatedDate)}{" "}
+                          {renderTime(status.updatedDate)}
+                        </Typography>
                       </div>
                     </Col>
                   )}
@@ -107,6 +134,10 @@ export const GPSTracker = () => {
                       />
                       <div className="text-center">
                         <Typography>ACCEPTED</Typography>
+                        <Typography>
+                          {renderDate(status.updatedDate)}{" "}
+                          {renderTime(status.updatedDate)}
+                        </Typography>
                       </div>
                     </Col>
                   )}
@@ -119,6 +150,10 @@ export const GPSTracker = () => {
                       />
                       <div className="text-center">
                         <Typography>PREPARING</Typography>
+                        <Typography>
+                          {renderDate(status.updatedDate)}{" "}
+                          {renderTime(status.updatedDate)}
+                        </Typography>
                       </div>
                     </Col>
                   )}
@@ -131,6 +166,10 @@ export const GPSTracker = () => {
                       />
                       <div className="text-center">
                         <Typography>FOOD READY</Typography>
+                        <Typography>
+                          {renderDate(status.updatedDate)}{" "}
+                          {renderTime(status.updatedDate)}
+                        </Typography>
                       </div>
                     </Col>
                   )}
@@ -143,6 +182,10 @@ export const GPSTracker = () => {
                       />
                       <div className="text-center">
                         <Typography>OUT FOR DELIVERY</Typography>
+                        <Typography>
+                          {renderDate(status.updatedDate)}{" "}
+                          {renderTime(status.updatedDate)}
+                        </Typography>
                       </div>
                     </Col>
                   )}
@@ -155,6 +198,10 @@ export const GPSTracker = () => {
                       />
                       <div className="text-center">
                         <Typography>DELIVERED</Typography>
+                        <Typography>
+                          {renderDate(status.updatedDate)}{" "}
+                          {renderTime(status.updatedDate)}
+                        </Typography>
                       </div>
                     </Col>
                   )}
@@ -167,6 +214,10 @@ export const GPSTracker = () => {
                       />
                       <div className="text-center">
                         <Typography>CANCELLED</Typography>
+                        <Typography>
+                          {renderDate(status.updatedDate)}{" "}
+                          {renderTime(status.updatedDate)}
+                        </Typography>
                       </div>
                     </Col>
                   )}
