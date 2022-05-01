@@ -334,6 +334,8 @@ export default function NewCheckout() {
       for (let i = 0; i < allItems.length; i++) {
         const obj = {
           productId: allItems[i].productId,
+          orderId: "EMPTY",
+          subProductId: "S001",
           quantity: allItems[i].qty,
           storeId: allItems[i].storeId,
           price: allItems[i].price,
@@ -355,6 +357,10 @@ export default function NewCheckout() {
           }
         });
       }
+
+      let overallPriceWithTax =
+        total + cgstCaluclatedValue.toFixed(2) + sgstCalculatedValue.toFixed(2);
+
       const NewOrder = {
         id: 0,
         orderId: "EMPTY",
@@ -372,7 +378,7 @@ export default function NewCheckout() {
         customerAddressId: selectedAddress ? selectedAddress.id : null,
         cgstCaluclatedValue: cgstCaluclatedValue.toFixed(2),
         sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
-        overallPriceWithTax: null,
+        overallPriceWithTax: overallPriceWithTax,
         orderDetails: orderDetails,
       };
 

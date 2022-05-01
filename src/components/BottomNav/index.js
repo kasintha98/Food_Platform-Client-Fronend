@@ -8,6 +8,10 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import CartNum from "../UI/CartNum";
 import { useSelector } from "react-redux";
+import { NavHashLink } from "react-router-hash-link";
+import LoginDrawer from "../Login";
+import PinDropIcon from "@mui/icons-material/PinDrop";
+import LoginDrawerMob from "../Login/mobileSideLog";
 
 export const BottomNav = (props) => {
   const pathname = window.location.pathname;
@@ -37,14 +41,14 @@ export const BottomNav = (props) => {
           }}
         >
           <BottomNavigationAction
-            component={Link}
-            to="/"
+            component={NavHashLink}
+            to="/#home"
             label="Home"
-            value="/"
+            value="/#home"
             icon={<HomeIcon />}
           />
 
-          <BottomNavigationAction
+          {/* <BottomNavigationAction
             component={Link}
             to="/new-cart"
             label="Cart"
@@ -62,7 +66,7 @@ export const BottomNav = (props) => {
                 <ShoppingCartIcon />
               </>
             }
-          />
+          /> */}
           <BottomNavigationAction
             component={Link}
             to="/new-menu"
@@ -70,6 +74,16 @@ export const BottomNav = (props) => {
             value="/new-menu"
             icon={<RestaurantMenuIcon />}
           />
+
+          <BottomNavigationAction
+            component={NavHashLink}
+            to="/#restaurants"
+            label="Locations"
+            value="/#restaurants"
+            icon={<PinDropIcon />}
+          />
+
+          <LoginDrawerMob></LoginDrawerMob>
         </BottomNavigation>
       </Paper>
     </div>
