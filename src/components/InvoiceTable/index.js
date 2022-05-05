@@ -31,7 +31,15 @@ export const InvoiceTable = (props) => {
                   key={row.orderId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell>{row.productId}</TableCell>
+                  <TableCell>
+                    {row.productId}
+                    {row.subProductId !== "NAA" && (
+                      <span>
+                        {" - "}
+                        {row.subProductId}
+                      </span>
+                    )}
+                  </TableCell>
                   <TableCell>{row.quantity}</TableCell>
                   <TableCell>{row.price}.00</TableCell>
                   <TableCell>

@@ -335,12 +335,52 @@ export default function NewCheckout() {
         const obj = {
           productId: allItems[i].productId,
           orderId: "EMPTY",
-          subProductId: "S001",
+          subProductId: allItems[i].subProductId
+            ? allItems[i].subProductId
+            : "NAA",
           quantity: allItems[i].qty,
           storeId: allItems[i].storeId,
           price: allItems[i].price,
           remarks: allItems[i].specialText,
         };
+
+        if (Object.keys(allItems[i].choiceIng).length > 0) {
+          console.log(allItems[i].choiceIng);
+          const objCh = {
+            productId: allItems[i].productId,
+            orderId: "EMPTY",
+            subProductId: allItems[i].choiceIng.subProductId
+              ? allItems[i].choiceIng.subProductId
+              : "NAA",
+            quantity: allItems[i].choiceIng.qty ? allItems[i].choiceIng.qty : 1,
+            storeId: allItems[i].storeId,
+            price: allItems[i].choiceIng.price,
+            remarks: allItems[i].choiceIng.specialText
+              ? allItems[i].choiceIng.specialText
+              : "",
+          };
+          orderDetails.push(objCh);
+        }
+
+        if (Object.keys(allItems[i].extra).length > 0) {
+          const allExtra = Object.values(allItems[i].extra);
+
+          for (let k = 0; k < allExtra.length; k++) {
+            const objextra = {
+              productId: allItems[i].productId,
+              orderId: "EMPTY",
+              subProductId: allExtra[k].subProductId
+                ? allExtra[k].subProductId
+                : "NAA",
+              quantity: allExtra[k].qty ? allExtra[k].qty : 1,
+              storeId: allItems[i].storeId,
+              price: allExtra[k].price,
+              remarks: allExtra[k].specialText ? allExtra[k].specialText : "",
+            };
+            orderDetails.push(objextra);
+          }
+        }
+
         orderDetails.push(obj);
       }
 
@@ -358,8 +398,8 @@ export default function NewCheckout() {
         });
       }
 
-      let overallPriceWithTax =
-        total + cgstCaluclatedValue.toFixed(2) + sgstCalculatedValue.toFixed(2);
+      /* let overallPriceWithTax =
+        total + cgstCaluclatedValue.toFixed(2) + sgstCalculatedValue.toFixed(2); */
 
       const NewOrder = {
         id: 0,
@@ -376,9 +416,9 @@ export default function NewCheckout() {
         taxRuleId: 1,
         totalPrice: total,
         customerAddressId: selectedAddress ? selectedAddress.id : null,
-        cgstCaluclatedValue: cgstCaluclatedValue.toFixed(2),
+        cgstCalculatedValue: cgstCaluclatedValue.toFixed(2),
         sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
-        overallPriceWithTax: overallPriceWithTax,
+        /* overallPriceWithTax: overallPriceWithTax, */
         orderDetails: orderDetails,
       };
 
@@ -401,7 +441,7 @@ export default function NewCheckout() {
         },
       ] */
 
-      //console.log(NewOrder);
+      console.log(NewOrder);
       dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
           console.log(res.data);
