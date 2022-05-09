@@ -27,6 +27,7 @@ import { HeaderDeliveryType } from "../HeaderDeliveryType";
 import { DeliveryTypeModal } from "../DeliveryTypeModal";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import { Typography } from "@mui/material";
+import { useMediaQuery } from "react-responsive";
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -53,8 +54,8 @@ const CusDropdown = styled(Dropdown.Toggle)`
 const CusDropMenu = styled(Dropdown.Menu)`
   width: 350px;
 
-  @media (max-width: 992px) {
-    width: 100%;
+  @media (max-width: 576px) {
+    width: 75vw;
   }
 `;
 
@@ -75,6 +76,14 @@ const CusNav2 = styled(Nav)`
   }
 `;
 
+const CusNavHashLink = styled(NavHashLink)`
+  color: rgba(0, 0, 0, 0.55);
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.7);
+  }
+`;
+
 const CusNav3 = styled(Nav)`
   height: 50px;
   width: 100%;
@@ -86,9 +95,9 @@ const CusNav3 = styled(Nav)`
 
 const CusImage = styled.img`
   height: 40px;
-  @media (max-width: 992px) {
-    width: 100%;
-    height: auto;
+  @media (max-width: 431px) {
+    height: 40px;
+    width: 70px;
   }
 `;
 
@@ -97,6 +106,8 @@ export default function Header(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [delModalOpen2, setDelModalOpen2] = useState(false);
+
+  const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const auth = useSelector((state) => state.auth);
   const deliveryType = useSelector((state) => state.auth.deliveryType);
@@ -348,12 +359,13 @@ export default function Header(props) {
       <ToastContainer />
       <CusNavbar fixed="top" variant="light" expand="lg">
         <Container>
-          <Navbar.Brand>
-            <Link to="/">
-              <img height="45px" src={logo} alt="logo" />
-            </Link>
-          </Navbar.Brand>
-          {/* <Form className="d-flex">
+          <div className={isMobile ? "w-100" : ""} style={{ display: "flex" }}>
+            <Navbar.Brand>
+              <Link to="/">
+                <img height="45px" src={logo} alt="logo" />
+              </Link>
+            </Navbar.Brand>
+            {/* <Form className="d-flex">
             <FormControl
               type="search"
               placeholder="Search"
@@ -363,188 +375,191 @@ export default function Header(props) {
             <Button variant="outline-success">Search</Button>
           </Form> */}
 
-          <Navbar.Toggle aria-controls="navbarScroll" />
+            {deliveryType ? (
+              <>
+                {/* <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType> */}
+                <Dropdown style={{ marginTop: "7px" }}>
+                  <CusDropdown
+                    variant="success"
+                    id="dropdown-basic"
+                    className="p-0 m-0"
+                  >
+                    <CusImage src={del} alt="del logo" />
+                  </CusDropdown>
+
+                  <CusDropMenu>
+                    <Row
+                      className="p-1"
+                      style={{
+                        width: "100%",
+                        marginLeft: 0,
+                        borderBottom: "1px #D9D9D9 solid",
+                      }}
+                    >
+                      <Col className="col-5">
+                        {" "}
+                        <Typography sx={{ color: "#A6A6A6" }}>
+                          Method
+                        </Typography>
+                      </Col>
+                      <Col className="col-7">
+                        <Typography sx={{ color: "#A6A6A6" }}>
+                          {deliveryType.type === "delivery" ? (
+                            <span>Delivery</span>
+                          ) : (
+                            <span>Self-Collect</span>
+                          )}
+                        </Typography>
+                      </Col>
+                    </Row>
+                    <Row
+                      className="p-1"
+                      style={{
+                        width: "100%",
+                        marginLeft: 0,
+                        borderBottom: "1px #D9D9D9 solid",
+                      }}
+                    >
+                      <Col className="col-5">
+                        <Typography sx={{ color: "#A6A6A6" }}>Date</Typography>
+                      </Col>
+                      <Col className="col-7">
+                        <Typography sx={{ color: "#A6A6A6" }}>
+                          {renderNowDate()}
+                        </Typography>
+                      </Col>
+                    </Row>
+                    <Row
+                      className="p-1"
+                      style={{
+                        width: "100%",
+                        marginLeft: 0,
+                        borderBottom: "1px #D9D9D9 solid",
+                      }}
+                    >
+                      <Col className="col-5">
+                        <Typography sx={{ color: "#A6A6A6" }}>
+                          Resturant Name
+                        </Typography>
+                      </Col>
+                      <Col className="col-7">
+                        <Typography sx={{ color: "#A6A6A6" }}>
+                          {deliveryType.resturantName}
+                        </Typography>
+                      </Col>
+                    </Row>
+                    <Row
+                      className="p-1"
+                      style={{
+                        width: "100%",
+                        marginLeft: 0,
+                        borderBottom: "1px #D9D9D9 solid",
+                      }}
+                    >
+                      <Col className="col-5">
+                        <Typography sx={{ color: "#A6A6A6" }}>
+                          Resturant Address
+                        </Typography>
+                      </Col>
+                      <Col className="col-7">
+                        <Typography sx={{ color: "#A6A6A6" }}>
+                          <span>{deliveryType.address1}</span>
+                          {deliveryType.address2 ? (
+                            <>
+                              , <span>{deliveryType.address2}</span>
+                            </>
+                          ) : null}
+                          {deliveryType.address3 ? (
+                            <>
+                              , <span>{deliveryType.address3}</span>
+                            </>
+                          ) : null}
+                        </Typography>
+                      </Col>
+                    </Row>
+                    {deliveryType.type === "delivery" &&
+                    deliveryType.selectedAddress ? (
+                      <Row
+                        className="p-1"
+                        style={{
+                          width: "100%",
+                          marginLeft: 0,
+                          borderBottom: "1px #D9D9D9 solid",
+                        }}
+                      >
+                        <Col className="col-5">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            Customer Address
+                          </Typography>
+                        </Col>
+                        <Col className="col-7">
+                          <Typography sx={{ color: "#A6A6A6" }}>
+                            <span className="fw-bold">
+                              {deliveryType.selectedAddress.customerAddressType}
+                              {": "}
+                              <span />
+                            </span>
+                            <span className="font-weight-normal">
+                              {deliveryType.selectedAddress.address1},{" "}
+                              {deliveryType.selectedAddress.address2},
+                              {deliveryType.selectedAddress.landmark},{" "}
+                              {deliveryType.selectedAddress.city},{" "}
+                              {deliveryType.selectedAddress.state},{" "}
+                              {deliveryType.selectedAddress.zipCode}
+                              <span />
+                            </span>
+                          </Typography>
+                        </Col>
+                      </Row>
+                    ) : null}
+
+                    <Row
+                      style={{
+                        width: "100%",
+                        marginLeft: 0,
+                        borderBottom: "1px #D9D9D9 solid",
+                      }}
+                      className="p-1"
+                    >
+                      <CLButton
+                        className="w-100"
+                        onClick={renderDeliveryTypeModal2}
+                        variant="primary"
+                      >
+                        <Typography>CHANGE</Typography>
+                      </CLButton>
+                    </Row>
+                  </CusDropMenu>
+                </Dropdown>
+              </>
+            ) : null}
+
+            <CusNavHashLink
+              className="nav-link ms-2"
+              to="/gps"
+              activeClassName="selected"
+              activeStyle={{
+                /* color: "red", */ borderBottom: "3px red solid",
+              }}
+            >
+              <PinDropIcon></PinDropIcon> GPS Tracker
+            </CusNavHashLink>
+
+            {isMobile ? (
+              <NavLink className="nav-link" to="/new-cart">
+                {Object.keys(cart.cartItems) ? (
+                  <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
+                ) : null}
+                <i className="fa fa-cart-plus"></i>
+              </NavLink>
+            ) : null}
+          </div>
+
+          {/* <Navbar.Toggle aria-controls="navbarScroll" /> */}
           <Navbar.Collapse
             style={{ backgroundColor: "#fff", marginTop: "0px" }}
             id="navbarScroll"
           >
-            <CusNav2 className="me-auto">
-              {deliveryType ? (
-                <>
-                  {/* <HeaderDeliveryType typeObj={deliveryType}></HeaderDeliveryType> */}
-                  <Dropdown>
-                    <CusDropdown
-                      variant="success"
-                      id="dropdown-basic"
-                      className="p-0 m-0"
-                    >
-                      <CusImage src={del} alt="del logo" />
-                    </CusDropdown>
-
-                    <CusDropMenu>
-                      <Row
-                        className="p-1"
-                        style={{
-                          width: "100%",
-                          marginLeft: 0,
-                          borderBottom: "1px #D9D9D9 solid",
-                        }}
-                      >
-                        <Col className="col-5">
-                          {" "}
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            Method
-                          </Typography>
-                        </Col>
-                        <Col className="col-7">
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            {deliveryType.type === "delivery" ? (
-                              <span>Delivery</span>
-                            ) : (
-                              <span>Self-Collect</span>
-                            )}
-                          </Typography>
-                        </Col>
-                      </Row>
-                      <Row
-                        className="p-1"
-                        style={{
-                          width: "100%",
-                          marginLeft: 0,
-                          borderBottom: "1px #D9D9D9 solid",
-                        }}
-                      >
-                        <Col className="col-5">
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            Date
-                          </Typography>
-                        </Col>
-                        <Col className="col-7">
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            {renderNowDate()}
-                          </Typography>
-                        </Col>
-                      </Row>
-                      <Row
-                        className="p-1"
-                        style={{
-                          width: "100%",
-                          marginLeft: 0,
-                          borderBottom: "1px #D9D9D9 solid",
-                        }}
-                      >
-                        <Col className="col-5">
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            Resturant Name
-                          </Typography>
-                        </Col>
-                        <Col className="col-7">
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            {deliveryType.resturantName}
-                          </Typography>
-                        </Col>
-                      </Row>
-                      <Row
-                        className="p-1"
-                        style={{
-                          width: "100%",
-                          marginLeft: 0,
-                          borderBottom: "1px #D9D9D9 solid",
-                        }}
-                      >
-                        <Col className="col-5">
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            Resturant Address
-                          </Typography>
-                        </Col>
-                        <Col className="col-7">
-                          <Typography sx={{ color: "#A6A6A6" }}>
-                            <span>{deliveryType.address1}</span>
-                            {deliveryType.address2 ? (
-                              <>
-                                , <span>{deliveryType.address2}</span>
-                              </>
-                            ) : null}
-                            {deliveryType.address3 ? (
-                              <>
-                                , <span>{deliveryType.address3}</span>
-                              </>
-                            ) : null}
-                          </Typography>
-                        </Col>
-                      </Row>
-                      {deliveryType.type === "delivery" &&
-                      deliveryType.selectedAddress ? (
-                        <Row
-                          className="p-1"
-                          style={{
-                            width: "100%",
-                            marginLeft: 0,
-                            borderBottom: "1px #D9D9D9 solid",
-                          }}
-                        >
-                          <Col className="col-5">
-                            <Typography sx={{ color: "#A6A6A6" }}>
-                              Customer Address
-                            </Typography>
-                          </Col>
-                          <Col className="col-7">
-                            <Typography sx={{ color: "#A6A6A6" }}>
-                              <span className="fw-bold">
-                                {
-                                  deliveryType.selectedAddress
-                                    .customerAddressType
-                                }
-                                {": "}
-                                <span />
-                              </span>
-                              <span className="font-weight-normal">
-                                {deliveryType.selectedAddress.address1},{" "}
-                                {deliveryType.selectedAddress.address2},
-                                {deliveryType.selectedAddress.landmark},{" "}
-                                {deliveryType.selectedAddress.city},{" "}
-                                {deliveryType.selectedAddress.state},{" "}
-                                {deliveryType.selectedAddress.zipCode}
-                                <span />
-                              </span>
-                            </Typography>
-                          </Col>
-                        </Row>
-                      ) : null}
-
-                      <Row
-                        style={{
-                          width: "100%",
-                          marginLeft: 0,
-                          borderBottom: "1px #D9D9D9 solid",
-                        }}
-                        className="p-1"
-                      >
-                        <CLButton
-                          className="w-100"
-                          onClick={renderDeliveryTypeModal2}
-                          variant="primary"
-                        >
-                          <Typography>CHANGE</Typography>
-                        </CLButton>
-                      </Row>
-                    </CusDropMenu>
-                  </Dropdown>
-                </>
-              ) : null}
-            </CusNav2>
-            <CusNav3 className="me-auto ms-2">
-              <NavHashLink
-                className="nav-link"
-                to="/gps"
-                activeClassName="selected"
-                activeStyle={{
-                  /* color: "red", */ borderBottom: "3px red solid",
-                }}
-              >
-                <PinDropIcon></PinDropIcon> GPS Tracker
-              </NavHashLink>
-            </CusNav3>
             <CusNav
               className="mr-auto my-2 my-lg-0 justify-content-end"
               style={{ maxHeight: "200px", width: "100%" }}
