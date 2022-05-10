@@ -13,7 +13,8 @@ import { Container } from "react-bootstrap";
 import Alert from "@mui/material/Alert";
 import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
-import { GetUserOrdersNew } from "../../actions";
+import { GetUserOrdersNew, GetOrderProcessStatus2 } from "../../actions";
+import { OrderStatus } from "../../components/OrderStatus";
 
 const CusTableHead = styled(TableCell)`
   background-color: #000137;
@@ -46,6 +47,38 @@ export const MyOrders = () => {
         {day}/{month.toUpperCase()}/{year}
       </span>
     );
+  };
+
+  const renderOrder = (id) => {
+    let statusOd = [];
+    dispatch(GetOrderProcessStatus2("MR001S00120220505000122")).then((res) => {
+      statusOd = res;
+    });
+    /* setTimeout(function () {
+      console.log(statusOd);
+      if (statusOd && statusOd.length > 0) {
+        return <OrderStatus orderItems={statusOd}></OrderStatus>;
+      } else {
+        return (
+          <Alert severity="warning">
+            No data found for order process details!
+          </Alert>
+        );
+      }
+    }, 5000); */
+    renderStatusDetails(statusOd);
+  };
+
+  const renderStatusDetails = (res) => {
+    if (res && res.length > 0) {
+      return <OrderStatus orderItems={res}></OrderStatus>;
+    } else {
+      return (
+        <Alert severity="warning">
+          No data found for order process details!
+        </Alert>
+      );
+    }
   };
 
   return (
@@ -87,39 +120,46 @@ export const MyOrders = () => {
               </TableHead>
               <TableBody>
                 {userOrders.map((order) => (
-                  <TableRow>
-                    <CusTableCell align="right">{order.orderId}</CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderDeliveryType}
-                    </CusTableCell>
-                    <CusTableCell align="right">
-                      {renderDate(order.createdDate)}
-                    </CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderDetails.map((item) => (
-                        <span>
-                          {item.productId}
-                          <br></br>
-                        </span>
-                      ))}
-                    </CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderDetails.map((item) => (
-                        <span>
-                          {item.price}.00
-                          <br></br>
-                        </span>
-                      ))}
-                    </CusTableCell>
-                    <CusTableCell align="right">B</CusTableCell>
-                    <CusTableCell align="right">
-                      {order.totalPrice}.00
-                    </CusTableCell>
-                    <CusTableCell align="right">D</CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderStatus}
-                    </CusTableCell>
-                  </TableRow>
+                  <>
+                    <TableRow>
+                      <CusTableCell align="right">{order.orderId}</CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderDeliveryType}
+                      </CusTableCell>
+                      <CusTableCell align="right">
+                        {renderDate(order.createdDate)}
+                      </CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderDetails.map((item) => (
+                          <span>
+                            {item.productId}
+                            <br></br>
+                          </span>
+                        ))}
+                      </CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderDetails.map((item) => (
+                          <span>
+                            {item.price}.00
+                            <br></br>
+                          </span>
+                        ))}
+                      </CusTableCell>
+                      <CusTableCell align="right">B</CusTableCell>
+                      <CusTableCell align="right">
+                        {order.totalPrice}.00
+                      </CusTableCell>
+                      <CusTableCell align="right">D</CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderStatus}
+                      </CusTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" colspan="9">
+                        {renderOrder(order.orderId)}
+                      </TableCell>
+                    </TableRow>
+                  </>
                 ))}
               </TableBody>
             </Table>

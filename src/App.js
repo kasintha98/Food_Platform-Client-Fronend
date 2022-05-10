@@ -48,16 +48,14 @@ function App() {
       const delObj = JSON.parse(delItem);
       dispatch(setDeliveryType(delObj));
     }
-  }, [auth.authenticate]);
 
-  useEffect(() => {
     console.log("App.js - get stores");
     dispatch(getAllStores());
     const time = localStorage.getItem("otpTime");
     if (time) {
       localStorage.setItem("otpTime", 60);
     }
-  }, []);
+  }, [auth.authenticate]);
 
   return (
     <div>

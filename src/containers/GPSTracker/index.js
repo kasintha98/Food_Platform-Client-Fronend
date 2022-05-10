@@ -10,13 +10,17 @@ import { BottomNav } from "../../components/BottomNav";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Delivered from "../../img/Delivered.jpg";
-import FoodPreparing from "../../img/FoodPreparing.jpg";
-import FoodReady from "../../img/FoodReady.jpg";
-import OrderAccepted from "../../img/OrderAccepted.jpg";
-import OrderCancelled from "../../img/OrderCancelled.jpg";
-import OrderSubmitted from "../../img/OrderSubmitted.jpg";
-import OutforDelivery from "../../img/OutforDelivery.jpg";
+import { OrderStatus } from "../../components/OrderStatus";
+import styled from "@emotion/styled";
+
+const POButton = styled(Button)`
+  background-color: #00b050;
+  height: 56px;
+
+  &:hover {
+    background-color: #357a38;
+  }
+`;
 
 export const GPSTracker = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
@@ -58,7 +62,7 @@ export const GPSTracker = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#F2F2F2" }}>
       <Header></Header>
       <Container
         style={{
@@ -68,15 +72,52 @@ export const GPSTracker = () => {
         }}
       >
         <Typography
-          sx={{ textAlign: "center", marginBottom: "20px" }}
+          sx={{
+            textAlign: "center",
+            marginBottom: "20px",
+            color: "#C00000",
+            fontWeight: "bold",
+          }}
           variant="h4"
           component="h4"
         >
-          My GPSTracker
+          MY ORDER TRACKER
         </Typography>
+        <div>
+          <Typography
+            sx={{
+              color: "#595959",
+              fontWeight: "bold",
+            }}
+            variant="h5"
+            component="h5"
+          >
+            Want to find out where your Order is?
+          </Typography>
+          <Typography
+            sx={{
+              color: "#595959",
+              marginBottom: "20px",
+            }}
+            variant="h6"
+            component="h6"
+          >
+            At Hangries, we take pride in providing our customers the ability to
+            track their food orders at “Real time” starting from the moment when
+            you place the order to the moment your order is delivered.
+          </Typography>
+        </div>
         <Row>
           <Col lg={3} md={12}>
-            <Typography>Enter Order ID</Typography>
+            <Typography
+              sx={{
+                color: "#595959",
+                fontWeight: "bold",
+                marginBottom: "20px",
+              }}
+            >
+              Enter your Order No.
+            </Typography>
           </Col>
           <Col lg={6} md={12}>
             <TextField
@@ -85,10 +126,13 @@ export const GPSTracker = () => {
               value={id}
               onChange={handleChangeId}
               fullWidth
+              sx={{
+                marginBottom: "20px",
+              }}
             />
           </Col>
           <Col lg={3} md={12}>
-            <Button
+            <POButton
               onClick={getStatus}
               variant="contained"
               color="success"
@@ -96,134 +140,19 @@ export const GPSTracker = () => {
               disabled={!id ? true : false}
             >
               Track
-            </Button>
+            </POButton>
           </Col>
         </Row>
-        <Row className="mt-2">
-          {!id ? (
-            <Col className="col-12 m-2">
-              <Alert severity="error">Please Enter A Valid ID!</Alert>
-            </Col>
-          ) : null}
-          {orderStatus ? (
-            <>
-              {orderStatus.map((status) => (
-                <>
-                  {status.orderStatus === "SUBMITTED" && (
-                    <Col md={2} sm={12} className="mb-2">
-                      <img
-                        src={OrderSubmitted}
-                        alt="SUBMITTED"
-                        style={{ width: "100%" }}
-                      />
-                      <div className="text-center">
-                        <Typography>SUBMITTED</Typography>
-                        <Typography>
-                          {renderDate(status.updatedDate)}{" "}
-                          {renderTime(status.updatedDate)}
-                        </Typography>
-                      </div>
-                    </Col>
-                  )}
-                  {status.orderStatus === "ACCEPTED" && (
-                    <Col md={2} sm={12} className="mb-2">
-                      <img
-                        src={OrderAccepted}
-                        alt="ACCEPTED"
-                        style={{ width: "100%" }}
-                      />
-                      <div className="text-center">
-                        <Typography>ACCEPTED</Typography>
-                        <Typography>
-                          {renderDate(status.updatedDate)}{" "}
-                          {renderTime(status.updatedDate)}
-                        </Typography>
-                      </div>
-                    </Col>
-                  )}
-                  {status.orderStatus === "PREPARING" && (
-                    <Col md={2} sm={12} className="mb-2">
-                      <img
-                        src={FoodPreparing}
-                        alt="PREPARING"
-                        style={{ width: "100%" }}
-                      />
-                      <div className="text-center">
-                        <Typography>PREPARING</Typography>
-                        <Typography>
-                          {renderDate(status.updatedDate)}{" "}
-                          {renderTime(status.updatedDate)}
-                        </Typography>
-                      </div>
-                    </Col>
-                  )}
-                  {status.orderStatus === "FOOD READY" && (
-                    <Col md={2} sm={12} className="mb-2">
-                      <img
-                        src={FoodReady}
-                        alt="FOOD READY"
-                        style={{ width: "100%" }}
-                      />
-                      <div className="text-center">
-                        <Typography>FOOD READY</Typography>
-                        <Typography>
-                          {renderDate(status.updatedDate)}{" "}
-                          {renderTime(status.updatedDate)}
-                        </Typography>
-                      </div>
-                    </Col>
-                  )}
-                  {status.orderStatus === "OUT FOR DELIVERY" && (
-                    <Col md={2} sm={12} className="mb-2">
-                      <img
-                        src={OutforDelivery}
-                        alt="OUT FOR DELIVERY"
-                        style={{ width: "100%" }}
-                      />
-                      <div className="text-center">
-                        <Typography>OUT FOR DELIVERY</Typography>
-                        <Typography>
-                          {renderDate(status.updatedDate)}{" "}
-                          {renderTime(status.updatedDate)}
-                        </Typography>
-                      </div>
-                    </Col>
-                  )}
-                  {status.orderStatus === "DELIVERED" && (
-                    <Col md={2} sm={12} className="mb-2">
-                      <img
-                        src={Delivered}
-                        alt="DELIVERED"
-                        style={{ width: "100%" }}
-                      />
-                      <div className="text-center">
-                        <Typography>DELIVERED</Typography>
-                        <Typography>
-                          {renderDate(status.updatedDate)}{" "}
-                          {renderTime(status.updatedDate)}
-                        </Typography>
-                      </div>
-                    </Col>
-                  )}
-                  {status.orderStatus === "CANCELLED" && (
-                    <Col md={2} sm={12} className="mb-2">
-                      <img
-                        src={OrderCancelled}
-                        alt="CANCELLED"
-                        style={{ width: "100%" }}
-                      />
-                      <div className="text-center">
-                        <Typography>CANCELLED</Typography>
-                        <Typography>
-                          {renderDate(status.updatedDate)}{" "}
-                          {renderTime(status.updatedDate)}
-                        </Typography>
-                      </div>
-                    </Col>
-                  )}
-                </>
-              ))}
-            </>
+        <Row
+          className="mt-2"
+          style={{
+            backgroundColor: "#fff",
+            overflowX: "auto",
+            minHeight: "500px",
+          }}
+        >
+          {orderStatus && orderStatus.length > 0 ? (
+            <OrderStatus orderItems={orderStatus}></OrderStatus>
           ) : null}
         </Row>
       </Container>
