@@ -96,4 +96,4 @@ class PaytmChecksum {
   }
 }
 PaytmChecksum.iv = "@@@@&&&&####$$$$";
-module.exports = PaytmChecksum;
+export default PaytmChecksum;
