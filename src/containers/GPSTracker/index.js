@@ -22,6 +22,14 @@ const POButton = styled(Button)`
   }
 `;
 
+const CusTypography = styled(Typography)`
+  text-align: end;
+
+  @media (max-width: 992px) {
+    text-align: start;
+  }
+`;
+
 export const GPSTracker = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
   const [id, setId] = React.useState("");
@@ -81,7 +89,25 @@ export const GPSTracker = () => {
           variant="h4"
           component="h4"
         >
-          MY ORDER TRACKER
+          <span
+            style={{
+              width: "10vw",
+              height: "5px",
+              backgroundColor: "#C00000",
+              display: "inline-block",
+              marginBottom: "7px",
+            }}
+          ></span>{" "}
+          MY ORDER TRACKER{" "}
+          <span
+            style={{
+              width: "10vw",
+              height: "5px",
+              backgroundColor: "#C00000",
+              display: "inline-block",
+              marginBottom: "7px",
+            }}
+          ></span>
         </Typography>
         <div>
           <Typography
@@ -109,7 +135,7 @@ export const GPSTracker = () => {
         </div>
         <Row>
           <Col lg={3} md={12}>
-            <Typography
+            <CusTypography
               sx={{
                 color: "#595959",
                 fontWeight: "bold",
@@ -117,7 +143,7 @@ export const GPSTracker = () => {
               }}
             >
               Enter your Order No.
-            </Typography>
+            </CusTypography>
           </Col>
           <Col lg={6} md={12}>
             <TextField
@@ -148,7 +174,9 @@ export const GPSTracker = () => {
           style={{
             backgroundColor: "#fff",
             overflowX: "auto",
-            minHeight: "500px",
+            minHeight: "332px",
+            overflowY: "hidden",
+            paddingTop: "30px",
           }}
         >
           {orderStatus && orderStatus.length > 0 ? (

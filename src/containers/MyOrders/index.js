@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,6 +15,8 @@ import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
 import { GetUserOrdersNew, GetOrderProcessStatus2 } from "../../actions";
 import { OrderStatus } from "../../components/OrderStatus";
+import { useMediaQuery } from "react-responsive";
+import { BottomNav } from "../../components/BottomNav";
 
 const CusTableHead = styled(TableCell)`
   background-color: #000137;
@@ -29,13 +31,36 @@ const CusTableCell = styled(TableCell)`
 
 export const MyOrders = () => {
   const userOrders = useSelector((state) => state.user.userOrders);
+  const [allStatus, setAllStatus] = useState({});
+  const [tabValue, setTabValue] = useState(0);
+
+  const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const id = localStorage.getItem("userId");
-    dispatch(GetUserOrdersNew(id));
+    dispatch(GetUserOrdersNew(id)).then((res) => {
+      if (res && res.length > 0) {
+        for (let j = 0; j < res.length; j++) {
+          dispatch(GetOrderProcessStatus2(res.orderId)).then((res2) => {
+            let ob = {};
+            if (res2 && res2.length > 0) {
+              for (let i = 0; i < res2.length; i++) {
+                ob[res2[i].orderId] = res2;
+              }
+            }
+            setAllStatus(ob);
+          });
+        }
+      }
+    });
   }, []);
+
+  const handleNavTab = (val) => {
+    console.log(val);
+    setTabValue(val);
+  };
 
   const renderDate = (date) => {
     const dateObj = new Date(date);
@@ -50,28 +75,20 @@ export const MyOrders = () => {
   };
 
   const renderOrder = (id) => {
-    let statusOd = [];
-    dispatch(GetOrderProcessStatus2("MR001S00120220505000122")).then((res) => {
-      statusOd = res;
-    });
-    /* setTimeout(function () {
-      console.log(statusOd);
-      if (statusOd && statusOd.length > 0) {
-        return <OrderStatus orderItems={statusOd}></OrderStatus>;
-      } else {
-        return (
-          <Alert severity="warning">
-            No data found for order process details!
-          </Alert>
-        );
-      }
-    }, 5000); */
-    renderStatusDetails(statusOd);
-  };
-
-  const renderStatusDetails = (res) => {
-    if (res && res.length > 0) {
-      return <OrderStatus orderItems={res}></OrderStatus>;
+    if (allStatus && Object.keys(allStatus).length > 0) {
+      return (
+        <div
+          className="mt-2"
+          style={{
+            backgroundColor: "#fff",
+            overflowX: "auto",
+            overflowY: "hidden",
+            minHeight: "270px",
+          }}
+        >
+          <OrderStatus orderItems={allStatus[id]}></OrderStatus>
+        </div>
+      );
     } else {
       return (
         <Alert severity="warning">
@@ -170,6 +187,7 @@ export const MyOrders = () => {
       </Container>
 
       <Footer></Footer>
+      {isMobile ? <BottomNav onChangeTab={handleNavTab}></BottomNav> : null}
     </div>
   );
 };

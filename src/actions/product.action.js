@@ -99,7 +99,15 @@ export const getMenuIngredientsByProductId = (id) => {
 export const getAllSections = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`/getAllSections`);
+      const delLoc = localStorage.getItem("deliveryType");
+      const delObj = JSON.parse(delLoc);
+
+      const res = await axios.get(`/getAllSections`, {
+        params: {
+          restaurantId: delObj.restaurantId,
+          storeId: delObj.storeId,
+        },
+      });
 
       if (res.status === 200) {
         dispatch({
@@ -120,8 +128,15 @@ export const getAllSections = () => {
 export const getDishesBySection = (section) => {
   return async (dispatch) => {
     try {
+      const delLoc = localStorage.getItem("deliveryType");
+      const delObj = JSON.parse(delLoc);
+
       const res = await axios.get(`/getDishesBySection`, {
-        params: { section: section },
+        params: {
+          section: section,
+          restaurantId: delObj.restaurantId,
+          storeId: delObj.storeId,
+        },
       });
 
       if (res.status === 200) {

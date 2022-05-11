@@ -161,8 +161,8 @@ export const OrderStatus = (props) => {
           boxSizing: "border-box",
           padding: "100px",
           display: "flex",
-          marginTop: "6vw",
-          paddingTop: "14vw",
+          /* marginTop: "6vw",*/
+          paddingTop: "150px",
         }}
         className="new-outer"
       >

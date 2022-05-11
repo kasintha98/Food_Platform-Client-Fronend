@@ -12,11 +12,16 @@ import { NavHashLink } from "react-router-hash-link";
 import LoginDrawer from "../Login";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import LoginDrawerMob from "../Login/mobileSideLog";
+import PeopleIcon from "@mui/icons-material/People";
 import styled from "@emotion/styled";
 
 const CusBottomNavigationAction = styled(BottomNavigationAction)`
   & .MuiBottomNavigationAction-label {
     font-size: 0.69rem;
+  }
+
+  & .MuiBottomNavigationAction-root {
+    padding: 0 !important;
   }
 `;
 
@@ -53,6 +58,7 @@ export const BottomNav = (props) => {
             label="Home"
             value="/#home"
             icon={<HomeIcon />}
+            style={{ paddingLeft: "25px" }}
           />
 
           {/* <CusBottomNavigationAction
@@ -97,7 +103,8 @@ export const BottomNav = (props) => {
             to="/#about"
             label="About Us"
             value="/#about"
-            icon={<RestaurantMenuIcon />}
+            style={{ paddingRight: "25px" }}
+            icon={<PeopleIcon />}
           />
         </BottomNavigation>
       </Paper>

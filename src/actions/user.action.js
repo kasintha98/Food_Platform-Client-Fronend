@@ -354,6 +354,7 @@ export const GetUserOrdersNew = (userId) => {
           type: orderConstantsNew.GET_USER_ORDERS_SUCCESS,
           payload: res.data,
         });
+        return res.data;
       } else {
         const { error } = res.data;
         dispatch({
