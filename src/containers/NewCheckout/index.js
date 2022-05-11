@@ -805,6 +805,17 @@ export default function NewCheckout() {
       <div className="wh-background">
         <CusContainer>
           <Row>
+            <div className="text-center">
+              <Typography
+                style={{ fontWeight: "bold", marginTop: "30px" }}
+                variant="h5"
+                component="h5"
+              >
+                CHECKOUT
+              </Typography>
+            </div>
+          </Row>
+          <Row>
             <Col md={12} lg={4} className="mar-tp-f">
               <Row>
                 <Col className="col-12 text-center">

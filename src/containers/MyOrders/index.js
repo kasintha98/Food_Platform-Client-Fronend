@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,7 +13,10 @@ import { Container } from "react-bootstrap";
 import Alert from "@mui/material/Alert";
 import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
-import { GetUserOrdersNew } from "../../actions";
+import { GetUserOrdersNew, GetOrderProcessStatus2 } from "../../actions";
+import { OrderStatus } from "../../components/OrderStatus";
+import { useMediaQuery } from "react-responsive";
+import { BottomNav } from "../../components/BottomNav";
 
 const CusTableHead = styled(TableCell)`
   background-color: #000137;
@@ -28,13 +31,36 @@ const CusTableCell = styled(TableCell)`
 
 export const MyOrders = () => {
   const userOrders = useSelector((state) => state.user.userOrders);
+  const [allStatus, setAllStatus] = useState({});
+  const [tabValue, setTabValue] = useState(0);
+
+  const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const id = localStorage.getItem("userId");
-    dispatch(GetUserOrdersNew(id));
+    dispatch(GetUserOrdersNew(id)).then((res) => {
+      if (res && res.length > 0) {
+        for (let j = 0; j < res.length; j++) {
+          dispatch(GetOrderProcessStatus2(res.orderId)).then((res2) => {
+            let ob = {};
+            if (res2 && res2.length > 0) {
+              for (let i = 0; i < res2.length; i++) {
+                ob[res2[i].orderId] = res2;
+              }
+            }
+            setAllStatus(ob);
+          });
+        }
+      }
+    });
   }, []);
+
+  const handleNavTab = (val) => {
+    console.log(val);
+    setTabValue(val);
+  };
 
   const renderDate = (date) => {
     const dateObj = new Date(date);
@@ -46,6 +72,30 @@ export const MyOrders = () => {
         {day}/{month.toUpperCase()}/{year}
       </span>
     );
+  };
+
+  const renderOrder = (id) => {
+    if (allStatus && Object.keys(allStatus).length > 0) {
+      return (
+        <div
+          className="mt-2"
+          style={{
+            backgroundColor: "#fff",
+            overflowX: "auto",
+            overflowY: "hidden",
+            minHeight: "270px",
+          }}
+        >
+          <OrderStatus orderItems={allStatus[id]}></OrderStatus>
+        </div>
+      );
+    } else {
+      return (
+        <Alert severity="warning">
+          No data found for order process details!
+        </Alert>
+      );
+    }
   };
 
   return (
@@ -87,39 +137,46 @@ export const MyOrders = () => {
               </TableHead>
               <TableBody>
                 {userOrders.map((order) => (
-                  <TableRow>
-                    <CusTableCell align="right">{order.orderId}</CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderDeliveryType}
-                    </CusTableCell>
-                    <CusTableCell align="right">
-                      {renderDate(order.createdDate)}
-                    </CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderDetails.map((item) => (
-                        <span>
-                          {item.productId}
-                          <br></br>
-                        </span>
-                      ))}
-                    </CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderDetails.map((item) => (
-                        <span>
-                          {item.price}.00
-                          <br></br>
-                        </span>
-                      ))}
-                    </CusTableCell>
-                    <CusTableCell align="right">B</CusTableCell>
-                    <CusTableCell align="right">
-                      {order.totalPrice}.00
-                    </CusTableCell>
-                    <CusTableCell align="right">D</CusTableCell>
-                    <CusTableCell align="right">
-                      {order.orderStatus}
-                    </CusTableCell>
-                  </TableRow>
+                  <>
+                    <TableRow>
+                      <CusTableCell align="right">{order.orderId}</CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderDeliveryType}
+                      </CusTableCell>
+                      <CusTableCell align="right">
+                        {renderDate(order.createdDate)}
+                      </CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderDetails.map((item) => (
+                          <span>
+                            {item.productId}
+                            <br></br>
+                          </span>
+                        ))}
+                      </CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderDetails.map((item) => (
+                          <span>
+                            {item.price}.00
+                            <br></br>
+                          </span>
+                        ))}
+                      </CusTableCell>
+                      <CusTableCell align="right">B</CusTableCell>
+                      <CusTableCell align="right">
+                        {order.totalPrice}.00
+                      </CusTableCell>
+                      <CusTableCell align="right">D</CusTableCell>
+                      <CusTableCell align="right">
+                        {order.orderStatus}
+                      </CusTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" colspan="9">
+                        {renderOrder(order.orderId)}
+                      </TableCell>
+                    </TableRow>
+                  </>
                 ))}
               </TableBody>
             </Table>
@@ -130,6 +187,7 @@ export const MyOrders = () => {
       </Container>
 
       <Footer></Footer>
+      {isMobile ? <BottomNav onChangeTab={handleNavTab}></BottomNav> : null}
     </div>
   );
 };

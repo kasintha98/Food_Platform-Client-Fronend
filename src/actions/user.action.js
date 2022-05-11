@@ -354,6 +354,7 @@ export const GetUserOrdersNew = (userId) => {
           type: orderConstantsNew.GET_USER_ORDERS_SUCCESS,
           payload: res.data,
         });
+        return res.data;
       } else {
         const { error } = res.data;
         dispatch({
@@ -402,6 +403,8 @@ export const GetOrderProcessStatus = (id) => {
             progress: undefined,
           });
         }
+
+        return res.data;
       } else {
         const { error } = res.data;
         dispatch({
@@ -409,6 +412,43 @@ export const GetOrderProcessStatus = (id) => {
           payload: { error },
         });
         toast.error("There was an error when getting data!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const GetOrderProcessStatus2 = (id) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/getOrderProcessingDetailsByOrderId", {
+        params: { orderId: id },
+      });
+      dispatch({ type: orderStatusConstantsNew.GET_ORDER_STATUS_REQUEST });
+
+      if (res.status === 200) {
+        console.log(res);
+        dispatch({
+          type: orderStatusConstantsNew.GET_ORDER_STATUS_SUCCESS,
+          payload: res.data,
+        });
+        return res.data;
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: orderStatusConstantsNew.GET_ORDER_STATUS_FAILURE,
+          payload: { error },
+        });
+        toast.error("There was an error when getting order status data!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

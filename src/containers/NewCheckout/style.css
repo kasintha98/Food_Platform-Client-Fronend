@@ -19,18 +19,22 @@
 }
 
 .wh-background {
-  background-image: url("../../img/ch-bg.png");
+  /*  background-image: url("../../img/ch-bg.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-position: left top;
+  background-position: left top; */
+
+  background-color: rgb(242, 242, 242);
 }
 
 .mar-tp {
-  margin-top: 25vh;
+  /*  margin-top: 25vh; */
+  margin-top: 30px;
 }
 
 .mar-tp-f {
-  margin-top: 25vh;
+  /* margin-top: 25vh; */
+  margin-top: 30px;
 }
 
 .w75 {

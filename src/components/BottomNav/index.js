@@ -12,6 +12,18 @@ import { NavHashLink } from "react-router-hash-link";
 import LoginDrawer from "../Login";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import LoginDrawerMob from "../Login/mobileSideLog";
+import PeopleIcon from "@mui/icons-material/People";
+import styled from "@emotion/styled";
+
+const CusBottomNavigationAction = styled(BottomNavigationAction)`
+  & .MuiBottomNavigationAction-label {
+    font-size: 0.69rem;
+  }
+
+  & .MuiBottomNavigationAction-root {
+    padding: 0 !important;
+  }
+`;
 
 export const BottomNav = (props) => {
   const pathname = window.location.pathname;
@@ -40,15 +52,16 @@ export const BottomNav = (props) => {
             //props.onChangeTab(newValue);
           }}
         >
-          <BottomNavigationAction
+          <CusBottomNavigationAction
             component={NavHashLink}
             to="/#home"
             label="Home"
             value="/#home"
             icon={<HomeIcon />}
+            style={{ paddingLeft: "25px" }}
           />
 
-          {/* <BottomNavigationAction
+          {/* <CusBottomNavigationAction
             component={Link}
             to="/new-cart"
             label="Cart"
@@ -67,7 +80,15 @@ export const BottomNav = (props) => {
               </>
             }
           /> */}
-          <BottomNavigationAction
+          <CusBottomNavigationAction
+            component={NavHashLink}
+            to="/#restaurants"
+            label="Restaurants"
+            value="/#restaurants"
+            icon={<PinDropIcon />}
+          />
+
+          <CusBottomNavigationAction
             component={Link}
             to="/new-menu"
             label="Menu"
@@ -75,15 +96,16 @@ export const BottomNav = (props) => {
             icon={<RestaurantMenuIcon />}
           />
 
-          <BottomNavigationAction
-            component={NavHashLink}
-            to="/#restaurants"
-            label="Locations"
-            value="/#restaurants"
-            icon={<PinDropIcon />}
-          />
-
           <LoginDrawerMob></LoginDrawerMob>
+
+          <CusBottomNavigationAction
+            component={Link}
+            to="/#about"
+            label="About Us"
+            value="/#about"
+            style={{ paddingRight: "25px" }}
+            icon={<PeopleIcon />}
+          />
         </BottomNavigation>
       </Paper>
     </div>
