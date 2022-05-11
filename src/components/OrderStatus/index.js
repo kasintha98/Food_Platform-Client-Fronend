@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Delivered from "../../img/Delivered.jpg";
 import FoodPreparing from "../../img/FoodPreparing.jpg";
 import FoodReady from "../../img/FoodReady.jpg";
@@ -12,7 +13,9 @@ export const OrderStatus = (props) => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    const sortedList = props.orderItems.sort(function (a, b) {
+    const allList = props.orderItems;
+    console.log("Order Status");
+    const sortedList = allList.sort(function (a, b) {
       var c = new Date(a.updatedDate);
       var d = new Date(b.updatedDate);
       return c - d;
@@ -67,7 +70,7 @@ export const OrderStatus = (props) => {
     }
 
     setList(sortedList);
-  }, []);
+  }, [props.orderItems]);
 
   const renderDate = (date) => {
     const dateObj = new Date(date);

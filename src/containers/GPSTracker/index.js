@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { GetOrderProcessStatus } from "../../actions";
 import Header from "../../components/Header";
@@ -36,6 +36,12 @@ export const GPSTracker = () => {
 
   const orderStatus = useSelector((state) => state.user.orderStatus);
 
+  /*  useEffect(() => {
+    if (orderStatus && orderStatus.length > 0) {
+      return <OrderStatus orderItems={orderStatus}></OrderStatus>;
+    }
+  }, [orderStatus]); */
+
   const handleChangeId = (event) => {
     setId(event.target.value);
   };
@@ -67,6 +73,14 @@ export const GPSTracker = () => {
     });
 
     return <span>{time}</span>;
+  };
+
+  const renderStatus = () => {
+    if (orderStatus && orderStatus.length > 0) {
+      return <OrderStatus orderItems={orderStatus}></OrderStatus>;
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -179,9 +193,7 @@ export const GPSTracker = () => {
             paddingTop: "30px",
           }}
         >
-          {orderStatus && orderStatus.length > 0 ? (
-            <OrderStatus orderItems={orderStatus}></OrderStatus>
-          ) : null}
+          {renderStatus()}
         </Row>
       </Container>
       <Footer></Footer>
