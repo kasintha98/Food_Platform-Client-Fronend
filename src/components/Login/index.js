@@ -241,7 +241,7 @@ export default function LoginDrawer(props) {
       if (!otpSuccess) {
         configureCaptcha("sign-in-button");
       }
-      const phoneNumber = "+" + mobileNumber;
+      const phoneNumber = mobileNumber;
       const appVerifier = window.recaptchaVerifier;
       console.log(phoneNumber);
       firebase
