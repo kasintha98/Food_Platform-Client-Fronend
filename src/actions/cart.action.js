@@ -2,6 +2,7 @@ import React from "react";
 import { cartConstants } from "./constants";
 import store from "../store";
 import axios from "../helpers/axios";
+import { toast } from "react-toastify";
 
 //action to get cart items from database
 const getCartItems = () => {
@@ -223,6 +224,11 @@ export const addToCartNew = (
           type: cartConstants.ADD_TO_CART_SUCCESS,
           payload: { cartItems },
         });
+
+        toast.success("Item added to cart!", {
+          position: "top-right",
+          autoClose: 2000,
+        });
       }
     } catch (error) {
       console.log(error);
@@ -278,6 +284,11 @@ export const replaceCartItemNew = (newProduct, oldId) => {
         dispatch({
           type: cartConstants.ADD_TO_CART_SUCCESS,
           payload: { cartItems },
+        });
+
+        toast.success("Item added to cart!", {
+          position: "top-right",
+          autoClose: 2000,
         });
       }
     } catch (error) {
