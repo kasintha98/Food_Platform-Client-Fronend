@@ -165,9 +165,8 @@ export const OrderStatus = (props) => {
           padding: "100px",
           display: "flex",
           /* marginTop: "6vw",*/
-          paddingTop: "150px",
         }}
-        className="new-outer"
+        className={props.noPic ? "new-outer pad50" : "new-outer pad150"}
       >
         <div className="orderTrack">
           {list.map((item) => (
@@ -182,7 +181,9 @@ export const OrderStatus = (props) => {
                     item.updatedDate !== "manual" ? "active" : ""
                   }`}
                 ></div>
-                <div className="imagecont">{renderPic(item)}</div>
+                {!props.noPic ? (
+                  <div className="imagecont">{renderPic(item)}</div>
+                ) : null}
                 <div className="orderInfo">
                   <div className="status"></div>
                   <div className="date">

@@ -16,7 +16,7 @@ import styled from "@emotion/styled";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Box from "@mui/material/Box";
 import { IconButton } from "@mui/material";
-import { AddAddress, GetAddress } from "../../actions";
+import { AddAddress, GetAddress, DeleteAddress } from "../../actions";
 import FormControl from "@mui/material/FormControl";
 import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
@@ -131,7 +131,7 @@ export default function AddNewAddress(props) {
   const onSubmitDelete = (address) => {
     try {
       let localUserMobileNumber = localStorage.getItem("userMobileNumber");
-      let addressObj = {
+      /* let addressObj = {
         mobileNumber: localUserMobileNumber,
         customerAddressType: address.customerAddressType,
         address1: address.address1,
@@ -143,8 +143,12 @@ export default function AddNewAddress(props) {
         active: "N",
       };
       dispatch(AddAddress(addressObj));
-      toast.success("Successfully Deleted!");
+      toast.success("Successfully Deleted!"); */
       //props.onBackPress();
+
+      dispatch(
+        DeleteAddress(localUserMobileNumber, address.customerAddressType)
+      );
     } catch (e) {
       console.log(e);
     }
@@ -167,10 +171,10 @@ export default function AddNewAddress(props) {
       if (address1 != "" && city != "" && type != "" && state != "") {
         dispatch(AddAddress(addressObj));
         clearFileds();
-        if(editPress){
+        if (editPress) {
           toast.success("Successfully Updated!");
           setEditPress(false);
-        }else{
+        } else {
           toast.success("Successfully Added!");
         }
       } else {
@@ -181,7 +185,7 @@ export default function AddNewAddress(props) {
     }
   };
 
-  const clearFileds=()=>{
+  const clearFileds = () => {
     setType("");
     setAddress1("");
     setAddress2("");
@@ -189,7 +193,7 @@ export default function AddNewAddress(props) {
     setZip(0);
     setCity("");
     setState("");
-  }
+  };
 
   const onEditPress = (address) => {
     setType(address.customerAddressType);
@@ -407,7 +411,7 @@ export default function AddNewAddress(props) {
         {!props.forceAddAddress ? (
           <>
             {allAddress?.map((address, index) => {
-              if (address.active ==="Y"){
+              if (address.active === "Y") {
                 return <NewAddress address={address} key={index} />;
               }
             })}

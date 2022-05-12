@@ -480,7 +480,7 @@ export default function LoginDrawer(props) {
                         localStorage.getItem("otpTime")
                           ? Date.now() +
                             Number(localStorage.getItem("otpTime") * 1000)
-                          : Date.now() + 6000
+                          : Date.now() + 90000
                       }
                       renderer={rendererTime}
                     />
@@ -515,13 +515,17 @@ export default function LoginDrawer(props) {
       if (seconds === 0) {
         localStorage.removeItem("otpTime");
       }
-      localStorage.setItem("otpTime", seconds);
+      //localStorage.setItem("otpTime", seconds);
       return (
         <div>
-          <Button variant="contained" disabled>
-            {seconds}S
-          </Button>
-          <Button variant="text" disabled>
+          <Button
+            variant="text"
+            onClick={(e) => {
+              setOtp("");
+              localStorage.setItem("otpTime", 90);
+              onSignInSubmit(e);
+            }}
+          >
             Resend OTP
           </Button>
         </div>
@@ -533,7 +537,7 @@ export default function LoginDrawer(props) {
         return (
           <div>
             <Button variant="contained" disabled>
-              {seconds}S
+              {seconds}
             </Button>
             <Button variant="text" disabled>
               Resend OTP
@@ -547,7 +551,7 @@ export default function LoginDrawer(props) {
               variant="text"
               onClick={(e) => {
                 setOtp("");
-                localStorage.setItem("otpTime", 60);
+                localStorage.setItem("otpTime", 90);
                 onSignInSubmit(e);
               }}
             >

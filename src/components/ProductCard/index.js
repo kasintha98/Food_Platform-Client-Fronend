@@ -143,6 +143,25 @@ const CusCardMedia = styled(CardMedia)`
   &:hover {
     cursor: pointer;
   }
+
+  height: 250px;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    height: 180px;
+  }
+
+  @media (max-width: 992px) {
+    height: 250px;
+  }
+
+  @media (max-width: 600px) {
+    height: 200px;
+  }
+
+  @media (max-width: 400px) {
+    height: 160px;
+  }
 `;
 
 const CustRow = styled(Row)`
@@ -1113,7 +1132,6 @@ export default function ProductCard(props) {
         currentProduct?.imagePath === "No_Image_Found" ? (
           <CusCardMedia
             component="img"
-            height="100px"
             image={noImage}
             alt="product"
             onClick={() => {
@@ -1125,7 +1143,6 @@ export default function ProductCard(props) {
         ) : (
           <CusCardMedia
             component="img"
-            height="100px"
             image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
             alt="product"
             onClick={() => {
@@ -1244,24 +1261,26 @@ export default function ProductCard(props) {
               </>
             )}
           </CusTypography>
-          <Typography
-            sx={{
-              fontSize: "0.75rem",
-              fontWeight: "400",
-              fontFamily: "Arial",
-              color: "#767171",
-            }}
-            variant="body2"
-            color="text.secondary"
-          >
-            <LinesEllipsis
-              text={`${props.product?.dishDescriptionId}`}
-              maxLine="3"
-              ellipsis="..."
-              trimRight
-              basedOn="letters"
-            />
-          </Typography>
+          {props.product?.commonImage === "Y" ? (
+            <Typography
+              sx={{
+                fontSize: "0.75rem",
+                fontWeight: "400",
+                fontFamily: "Arial",
+                color: "#767171",
+              }}
+              variant="body2"
+              color="text.secondary"
+            >
+              <LinesEllipsis
+                text={`${props.product?.dishDescriptionId}`}
+                maxLine="3"
+                ellipsis="..."
+                trimRight
+                basedOn="letters"
+              />
+            </Typography>
+          ) : null}
         </CardContent>
         <CardActions>
           <Row

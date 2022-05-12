@@ -72,6 +72,46 @@ export const InvoiceTable = (props) => {
                 : null} */}
               </>
             ))}
+            <TableRow>
+              <TableCell component="th" scope="row" colspan="3">
+                Total
+              </TableCell>
+              <TableCell component="th" scope="row" colspan="1">
+                {props.grandTot}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell component="th" scope="row" colspan="3">
+                CGST
+              </TableCell>
+              <TableCell component="th" scope="row" colspan="1">
+                {props.cgst}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell component="th" scope="row" colspan="3">
+                SGST
+              </TableCell>
+              <TableCell component="th" scope="row" colspan="1">
+                {props.sgst}
+              </TableCell>
+            </TableRow>
+            {/* <TableRow>
+              <TableCell component="th" scope="row" colspan="3">
+                Delivery Charges
+              </TableCell>
+              <TableCell component="th" scope="row" colspan="1">
+                {props.delCharge}
+              </TableCell>
+            </TableRow> */}
+            <TableRow>
+              <TableCell component="th" scope="row" colspan="3">
+                Grand Total
+              </TableCell>
+              <TableCell component="th" scope="row" colspan="1">
+                {props.overallPriceWithTax}
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       ) : null}

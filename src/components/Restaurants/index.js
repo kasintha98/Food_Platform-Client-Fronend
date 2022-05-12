@@ -30,12 +30,12 @@ const CusFormControl = styled(FormControl)`
   }
 
   & .MuiSelect-select {
-    background-color: red;
+    background-color: #fff;
     border-radius: 50px;
   }
 
   & .MuiSelect-select:focus {
-    background-color: red;
+    background-color: #fff;
     border-radius: 50px;
   }
 

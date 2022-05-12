@@ -98,14 +98,14 @@ export const BottomNav = (props) => {
 
           <LoginDrawerMob></LoginDrawerMob>
 
-          <CusBottomNavigationAction
+          {/* <CusBottomNavigationAction
             component={Link}
             to="/#about"
             label="About Us"
             value="/#about"
             style={{ paddingRight: "25px" }}
             icon={<PeopleIcon />}
-          />
+          /> */}
         </BottomNavigation>
       </Paper>
     </div>

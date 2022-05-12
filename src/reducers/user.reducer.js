@@ -147,6 +147,9 @@ export default (state = initState, action) => {
     case userAddressConstants.GET_USER_ADDRESSS_FAILURE:
       break;
 
+    case userAddressConstants.DELETE_USER_ADDRESS_SUCCESS:
+      break;
+
     case orderConstantsNew.GET_USER_ORDERS_REQUEST:
       state = {
         ...state,
