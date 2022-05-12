@@ -259,6 +259,38 @@ export const AddAddress = (payload) => {
   };
 };
 
+//delete address
+export const DeleteAddress = (mobno, addrType) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/deleteAddressByDeliveryType", {
+        params: {
+          mobno: mobno,
+          addrType: addrType,
+        },
+      });
+
+      if (res.status === 200) {
+        dispatch(GetAddress(mobno));
+        dispatch({
+          type: userAddressConstants.DELETE_USER_ADDRESS_SUCCESS,
+          res,
+        });
+        toast.success("Successfully Deleted!");
+        console.log(res);
+      } else {
+        const { error } = res.data;
+        console.log(error);
+
+        toast.error("There was an error when deleting address!");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    }
+  };
+};
+
 //action to get address
 export const GetAddress = (mobileNumber) => {
   return async (dispatch) => {
@@ -269,10 +301,14 @@ export const GetAddress = (mobileNumber) => {
       dispatch({ type: userAddressConstants.GET_USER_ADDRESSS_REQUEST });
       if (res.status === 200) {
         console.log(res);
-        //const { addresses } = res.data;
+
+        const filteredAddresses = res.data.filter(function (el) {
+          return el.active === "Y";
+        });
+
         dispatch({
           type: userAddressConstants.GET_USER_ADDRESSS_SUCCESS,
-          payload: res.data,
+          payload: filteredAddresses,
         });
       } else {
         const { error } = res.data;

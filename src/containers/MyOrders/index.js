@@ -22,11 +22,14 @@ const CusTableHead = styled(TableCell)`
   background-color: #000137;
   color: #fff;
   border: 1px solid #fff;
+  font-size: 0.7rem;
+  padding: 2px;
 `;
 
 const CusTableCell = styled(TableCell)`
   background-color: #d3d3d3;
   border: 1px solid #fff;
+  font-size: 0.75rem;
 `;
 
 export const MyOrders = () => {
@@ -42,15 +45,18 @@ export const MyOrders = () => {
     const id = localStorage.getItem("userId");
     dispatch(GetUserOrdersNew(id)).then((res) => {
       if (res && res.length > 0) {
+        let ob = {};
         for (let j = 0; j < res.length; j++) {
-          dispatch(GetOrderProcessStatus2(res.orderId)).then((res2) => {
-            let ob = {};
+          dispatch(GetOrderProcessStatus2(res[j].orderId)).then((res2) => {
             if (res2 && res2.length > 0) {
               for (let i = 0; i < res2.length; i++) {
-                ob[res2[i].orderId] = res2;
+                const newPair = { [res2[i].orderId]: res2 };
+                //ob[res2[i].orderId] = res2;
+                ob = { ...ob, ...newPair };
               }
+              console.log(ob);
+              setAllStatus(ob);
             }
-            setAllStatus(ob);
           });
         }
       }
@@ -75,7 +81,7 @@ export const MyOrders = () => {
   };
 
   const renderOrder = (id) => {
-    if (allStatus && Object.keys(allStatus).length > 0) {
+    if (allStatus && Object.keys(allStatus).length > 0 && allStatus[id]) {
       return (
         <div
           className="mt-2"
@@ -83,10 +89,10 @@ export const MyOrders = () => {
             backgroundColor: "#fff",
             overflowX: "auto",
             overflowY: "hidden",
-            minHeight: "270px",
+            minHeight: "150px",
           }}
         >
-          <OrderStatus orderItems={allStatus[id]}></OrderStatus>
+          <OrderStatus orderItems={allStatus[id]} noPic={true}></OrderStatus>
         </div>
       );
     } else {
@@ -121,18 +127,18 @@ export const MyOrders = () => {
         </Typography>
         <TableContainer component={Paper}>
           {userOrders ? (
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ minWidth: "1000px" }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <CusTableHead align="right">ORDER NO#</CusTableHead>
-                  <CusTableHead align="right">ORDER TYPE</CusTableHead>
-                  <CusTableHead align="right">ORDER DATE</CusTableHead>
-                  <CusTableHead align="right">ITEMS ORDERED</CusTableHead>
-                  <CusTableHead align="right">PRICE</CusTableHead>
-                  <CusTableHead align="right">PAYMENT TYPE</CusTableHead>
-                  <CusTableHead align="right">TOTAL (INCL. GST)</CusTableHead>
-                  <CusTableHead align="right">ADDRESS</CusTableHead>
-                  <CusTableHead align="right">ORDER STATUS</CusTableHead>
+                  <CusTableHead align="center">ORDER NO#</CusTableHead>
+                  <CusTableHead align="center">ORDER TYPE</CusTableHead>
+                  <CusTableHead align="center">ORDER DATE</CusTableHead>
+                  <CusTableHead align="center">ITEMS ORDERED</CusTableHead>
+                  <CusTableHead align="center">PRICE</CusTableHead>
+                  <CusTableHead align="center">PAYMENT TYPE</CusTableHead>
+                  <CusTableHead align="center">TOTAL (INCL. GST)</CusTableHead>
+                  <CusTableHead align="center">ADDRESS</CusTableHead>
+                  <CusTableHead align="center">ORDER STATUS</CusTableHead>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -157,14 +163,14 @@ export const MyOrders = () => {
                       <CusTableCell align="right">
                         {order.orderDetails.map((item) => (
                           <span>
-                            {item.price}.00
+                            ₹ {item.price}.00
                             <br></br>
                           </span>
                         ))}
                       </CusTableCell>
                       <CusTableCell align="right">B</CusTableCell>
                       <CusTableCell align="right">
-                        {order.totalPrice}.00
+                        ₹ {order.totalPrice}.00
                       </CusTableCell>
                       <CusTableCell align="right">D</CusTableCell>
                       <CusTableCell align="right">

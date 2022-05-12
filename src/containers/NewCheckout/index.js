@@ -318,7 +318,10 @@ export default function NewCheckout() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleCloseInvoice = () => setShowInvoice(false);
+  const handleCloseInvoice = () => {
+    setShowInvoice(false);
+    history.push("/");
+  };
   const handleShowInvoice = () => setShowInvoice(true);
 
   const placeOrder = () => {
@@ -393,32 +396,35 @@ export default function NewCheckout() {
             cgstCaluclatedValue = total * (tax.taxPercentage / 100);
           }
           if (tax.taxCategory.toUpperCase() === "SGST") {
-            cgstCaluclatedValue = total * (tax.taxPercentage / 100);
+            sgstCalculatedValue = total * (tax.taxPercentage / 100);
           }
         });
       }
 
-      /* let overallPriceWithTax =
-        total + cgstCaluclatedValue.toFixed(2) + sgstCalculatedValue.toFixed(2); */
+      let overallPriceWithTax =
+        Number(total) +
+        Number(cgstCaluclatedValue.toFixed(2)) +
+        Number(sgstCalculatedValue.toFixed(2)) +
+        Number(delCharge);
 
       const NewOrder = {
         id: 0,
         orderId: "EMPTY",
         restaurantId: currentType.restaurantId,
         storeId: currentType.storeId,
-        orderSource: "M",
+        orderSource: "WEB",
         customerId: auth.user.id,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
-          currentType.type === "delivery" ? "delivery" : "pickup",
-        storeTableId: "testStore",
+          currentType.type === "delivery" ? "DELIVERY" : "SELF-COLLECT",
+        storeTableId: "test",
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
         totalPrice: total,
         customerAddressId: selectedAddress ? selectedAddress.id : null,
         cgstCalculatedValue: cgstCaluclatedValue.toFixed(2),
         sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
-        /* overallPriceWithTax: overallPriceWithTax, */
+        overallPriceWithTax: overallPriceWithTax,
         orderDetails: orderDetails,
       };
 
@@ -442,6 +448,7 @@ export default function NewCheckout() {
       ] */
 
       console.log(NewOrder);
+
       dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
           console.log(res.data);
@@ -630,6 +637,11 @@ export default function NewCheckout() {
                 <div>
                   <InvoiceTable
                     allProducts={orderResp.orderDetails}
+                    grandTot={orderResp.totalPrice}
+                    cgst={orderResp.cgstCalculatedValue}
+                    sgst={orderResp.sgstCalculatedValue}
+                    overallPriceWithTax={orderResp.overallPriceWithTax}
+                    delCharge={delCharge}
                   ></InvoiceTable>
                 </div>
               </>
@@ -804,16 +816,37 @@ export default function NewCheckout() {
       <Header></Header>
       <div className="wh-background">
         <CusContainer>
-          <Row>
-            <div className="text-center">
-              <Typography
-                style={{ fontWeight: "bold", marginTop: "30px" }}
-                variant="h5"
-                component="h5"
-              >
-                CHECKOUT
-              </Typography>
-            </div>
+          <Row className="pt-2">
+            <Typography
+              sx={{
+                textAlign: "center",
+                marginBottom: "20px",
+                color: "#C00000",
+                fontWeight: "bold",
+              }}
+              variant="h4"
+              component="h4"
+            >
+              <span
+                style={{
+                  width: "10vw",
+                  height: "5px",
+                  backgroundColor: "#C00000",
+                  display: "inline-block",
+                  marginBottom: "7px",
+                }}
+              ></span>{" "}
+              CHECKOUT{" "}
+              <span
+                style={{
+                  width: "10vw",
+                  height: "5px",
+                  backgroundColor: "#C00000",
+                  display: "inline-block",
+                  marginBottom: "7px",
+                }}
+              ></span>
+            </Typography>
           </Row>
           <Row>
             <Col md={12} lg={4} className="mar-tp-f">

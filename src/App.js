@@ -53,7 +53,7 @@ function App() {
     dispatch(getAllStores());
     const time = localStorage.getItem("otpTime");
     if (time) {
-      localStorage.setItem("otpTime", 60);
+      localStorage.setItem("otpTime", 90);
     }
   }, [auth.authenticate]);
 

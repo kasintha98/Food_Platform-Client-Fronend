@@ -142,6 +142,7 @@ export const GPSTracker = () => {
             variant="h6"
             component="h6"
           >
+            <br></br>
             At Hangries, we take pride in providing our customers the ability to
             track their food orders at “Real time” starting from the moment when
             you place the order to the moment your order is delivered.

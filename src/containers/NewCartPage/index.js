@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { BottomNav } from "../../components/BottomNav";
 import { useMediaQuery } from "react-responsive";
+import Typography from "@mui/material/Typography";
 
 export const NewCartPage = () => {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
@@ -14,9 +15,36 @@ export const NewCartPage = () => {
       <Container
         style={{ marginTop: "60px", minHeight: "calc(100vh - 180px)" }}
       >
-        <div className="text-center">
-          <h2>My Cart</h2>
-        </div>
+        <Typography
+          sx={{
+            textAlign: "center",
+            marginBottom: "20px",
+            color: "#C00000",
+            fontWeight: "bold",
+          }}
+          variant="h4"
+          component="h4"
+        >
+          <span
+            style={{
+              width: "10vw",
+              height: "5px",
+              backgroundColor: "#C00000",
+              display: "inline-block",
+              marginBottom: "7px",
+            }}
+          ></span>{" "}
+          MY CART{" "}
+          <span
+            style={{
+              width: "10vw",
+              height: "5px",
+              backgroundColor: "#C00000",
+              display: "inline-block",
+              marginBottom: "7px",
+            }}
+          ></span>
+        </Typography>
         <div style={{ marginTop: "-40px" }}>
           <NewCart></NewCart>
         </div>

@@ -63,6 +63,15 @@
   position: relative;
   top: -13vw;
 }
+
+.pad150 {
+  padding-top: 150px !important;
+}
+
+.pad50 {
+  padding-top: 50px !important;
+}
+
 @media (max-width: 1200px) {
   .imagecont {
     top: -16vw;
