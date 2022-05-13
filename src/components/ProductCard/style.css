@@ -32,6 +32,17 @@
   padding-right: 0;
 }
 
+.MuiCheckbox-root {
+  padding: 0 !important;
+}
+
+.cus-side-back {
+  background-image: url("../../img/cus-side.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
 @media (max-width: 576px) {
   .w19 {
     width: 27% !important;
