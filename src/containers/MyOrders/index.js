@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Typography from "@mui/material/Typography";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Alert from "@mui/material/Alert";
 import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
@@ -170,12 +170,57 @@ export const MyOrders = () => {
                       </CusTableCell>
                       <CusTableCell align="right">B</CusTableCell>
                       <CusTableCell align="right">
-                        ₹ {order.totalPrice}.00
+                        ₹ {order.overallPriceWithTax}
                       </CusTableCell>
                       <CusTableCell align="right">D</CusTableCell>
                       <CusTableCell align="right">
                         {order.orderStatus}
                       </CusTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <CusTableCell></CusTableCell>
+                      <CusTableCell></CusTableCell>
+                      <CusTableCell></CusTableCell>
+                      <CusTableCell></CusTableCell>
+                      <CusTableCell align="right">
+                        <Row className="p-0 m-0">
+                          <Col className="p-0 m-0">
+                            <span>Total</span>
+                          </Col>
+                          <Col className="p-0 m-0">
+                            <span>₹ {order.totalPrice}</span>
+                          </Col>
+                        </Row>
+                        <Row className="p-0 m-0">
+                          <Col className="p-0 m-0">
+                            <span>CGST</span>
+                          </Col>
+                          <Col className="p-0 m-0">
+                            <span>₹ {order.cgstCalculatedValue}</span>
+                          </Col>
+                        </Row>
+
+                        <Row className="p-0 m-0">
+                          <Col className="p-0 m-0">
+                            <span>SGST</span>
+                          </Col>
+                          <Col className="p-0 m-0">
+                            <span>₹ {order.sgstCalculatedValue}</span>
+                          </Col>
+                        </Row>
+                        <Row className="p-0 m-0">
+                          <Col className="p-0 m-0">
+                            <span>Delivery</span>
+                          </Col>
+                          <Col className="p-0 m-0">
+                            <span>₹ N/D</span>
+                          </Col>
+                        </Row>
+                      </CusTableCell>
+                      <CusTableCell></CusTableCell>
+                      <CusTableCell></CusTableCell>
+                      <CusTableCell></CusTableCell>
+                      <CusTableCell></CusTableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row" colspan="9">
