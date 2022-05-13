@@ -213,6 +213,7 @@ export const addToCartNew = (
           if (res.status === 201) {
             dispatch(getCartItems());
           } */
+
           localStorage.setItem("cart", JSON.stringify(cartItems));
         } else {
           localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -225,10 +226,17 @@ export const addToCartNew = (
           payload: { cartItems },
         });
 
-        toast.success("Item added to cart!", {
-          position: "top-right",
-          autoClose: 2000,
-        });
+        if (newQty < 0) {
+          toast.success("Item removed from cart!", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+        } else {
+          toast.success("Item added to cart!", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+        }
       }
     } catch (error) {
       console.log(error);

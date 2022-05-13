@@ -52,7 +52,7 @@ const CheckoutButton = styled(Button)`
 `;
 
 const CusBox = styled(Box)`
-  max-height: 750px;
+  max-height: 800px;
   overflow-y: auto;
 
   @media (max-width: 992px) {
@@ -455,7 +455,7 @@ export default function ProductCard(props) {
                           <FormControl
                             sx={{
                               width: "100%",
-                              marginTop: "-5px",
+                              marginTop: "-22px",
                             }}
                           >
                             <RadioGroup
