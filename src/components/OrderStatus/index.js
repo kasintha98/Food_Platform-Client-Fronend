@@ -84,6 +84,17 @@ export const OrderStatus = (props) => {
     );
   };
 
+  const renderTime = (date) => {
+    const dateObj = new Date(date);
+    const time = dateObj.toLocaleString("en-US", {
+      hour: "numeric",
+      hour12: true,
+      minute: "numeric",
+    });
+
+    return <span>{time}</span>;
+  };
+
   const renderPic = (item) => {
     if (item.orderStatus === "SUBMITTED") {
       return (
@@ -196,6 +207,10 @@ export const OrderStatus = (props) => {
                         ? renderDate(item.updatedDate)
                         : null}
                     </span>
+                    <br></br>
+                    {item.updatedDate !== "manual"
+                      ? renderTime(item.updatedDate)
+                      : null}
                   </div>
                 </div>
               </div>

@@ -220,13 +220,14 @@ export const AddAddress = (payload) => {
     try {
       const res = await axios.post("/saveCustomerDtls", payload);
 
-      if (res) {
+      if (res.status === 200) {
         dispatch(GetAddress(payload.mobileNumber));
         dispatch({
           type: userAddressConstants.ADD_USER_ADDRESS_SUCCESS,
           payload,
         });
         console.log(res);
+        return res;
       } else {
         const { error } = res.data;
         dispatch({
@@ -234,27 +235,11 @@ export const AddAddress = (payload) => {
           payload: { error },
         });
 
-        toast.error(Error, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error("There was an error adding new address!");
       }
     } catch (error) {
       console.log(error);
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.error("There was an error adding new address!");
     }
   };
 };
