@@ -144,23 +144,23 @@ const CusCardMedia = styled(CardMedia)`
     cursor: pointer;
   }
 
-  height: 250px;
+  height: 180px;
   width: 100%;
 
   @media (max-width: 1200px) {
-    height: 180px;
+    height: 150px;
   }
 
   @media (max-width: 992px) {
     height: 250px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     height: 200px;
   }
 
-  @media (max-width: 400px) {
-    height: 160px;
+  @media (max-width: 576px) {
+    height: 150px;
   }
 `;
 

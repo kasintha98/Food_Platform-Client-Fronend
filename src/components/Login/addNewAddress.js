@@ -169,14 +169,17 @@ export default function AddNewAddress(props) {
         zipCode: parseInt(zip),
       };
       if (address1 != "" && city != "" && type != "" && state != "") {
-        dispatch(AddAddress(addressObj));
-        clearFileds();
-        if (editPress) {
-          toast.success("Successfully Updated!");
-          setEditPress(false);
-        } else {
-          toast.success("Successfully Added!");
-        }
+        dispatch(AddAddress(addressObj)).then((res) => {
+          if (editPress && res && res.status === 200) {
+            clearFileds();
+            toast.success("Successfully Updated!");
+            setEditPress(false);
+          }
+          if (!editPress && res && res.status === 200) {
+            clearFileds();
+            toast.success("Successfully Added!");
+          }
+        });
       } else {
         setValidateErrror(true);
       }
