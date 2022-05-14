@@ -1,30 +1,32 @@
 import React from "react";
 const fetch = require("node-fetch");
+/* var sha512 = require("js-sha512").sha512; */
 
 export const PayUTest = () => {
   const encodedParams = new URLSearchParams();
-  encodedParams.set("key", "JP***g");
-  encodedParams.set("amount", "10.00");
-  encodedParams.set("txnid", "WCoYPvLnlu1xBb");
-  encodedParams.set("firstname", "PayU User");
+  encodedParams.set("key", "JPM7Fg");
+  encodedParams.set("amount", "10");
+  encodedParams.set("txnid", "t6svtqtjRdl4wm");
+  encodedParams.set("firstname", "Ashish");
+  encodedParams.set("lastname", "Kumar");
   encodedParams.set("email", "test@gmail.com");
-  encodedParams.set("phone", "9876543210");
+  encodedParams.set("phone", "9988776655");
   encodedParams.set("productinfo", "iPhone");
-  encodedParams.set("surl", "http://localhost:3000/new-checkout#suc");
-  encodedParams.set("furl", "http://localhost:3000/new-checkout");
-  encodedParams.set("pg", "");
+  encodedParams.set("surl", "http://localhost:5080/new-checkout#s");
+  encodedParams.set("furl", "http://localhost:5080/new-checkout#f");
+  /*  encodedParams.set("pg", "");
   encodedParams.set("bankcode", "");
   encodedParams.set("ccnum", "");
   encodedParams.set("ccexpmon", "");
   encodedParams.set("ccexpyr", "");
   encodedParams.set("ccvv", "");
   encodedParams.set("ccname", "");
-  encodedParams.set("txn_s2s_flow", "");
+  encodedParams.set("txn_s2s_flow", ""); */
   encodedParams.set(
     "hash",
-    "9ff3a81d7e3a33a27c7c3faa94eea2994066c4232e9f6d091b8b576e101c690c3713b5438eca36622171165f4a445c2f25da1879b5367a54f91fd5980b6e65e2"
+    "f755540202b0e2194a13893140beb2f93d8d1860b22ea553620a474f2b7f1a60144aec0bbada96048f82e508e0f5bf97abf2d267d51f16dd46dead8fbd811c5d"
   );
-  const url = "https://test.payu.in/merchant/_payment";
+  const url = "https://test.payu.in/_payment";
   const options = {
     method: "POST",
     headers: {
@@ -35,18 +37,42 @@ export const PayUTest = () => {
   };
 
   const pay = () => {
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((json) => console.log(json))
-      .catch((err) => console.error("error:" + err));
+    try {
+      fetch(url, options)
+        .then((res) => res.json())
+        .then((json) => console.log(json))
+        .catch((err) => console.error("error:" + err));
+
+      /* sha512(JPM7Fg|t6svtqtjRdl4wm|10|iPhone|Ashish|test@gmail.com|||||||||||TuxqAugd); */
+      var hashString =
+        "JPM7Fg" +
+        "|" +
+        "t6svtqtjRdl4wm" +
+        "|" +
+        10 +
+        "|" +
+        "iPhone" +
+        "|" +
+        "Ashish" +
+        "|" +
+        "test@gmail.com" +
+        "|" +
+        "||||||||||" +
+        "TuxqAugd"; // Your salt value
+
+      /* var hashed = sha512(hashString); */
+      /* console.log(hashed); */
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div>
-      {/* <button onClick={pay}>Pay</button> */}
+      <button onClick={pay}>Pay P</button>
       <form action="https://test.payu.in/_payment" method="post">
         <input type="hidden" name="key" defaultValue="JPM7Fg" />
-        <input type="hidden" name="txnid" defaultValue="t6svtqtjRdl4ws" />
+        <input type="hidden" name="txnid" defaultValue="t6svtqtjRdl4wm" />
         <input type="hidden" name="productinfo" defaultValue="iPhone" />
         <input type="hidden" name="amount" defaultValue={10} />
         <input type="hidden" name="email" defaultValue="test@gmail.com" />
@@ -55,18 +81,18 @@ export const PayUTest = () => {
         <input
           type="hidden"
           name="surl"
-          defaultValue="http://localhost:3000/new-checkout#s"
+          defaultValue="http://localhost:5080/new-checkout#s"
         />
         <input
           type="hidden"
           name="furl"
-          defaultValue="http://localhost:3000/new-checkout#f"
+          defaultValue="http://localhost:5080/new-checkout#f"
         />
         <input type="hidden" name="phone" defaultValue={9988776655} />
         <input
           type="hidden"
           name="hash"
-          defaultValue="eabec285da28fd0e3054d41a4d24fe9f7599c9d0b66646f7a9984303fd6124044b6206daf831e9a8bda28a6200d318293a13d6c193109b60bd4b4f8b09c90972"
+          defaultValue="a0680012f27ca191dff75e1e432869ea1fcc127e28634b60d9a98c4329625c5eca694bab0528981d726cc4dd474c2adf4c99e1a9481986560873d3d6c0c62625"
         />
         <input
           type="submit"

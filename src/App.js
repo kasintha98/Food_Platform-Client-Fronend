@@ -87,7 +87,7 @@ function App() {
           />
         </Switch>
       </Router>
-      <DeliveryTypeModal delay={5000}></DeliveryTypeModal>
+      <DeliveryTypeModal delay={0}></DeliveryTypeModal>
     </div>
   );
 }

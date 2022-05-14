@@ -203,6 +203,7 @@ export default function NewCheckout() {
   const [tabValue, setTabValue] = useState(0);
   const [show, setShow] = useState(false);
   const [paymentType, setPaymentType] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("Not Paid");
   const [currentPaymentType, setCurrentPaymentType] = useState("");
   const [showInvoice, setShowInvoice] = useState(false);
   const [delCharge, setDelCharge] = useState(0);
@@ -412,7 +413,7 @@ export default function NewCheckout() {
         orderId: "EMPTY",
         restaurantId: currentType.restaurantId,
         storeId: currentType.storeId,
-        orderSource: "WEB",
+        orderSource: "W",
         customerId: auth.user.id,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
@@ -421,6 +422,8 @@ export default function NewCheckout() {
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
         totalPrice: total,
+        paymentStatus: paymentStatus,
+        paymentMode: currentPaymentType,
         deliveryCharges: Number(delCharge) ? Number(delCharge) : 0,
         customerAddressId: selectedAddress ? selectedAddress.id : null,
         cgstCalculatedValue: cgstCaluclatedValue.toFixed(2),
@@ -552,7 +555,10 @@ export default function NewCheckout() {
           </Modal.Title>
         </Modal.Header>
         {orderResp ? (
-          <Modal.Body ref={ref}>
+          <Modal.Body
+            ref={ref}
+            style={{ maxHeight: "75vh", overflowY: "auto" }}
+          >
             {defDel ? (
               <>
                 <div className="text-center">
@@ -643,6 +649,7 @@ export default function NewCheckout() {
                     sgst={orderResp.sgstCalculatedValue}
                     overallPriceWithTax={orderResp.overallPriceWithTax}
                     delCharge={delCharge}
+                    fullResp={orderResp}
                   ></InvoiceTable>
                 </div>
               </>
@@ -1460,7 +1467,7 @@ export default function NewCheckout() {
                             value={paymentType}
                             onChange={handleChangePaymentType}
                           >
-                            <FormControlLabel
+                            {/* <FormControlLabel
                               value="PayU"
                               control={<Radio color="success" />}
                               label={
@@ -1475,8 +1482,8 @@ export default function NewCheckout() {
                                   PayU (Cards, Net Banking, UPI, Wallet)
                                 </Typography>
                               }
-                            />
-                            <FormControlLabel
+                            /> */}
+                            {/* <FormControlLabel
                               value="Paytm"
                               control={<Radio color="success" />}
                               label={
@@ -1492,7 +1499,7 @@ export default function NewCheckout() {
                                   Card, Patm wallet)
                                 </Typography>
                               }
-                            />
+                            /> */}
                             <FormControlLabel
                               value="CASH"
                               control={<Radio color="success" />}
@@ -1635,7 +1642,10 @@ export default function NewCheckout() {
                   onClick={placeOrder}
                   variant="contained"
                   disabled={
-                    selectedAddress && Object.keys(cart?.cartItems).length > 0
+                    selectedAddress &&
+                    Object.keys(cart?.cartItems).length > 0 &&
+                    auth.user.id &&
+                    currentPaymentType
                       ? false
                       : true
                   }
@@ -1647,13 +1657,22 @@ export default function NewCheckout() {
                   onClick={placeOrder}
                   variant="contained"
                   disabled={
-                    Object.keys(cart?.cartItems).length > 0 ? false : true
+                    Object.keys(cart?.cartItems).length > 0
+                      ? false
+                      : true && auth.user.id && currentPaymentType
                   }
                 >
                   PLACE ORDER
                 </POButton>
               )}
             </Col>
+          </Row>
+          <Row>
+            {!auth.user.id ? (
+              <Alert severity="error">
+                Please login before placing the order!
+              </Alert>
+            ) : null}
           </Row>
         </CusContainer>
       </div>

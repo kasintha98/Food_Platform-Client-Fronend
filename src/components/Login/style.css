@@ -97,6 +97,10 @@
   padding: 1.5rem;
 }
 
+.country-list {
+  max-height: 90px !important;
+}
+
 .marTop-4 {
   margin-top: 1.5rem;
 }

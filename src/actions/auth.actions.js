@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 import axiosnew from "axios";
 import { GetAddress } from "./user.action";
+import { getProductsNew, getAllSections } from "./product.action";
 
 export const login = (user) => {
   return async (dispatch) => {
@@ -218,6 +219,8 @@ export const setDeliveryType = (delObj) => {
       if (delObj) {
         dispatch(GetTaxDetails(delObj.restaurantId, delObj.storeId));
         dispatch(GetDeliveryPrice(delObj.restaurantId, delObj.storeId));
+        dispatch(getAllSections());
+        dispatch(getProductsNew());
       }
     } catch (error) {
       console.log(error);

@@ -371,9 +371,14 @@ export const GetUserOrdersNew = (userId) => {
 
       if (res.status === 200) {
         console.log(res);
+        const sortedList = res.data.sort(function (a, b) {
+          var c = new Date(a.updatedDate);
+          var d = new Date(b.updatedDate);
+          return d - c;
+        });
         dispatch({
           type: orderConstantsNew.GET_USER_ORDERS_SUCCESS,
-          payload: res.data,
+          payload: sortedList,
         });
         return res.data;
       } else {

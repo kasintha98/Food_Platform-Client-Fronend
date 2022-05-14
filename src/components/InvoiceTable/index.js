@@ -96,14 +96,14 @@ export const InvoiceTable = (props) => {
                 {props.sgst}
               </TableCell>
             </TableRow>
-            {/* <TableRow>
+            <TableRow>
               <TableCell component="th" scope="row" colspan="3">
                 Delivery Charges
               </TableCell>
               <TableCell component="th" scope="row" colspan="1">
-                {props.delCharge}
+                {props.fullResp.deliveryCharges}
               </TableCell>
-            </TableRow> */}
+            </TableRow>
             <TableRow>
               <TableCell component="th" scope="row" colspan="3">
                 Grand Total
