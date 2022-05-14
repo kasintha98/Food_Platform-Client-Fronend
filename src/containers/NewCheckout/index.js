@@ -421,7 +421,7 @@ export default function NewCheckout() {
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
         totalPrice: total,
-        deliveryCharges: delCharge,
+        deliveryCharges: Number(delCharge) ? Number(delCharge) : 0,
         customerAddressId: selectedAddress ? selectedAddress.id : null,
         cgstCalculatedValue: cgstCaluclatedValue.toFixed(2),
         sgstCalculatedValue: sgstCalculatedValue.toFixed(2),

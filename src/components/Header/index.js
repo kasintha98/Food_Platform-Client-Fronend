@@ -52,7 +52,7 @@ const CusDropdown = styled(Dropdown.Toggle)`
 `;
 
 const CusDropMenu = styled(Dropdown.Menu)`
-  width: 350px;
+  width: 400px;
 
   @media (max-width: 576px) {
     width: 75vw;
@@ -439,7 +439,7 @@ export default function Header(props) {
                     >
                       <Col className="col-5">
                         <Typography sx={{ color: "#A6A6A6" }}>
-                          Resturant Name
+                          Restaurant Name
                         </Typography>
                       </Col>
                       <Col className="col-7">
@@ -458,7 +458,7 @@ export default function Header(props) {
                     >
                       <Col className="col-5">
                         <Typography sx={{ color: "#A6A6A6" }}>
-                          Resturant Address
+                          Restaurant Address
                         </Typography>
                       </Col>
                       <Col className="col-7">
