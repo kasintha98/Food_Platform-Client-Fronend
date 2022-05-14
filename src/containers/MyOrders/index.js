@@ -213,7 +213,7 @@ export const MyOrders = () => {
                             <span>Delivery</span>
                           </Col>
                           <Col className="p-0 m-0">
-                            <span>₹ N/D</span>
+                            <span>₹ {order.deliveryCharges}</span>
                           </Col>
                         </Row>
                       </CusTableCell>
