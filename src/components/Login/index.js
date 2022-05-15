@@ -31,9 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, signup } from "../../actions";
 import { toast } from "react-toastify";
 import "react-phone-number-input/style.css";
-/* import PhoneInput from "react-phone-number-input"; */
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import PhoneInput from "react-phone-number-input";
 import CloseIcon from "@mui/icons-material/Close";
 import { NavHashLink } from "react-router-hash-link";
 import Countdown from "react-countdown";
@@ -243,7 +241,7 @@ export default function LoginDrawer(props) {
       if (!otpSuccess) {
         configureCaptcha("sign-in-button");
       }
-      const phoneNumber = "+" + mobileNumber;
+      const phoneNumber = mobileNumber;
       const appVerifier = window.recaptchaVerifier;
       console.log(phoneNumber);
       firebase
@@ -356,6 +354,7 @@ export default function LoginDrawer(props) {
 
   const onKeyDownHandler = (e) => {
     if (e.keyCode === 13) {
+      e.preventDefault();
       onSignInSubmit(e);
     }
   };
@@ -375,24 +374,25 @@ export default function LoginDrawer(props) {
                 </div>
                 <div className="row">
                   <div id="sign-in-button"></div>
-                  {/* <PhoneInput
+                  <PhoneInput
                     defaultCountry="IN"
                     style={{ fontSize: "0.875rem" }}
                     placeholder="Mobile Number"
                     value={mobileNumber}
                     onChange={setMobileNumber}
                     onKeyDown={onKeyDownHandler}
-                  /> */}
-                  <PhoneInput
-                    country={"in"}
+                  />
+                  {/* <PhoneInput
+                    country={"lk"}
                     style={{ fontSize: "0.875rem" }}
-                    placeholder="Mobile Number"
+                    placeholder="         Mobile Number"
                     value={mobileNumber}
                     enableSearch={true}
                     disableSearchIcon={true}
                     onChange={setMobileNumber}
                     onKeyDown={onKeyDownHandler}
-                  />
+                    countryCodeEditable={false}
+                  /> */}
                   {/* <TextField
                   id="outlined-helperText"
                   inputProps={{ style: { fontSize: "0.875rem" } }}
