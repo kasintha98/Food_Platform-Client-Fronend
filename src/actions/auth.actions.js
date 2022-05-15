@@ -111,6 +111,8 @@ export const signup = (mobileNumber) => {
 
         const { id, mobileNumber, firstName, lastName, emailId } = res.data;
 
+        console.log(res.data);
+
         dispatch(GetAddress(mobileNumber));
 
         const user = {

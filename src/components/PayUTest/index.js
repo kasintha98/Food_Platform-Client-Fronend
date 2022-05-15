@@ -1,83 +1,65 @@
-import React from "react";
-const fetch = require("node-fetch");
-/* var sha512 = require("js-sha512").sha512; */
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
-export const PayUTest = () => {
-  const encodedParams = new URLSearchParams();
-  encodedParams.set("key", "JPM7Fg");
-  encodedParams.set("amount", "10");
-  encodedParams.set("txnid", "t6svtqtjRdl4wm");
-  encodedParams.set("firstname", "Ashish");
-  encodedParams.set("lastname", "Kumar");
-  encodedParams.set("email", "test@gmail.com");
-  encodedParams.set("phone", "9988776655");
-  encodedParams.set("productinfo", "iPhone");
-  encodedParams.set("surl", "http://localhost:5080/new-checkout#s");
-  encodedParams.set("furl", "http://localhost:5080/new-checkout#f");
-  /*  encodedParams.set("pg", "");
-  encodedParams.set("bankcode", "");
-  encodedParams.set("ccnum", "");
-  encodedParams.set("ccexpmon", "");
-  encodedParams.set("ccexpyr", "");
-  encodedParams.set("ccvv", "");
-  encodedParams.set("ccname", "");
-  encodedParams.set("txn_s2s_flow", ""); */
-  encodedParams.set(
-    "hash",
-    "f755540202b0e2194a13893140beb2f93d8d1860b22ea553620a474f2b7f1a60144aec0bbada96048f82e508e0f5bf97abf2d267d51f16dd46dead8fbd811c5d"
-  );
-  const url = "https://test.payu.in/_payment";
-  const options = {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: encodedParams,
-  };
+var sha512 = require("js-sha512").sha512;
 
-  const pay = () => {
-    try {
-      fetch(url, options)
-        .then((res) => res.json())
-        .then((json) => console.log(json))
-        .catch((err) => console.error("error:" + err));
+export const PayUTest = (props) => {
+  const auth = useSelector((state) => state.auth);
 
-      /* sha512(JPM7Fg|t6svtqtjRdl4wm|10|iPhone|Ashish|test@gmail.com|||||||||||TuxqAugd); */
-      var hashString =
-        "JPM7Fg" +
-        "|" +
-        "t6svtqtjRdl4wm" +
-        "|" +
-        10 +
-        "|" +
-        "iPhone" +
-        "|" +
-        "Ashish" +
-        "|" +
-        "test@gmail.com" +
-        "|" +
-        "||||||||||" +
-        "TuxqAugd"; // Your salt value
+  const [hashed, setHashed] = useState("");
+  const [txnid, setTxnid] = useState("");
 
-      /* var hashed = sha512(hashString); */
-      /* console.log(hashed); */
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    const tid = uuidv4();
+    setTxnid(tid);
+
+    var hashString =
+      "JPM7Fg" +
+      "|" +
+      `${tid}` +
+      "|" +
+      `${props.total}` +
+      "|" +
+      "Hangries Food Items" +
+      "|" +
+      `${auth.user?.firstName}` +
+      "|" +
+      `${auth.user?.emailId}` +
+      "|" +
+      "||||||||||" +
+      "TuxqAugd"; // Your salt value
+
+    var hashed = sha512(hashString);
+    setHashed(hashed);
+  }, []);
 
   return (
     <div>
-      <button onClick={pay}>Pay P</button>
-      <form action="https://test.payu.in/_payment" method="post">
+      <form
+        target="_blank"
+        action="https://test.payu.in/_payment"
+        method="post"
+      >
         <input type="hidden" name="key" defaultValue="JPM7Fg" />
-        <input type="hidden" name="txnid" defaultValue="t6svtqtjRdl4wm" />
-        <input type="hidden" name="productinfo" defaultValue="iPhone" />
-        <input type="hidden" name="amount" defaultValue={10} />
-        <input type="hidden" name="email" defaultValue="test@gmail.com" />
-        <input type="hidden" name="firstname" defaultValue="Ashish" />
-        <input type="hidden" name="lastname" defaultValue="Kumar" />
+        <input type="hidden" name="txnid" defaultValue={txnid} />
+        <input
+          type="hidden"
+          name="productinfo"
+          defaultValue="Hangries Food Items"
+        />
+        <input type="hidden" name="amount" defaultValue={props.total} />
+        <input type="hidden" name="email" defaultValue={auth.user?.emailId} />
+        <input
+          type="hidden"
+          name="firstname"
+          defaultValue={auth.user?.firstName}
+        />
+        <input
+          type="hidden"
+          name="lastname"
+          defaultValue={auth.user?.lastName}
+        />
         <input
           type="hidden"
           name="surl"
@@ -88,12 +70,12 @@ export const PayUTest = () => {
           name="furl"
           defaultValue="http://localhost:5080/new-checkout#f"
         />
-        <input type="hidden" name="phone" defaultValue={9988776655} />
         <input
           type="hidden"
-          name="hash"
-          defaultValue="a0680012f27ca191dff75e1e432869ea1fcc127e28634b60d9a98c4329625c5eca694bab0528981d726cc4dd474c2adf4c99e1a9481986560873d3d6c0c62625"
+          name="phone"
+          defaultValue={auth.user?.mobileNumber}
         />
+        <input type="hidden" name="hash" defaultValue={hashed} />
         <input
           type="submit"
           defaultValue="submit"

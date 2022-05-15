@@ -173,12 +173,18 @@ export const UpdateUserDetails = (payload) => {
   return async (dispatch) => {
     try {
       const res = await axios.put("/customer/update", payload);
-      dispatch({ type: userDetailsConstants.UPDATE_USER_DETAILS_SUCCESS });
 
-      if (res) {
+      if (res.status === 200) {
+        const { id, firstName, lastName, emailId, mobileNumber } = res.data;
+        const userResp = { id, firstName, lastName, emailId, mobileNumber };
+
+        dispatch({
+          type: userDetailsConstants.UPDATE_USER_DETAILS_SUCCESS,
+          payload: userResp,
+        });
         console.log(res);
-        const { id, firstName, lastName, emailId } = res.data;
 
+        localStorage.setItem("user", JSON.stringify(userResp));
         localStorage.setItem("userFistName", firstName);
         localStorage.setItem("userLastName", lastName);
         localStorage.setItem("userEmail", emailId);

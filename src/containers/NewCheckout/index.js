@@ -286,6 +286,8 @@ export default function NewCheckout() {
     return <span>₹ {all}</span>;
   };
 
+  let grandTotalForPayU = 0;
+
   const renderGrandTot = () => {
     const allSub =
       subTotal +
@@ -301,6 +303,7 @@ export default function NewCheckout() {
     }
 
     const grantTot = allSub + allTax + Number(delCharge);
+    grandTotalForPayU = grantTot.toFixed(2);
 
     return <span>₹ {grantTot.toFixed(2)}</span>;
   };
@@ -1467,7 +1470,7 @@ export default function NewCheckout() {
                             value={paymentType}
                             onChange={handleChangePaymentType}
                           >
-                            {/* <FormControlLabel
+                            <FormControlLabel
                               value="PayU"
                               control={<Radio color="success" />}
                               label={
@@ -1482,7 +1485,7 @@ export default function NewCheckout() {
                                   PayU (Cards, Net Banking, UPI, Wallet)
                                 </Typography>
                               }
-                            /> */}
+                            />
                             {/* <FormControlLabel
                               value="Paytm"
                               control={<Radio color="success" />}
@@ -1577,7 +1580,7 @@ export default function NewCheckout() {
                         <Row>
                           <Col>
                             {/* <PayU></PayU> */}
-                            <PayUTest></PayUTest>
+                            <PayUTest total={grandTotalForPayU}></PayUTest>
                           </Col>
                           <Col>
                             <Button

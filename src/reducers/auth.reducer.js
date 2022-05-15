@@ -3,6 +3,7 @@ import {
   deliveryTypeConstants,
   taxConstants,
   deliPriceConstants,
+  userDetailsConstants,
 } from "../actions/constants";
 
 //initial state of user object
@@ -115,6 +116,13 @@ export default (state = initState, action) => {
       state = {
         ...state,
         deliveryPrice: action.payload,
+      };
+      break;
+
+    case userDetailsConstants.UPDATE_USER_DETAILS_SUCCESS:
+      state = {
+        ...state,
+        user: action.payload,
       };
       break;
   }
