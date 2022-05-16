@@ -59,6 +59,7 @@ import { PayU } from "../../components/PayU";
 import { InvoiceTable } from "../../components/InvoiceTable";
 import Pdf from "react-to-pdf";
 import { PayUTest } from "../../components/PayUTest";
+import { toast } from "react-toastify";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -460,7 +461,14 @@ export default function NewCheckout() {
         if (res && res.data) {
           console.log(res.data);
           setOrderResp(res.data);
-          handleShowInvoice();
+
+          if (currentPaymentType !== "PayU") {
+            handleShowInvoice();
+          }
+          if (currentPaymentType === "PayU") {
+            toast.warning("Please complete the PayU process in next tab!");
+          }
+
           return res.data;
         }
       });
