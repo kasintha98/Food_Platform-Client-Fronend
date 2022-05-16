@@ -421,7 +421,7 @@ export default function NewCheckout() {
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
           currentType.type === "delivery" ? "DELIVERY" : "SELF-COLLECT",
-        storeTableId: "test",
+        storeTableId: null,
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
         totalPrice: total,
