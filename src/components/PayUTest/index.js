@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 
 var sha512 = require("js-sha512").sha512;
 
@@ -9,17 +8,31 @@ export const PayUTest = (props) => {
 
   const [hashed, setHashed] = useState("");
   const [txnid, setTxnid] = useState("");
+  const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    const tid = uuidv4();
-    setTxnid(tid);
+  const saveOrder = (e) => {
+    e.preventDefault();
+    try {
+      getSavedOrder();
 
+      setTimeout(function () {
+        document.getElementById("payuForm").submit();
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getSavedOrder = async () => {
+    const savedOrder = await props.placeOrder();
+    setTxnid(savedOrder.orderId);
+    setTotal(savedOrder.overallPriceWithTax);
     var hashString =
       "JPM7Fg" +
       "|" +
-      `${tid}` +
+      `${savedOrder.orderId}` +
       "|" +
-      `${props.total}` +
+      `${savedOrder.overallPriceWithTax}` +
       "|" +
       "Hangries Food Items" +
       "|" +
@@ -29,10 +42,9 @@ export const PayUTest = (props) => {
       "|" +
       "||||||||||" +
       "TuxqAugd"; // Your salt value
-
     var hashed = sha512(hashString);
     setHashed(hashed);
-  }, []);
+  };
 
   return (
     <div>
@@ -40,6 +52,7 @@ export const PayUTest = (props) => {
         target="_blank"
         action="https://test.payu.in/_payment"
         method="post"
+        id="payuForm"
       >
         <input type="hidden" name="key" defaultValue="JPM7Fg" />
         <input type="hidden" name="txnid" defaultValue={txnid} />
@@ -48,7 +61,7 @@ export const PayUTest = (props) => {
           name="productinfo"
           defaultValue="Hangries Food Items"
         />
-        <input type="hidden" name="amount" defaultValue={props.total} />
+        <input type="hidden" name="amount" defaultValue={total} />
         <input type="hidden" name="email" defaultValue={auth.user?.emailId} />
         <input
           type="hidden"
@@ -76,12 +89,22 @@ export const PayUTest = (props) => {
           defaultValue={auth.user?.mobileNumber}
         />
         <input type="hidden" name="hash" defaultValue={hashed} />
-        <input
+        <button
+          className="btn btn-primary w-100"
+          disabled={props.disabled}
+          onClick={(e) => {
+            saveOrder(e);
+          }}
+        >
+          Pay With PayU
+        </button>
+        {/* <input
           type="submit"
           defaultValue="submit"
           value="Pay With PayU"
           className="btn btn-primary w-100"
-        />{" "}
+          disabled={props.disabled}
+        /> */}
       </form>
     </div>
   );

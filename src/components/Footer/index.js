@@ -74,22 +74,22 @@ export default function Footer() {
                     <ul>
                       <li>
                         <a href="https://www.facebook.com/HangriesOfficial">
-                          <i class="fa fa-facebook"> Facebook</i>
+                          <i className="fa fa-facebook"> Facebook</i>
                         </a>
                       </li>
                       <li>
                         <a href="https://www.instagram.com/hangriesofficial/">
-                          <i class="fa fa-instagram"> Instagram</i>
+                          <i className="fa fa-instagram"> Instagram</i>
                         </a>
                       </li>
                       <li>
                         <a href="https://www.youtube.com/channel/UCJPY7XvcOOMWNlZcgmxAJLg/featured">
-                          <i class="fa fa-youtube"> Youtube</i>
+                          <i className="fa fa-youtube"> Youtube</i>
                         </a>
                       </li>
                       <li>
                         <a href="https://api.whatsapp.com/send?phone=+91-9369522222">
-                          <i class="fa fa-whatsapp"> Whatsapp</i>
+                          <i className="fa fa-whatsapp"> Whatsapp</i>
                         </a>
                       </li>
                     </ul>

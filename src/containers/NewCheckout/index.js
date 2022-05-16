@@ -328,7 +328,7 @@ export default function NewCheckout() {
   };
   const handleShowInvoice = () => setShowInvoice(true);
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     try {
       const total =
         subTotal +
@@ -456,13 +456,15 @@ export default function NewCheckout() {
 
       console.log(NewOrder);
 
-      dispatch(saveNewOrder(NewOrder)).then((res) => {
+      const result = await dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
           console.log(res.data);
           setOrderResp(res.data);
           handleShowInvoice();
+          return res.data;
         }
       });
+      return result;
     } catch (error) {
       console.log(error);
     }
@@ -595,7 +597,7 @@ export default function NewCheckout() {
                     ) : (
                       <span>Self-Collect</span>
                     )}
-                    <span> [Paid]</span>
+                    <span> [{orderResp ? orderResp.paymentStatus : null}]</span>
                   </Typography>
                 </div>
                 <hr></hr>
@@ -826,7 +828,7 @@ export default function NewCheckout() {
     <div>
       <Header></Header>
       <div className="wh-background">
-        <CusContainer>
+        <CusContainer className="pb-2">
           <Row className="pt-2">
             <Typography
               sx={{
@@ -1580,7 +1582,17 @@ export default function NewCheckout() {
                         <Row>
                           <Col>
                             {/* <PayU></PayU> */}
-                            <PayUTest total={grandTotalForPayU}></PayUTest>
+                            <PayUTest
+                              total={grandTotalForPayU}
+                              disabled={
+                                Object.keys(cart?.cartItems).length > 0 &&
+                                auth.user.id &&
+                                currentPaymentType
+                                  ? false
+                                  : true
+                              }
+                              placeOrder={placeOrder}
+                            ></PayUTest>
                           </Col>
                           <Col>
                             <Button
@@ -1638,38 +1650,43 @@ export default function NewCheckout() {
               </Row>
             </Col>
           </Row>
-          <Row>
-            <Col className="text-center p-3">
-              {currentType?.type === "delivery" ? (
-                <POButton
-                  onClick={placeOrder}
-                  variant="contained"
-                  disabled={
-                    selectedAddress &&
-                    Object.keys(cart?.cartItems).length > 0 &&
-                    auth.user.id &&
-                    currentPaymentType
-                      ? false
-                      : true
-                  }
-                >
-                  PLACE ORDER
-                </POButton>
-              ) : (
-                <POButton
-                  onClick={placeOrder}
-                  variant="contained"
-                  disabled={
-                    Object.keys(cart?.cartItems).length > 0
-                      ? false
-                      : true && auth.user.id && currentPaymentType
-                  }
-                >
-                  PLACE ORDER
-                </POButton>
-              )}
-            </Col>
-          </Row>
+          {currentPaymentType === "COD" || currentPaymentType === "CASH" ? (
+            <Row>
+              <Col className="text-center p-3">
+                {currentType?.type === "delivery" ? (
+                  <POButton
+                    onClick={placeOrder}
+                    variant="contained"
+                    disabled={
+                      selectedAddress &&
+                      Object.keys(cart?.cartItems).length > 0 &&
+                      auth.user.id &&
+                      currentPaymentType
+                        ? false
+                        : true
+                    }
+                  >
+                    PLACE ORDER
+                  </POButton>
+                ) : (
+                  <POButton
+                    onClick={placeOrder}
+                    variant="contained"
+                    disabled={
+                      Object.keys(cart?.cartItems).length > 0 &&
+                      auth.user.id &&
+                      currentPaymentType
+                        ? false
+                        : true
+                    }
+                  >
+                    PLACE ORDER
+                  </POButton>
+                )}
+              </Col>
+            </Row>
+          ) : null}
+
           <Row>
             {!auth.user.id ? (
               <Alert severity="error">
