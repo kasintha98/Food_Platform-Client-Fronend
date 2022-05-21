@@ -326,15 +326,7 @@ export const saveNewOrder = (payload) => {
         dispatch(resetCart());
         localStorage.removeItem("cart");
         //dispatch(getCartItems());
-        toast.success("Order Placed Successfully!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.success("Order Placed Successfully!");
         return res;
       } else {
         const { error } = res.data;
@@ -342,38 +334,32 @@ export const saveNewOrder = (payload) => {
           type: userConstants.ADD_USER_ORDER_FAILURE,
           payload: { error },
         });
-        toast.error("There was an error!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error("There was an error!");
       }
     } catch (error) {
       console.log(error);
-      toast.error("There was an error from our end, Please try again!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.error("There was an error from our end, Please try again!");
     }
   };
 };
 
-export const GetUserOrdersNew = (userId) => {
+export const GetUserOrdersNew = (loggedUser, loggedDeliveryType) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get("/getOrderByCustomerId", {
+      //old API
+      /* const res = await axios.get("/getOrderByCustomerId", {
         params: { customerId: userId },
-      });
+      }); */
+
       dispatch({ type: orderConstantsNew.GET_USER_ORDERS_REQUEST });
+
+      const res = await axios.get("/getOrderMenuIngredientAddressView", {
+        params: {
+          restaurantId: loggedDeliveryType.restaurantId,
+          storeId: loggedDeliveryType.storeId,
+          mobileNumber: loggedUser.mobileNumber,
+        },
+      });
 
       if (res.status === 200) {
         console.log(res);

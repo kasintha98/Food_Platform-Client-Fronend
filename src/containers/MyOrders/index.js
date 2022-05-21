@@ -37,30 +37,34 @@ export const MyOrders = () => {
   const [allStatus, setAllStatus] = useState({});
   const [tabValue, setTabValue] = useState(0);
 
+  const loggedUser = useSelector((state) => state.auth.user);
+  const loggedDeliveryType = useSelector((state) => state.auth.deliveryType);
+
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const id = localStorage.getItem("userId");
-    dispatch(GetUserOrdersNew(id)).then((res) => {
-      if (res && res.length > 0) {
-        let ob = {};
-        for (let j = 0; j < res.length; j++) {
-          dispatch(GetOrderProcessStatus2(res[j].orderId)).then((res2) => {
-            if (res2 && res2.length > 0) {
-              for (let i = 0; i < res2.length; i++) {
-                const newPair = { [res2[i].orderId]: res2 };
-                //ob[res2[i].orderId] = res2;
-                ob = { ...ob, ...newPair };
+    if (loggedUser && loggedUser.id && loggedDeliveryType) {
+      dispatch(GetUserOrdersNew(loggedUser, loggedDeliveryType)).then((res) => {
+        if (res && res.length > 0) {
+          let ob = {};
+          for (let j = 0; j < res.length; j++) {
+            dispatch(GetOrderProcessStatus2(res[j].orderId)).then((res2) => {
+              if (res2 && res2.length > 0) {
+                for (let i = 0; i < res2.length; i++) {
+                  const newPair = { [res2[i].orderId]: res2 };
+                  //ob[res2[i].orderId] = res2;
+                  ob = { ...ob, ...newPair };
+                }
+                console.log(ob);
+                setAllStatus(ob);
               }
-              console.log(ob);
-              setAllStatus(ob);
-            }
-          });
+            });
+          }
         }
-      }
-    });
+      });
+    }
   }, []);
 
   const handleNavTab = (val) => {
@@ -155,7 +159,7 @@ export const MyOrders = () => {
                       <CusTableCell align="right">
                         {order.orderDetails.map((item) => (
                           <span>
-                            {item.productId}
+                            {item.productName}
                             <br></br>
                           </span>
                         ))}
@@ -168,11 +172,13 @@ export const MyOrders = () => {
                           </span>
                         ))}
                       </CusTableCell>
-                      <CusTableCell align="right">B</CusTableCell>
+                      <CusTableCell align="right">
+                        {order.paymentMode} : {order.paymentStatus}
+                      </CusTableCell>
                       <CusTableCell align="right">
                         ₹ {order.overallPriceWithTax}
                       </CusTableCell>
-                      <CusTableCell align="right">D</CusTableCell>
+                      <CusTableCell align="right">{order.address}</CusTableCell>
                       <CusTableCell align="right">
                         {order.orderStatus}
                       </CusTableCell>
