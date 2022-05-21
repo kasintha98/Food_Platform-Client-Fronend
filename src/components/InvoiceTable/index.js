@@ -32,11 +32,11 @@ export const InvoiceTable = (props) => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell>
-                    {row.productId}
+                    {row.productName}
                     {row.subProductId !== "NAA" && (
                       <span>
                         {" - "}
-                        {row.subProductId}
+                        {row.ingredient}
                       </span>
                     )}
                   </TableCell>

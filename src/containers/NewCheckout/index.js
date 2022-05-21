@@ -460,7 +460,7 @@ export default function NewCheckout() {
       const result = await dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
           console.log(res.data);
-          setOrderResp(res.data);
+          setOrderResp(res.data[0]);
 
           if (currentPaymentType !== "PayU") {
             handleShowInvoice();
