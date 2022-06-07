@@ -5,6 +5,7 @@ import bg2 from "../../img/2.jpg";
 import bg2m from "../../img/2m.jpg";
 import styled from "@emotion/styled";
 import { useMediaQuery } from "react-responsive";
+import { Link } from "react-router-dom";
 
 const CusImg = styled.img`
   width: 100%;
@@ -28,19 +29,25 @@ export default function MyCarousel(props) {
       <Carousel style={{ marginBottom: "15px", marginTop: "50px" }}>
         {isMobile ? (
           <Carousel.Item>
-            <CusImg2 className="d-block w-100" src={bg2m} alt="First slide" />
+            <Link to="/new-menu">
+              <CusImg2 className="d-block w-100" src={bg2m} alt="First slide" />
+            </Link>
           </Carousel.Item>
         ) : null}
 
         {!isMobile ? (
           <Carousel.Item>
-            <CusImg className="d-block w-100" src={bg1} alt="First slide" />
+            <Link to="/new-menu">
+              <CusImg className="d-block w-100" src={bg1} alt="First slide" />
+            </Link>
           </Carousel.Item>
         ) : null}
 
         {!isMobile ? (
           <Carousel.Item>
-            <CusImg className="d-block w-100" src={bg2} alt="Second slide" />
+            <Link to="/new-menu">
+              <CusImg className="d-block w-100" src={bg2} alt="Second slide" />
+            </Link>
           </Carousel.Item>
         ) : null}
       </Carousel>

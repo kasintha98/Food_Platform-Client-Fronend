@@ -5,6 +5,11 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import styled from "@emotion/styled";
+
+const CusTableCell = styled(TableCell)`
+  color: black;
+`;
 
 export const InvoiceTable = (props) => {
   const cart = useSelector((state) => state.cart);
@@ -18,10 +23,10 @@ export const InvoiceTable = (props) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell>Dish Name</TableCell>
-              <TableCell>Qty</TableCell>
-              <TableCell>Rate</TableCell>
-              <TableCell>Amount</TableCell>
+              <CusTableCell>Dish Name</CusTableCell>
+              <CusTableCell>Qty</CusTableCell>
+              <CusTableCell>Rate</CusTableCell>
+              <CusTableCell>Amount</CusTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -31,7 +36,7 @@ export const InvoiceTable = (props) => {
                   key={row.orderId}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell>
+                  <CusTableCell>
                     {row.productName}
                     {row.subProductId !== "NAA" && (
                       <span>
@@ -39,78 +44,103 @@ export const InvoiceTable = (props) => {
                         {row.ingredient}
                       </span>
                     )}
-                  </TableCell>
-                  <TableCell>{row.quantity}</TableCell>
-                  <TableCell>{row.price}.00</TableCell>
-                  <TableCell>
+                  </CusTableCell>
+                  <CusTableCell>{row.quantity}</CusTableCell>
+                  <CusTableCell>{row.price}.00</CusTableCell>
+                  <CusTableCell>
                     {Number(row.quantity) * Number(row.price)}.00
-                  </TableCell>
+                  </CusTableCell>
                 </TableRow>
                 {/* {row.choiceIng ? (
                 <TableRow key={row.choiceIng.id}>
-                  <TableCell>
+                  <CusTableCell>
                     {row.choiceIng.ingredientType}-{row.choiceIng.size}
-                  </TableCell>
-                  <TableCell>
+                  </CusTableCell>
+                  <CusTableCell>
                     {row.choiceIng.qty ? row.choiceIng.qty : 1}
-                  </TableCell>
-                  <TableCell>{row.choiceIng.price}.00</TableCell>
-                  <TableCell>{row.choiceIng.price}.00</TableCell>
+                  </CusTableCell>
+                  <CusTableCell>{row.choiceIng.price}.00</CusTableCell>
+                  <CusTableCell>{row.choiceIng.price}.00</CusTableCell>
                 </TableRow>
               ) : null} */}
                 {/* {Object.keys(row.extra)
                 ? Object.keys(row.extra).map((rw) => (
                     <TableRow key={rw.id}>
-                      <TableCell>
+                      <CusTableCell>
                         {rw.ingredientType}-{rw.size}
-                      </TableCell>
-                      <TableCell>{rw.qty ? rw.qty : 1}</TableCell>
-                      <TableCell>{rw.price}.00</TableCell>
-                      <TableCell>{rw.price}.00</TableCell>
+                      </CusTableCell>
+                      <CusTableCell>{rw.qty ? rw.qty : 1}</CusTableCell>
+                      <CusTableCell>{rw.price}.00</CusTableCell>
+                      <CusTableCell>{rw.price}.00</CusTableCell>
                     </TableRow>
                   ))
                 : null} */}
               </>
             ))}
-            <TableRow>
-              <TableCell component="th" scope="row" colspan="3">
+            <TableRow sx={{ borderTop: "2px solid black" }}>
+              <CusTableCell component="th" scope="row" colspan="3">
                 Total
-              </TableCell>
-              <TableCell component="th" scope="row" colspan="1">
+              </CusTableCell>
+              <CusTableCell
+                component="th"
+                scope="row"
+                colspan="1"
+                sx={{ fontStyle: "italic" }}
+              >
                 {props.grandTot}
-              </TableCell>
+              </CusTableCell>
             </TableRow>
             <TableRow>
-              <TableCell component="th" scope="row" colspan="3">
+              <CusTableCell component="th" scope="row" colspan="3">
                 CGST
-              </TableCell>
-              <TableCell component="th" scope="row" colspan="1">
+              </CusTableCell>
+              <CusTableCell
+                component="th"
+                scope="row"
+                colspan="1"
+                sx={{ fontStyle: "italic" }}
+              >
                 {props.cgst}
-              </TableCell>
+              </CusTableCell>
             </TableRow>
             <TableRow>
-              <TableCell component="th" scope="row" colspan="3">
+              <CusTableCell component="th" scope="row" colspan="3">
                 SGST
-              </TableCell>
-              <TableCell component="th" scope="row" colspan="1">
+              </CusTableCell>
+              <CusTableCell
+                component="th"
+                scope="row"
+                colspan="1"
+                sx={{ fontStyle: "italic" }}
+              >
                 {props.sgst}
-              </TableCell>
+              </CusTableCell>
             </TableRow>
             <TableRow>
-              <TableCell component="th" scope="row" colspan="3">
+              <CusTableCell component="th" scope="row" colspan="3">
                 Delivery Charges
-              </TableCell>
-              <TableCell component="th" scope="row" colspan="1">
+              </CusTableCell>
+              <CusTableCell
+                component="th"
+                scope="row"
+                colspan="1"
+                sx={{ fontStyle: "italic" }}
+              >
                 {props.fullResp.deliveryCharges}
-              </TableCell>
+              </CusTableCell>
             </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row" colspan="3">
+            <TableRow
+              sx={{
+                borderTop: "2px solid black",
+                borderBottom: "2px solid black",
+              }}
+            >
+              <CusTableCell component="th" scope="row" colspan="3">
                 Grand Total
-              </TableCell>
-              <TableCell component="th" scope="row" colspan="1">
+              </CusTableCell>
+              <CusTableCell component="th" scope="row" colspan="1">
                 {props.overallPriceWithTax}
-              </TableCell>
+              </CusTableCell>
             </TableRow>
           </TableBody>
         </Table>

@@ -568,15 +568,12 @@ export default function NewCheckout() {
           </Modal.Title>
         </Modal.Header>
         {orderResp ? (
-          <Modal.Body
-            ref={ref}
-            style={{ maxHeight: "75vh", overflowY: "auto" }}
-          >
+          <Modal.Body style={{ maxHeight: "75vh", overflowY: "auto" }}>
             {defDel ? (
-              <>
+              <div ref={ref}>
                 <div className="text-center">
                   <Typography sx={{ fontWeight: "600" }}>Hangries</Typography>
-                  <Typography sx={{ color: "#A6A6A6" }}>
+                  <Typography sx={{ color: "black" }}>
                     <span>{defDel.address1}</span>
                     {defDel.address2 ? (
                       <>
@@ -625,7 +622,7 @@ export default function NewCheckout() {
                                     </p> */}
                       <p
                         style={{
-                          color: "#7F7F7F",
+                          color: "black",
                         }}
                       >
                         {selectedAddress.address1}
@@ -665,7 +662,7 @@ export default function NewCheckout() {
                     fullResp={orderResp}
                   ></InvoiceTable>
                 </div>
-              </>
+              </div>
             ) : null}
           </Modal.Body>
         ) : null}
