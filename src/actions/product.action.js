@@ -77,18 +77,27 @@ export const getProductsNew = () => {
 export const getMenuIngredientsByProductId = (id) => {
   return async (dispatch) => {
     try {
-      const res = await axios.get(`/getMenuIngredientsByMenuId`, {
-        params: { productId: id },
-      });
+      const delLoc = localStorage.getItem("deliveryType");
 
-      if (res.status === 200) {
-        dispatch({
-          type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
-          payload: res.data,
+      if (delLoc) {
+        const delObj = JSON.parse(delLoc);
+        const res = await axios.get(`/getMenuIngredientsByMenuId`, {
+          params: {
+            productId: id,
+            restaurantId: delObj.restaurantId,
+            storeId: delObj.storeId,
+          },
         });
-        return res.data;
-      } else {
-        console.log("error");
+
+        if (res.status === 200) {
+          dispatch({
+            type: productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_SUCCESS,
+            payload: res.data,
+          });
+          return res.data;
+        } else {
+          console.log("error");
+        }
       }
     } catch (error) {
       console.log(error);
