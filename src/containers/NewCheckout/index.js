@@ -624,11 +624,11 @@ export default function NewCheckout() {
                   </div>
                   <hr></hr>
                   <div>
-                    <Typography>
+                    <Typography sx={{ color: "black" }}>
                       Name: {auth.user?.firstName} {auth.user?.lastName}
                     </Typography>
                     {selectedAddress ? (
-                      <Typography>
+                      <Typography sx={{ color: "black" }}>
                         {/* <p
                                       style={{
                                         fontWeight: "bold",
@@ -656,11 +656,13 @@ export default function NewCheckout() {
                         </p>
                       </Typography>
                     ) : null}
-                    <Typography>Mob No: {auth.user?.mobileNumber}</Typography>
+                    <Typography sx={{ color: "black" }}>
+                      Mob No: {auth.user?.mobileNumber}
+                    </Typography>
                   </div>
                   <hr></hr>
                   <div>
-                    <Typography>
+                    <Typography sx={{ color: "black" }}>
                       <Row>
                         <Col>Time: {renderNowTime()}</Col>
                         <Col>Date: {renderNowDate()}</Col>
