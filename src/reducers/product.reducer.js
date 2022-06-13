@@ -34,7 +34,7 @@ export default (state = initState, action) => {
     case productConstants.GET_SPECIFIC_PRODUCT_BY_SLUG_FAILURE:
       state = {
         ...state,
-        product: action.payload.error,
+        product: [],
         loading: false,
       };
       break;
@@ -54,7 +54,7 @@ export default (state = initState, action) => {
     case productConstants.GET_MENU_INGREDIENTS_BY_PRODUCT_ID_FAILURE:
       state = {
         ...state,
-        ingredients: action.payload.error,
+        ingredients: [],
         loading: false,
       };
       break;
@@ -74,7 +74,7 @@ export default (state = initState, action) => {
     case productConstants.GET_ALL_SECTIONS_FAILURE:
       state = {
         ...state,
-        sections: action.payload.error,
+        sections: [],
         loading: false,
       };
       break;
@@ -94,7 +94,7 @@ export default (state = initState, action) => {
     case productConstants.GET_DISHES_BY_SECTION_FAILURE:
       state = {
         ...state,
-        dishesOfSection: action.payload.error,
+        dishesOfSection: [],
         loading: false,
       };
       break;

@@ -107,6 +107,7 @@ export const signup = (mobileNumber) => {
 
       if (res.data) {
         console.log(res);
+
         dispatch({ type: authConstants.SIGNUP_SUCCESS, payload: res.data });
 
         const { id, mobileNumber, firstName, lastName, emailId } = res.data;
@@ -123,7 +124,11 @@ export const signup = (mobileNumber) => {
           emailId,
         };
 
+        const delLoc = localStorage.getItem("deliveryType");
+
         localStorage.clear();
+
+        localStorage.setItem("deliveryType", delLoc);
         localStorage.setItem("userId", null);
         localStorage.setItem("userMobileNumber", null);
         localStorage.setItem("userFistName", null);
@@ -136,6 +141,7 @@ export const signup = (mobileNumber) => {
         localStorage.setItem("userLastName", lastName);
         localStorage.setItem("userEmail", emailId);
         localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("log", new Date());
         // dispatch({
         //   type: authConstants.LOGIN_SUCCESS,
         //   payload: {
@@ -176,25 +182,38 @@ export const signup = (mobileNumber) => {
 //if user is logged in then stop user going again to /signin
 export const isUserLoggedIn = () => {
   return async (dispatch) => {
-    //const token = localStorage.getItem("token");
-    const userMobileNumber = localStorage.getItem("userMobileNumber");
+    try {
+      //const token = localStorage.getItem("token");
+      const userMobileNumber = localStorage.getItem("userMobileNumber");
+      const logTime = localStorage.getItem("log");
 
-    if (userMobileNumber) {
-      const user = JSON.parse(localStorage.getItem("user"));
-      /* dispatch({
-        type: authConstants.LOGIN_SUCCESS,
-        payload: {
-          token,
-          user,
-        },
-      }); */
+      if (
+        logTime &&
+        new Date().getTime() > new Date(logTime).getTime() + 7200000
+      ) {
+        localStorage.clear();
+        window.location.reload();
+      } else {
+        if (userMobileNumber) {
+          const user = JSON.parse(localStorage.getItem("user"));
+          /* dispatch({
+          type: authConstants.LOGIN_SUCCESS,
+          payload: {
+            token,
+            user,
+          },
+        }); */
 
-      dispatch({ type: authConstants.SIGNUP_SUCCESS, payload: user });
-    } else {
-      dispatch({
-        type: authConstants.LOGIN_FAILURE,
-        payload: { error: "Failed to login (2)!" },
-      });
+          dispatch({ type: authConstants.SIGNUP_SUCCESS, payload: user });
+        } else {
+          dispatch({
+            type: authConstants.LOGIN_FAILURE,
+            payload: { error: "Failed to login (2)!" },
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };

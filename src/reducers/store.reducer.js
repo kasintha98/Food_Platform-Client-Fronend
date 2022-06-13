@@ -18,7 +18,7 @@ export default (state = initState, action) => {
     case storeConstants.GET_ALL_STORES_FAILURE:
       state = {
         ...state,
-        stores: action.payload.error,
+        stores: [],
         loading: false,
       };
       break;

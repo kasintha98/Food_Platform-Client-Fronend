@@ -6,7 +6,7 @@ export const getAllStores = () => {
     try {
       const res = await axios.get(`/getAllStores`);
 
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         const filteredStores = res.data.filter(function (el) {
           return el.storeActiveFlag === "Y";
         });
@@ -15,6 +15,7 @@ export const getAllStores = () => {
           type: storeConstants.GET_ALL_STORES_SUCCESS,
           payload: filteredStores,
         });
+        return res.data;
       } else {
         dispatch({
           type: storeConstants.GET_ALL_STORES_FAILURE,

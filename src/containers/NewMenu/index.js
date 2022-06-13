@@ -199,8 +199,10 @@ export default function NewMenu() {
   useEffect(() => {
     dispatch(getProductsNew());
     dispatch(getAllSections()).then((res) => {
-      setValue(res[0]);
-      dispatch(getDishesBySection(res[0]));
+      if (res) {
+        setValue(res[0]);
+        dispatch(getDishesBySection(res[0]));
+      }
     });
   }, []);
 
@@ -233,9 +235,11 @@ export default function NewMenu() {
 
   const getDishesOfSection = (section) => {
     dispatch(getDishesBySection(section)).then((res) => {
-      console.log("dishesOfSection");
-      console.log(res);
-      setValue2(res[0]);
+      if (res) {
+        console.log("dishesOfSection");
+        console.log(res);
+        setValue2(res[0]);
+      }
     });
   };
 

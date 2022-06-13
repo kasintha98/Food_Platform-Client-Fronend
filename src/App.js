@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   isUserLoggedIn,
@@ -26,10 +26,12 @@ import { NewCartPage } from "./containers/NewCartPage";
 import { DeliveryTypeModal } from "./components/DeliveryTypeModal";
 import { MyOrders } from "./containers/MyOrders";
 import { GPSTracker } from "./containers/GPSTracker";
+import ReactSession from "react-client-session";
 
 function App() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (!auth.authenticate) {
@@ -50,7 +52,13 @@ function App() {
     }
 
     console.log("App.js - get stores");
-    dispatch(getAllStores());
+
+    dispatch(getAllStores()).then((res) => {
+      if (res) {
+        setShow(true);
+      }
+    });
+
     const time = localStorage.getItem("otpTime");
     if (time) {
       localStorage.setItem("otpTime", 90);
@@ -87,7 +95,7 @@ function App() {
           />
         </Switch>
       </Router>
-      <DeliveryTypeModal delay={0}></DeliveryTypeModal>
+      {show ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null}
     </div>
   );
 }

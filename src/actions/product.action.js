@@ -55,7 +55,7 @@ export const getProductsNew = () => {
         res = await axios.get(`/getAllMenuItems`);
       }
 
-      if (res.status === 200) {
+      if (res && res.status === 200) {
         const productsList = {
           products: res.data,
         };
@@ -111,22 +111,29 @@ export const getAllSections = () => {
       const delLoc = localStorage.getItem("deliveryType");
       const delObj = JSON.parse(delLoc);
 
-      const res = await axios.get(`/getAllSections`, {
-        params: {
-          restaurantId: delObj.restaurantId,
-          storeId: delObj.storeId,
-        },
-      });
-
-      if (res.status === 200) {
-        dispatch({
-          type: productConstants.GET_ALL_SECTIONS_SUCCESS,
-          payload: res.data,
+      if (delObj) {
+        const res = await axios.get(`/getAllSections`, {
+          params: {
+            restaurantId: delObj.restaurantId,
+            storeId: delObj.storeId,
+          },
         });
-        console.log(res.data);
-        return res.data;
+
+        if (res && res.status === 200) {
+          dispatch({
+            type: productConstants.GET_ALL_SECTIONS_SUCCESS,
+            payload: res.data,
+          });
+          console.log(res.data);
+          return res.data;
+        } else {
+          console.log("error");
+        }
       } else {
-        console.log("error");
+        dispatch({
+          type: productConstants.GET_ALL_SECTIONS_FAILURE,
+          payload: [],
+        });
       }
     } catch (error) {
       console.log(error);
