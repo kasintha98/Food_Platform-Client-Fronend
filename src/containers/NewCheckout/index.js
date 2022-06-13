@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import "./style.css";
 import Header from "../../components/Header";
@@ -208,11 +208,13 @@ export default function NewCheckout() {
   const [currentPaymentType, setCurrentPaymentType] = useState("");
   const [showInvoice, setShowInvoice] = useState(false);
   const [delCharge, setDelCharge] = useState(0);
+  const [height, setHeight] = useState(0);
 
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
   const ref = React.createRef();
+  const refH = useRef(null);
 
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
@@ -249,6 +251,17 @@ export default function NewCheckout() {
       }
     }
   }, [defDel]);
+
+  useEffect(() => {
+    if (refH.current) {
+      setHeight(refH.current.clientHeight * 0.58);
+    }
+  });
+
+  const options = {
+    unit: "px",
+    format: [255, height],
+  };
 
   const renderAllSub = () => {
     const all =
@@ -571,48 +584,52 @@ export default function NewCheckout() {
           <Modal.Body style={{ maxHeight: "75vh", overflowY: "auto" }}>
             {defDel ? (
               <div ref={ref}>
-                <div className="text-center">
-                  <Typography sx={{ fontWeight: "600" }}>Hangries</Typography>
-                  <Typography sx={{ color: "black" }}>
-                    <span>{defDel.address1}</span>
-                    {defDel.address2 ? (
-                      <>
-                        , <span>{defDel.address2}</span>
-                      </>
-                    ) : null}
-                    {defDel.address3 ? (
-                      <>
-                        , <br></br>
-                        <span>{defDel.address3}</span>
-                      </>
-                    ) : null}
-                    , {defDel.city}
-                    {defDel.zipCode ? <>, {defDel.zipCode}</> : null},{" "}
-                    {defDel.country}
-                  </Typography>
-                  <Typography sx={{ fontWeight: "600" }}>
-                    Order ID: {orderResp ? orderResp.orderId : null}
-                  </Typography>
-                  <Typography sx={{ fontWeight: "600" }}>
-                    Order No: {orderResp ? orderResp.id : null}
-                  </Typography>
-                  <Typography sx={{ fontWeight: "600" }}>
-                    {defDel.type === "delivery" ? (
-                      <span>Delivery</span>
-                    ) : (
-                      <span>Self-Collect</span>
-                    )}
-                    <span> [{orderResp ? orderResp.paymentStatus : null}]</span>
-                  </Typography>
-                </div>
-                <hr></hr>
-                <div>
-                  <Typography>
-                    Name: {auth.user?.firstName} {auth.user?.lastName}
-                  </Typography>
-                  {selectedAddress ? (
+                <div ref={refH}>
+                  <div className="text-center">
+                    <Typography sx={{ fontWeight: "600" }}>Hangries</Typography>
+                    <Typography sx={{ color: "black" }}>
+                      <span>{defDel.address1}</span>
+                      {defDel.address2 ? (
+                        <>
+                          , <span>{defDel.address2}</span>
+                        </>
+                      ) : null}
+                      {defDel.address3 ? (
+                        <>
+                          , <br></br>
+                          <span>{defDel.address3}</span>
+                        </>
+                      ) : null}
+                      , {defDel.city}
+                      {defDel.zipCode ? <>, {defDel.zipCode}</> : null},{" "}
+                      {defDel.country}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      Order ID: {orderResp ? orderResp.orderId : null}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      Order No: {orderResp ? orderResp.id : null}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      {defDel.type === "delivery" ? (
+                        <span>Delivery</span>
+                      ) : (
+                        <span>Self-Collect</span>
+                      )}
+                      <span>
+                        {" "}
+                        [{orderResp ? orderResp.paymentStatus : null}]
+                      </span>
+                    </Typography>
+                  </div>
+                  <hr></hr>
+                  <div>
                     <Typography>
-                      {/* <p
+                      Name: {auth.user?.firstName} {auth.user?.lastName}
+                    </Typography>
+                    {selectedAddress ? (
+                      <Typography>
+                        {/* <p
                                       style={{
                                         fontWeight: "bold",
                      
@@ -620,47 +637,48 @@ export default function NewCheckout() {
                                     >
                                       {selectedAddress.customerAddressType}
                                     </p> */}
-                      <p
-                        style={{
-                          color: "black",
-                        }}
-                      >
-                        {selectedAddress.address1}
-                        {", "}
-                        {selectedAddress.address2}
-                        {", "}
-                        {selectedAddress.landmark}
-                        {", "}
-                        {selectedAddress.city}
-                        {", "}
-                        {selectedAddress.zipCode}
-                        {", "}
-                        {selectedAddress.state}
-                      </p>
+                        <p
+                          style={{
+                            color: "black",
+                          }}
+                        >
+                          {selectedAddress.address1}
+                          {", "}
+                          {selectedAddress.address2}
+                          {", "}
+                          {selectedAddress.landmark}
+                          {", "}
+                          {selectedAddress.city}
+                          {", "}
+                          {selectedAddress.zipCode}
+                          {", "}
+                          {selectedAddress.state}
+                        </p>
+                      </Typography>
+                    ) : null}
+                    <Typography>Mob No: {auth.user?.mobileNumber}</Typography>
+                  </div>
+                  <hr></hr>
+                  <div>
+                    <Typography>
+                      <Row>
+                        <Col>Time: {renderNowTime()}</Col>
+                        <Col>Date: {renderNowDate()}</Col>
+                      </Row>
                     </Typography>
-                  ) : null}
-                  <Typography>Mob No: {auth.user?.mobileNumber}</Typography>
-                </div>
-                <hr></hr>
-                <div>
-                  <Typography>
-                    <Row>
-                      <Col>Time: {renderNowTime()}</Col>
-                      <Col>Date: {renderNowDate()}</Col>
-                    </Row>
-                  </Typography>
-                </div>
-                <hr></hr>
-                <div>
-                  <InvoiceTable
-                    allProducts={orderResp.orderDetails}
-                    grandTot={orderResp.totalPrice}
-                    cgst={orderResp.cgstCalculatedValue}
-                    sgst={orderResp.sgstCalculatedValue}
-                    overallPriceWithTax={orderResp.overallPriceWithTax}
-                    delCharge={delCharge}
-                    fullResp={orderResp}
-                  ></InvoiceTable>
+                  </div>
+                  <hr></hr>
+                  <div>
+                    <InvoiceTable
+                      allProducts={orderResp.orderDetails}
+                      grandTot={orderResp.totalPrice}
+                      cgst={orderResp.cgstCalculatedValue}
+                      sgst={orderResp.sgstCalculatedValue}
+                      overallPriceWithTax={orderResp.overallPriceWithTax}
+                      delCharge={delCharge}
+                      fullResp={orderResp}
+                    ></InvoiceTable>
+                  </div>
                 </div>
               </div>
             ) : null}
@@ -680,7 +698,12 @@ export default function NewCheckout() {
               </Button>
             </Col>
             <Col className="col-6">
-              <Pdf targetRef={ref} filename="invoice.pdf">
+              <Pdf
+                targetRef={ref}
+                filename="invoice.pdf"
+                options={options}
+                x={0.8}
+              >
                 {({ toPdf }) => (
                   <Button
                     color="primary"

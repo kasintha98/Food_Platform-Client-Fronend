@@ -37,18 +37,18 @@ export const InvoiceTable = (props) => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <CusTableCell>
-                    {row.productName}
-                    {row.subProductId !== "NAA" && (
-                      <span>
-                        {" - "}
+                    {row.subProductId !== "NAA" ? (
+                      <span style={{ marginLeft: "15px" }}>
                         {row.ingredient}
                       </span>
+                    ) : (
+                      <span> {row.productName}</span>
                     )}
                   </CusTableCell>
                   <CusTableCell>{row.quantity}</CusTableCell>
-                  <CusTableCell>{row.price}.00</CusTableCell>
+                  <CusTableCell>Rs. {row.price}.00</CusTableCell>
                   <CusTableCell>
-                    {Number(row.quantity) * Number(row.price)}.00
+                    Rs. {Number(row.quantity) * Number(row.price)}.00
                   </CusTableCell>
                 </TableRow>
                 {/* {row.choiceIng ? (
@@ -87,7 +87,7 @@ export const InvoiceTable = (props) => {
                 colspan="1"
                 sx={{ fontStyle: "italic" }}
               >
-                {props.grandTot}
+                Rs. {props.grandTot}
               </CusTableCell>
             </TableRow>
             <TableRow>
@@ -100,7 +100,7 @@ export const InvoiceTable = (props) => {
                 colspan="1"
                 sx={{ fontStyle: "italic" }}
               >
-                {props.cgst}
+                Rs. {props.cgst}
               </CusTableCell>
             </TableRow>
             <TableRow>
@@ -113,7 +113,7 @@ export const InvoiceTable = (props) => {
                 colspan="1"
                 sx={{ fontStyle: "italic" }}
               >
-                {props.sgst}
+                Rs. {props.sgst}
               </CusTableCell>
             </TableRow>
             <TableRow>
@@ -126,7 +126,7 @@ export const InvoiceTable = (props) => {
                 colspan="1"
                 sx={{ fontStyle: "italic" }}
               >
-                {props.fullResp.deliveryCharges}
+                Rs. {props.fullResp.deliveryCharges}
               </CusTableCell>
             </TableRow>
             <TableRow
@@ -139,7 +139,7 @@ export const InvoiceTable = (props) => {
                 Grand Total
               </CusTableCell>
               <CusTableCell component="th" scope="row" colspan="1">
-                {props.overallPriceWithTax}
+                Rs. {props.overallPriceWithTax}
               </CusTableCell>
             </TableRow>
           </TableBody>
