@@ -1502,7 +1502,7 @@ export default function NewCheckout() {
                             value={paymentType}
                             onChange={handleChangePaymentType}
                           >
-                            <FormControlLabel
+                            {/* <FormControlLabel
                               value="PayU"
                               control={<Radio color="success" />}
                               label={
@@ -1517,7 +1517,7 @@ export default function NewCheckout() {
                                   PayU (Cards, Net Banking, UPI, Wallet)
                                 </Typography>
                               }
-                            />
+                            /> */}
                             {/* <FormControlLabel
                               value="Paytm"
                               control={<Radio color="success" />}
