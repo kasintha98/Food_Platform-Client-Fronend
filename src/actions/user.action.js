@@ -321,7 +321,7 @@ export const saveNewOrder = (payload) => {
       const res = await axios.post("/saveNewOrder", payload);
       dispatch({ type: userConstants.ADD_USER_ORDER_REQUEST });
 
-      if (res.status === 200) {
+      if (res.status === 200 && res.data) {
         console.log(res);
         dispatch(resetCart());
         localStorage.removeItem("cart");
