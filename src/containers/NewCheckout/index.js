@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useStateWithCallbackLazy } from "use-state-with-callback";
 import { useHistory } from "react-router-dom";
 import "./style.css";
 import Header from "../../components/Header";
@@ -187,7 +188,7 @@ export default function NewCheckout() {
   const [extraSubTotal, setExtraSubTotal] = useState(0);
   const [choiceTotal, setChoiceTotal] = useState(0);
   const [coupon, setCoupon] = useState("");
-  const [orderResp, setOrderResp] = useState(null);
+  const [orderResp, setOrderResp] = useStateWithCallbackLazy(null);
   const [selectedAddress, setSelectedAddress] = useState(
     defDel ? defDel.selectedAddress : null
   );
@@ -473,14 +474,14 @@ export default function NewCheckout() {
       const result = await dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
           console.log(res.data);
-          setOrderResp(res.data[0]);
-
-          if (currentPaymentType !== "PayU") {
-            handleShowInvoice();
-          }
-          if (currentPaymentType === "PayU") {
-            toast.warning("Please complete the PayU process in next tab!");
-          }
+          setOrderResp(res.data[0], () => {
+            if (currentPaymentType !== "PayU") {
+              handleShowInvoice();
+            }
+            if (currentPaymentType === "PayU") {
+              toast.warning("Please complete the PayU process in next tab!");
+            }
+          });
 
           return res.data;
         }
