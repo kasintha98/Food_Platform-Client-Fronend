@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "target": "client-app",  
+    "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+    "rewrites": [{
+        "source": "**",
+        "run": {
+          "serviceId": "client-app",
+          "region": "asia-south1"
+        }
+      }]
+  }
+}
