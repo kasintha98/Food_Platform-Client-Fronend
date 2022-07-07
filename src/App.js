@@ -5,6 +5,7 @@ import {
   updateCart,
   getAllStores,
   setDeliveryType,
+  getVersion,
 } from "./actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -43,6 +44,7 @@ function App() {
     console.log("App.js - updateCart");
     dispatch(updateCart());
     dispatch(getAllStores());
+    dispatch(getVersion());
 
     const delItem = localStorage.getItem("deliveryType");
 

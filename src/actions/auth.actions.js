@@ -324,3 +324,27 @@ export const GetDeliveryPrice = (restaurantId, storeId) => {
     }
   };
 };
+
+export const getVersion = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: authConstants.GET_VERSION_REQUEST });
+
+      const res = await axios.get(`/getAppDetails`);
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: authConstants.GET_VERSION_SUCCESS,
+          payload: res.data[0],
+        });
+      } else {
+        dispatch({
+          type: authConstants.GET_VERSION_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

@@ -26,6 +26,7 @@ const initState = {
   deliveryType: null,
   taxDetails: null,
   deliveryPrice: null,
+  version: null,
 };
 
 //check what is the request and returning suitable state for the request
@@ -123,6 +124,23 @@ export default (state = initState, action) => {
       state = {
         ...state,
         user: action.payload,
+      };
+      break;
+
+    case authConstants.GET_VERSION_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
+    case authConstants.GET_VERSION_SUCCESS:
+      state = {
+        ...state,
+        version: action.payload,
+      };
+      break;
+    case authConstants.GET_VERSION_FAILURE:
+      state = {
+        ...state,
       };
       break;
   }

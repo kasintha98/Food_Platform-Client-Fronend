@@ -1,12 +1,15 @@
 import React from "react";
 import "./style.css";
 import footerimg from "../../img/footerimg.png";
+import { useSelector } from "react-redux";
 import yt from "../../img/yt.png";
 import tw from "../../img/tw.png";
 import wa from "../../img/wa.png";
 import ig from "../../img/ig.png";
 
 export default function Footer() {
+  const version = useSelector((state) => state.auth.version);
+
   return (
     <footer className="footer_area section_padding_130_0">
       <div className="container">
@@ -17,6 +20,13 @@ export default function Footer() {
               {/* Footer Logo*/}
               <div className="footer-logo " />
               <img src={footerimg} width="100%" alt="facebook" />
+            </div>
+            <div className="w-100 text-center">
+              {version ? (
+                <p style={{ color: "#fff" }}>
+                  {version.appEnvironment}: {version.appVersion}
+                </p>
+              ) : null}
             </div>
           </div>
           <div className="text-section col-12 col-sm-6 col-lg-8">
