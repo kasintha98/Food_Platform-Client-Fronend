@@ -325,7 +325,7 @@ export const MyOrders = () => {
           My Orders
         </Typography>
         <TableContainer component={Paper}>
-          {userOrders ? (
+          {userOrders && userOrders.length > 0 ? (
             <>
               {/* <Table sx={{ minWidth: "1000px" }} aria-label="simple table">
                 <TableHead>

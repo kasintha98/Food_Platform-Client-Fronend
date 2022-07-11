@@ -28,6 +28,8 @@ import { DeliveryTypeModal } from "./components/DeliveryTypeModal";
 import { MyOrders } from "./containers/MyOrders";
 import { GPSTracker } from "./containers/GPSTracker";
 import ReactSession from "react-client-session";
+import { CloudError } from "./containers/CloudError";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -72,26 +74,31 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/new-menu" exact component={NewMenu} />
-          <Route path="/gps" exact component={GPSTracker} />
-          <Route path="/my-orders" exact component={MyOrders} />
-          <Route path="/new-checkout" exact component={NewCheckout} />
-          <Route path="/new-cart" component={NewCartPage} />
-          <Route path="/cart" component={CartPage} />
-          <Route path="/bill" exact component={PdfPage} />
-          <Route path="/checkout" component={CheckoutPage} />
-          <Route path="/profile" exact component={ProfilePage} />
-          <Route path="/signupuser" exact component={SignupPage} />
-          <Route path="/reset-password" component={ResetPasswordPage} />
-          <Route path="/profile/orders" component={OrderPage} />
-          <Route path="/category/:slug" exact component={ProductListPage} />
-          <Route path="/product/:slug" component={ProductPage} />
-          <Route
+          <Route path="/error" exact component={CloudError} />
+          <PrivateRoute path="/new-menu" exact component={NewMenu} />
+          <PrivateRoute path="/gps" exact component={GPSTracker} />
+          <PrivateRoute path="/my-orders" exact component={MyOrders} />
+          <PrivateRoute path="/new-checkout" exact component={NewCheckout} />
+          <PrivateRoute path="/new-cart" component={NewCartPage} />
+          <PrivateRoute path="/cart" component={CartPage} />
+          <PrivateRoute path="/bill" exact component={PdfPage} />
+          <PrivateRoute path="/checkout" component={CheckoutPage} />
+          <PrivateRoute path="/profile" exact component={ProfilePage} />
+          <PrivateRoute path="/signupuser" exact component={SignupPage} />
+          <PrivateRoute path="/reset-password" component={ResetPasswordPage} />
+          <PrivateRoute path="/profile/orders" component={OrderPage} />
+          <PrivateRoute
+            path="/category/:slug"
+            exact
+            component={ProductListPage}
+          />
+          <PrivateRoute path="/product/:slug" component={ProductPage} />
+          <PrivateRoute
             path="/change-password/:token"
             component={ChangePasswordPage}
           />
 
-          <Route
+          <PrivateRoute
             path="/profile/orderDetails/:orderId"
             component={OrderDetailsPage}
           />
