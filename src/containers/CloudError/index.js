@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Typography } from "@mui/material";
+import { NavLink } from "react-router-dom";
 import "./style.css";
 
 export const CloudError = () => {
@@ -22,6 +23,16 @@ export const CloudError = () => {
                 <br></br>
                 Thank You!
               </Typography>
+              <div className="w-100 mt-4 ">
+                <NavLink
+                  className="btn btn-success"
+                  to={"/"}
+                  style={{ minWidth: "200px" }}
+                >
+                  <i className="fa fa-home"></i>
+                  &nbsp; Home
+                </NavLink>
+              </div>
             </Col>
           </Row>
         </Col>
