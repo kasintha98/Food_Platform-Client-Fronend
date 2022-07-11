@@ -5,6 +5,7 @@ import {
   userAddressConstants,
   orderConstantsNew,
   orderStatusConstantsNew,
+  authConstants,
 } from "./constants";
 import { resetCart } from "./cart.action";
 import axios from "../helpers/axios";
@@ -188,6 +189,10 @@ export const UpdateUserDetails = (payload) => {
         localStorage.setItem("userFistName", firstName);
         localStorage.setItem("userLastName", lastName);
         localStorage.setItem("userEmail", emailId);
+
+        dispatch({ type: authConstants.SIGNUP_SUCCESS, payload: res.data });
+        toast.success("Details updated successfully!");
+        return res.data;
       } else {
         const { error } = res.data;
         dispatch({
@@ -195,27 +200,11 @@ export const UpdateUserDetails = (payload) => {
           payload: { error },
         });
 
-        toast.error(Error, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        toast.error("There was an error please try again!");
       }
     } catch (error) {
       console.log(error);
-      toast.error(error, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.error("There was an error please try again!");
     }
   };
 };

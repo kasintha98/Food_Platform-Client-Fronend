@@ -45,6 +45,7 @@ export const MyOrders = () => {
   const [showInvoice, setShowInvoice] = useState(false);
   const [currentOrder, setCurrentOrder] = useState(null);
   const [filteredStoreAddress, setFilteredStoreAddress] = useState(null);
+  const [height, setHeight] = useState(0);
 
   const loggedUser = useSelector((state) => state.auth.user);
   const loggedDeliveryType = useSelector((state) => state.auth.deliveryType);
@@ -53,6 +54,7 @@ export const MyOrders = () => {
 
   const dispatch = useDispatch();
   const ref = React.createRef();
+  const refH = React.useRef(null);
 
   useEffect(() => {
     if (loggedUser && loggedUser.id && loggedDeliveryType) {
@@ -76,6 +78,17 @@ export const MyOrders = () => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (refH.current) {
+      setHeight(refH.current.clientHeight * 0.58);
+    }
+  });
+
+  const options = {
+    unit: "px",
+    format: [255, height],
+  };
 
   const handleNavTab = (val) => {
     console.log(val);
@@ -153,59 +166,61 @@ export const MyOrders = () => {
           </Modal.Title>
         </Modal.Header>
         {currentOrder ? (
-          <Modal.Body
-            ref={ref}
-            style={{ maxHeight: "75vh", overflowY: "auto" }}
-          >
+          <Modal.Body style={{ maxHeight: "75vh", overflowY: "auto" }}>
             {filteredStoreAddress ? (
-              <>
-                <div className="text-center">
-                  <Typography sx={{ fontWeight: "600" }}>Hangries</Typography>
-                  <Typography sx={{ color: "#A6A6A6" }}>
-                    <span>{filteredStoreAddress.address1}</span>
-                    {filteredStoreAddress.address2 ? (
-                      <>
-                        , <span>{filteredStoreAddress.address2}</span>
-                      </>
-                    ) : null}
-                    {filteredStoreAddress.address3 ? (
-                      <>
-                        , <br></br>
-                        <span>{filteredStoreAddress.address3}</span>
-                      </>
-                    ) : null}
-                    , {filteredStoreAddress.city}
-                    {filteredStoreAddress.zipCode ? (
-                      <>, {filteredStoreAddress.zipCode}</>
-                    ) : null}
-                    , {filteredStoreAddress.country}
-                  </Typography>
-                  <Typography sx={{ fontWeight: "600" }}>
-                    Order ID: {currentOrder ? currentOrder.orderId : null}
-                  </Typography>
-                  <Typography sx={{ fontWeight: "600" }}>
-                    Order No: {currentOrder ? currentOrder.id : null}
-                  </Typography>
-                  <Typography sx={{ fontWeight: "600" }}>
-                    {currentOrder.orderDeliveryType === "delivery" ? (
-                      <span>Delivery</span>
-                    ) : (
-                      <span>Self-Collect</span>
-                    )}
-                    <span>
-                      {" "}
-                      [{currentOrder ? currentOrder.paymentStatus : null}]
-                    </span>
-                  </Typography>
-                </div>
-                <hr></hr>
-                <div>
-                  {/* <Typography>
+              <div ref={ref}>
+                <div ref={refH}>
+                  <div className="text-center">
+                    <Typography sx={{ fontWeight: "600" }}>Hangries</Typography>
+                    <Typography sx={{ color: "#A6A6A6" }}>
+                      <span>{filteredStoreAddress.address1}</span>
+                      {filteredStoreAddress.address2 ? (
+                        <>
+                          , <span>{filteredStoreAddress.address2}</span>
+                        </>
+                      ) : null}
+                      {filteredStoreAddress.address3 ? (
+                        <>
+                          , <br></br>
+                          <span>{filteredStoreAddress.address3}</span>
+                        </>
+                      ) : null}
+                      , {filteredStoreAddress.city}
+                      {filteredStoreAddress.zipCode ? (
+                        <>, {filteredStoreAddress.zipCode}</>
+                      ) : null}
+                      , {filteredStoreAddress.country}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      Order ID: {currentOrder ? currentOrder.orderId : null}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      Customer Name:{" "}
+                      {currentOrder ? currentOrder.customerName : null}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      Order No: {currentOrder ? currentOrder.id : null}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
+                      {currentOrder.orderDeliveryType === "delivery" ? (
+                        <span>Delivery</span>
+                      ) : (
+                        <span>Self-Collect</span>
+                      )}
+                      <span>
+                        {" "}
+                        [{currentOrder ? currentOrder.paymentStatus : null}]
+                      </span>
+                    </Typography>
+                  </div>
+                  <hr></hr>
+                  <div>
+                    {/* <Typography>
                     Name: {auth.user?.firstName} {auth.user?.lastName}
                   </Typography> */}
 
-                  <Typography>
-                    {/* <p
+                    <Typography>
+                      {/* <p
                                       style={{
                                         fontWeight: "bold",
                      
@@ -213,39 +228,40 @@ export const MyOrders = () => {
                                     >
                                       {selectedAddress.customerAddressType}
                                     </p> */}
-                    <p
-                      style={{
-                        color: "#7F7F7F",
-                      }}
-                    >
-                      {currentOrder.address}
-                    </p>
-                  </Typography>
+                      <p
+                        style={{
+                          color: "#7F7F7F",
+                        }}
+                      >
+                        {currentOrder.address}
+                      </p>
+                    </Typography>
 
-                  {/* <Typography>Mob No: {auth.user?.mobileNumber}</Typography> */}
+                    {/* <Typography>Mob No: {auth.user?.mobileNumber}</Typography> */}
+                  </div>
+                  <hr></hr>
+                  <div>
+                    <Typography>
+                      <Row>
+                        <Col>Time: {renderTime(currentOrder.createdDate)}</Col>
+                        <Col>Date: {renderDate(currentOrder.createdDate)}</Col>
+                      </Row>
+                    </Typography>
+                  </div>
+                  <hr></hr>
+                  <div>
+                    <InvoiceTable
+                      allProducts={currentOrder.orderDetails}
+                      grandTot={currentOrder.totalPrice}
+                      cgst={currentOrder.cgstCalculatedValue}
+                      sgst={currentOrder.sgstCalculatedValue}
+                      overallPriceWithTax={currentOrder.overallPriceWithTax}
+                      delCharge={currentOrder.deliveryCharges}
+                      fullResp={currentOrder}
+                    ></InvoiceTable>
+                  </div>
                 </div>
-                <hr></hr>
-                <div>
-                  <Typography>
-                    <Row>
-                      <Col>Time: {renderTime(currentOrder.createdDate)}</Col>
-                      <Col>Date: {renderDate(currentOrder.createdDate)}</Col>
-                    </Row>
-                  </Typography>
-                </div>
-                <hr></hr>
-                <div>
-                  <InvoiceTable
-                    allProducts={currentOrder.orderDetails}
-                    grandTot={currentOrder.totalPrice}
-                    cgst={currentOrder.cgstCalculatedValue}
-                    sgst={currentOrder.sgstCalculatedValue}
-                    overallPriceWithTax={currentOrder.overallPriceWithTax}
-                    delCharge={currentOrder.deliveryCharges}
-                    fullResp={currentOrder}
-                  ></InvoiceTable>
-                </div>
-              </>
+              </div>
             ) : null}
           </Modal.Body>
         ) : null}
@@ -263,7 +279,12 @@ export const MyOrders = () => {
               </Button>
             </Col>
             <Col className="col-6">
-              <Pdf targetRef={ref} filename="invoice.pdf">
+              <Pdf
+                targetRef={ref}
+                filename="invoice.pdf"
+                options={options}
+                x={0.8}
+              >
                 {({ toPdf }) => (
                   <Button
                     color="primary"

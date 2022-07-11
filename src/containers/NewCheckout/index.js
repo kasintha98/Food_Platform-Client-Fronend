@@ -609,6 +609,9 @@ export default function NewCheckout() {
                       Order ID: {orderResp ? orderResp.orderId : null}
                     </Typography>
                     <Typography sx={{ fontWeight: "600" }}>
+                      Customer Name: {orderResp ? orderResp.customerName : null}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
                       Order No: {orderResp ? orderResp.id : null}
                     </Typography>
                     <Typography sx={{ fontWeight: "600" }}>

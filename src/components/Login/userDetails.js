@@ -102,7 +102,11 @@ const UserDetails = (props) => {
         lastName: lastName,
         emailId: email,
       };
-      dispatch(UpdateUserDetails(updateUserObj));
+      dispatch(UpdateUserDetails(updateUserObj)).then((res) => {
+        if (!res) {
+          setEditName("Done");
+        }
+      });
     } else {
       setEditName("Done");
     }
@@ -119,7 +123,11 @@ const UserDetails = (props) => {
         lastName: lastName,
         emailId: email,
       };
-      dispatch(UpdateUserDetails(updateUserObj));
+      dispatch(UpdateUserDetails(updateUserObj)).then((res) => {
+        if (!res) {
+          setEditEmail("Done");
+        }
+      });
     } else {
       setEditEmail("Done");
     }
