@@ -998,7 +998,7 @@ export default function ProductCard(props) {
           />
         )}
 
-        {props.product.ingredientExistsFalg === "Y" ? (
+        {/* {props.product.ingredientExistsFalg === "Y" ? (
           <CusomizeBtn
             onClick={() => {
               if (!cart?.cartItems[currentProduct.productId]) {
@@ -1034,7 +1034,7 @@ export default function ProductCard(props) {
           >
             CUSTOMISE
           </CusomizeBtn>
-        ) : null}
+        ) : null} */}
 
         {props.product?.dishCategory === "Veg" ? (
           <VegImg src={vegSvg} alt="veg" />
@@ -1138,23 +1138,54 @@ export default function ProductCard(props) {
             <Col className="col-6 p-0">
               <AddButton
                 onClick={() => {
-                  /* dispatch(
+                  if (props.product.ingredientExistsFalg === "Y") {
+                    if (!cart?.cartItems[currentProduct.productId]) {
+                      dispatch(
+                        addToCartNew(
+                          currentProduct,
+                          1,
+                          toppings,
+                          toppingSubTotal,
+                          specialText,
+                          //choiseIngrdients[0]
+                          null
+                        )
+                      );
+                      calculateSubTotal();
+                    }
+                    setChoice(
+                      cart?.cartItems[currentProduct.productId]?.choiceIng
+                        ? cart?.cartItems[currentProduct.productId]?.choiceIng
+                            ?.ingredientType
+                        : choiseIngrdients[0]?.ingredientType
+                    );
+                    setSpecialText(
+                      cart?.cartItems[currentProduct?.productId]?.specialText
+                        ? cart?.cartItems[currentProduct?.productId]
+                            ?.specialText
+                        : ""
+                    );
+
+                    handleOpen();
+                  } else {
+                    /* dispatch(
                     getMenuIngredientsByProductId(currentProduct.productId)
                   ).then((res) => {
                     ingredients = res;
                   }); */
-                  dispatch(
-                    addToCartNew(
-                      currentProduct,
-                      1,
-                      toppings,
-                      toppingSubTotal,
-                      specialText,
-                      //choiseIngrdients[0]
-                      null
-                    )
-                  );
-                  calculateSubTotal();
+                    dispatch(
+                      addToCartNew(
+                        currentProduct,
+                        1,
+                        toppings,
+                        toppingSubTotal,
+                        specialText,
+                        //choiseIngrdients[0]
+                        null
+                      )
+                    );
+                    calculateSubTotal();
+                  }
                 }}
                 variant="contained"
                 color="error"
