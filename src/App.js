@@ -34,6 +34,7 @@ import PrivateRoute from "./components/PrivateRoute";
 function App() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const stores = useSelector((state) => state.store.stores);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -74,33 +75,29 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/error" exact component={CloudError} />
-          <PrivateRoute path="/new-menu" exact component={NewMenu} />
-          <PrivateRoute path="/gps" exact component={GPSTracker} />
-          <PrivateRoute path="/my-orders" exact component={MyOrders} />
-          <PrivateRoute path="/new-checkout" exact component={NewCheckout} />
-          <PrivateRoute path="/new-cart" component={NewCartPage} />
-          <PrivateRoute path="/cart" component={CartPage} />
-          <PrivateRoute path="/bill" exact component={PdfPage} />
-          <PrivateRoute path="/checkout" component={CheckoutPage} />
-          <PrivateRoute path="/profile" exact component={ProfilePage} />
-          <PrivateRoute path="/signupuser" exact component={SignupPage} />
-          <PrivateRoute path="/reset-password" component={ResetPasswordPage} />
-          <PrivateRoute path="/profile/orders" component={OrderPage} />
-          <PrivateRoute
-            path="/category/:slug"
+          <Route
+            path="/new-menu"
             exact
-            component={ProductListPage}
+            component={stores && stores.length > 0 ? NewMenu : CloudError}
           />
-          <PrivateRoute path="/product/:slug" component={ProductPage} />
-          <PrivateRoute
-            path="/change-password/:token"
-            component={ChangePasswordPage}
+          <Route
+            path="/gps"
+            exact
+            component={stores && stores.length > 0 ? GPSTracker : CloudError}
           />
-
-          <PrivateRoute
-            path="/profile/orderDetails/:orderId"
-            component={OrderDetailsPage}
+          <Route
+            path="/my-orders"
+            exact
+            component={stores && stores.length > 0 ? MyOrders : CloudError}
+          />
+          <Route
+            path="/new-checkout"
+            exact
+            component={stores && stores.length > 0 ? NewCheckout : CloudError}
+          />
+          <Route
+            path="/new-cart"
+            component={stores && stores.length > 0 ? NewCartPage : CloudError}
           />
         </Switch>
       </Router>

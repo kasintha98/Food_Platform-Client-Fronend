@@ -14,7 +14,11 @@ import { Container, Row, Col, Modal } from "react-bootstrap";
 import Alert from "@mui/material/Alert";
 import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
-import { GetUserOrdersNew, GetOrderProcessStatus2 } from "../../actions";
+import {
+  GetUserOrdersNew,
+  GetOrderProcessStatus2,
+  getAllStores,
+} from "../../actions";
 import { OrderStatus } from "../../components/OrderStatus";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
@@ -84,6 +88,10 @@ export const MyOrders = () => {
       setHeight(refH.current.clientHeight * 0.58);
     }
   });
+
+  useEffect(() => {
+    dispatch(getAllStores());
+  }, []);
 
   const options = {
     unit: "px",

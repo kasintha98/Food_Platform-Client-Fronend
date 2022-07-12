@@ -18,6 +18,7 @@ import {
   getProductsNew,
   getAllSections,
   getDishesBySection,
+  getAllStores,
 } from "../../actions";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -197,6 +198,7 @@ export default function NewMenu() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getAllStores());
     dispatch(getProductsNew());
     dispatch(getAllSections()).then((res) => {
       if (res) {

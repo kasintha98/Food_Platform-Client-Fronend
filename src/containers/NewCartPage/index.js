@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Container } from "react-bootstrap";
 import { NewCart } from "../NewCart";
 import Header from "../../components/Header";
@@ -6,9 +7,17 @@ import Footer from "../../components/Footer";
 import { BottomNav } from "../../components/BottomNav";
 import { useMediaQuery } from "react-responsive";
 import Typography from "@mui/material/Typography";
+import { getAllStores } from "../../actions";
 
 export const NewCartPage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllStores());
+  }, []);
+
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
+
   return (
     <div>
       <Header></Header>

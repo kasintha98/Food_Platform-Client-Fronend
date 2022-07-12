@@ -51,7 +51,12 @@ import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { GetAddress, saveNewOrder, setDeliveryType } from "../../actions";
+import {
+  GetAddress,
+  saveNewOrder,
+  setDeliveryType,
+  getAllStores,
+} from "../../actions";
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
@@ -224,6 +229,7 @@ export default function NewCheckout() {
   const history = useHistory();
 
   useEffect(() => {
+    dispatch(getAllStores());
     const item = localStorage.getItem("deliveryType");
     console.log(item);
     if (item) {

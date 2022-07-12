@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { GetOrderProcessStatus } from "../../actions";
+import { GetOrderProcessStatus, getAllStores } from "../../actions";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Alert from "@mui/material/Alert";
@@ -36,11 +36,9 @@ export const GPSTracker = () => {
 
   const orderStatus = useSelector((state) => state.user.orderStatus);
 
-  /*  useEffect(() => {
-    if (orderStatus && orderStatus.length > 0) {
-      return <OrderStatus orderItems={orderStatus}></OrderStatus>;
-    }
-  }, [orderStatus]); */
+  useEffect(() => {
+    dispatch(getAllStores());
+  }, []);
 
   const handleChangeId = (event) => {
     setId(event.target.value);
