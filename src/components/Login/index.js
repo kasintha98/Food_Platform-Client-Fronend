@@ -257,7 +257,7 @@ export default function LoginDrawer(props) {
         .catch((error) => {
           console.log(error);
           console.log("SMS not sent error....!!");
-          toast.error("SMS not sent error....!!");
+          toast.error("There was an error, Please refresh and try again!");
         });
     } catch (ex) {
       console.log("error: " + ex);

@@ -1690,6 +1690,13 @@ export default function NewCheckout() {
               </Row>
             </Col>
           </Row>
+          <div className="w-100 text-center">
+            {currentType?.type === "delivery" && (
+              <Typography sx={{ color: "#595959" }}>
+                <b>Note</b> - Delivery is made within 3 km of Store address
+              </Typography>
+            )}
+          </div>
           {currentPaymentType === "COD" || currentPaymentType === "CASH" ? (
             <Row>
               <Col className="text-center p-3">
