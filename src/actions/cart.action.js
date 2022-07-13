@@ -138,7 +138,8 @@ export const addToCartNew = (
   extra,
   extraSubTotal,
   specialText,
-  choiceIng
+  choiceIng,
+  isCustomQty
 ) => {
   return async (dispatch) => {
     try {
@@ -148,9 +149,15 @@ export const addToCartNew = (
       } = store.getState();
 
       if (product) {
-        const qty = cartItems[product.productId]
-          ? parseInt(cartItems[product.productId].qty) + newQty
-          : newQty;
+        let qty = 0;
+
+        if (isCustomQty) {
+          qty = newQty;
+        } else {
+          qty = cartItems[product.productId]
+            ? parseInt(cartItems[product.productId].qty) + newQty
+            : newQty;
+        }
 
         const extraTotal = extraSubTotal
           ? extraSubTotal

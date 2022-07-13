@@ -232,8 +232,11 @@ export default function ProductCard(props) {
   const [toppingCustomization, setToppingCustomization] = React.useState({});
   const [toppingSubTotal, setToppingSubTotal] = React.useState(0);
   const [choice, setChoice] = React.useState("");
+  const [choiceObj, setChoiceObj] = React.useState({});
   const [toppings, setToppings] = React.useState({});
+  const [selectedCusProd, setSelectedCusProd] = React.useState({});
   const [specialText, setSpecialText] = React.useState("");
+  const [qty, setQty] = React.useState(1);
 
   const cart = useSelector((state) => state.cart);
   let ingredients = useSelector((state) => state.product.ingredients);
@@ -258,14 +261,14 @@ export default function ProductCard(props) {
   const handleShowPictureModal = () => setshowPictureModal(true);
 
   useEffect(() => {
-    if (cart?.cartItems && !cart?.cartItems[props.product.productId]) {
+    /* if (cart?.cartItems && !cart?.cartItems[props.product.productId]) {
       for (const cartItem in cart?.cartItems) {
         if (cart?.cartItems[cartItem].dishType === props.product.dishType) {
           setCurrentProduct(cart?.cartItems[cartItem]);
           setDishSize(cart?.cartItems[cartItem].productSize);
         }
       }
-    }
+    } */
 
     //dispatch(getMenuIngredientsByProductId(currentProduct.productId));
 
@@ -295,7 +298,7 @@ export default function ProductCard(props) {
   ]);
 
   const onQuantityIncrement = (productId) => {
-    if (cart.cartItems[productId]) {
+    /* if (cart.cartItems[productId]) {
       dispatch(
         addToCartNew(
           cart.cartItems[productId],
@@ -317,12 +320,14 @@ export default function ProductCard(props) {
           null
         )
       );
-    }
+    } */
+    let newQty = qty + 1;
+    setQty(newQty);
     calculateSubTotal();
   };
 
   const onQuantityDecrement = (productId) => {
-    dispatch(
+    /* dispatch(
       addToCartNew(
         cart.cartItems[productId],
         -1,
@@ -331,14 +336,25 @@ export default function ProductCard(props) {
         specialText,
         null
       )
-    );
+    ); */
+    if (qty !== 0) {
+      let newQty = qty - 1;
+      setQty(newQty);
+    }
+
     calculateSubTotal();
+  };
+
+  const handleSelectedCusProd = (product) => {
+    setSelectedCusProd(product);
+    console.log(product.productId);
   };
 
   const handleDishCusType = (event) => {
     setDishCusType(event.target.value);
   };
   const handleDishSize = (event) => {
+    console.log(event.target.value);
     setDishSize(event.target.value);
   };
 
@@ -349,6 +365,24 @@ export default function ProductCard(props) {
 
   const handleCurrentProduct = (curProduct) => {
     setCurrentProduct(curProduct);
+
+    const cartProd = cart?.cartItems[curProduct.productId];
+
+    console.log("cartprod");
+    console.log(cartProd);
+
+    if (cartProd) {
+      setQty(cartProd.qty);
+      setChoiceObj(cartProd.choiceIng);
+      setChoice(cartProd.choiceIng.ingredientType);
+      setToppings(cartProd.extra);
+      setSpecialText(cartProd.specialText ? cartProd.specialText : "");
+    } else {
+      setChoice("");
+      setChoiceObj({});
+      setToppingSubTotal(0);
+      setToppings({});
+    }
   };
 
   const replaceCartItem = (dupProduct, oldId) => {
@@ -396,6 +430,16 @@ export default function ProductCard(props) {
     }
     console.log(extraTotal);
     setToppingSubTotal(extraTotal);
+  };
+
+  const showCustPrice = () => {
+    const choicePrice = choiceObj && choiceObj.price ? choiceObj.price : 0;
+    const toppingAllPrice = toppingSubTotal ? toppingSubTotal : 0;
+    const prodTotal =
+      currentProduct && currentProduct.price ? qty * currentProduct.price : 0;
+
+    const total = prodTotal + choicePrice + toppingAllPrice;
+    return <span>{total}</span>;
   };
 
   const renderPictureModal = () => {
@@ -463,7 +507,7 @@ export default function ProductCard(props) {
                               name="controlled-radio-buttons-group"
                               value={dishSize}
                               onChange={handleDishSize}
-                              defaultValue={currentProduct.productSize}
+                              defaultValue={currentProduct.productId}
                             >
                               <Row className="align-items-center">
                                 {props.products.map((dupProduct) =>
@@ -481,18 +525,18 @@ export default function ProductCard(props) {
                                                   dupProduct.productId
                                                 ]
                                               ) {
-                                                replaceCartItem(
+                                                /* replaceCartItem(
                                                   dupProduct,
                                                   currentProduct.productId
-                                                );
+                                                ); */
                                               }
                                               dispatch(
                                                 getMenuIngredientsByProductId(
                                                   dupProduct.productId
                                                 )
                                               );
-                                              setChoice("");
-                                              handleClearCheckBox();
+                                              //setChoice("");
+                                              //handleClearCheckBox();
                                             }}
                                           />
                                         }
@@ -543,9 +587,8 @@ export default function ProductCard(props) {
                                               {dupProduct.productSize}
                                               <br></br>
                                               <div style={{ marginTop: "5px" }}>
-                                                {cart?.cartItems[
-                                                  dupProduct.productId
-                                                ] ? (
+                                                {currentProduct.productId ===
+                                                dupProduct.productId ? (
                                                   <span
                                                     style={{
                                                       fontWeight: "600",
@@ -630,7 +673,7 @@ export default function ProductCard(props) {
                                       control={
                                         <Radio
                                           onClick={() => {
-                                            dispatch(
+                                            /* dispatch(
                                               addToCartNew(
                                                 currentProduct,
                                                 0,
@@ -639,7 +682,8 @@ export default function ProductCard(props) {
                                                 specialText,
                                                 choiceIng
                                               )
-                                            );
+                                            ); */
+                                            setChoiceObj(choiceIng);
                                           }}
                                         />
                                       }
@@ -886,8 +930,7 @@ export default function ProductCard(props) {
                             onQuantityDecrement(currentProduct?.productId);
                           }}
                         >
-                          {cart?.cartItems[currentProduct?.productId]?.qty <
-                          2 ? (
+                          {qty < 2 ? (
                             <Delete sx={{ fontSize: "0.9rem" }}></Delete>
                           ) : (
                             <Remove sx={{ fontSize: "0.9rem" }}></Remove>
@@ -905,9 +948,7 @@ export default function ProductCard(props) {
                               fontSize: "0.9rem",
                             }}
                           >
-                            {cart?.cartItems[currentProduct?.productId]?.qty
-                              ? cart?.cartItems[currentProduct?.productId]?.qty
-                              : 0}
+                            {qty}
                           </Typography>{" "}
                         </IncButton>
 
@@ -925,10 +966,10 @@ export default function ProductCard(props) {
                         className="w-100"
                         variant="contained"
                         onClick={() => {
-                          let qty = cart?.cartItems[currentProduct?.productId]
+                          /* let qty = cart?.cartItems[currentProduct?.productId]
                             ?.qty
                             ? 0
-                            : 0;
+                            : 1; */
                           dispatch(
                             addToCartNew(
                               currentProduct,
@@ -936,7 +977,8 @@ export default function ProductCard(props) {
                               toppings,
                               toppingSubTotal,
                               specialText,
-                              null
+                              choiceObj,
+                              true
                             )
                           );
                           calculateSubTotal();
@@ -944,19 +986,7 @@ export default function ProductCard(props) {
                           handleClose();
                         }}
                       >
-                        Add to my order ₹{" "}
-                        {cart?.cartItems[currentProduct?.productId]?.qty *
-                        cart?.cartItems[currentProduct?.productId]?.price
-                          ? cart?.cartItems[currentProduct?.productId]?.qty *
-                              cart?.cartItems[currentProduct?.productId]
-                                ?.price +
-                            toppingSubTotal +
-                            (cart?.cartItems[currentProduct?.productId]
-                              ?.choiceIng.price
-                              ? cart?.cartItems[currentProduct?.productId]
-                                  ?.choiceIng.price
-                              : 0)
-                          : 0}
+                        Add to my order ₹ {showCustPrice()}
                         .00
                       </CheckoutButton>
                     </Col>
@@ -1140,7 +1170,7 @@ export default function ProductCard(props) {
                 onClick={() => {
                   if (props.product.ingredientExistsFalg === "Y") {
                     if (!cart?.cartItems[currentProduct.productId]) {
-                      dispatch(
+                      /* dispatch(
                         addToCartNew(
                           currentProduct,
                           1,
@@ -1150,7 +1180,7 @@ export default function ProductCard(props) {
                           //choiseIngrdients[0]
                           null
                         )
-                      );
+                      ); */
                       calculateSubTotal();
                     }
                     setChoice(
@@ -1164,6 +1194,21 @@ export default function ProductCard(props) {
                         ? cart?.cartItems[currentProduct?.productId]
                             ?.specialText
                         : ""
+                    );
+                    setQty(
+                      cart?.cartItems[currentProduct?.productId]?.qty
+                        ? cart?.cartItems[currentProduct?.productId]?.qty
+                        : 1
+                    );
+                    setChoiceObj(
+                      cart?.cartItems[currentProduct?.productId]?.choiceIng
+                        ? cart?.cartItems[currentProduct?.productId]?.choiceIng
+                        : choiceObj
+                    );
+                    setToppings(
+                      cart?.cartItems[currentProduct?.productId]?.extra
+                        ? cart?.cartItems[currentProduct?.productId]?.extra
+                        : {}
                     );
 
                     handleOpen();
