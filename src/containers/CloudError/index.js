@@ -18,8 +18,10 @@ export const CloudError = () => {
               {/*  <Typography sx={{ fontSize: "72px" }}>ERROR</Typography> */}
               <Typography sx={{ fontSize: "36px" }}>ERROR</Typography>
               <Typography sx={{ fontSize: "22px" }}>
-                Our Google Cloud System is facing some issues, please try again
-                after few minutes!
+                PLease be patient, your favourite Hangries Menu will be
+                displayed shortly!
+                <br></br>
+                Please try again after few minutes!
                 <br></br>
                 Thank You!
               </Typography>
