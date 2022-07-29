@@ -2,6 +2,15 @@ import axios from "../helpers/axios";
 import stockAxios from "axios";
 import { productConstants } from "./constants";
 
+const pizzaSort = [
+  "Taste of India",
+  "Simply Veg 2",
+  "Simply Veg 3",
+  "Simply Veg 1",
+  "Simply Veg",
+  "Combo",
+];
+
 //geting products belong to a specific category by url slug
 export const getProductsBySlug = (slug) => {
   return async (dispatch) => {
@@ -156,12 +165,16 @@ export const getDishesBySection = (section) => {
       });
 
       if (res.status === 200) {
+        const sorted = res.data.sort(
+          (a, b) => pizzaSort.indexOf(a) - pizzaSort.indexOf(b)
+        );
+
         dispatch({
           type: productConstants.GET_DISHES_BY_SECTION_SUCCESS,
-          payload: res.data,
+          payload: sorted,
         });
-        //console.log(res.data);
-        return res.data;
+        //console.log(sorted);
+        return sorted;
       } else {
         console.log("error");
       }
