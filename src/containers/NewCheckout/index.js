@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import ReactToPrint from "react-to-print";
 import { useStateWithCallbackLazy } from "use-state-with-callback";
 import { useHistory } from "react-router-dom";
 import "./style.css";
@@ -182,6 +183,31 @@ const CusTextField = styled(TextField)`
   }
 `;
 
+const CusTextField2 = styled(TextField)`
+ & label {
+  font-size: 0.75rem;
+  top: -11px;
+}
+
+& .Mui-focused{
+  top: 0px !important;
+}
+
+& fieldset{
+  font-size: 0.75rem;
+}
+
+& .MuiFormLabel-filled{
+  top: 0px !important;
+}
+
+& input{
+  font-size: 0.75rem;
+  padding: 0.25rem;
+}
+ }
+`;
+
 export default function NewCheckout() {
   const defDel = useSelector((state) => state.auth.deliveryType);
   const deliveryPrice = useSelector((state) => state.auth.deliveryPrice);
@@ -192,7 +218,7 @@ export default function NewCheckout() {
   const [currentType, setCurrentType] = useState(0);
   const [extraSubTotal, setExtraSubTotal] = useState(0);
   const [choiceTotal, setChoiceTotal] = useState(0);
-  const [coupon, setCoupon] = useState("");
+  const [couponCode, setCouponCode] = useState("");
   const [orderResp, setOrderResp] = useStateWithCallbackLazy(null);
   const [selectedAddress, setSelectedAddress] = useState(
     defDel ? defDel.selectedAddress : null
@@ -544,10 +570,6 @@ export default function NewCheckout() {
     setValue(newValue);
   };
 
-  const handleChangeCoupon = (event) => {
-    setCoupon(event.target.value);
-  };
-
   const handleChangePaymentType = (event) => {
     setPaymentType(event.target.value);
   };
@@ -700,14 +722,19 @@ export default function NewCheckout() {
         <Modal.Footer>
           <Row className="w-100">
             <Col className="col-6">
-              <Button
-                color="secondary"
-                onClick={handleCloseInvoice}
-                className="w-100"
-                variant="contained"
-              >
-                Close
-              </Button>
+              <ReactToPrint
+                trigger={() => (
+                  <Button
+                    color="secondary"
+                    //onClick={handleCloseInvoice}
+                    className="w-100"
+                    variant="contained"
+                  >
+                    Print
+                  </Button>
+                )}
+                content={() => ref.current}
+              />
             </Col>
             <Col className="col-6">
               <Pdf
@@ -926,7 +953,7 @@ export default function NewCheckout() {
               </Col> */}
               </Row>
               <div>
-                <Card sx={{ width: "100%", marginTop: 3 }}>
+                <Card sx={{ width: "100%", marginTop: 3, minHeight: "360px" }}>
                   <CardContent sx={{ height: "auto" }}>
                     <CartCard
                       onChangeSubTotal={handleSubTotal}
@@ -1047,6 +1074,33 @@ export default function NewCheckout() {
                         </Row>
                       </Typography>
                     ) : null}
+
+                    <Row className="mt-5">
+                      <Col sm={7}>
+                        <CusTextField2
+                          sx={{ marginTop: "3px" }}
+                          label="Coupon Code"
+                          value={couponCode}
+                          onChange={(event) => {
+                            setCouponCode(event.target.value);
+                          }}
+                          fullWidth
+                        />
+                      </Col>
+                      <Col sm={5}>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          sx={{
+                            fontSize: "0.75rem",
+                            lineHeight: "1rem",
+                            padding: "5px 16px",
+                          }}
+                        >
+                          APPLY
+                        </Button>
+                      </Col>
+                    </Row>
                   </CardContent>
                 </Card>
               </div>
@@ -1062,7 +1116,9 @@ export default function NewCheckout() {
               <Row>
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
-                    <Card sx={{ width: "100%", marginTop: 3 }}>
+                    <Card
+                      sx={{ width: "100%", marginTop: 3, minHeight: "360px" }}
+                    >
                       <CardContent>
                         <h5
                           style={{
@@ -1501,7 +1557,7 @@ export default function NewCheckout() {
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
                     {!currentPaymentType ? (
-                      <Card>
+                      <Card sx={{ minHeight: "360px" }}>
                         <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
                           {/* <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
                             PAYMENT METHOD
@@ -1696,6 +1752,9 @@ export default function NewCheckout() {
                 <b>Note</b> - Delivery is made within 3 km of Store address
               </Typography>
             )}
+            <Typography sx={{ color: "#595959" }}>
+              <b>T&C Apply:- If order is placed it is non refundable*</b>
+            </Typography>
           </div>
           {currentPaymentType === "COD" || currentPaymentType === "CASH" ? (
             <Row>
