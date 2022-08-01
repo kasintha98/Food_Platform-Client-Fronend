@@ -398,7 +398,10 @@ export default function NewCheckout() {
           remarks: allItems[i].specialText,
         };
 
-        if (Object.keys(allItems[i].choiceIng).length > 0) {
+        if (
+          Object.keys(allItems[i].choiceIng).length > 0 &&
+          allItems[i].choiceIng.price
+        ) {
           console.log(allItems[i].choiceIng);
           const objCh = {
             productId: allItems[i].productId,
@@ -406,7 +409,7 @@ export default function NewCheckout() {
             subProductId: allItems[i].choiceIng.subProductId
               ? allItems[i].choiceIng.subProductId
               : "NAA",
-            quantity: allItems[i].choiceIng.qty ? allItems[i].choiceIng.qty : 1,
+            quantity: allItems[i].qty ? allItems[i].qty : 1,
             storeId: allItems[i].storeId,
             price: allItems[i].choiceIng.price,
             remarks: allItems[i].choiceIng.specialText
@@ -426,7 +429,7 @@ export default function NewCheckout() {
               subProductId: allExtra[k].subProductId
                 ? allExtra[k].subProductId
                 : "NAA",
-              quantity: allExtra[k].qty ? allExtra[k].qty : 1,
+              quantity: allItems[i].qty ? allItems[i].qty : 1,
               storeId: allItems[i].storeId,
               price: allExtra[k].price,
               remarks: allExtra[k].specialText ? allExtra[k].specialText : "",
