@@ -241,12 +241,14 @@ export default function NewCheckout() {
   const [showInvoice, setShowInvoice] = useState(false);
   const [delCharge, setDelCharge] = useState(0);
   const [height, setHeight] = useState(0);
+  const [cardHeight, setCardHeight] = useState(0);
 
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
   const dispatch = useDispatch();
   const ref = React.createRef();
   const refH = useRef(null);
+  const refCardHeight = useRef(null);
 
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
@@ -288,6 +290,12 @@ export default function NewCheckout() {
   useEffect(() => {
     if (refH.current) {
       setHeight(refH.current.clientHeight * 0.58);
+    }
+  });
+
+  useEffect(() => {
+    if (refCardHeight.current) {
+      setCardHeight(refCardHeight.current.clientHeight);
     }
   });
 
@@ -956,7 +964,10 @@ export default function NewCheckout() {
               </Col> */}
               </Row>
               <div>
-                <Card sx={{ width: "100%", marginTop: 3, minHeight: "360px" }}>
+                <Card
+                  sx={{ width: "100%", marginTop: 3, minHeight: "360px" }}
+                  ref={refCardHeight}
+                >
                   <CardContent sx={{ height: "auto" }}>
                     <CartCard
                       onChangeSubTotal={handleSubTotal}
@@ -1120,7 +1131,11 @@ export default function NewCheckout() {
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
                     <Card
-                      sx={{ width: "100%", marginTop: 3, minHeight: "360px" }}
+                      sx={{
+                        width: "100%",
+                        marginTop: 3,
+                        minHeight: cardHeight,
+                      }}
                     >
                       <CardContent>
                         <h5
@@ -1560,7 +1575,7 @@ export default function NewCheckout() {
                 <Col className="col-12">
                   <Grid sx={{ width: "100%", marginTop: 3 }}>
                     {!currentPaymentType ? (
-                      <Card sx={{ minHeight: "360px" }}>
+                      <Card sx={{ minHeight: cardHeight }}>
                         <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
                           {/* <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
                             PAYMENT METHOD
@@ -1658,7 +1673,7 @@ export default function NewCheckout() {
                       </Card>
                     ) : null}
                     {currentPaymentType === "Paytm" ? (
-                      <Card className="p-3">
+                      <Card className="p-3" sx={{ minHeight: cardHeight }}>
                         <Row>
                           <Col>
                             <Paytm></Paytm>
@@ -1677,7 +1692,7 @@ export default function NewCheckout() {
                       </Card>
                     ) : null}
                     {currentPaymentType === "PayU" ? (
-                      <Card className="p-3">
+                      <Card className="p-3" sx={{ minHeight: cardHeight }}>
                         <Row>
                           <Col>
                             {/* <PayU></PayU> */}
@@ -1707,7 +1722,7 @@ export default function NewCheckout() {
                       </Card>
                     ) : null}
                     {currentPaymentType === "CASH" ? (
-                      <Card className="p-3">
+                      <Card className="p-3" sx={{ minHeight: cardHeight }}>
                         <Row>
                           <Col>
                             <p>You selected CASH!</p>
@@ -1726,7 +1741,7 @@ export default function NewCheckout() {
                       </Card>
                     ) : null}
                     {currentPaymentType === "COD" ? (
-                      <Card className="p-3">
+                      <Card className="p-3" sx={{ minHeight: cardHeight }}>
                         <Row>
                           <Col>
                             <p>You selected Cash On Delivery!</p>
