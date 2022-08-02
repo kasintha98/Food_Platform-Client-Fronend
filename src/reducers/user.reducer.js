@@ -15,6 +15,7 @@ const initState = {
   message: "",
   allAddresses: [],
   orderStatus: [],
+  coupon: null,
 };
 
 export default (state = initState, action) => {
@@ -193,6 +194,26 @@ export default (state = initState, action) => {
         ...state,
         loading: false,
         error: action.payload.error,
+      };
+      break;
+
+    case userConstants.VALIDATE_COUPON_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
+
+    case userConstants.VALIDATE_COUPON_SUCCESS:
+      state = {
+        ...state,
+        coupon: action.payload,
+      };
+      break;
+
+    case userConstants.VALIDATE_COUPON_FAILURE:
+      state = {
+        ...state,
+        coupon: null,
       };
       break;
   }
