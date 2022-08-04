@@ -58,6 +58,7 @@ import {
   setDeliveryType,
   getAllStores,
   validateCoupon,
+  clearCoupon,
 } from "../../actions";
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
@@ -590,7 +591,7 @@ export default function NewCheckout() {
               toast.warning("Please complete the PayU process in next tab!");
             }
           });
-
+          dispatch(clearCoupon());
           return res.data;
         }
       });

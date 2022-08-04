@@ -510,3 +510,15 @@ export const validateCoupon = (couponCode) => {
     }
   };
 };
+
+export const clearCoupon = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.CLEAR_COUPON_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: userConstants.CLEAR_COUPON_FAILURE,
+      });
+    }
+  };
+};

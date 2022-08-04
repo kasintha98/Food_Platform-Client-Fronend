@@ -216,6 +216,13 @@ export default (state = initState, action) => {
         coupon: null,
       };
       break;
+
+    case userConstants.CLEAR_COUPON_SUCCESS:
+      state = {
+        ...state,
+        coupon: null,
+      };
+      break;
   }
   return state;
 };

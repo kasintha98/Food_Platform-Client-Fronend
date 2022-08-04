@@ -14,6 +14,29 @@ const CusTableCell = styled(TableCell)`
 export const InvoiceTable = (props) => {
   const cart = useSelector((state) => state.cart);
 
+  const renderDiscount = (isOnlyValue) => {
+    if (props.fullResp.discountPercentage) {
+      const grandTotal = Number(props.grandTot);
+      const currentPerc = 100 - Number(props.fullResp.discountPercentage);
+      const divide = grandTotal / currentPerc;
+      const divde100mul = divide * 100;
+
+      const disc = divde100mul - grandTotal;
+
+      if (isOnlyValue) {
+        return disc.toFixed(2);
+      } else {
+        return <span>(- Rs. {disc.toFixed(2)})</span>;
+      }
+    } else {
+      if (isOnlyValue) {
+        return 0;
+      } else {
+        return <span>(- Rs. 0)</span>;
+      }
+    }
+  };
+
   return (
     <div>
       {props.allProducts ? (
@@ -87,9 +110,43 @@ export const InvoiceTable = (props) => {
                 colspan="1"
                 sx={{ fontStyle: "italic" }}
               >
-                Rs. {props.grandTot}
+                Rs. {Number(props.grandTot) + Number(renderDiscount(true))}
               </CusTableCell>
             </TableRow>
+
+            {props.fullResp.discountPercentage &&
+            Number(props.fullResp.discountPercentage) ? (
+              <TableRow>
+                <CusTableCell component="th" scope="row" colspan="3">
+                  Discount
+                </CusTableCell>
+                <CusTableCell
+                  component="th"
+                  scope="row"
+                  colspan="1"
+                  sx={{ fontStyle: "italic" }}
+                >
+                  {renderDiscount()}
+                </CusTableCell>
+              </TableRow>
+            ) : null}
+
+            {props.fullResp.couponCode ? (
+              <TableRow>
+                <CusTableCell component="th" scope="row" colspan="3">
+                  Coupon Code
+                </CusTableCell>
+                <CusTableCell
+                  component="th"
+                  scope="row"
+                  colspan="1"
+                  sx={{ fontStyle: "italic" }}
+                >
+                  {props.fullResp.couponCode}
+                </CusTableCell>
+              </TableRow>
+            ) : null}
+
             <TableRow>
               <CusTableCell component="th" scope="row" colspan="3">
                 CGST
