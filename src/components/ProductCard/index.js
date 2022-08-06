@@ -1154,7 +1154,7 @@ export default function ProductCard(props) {
               </>
             )}
           </CusTypography>
-          {props.product?.commonImage === "Y" ? (
+          {/* {props.product?.commonImage === "Y" ? (
             <Typography
               sx={{
                 fontSize: "0.75rem",
@@ -1168,6 +1168,27 @@ export default function ProductCard(props) {
               <LinesEllipsis
                 text={`${props.product?.dishDescriptionId}`}
                 maxLine="3"
+                ellipsis="..."
+                trimRight
+                basedOn="letters"
+              />
+            </Typography>
+          ) : null} */}
+
+          {props.product?.dishDescriptionId ? (
+            <Typography
+              sx={{
+                fontSize: "0.75rem",
+                fontWeight: "400",
+                fontFamily: "Arial",
+                color: "#767171",
+              }}
+              variant="body2"
+              color="text.secondary"
+            >
+              <LinesEllipsis
+                text={`${props.product?.dishDescriptionId}`}
+                maxLine="2"
                 ellipsis="..."
                 trimRight
                 basedOn="letters"
