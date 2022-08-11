@@ -306,7 +306,7 @@ export default function CartCard(props) {
                                   lineHeight: "1",
                                 }}
                               >
-                                Topping :{" "}
+                                Extra Topping :{" "}
                               </span>
                             ) : null}
                           </Col>
@@ -363,7 +363,7 @@ export default function CartCard(props) {
                       <Typography>
                         {cart?.cartItems[key]?.choiceIng &&
                         Object.keys(cart?.cartItems[key]?.choiceIng).length >
-                          0 ? (
+                          1 ? (
                           <>
                             <Row>
                               <Col className="pr-0 mr-0 col-9">
