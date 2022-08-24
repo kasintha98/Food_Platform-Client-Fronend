@@ -743,11 +743,9 @@ export default function NewCheckout() {
       let pizzaCount = 0;
       let pizzaKeys = [];
       let pizzaValues = [];
-      let lowestPizzaKey = null;
-      let lowestPizzaKeysList = [];
       let allReduceCost = 0;
 
-      if (day === 6) {
+      if (day === wednesday) {
         for (let i = 0; i < Object.keys(cart?.cartItems).length; i++) {
           if (Object.values(cart?.cartItems)[i].section === "Pizza") {
             pizzaKeys.push(Object.keys(cart?.cartItems)[i]);
