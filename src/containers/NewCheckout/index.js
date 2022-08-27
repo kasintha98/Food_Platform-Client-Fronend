@@ -723,10 +723,10 @@ export default function NewCheckout() {
       return;
     }
 
-    if (couponCode === "COMBO1") {
+    /* if (couponCode === "COMBO1") {
       specialOfferCheckCOMBO1();
       return;
-    }
+    } */
 
     dispatch(validateCoupon(couponCode)).then((res) => {
       if (res) {
@@ -1297,7 +1297,7 @@ export default function NewCheckout() {
                         bOGOLowestPizzaKey ? bOGOLowestPizzaKey : []
                       }
                       onChangeSpecialOfferCheckBOGO={specialOfferCheckBOGO}
-                      onChangeSpecialOfferCheckCOMBO1={specialOfferCheckCOMBO1}
+                      //onChangeSpecialOfferCheckCOMBO1={specialOfferCheckCOMBO1}
                       comboReduceKey={comboReduceKey}
                     ></CartCard>
                     {Object.keys(cart.cartItems).length > 0 ? (
