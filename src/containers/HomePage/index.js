@@ -11,6 +11,7 @@ import { ScrollingProvider, Section } from "react-scroll-section";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
 import { Restaurants } from "../../components/Restaurants";
+import { Offers } from "../../components/Offers";
 
 export default function HomePage(props) {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
@@ -23,6 +24,9 @@ export default function HomePage(props) {
           <MyCarousel></MyCarousel>
         </Section>
         <Container>
+          <Section id="offers">
+            <Offers></Offers>
+          </Section>
           <Section id="about">
             <About></About>
           </Section>

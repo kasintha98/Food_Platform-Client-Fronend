@@ -6,10 +6,7 @@ import about from "../../img/about.jpg";
 
 export default function About() {
   return (
-    <div>
-      <br></br>
-      <br></br>
-      <br></br>
+    <div style={{ marginTop: "40px" }}>
       <Card style={{ width: "100%" }}>
         <Card.Img variant="top" src={about} />
         {/* <Row>

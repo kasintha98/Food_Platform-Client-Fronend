@@ -16,6 +16,7 @@ import Input from "../Input";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../../img/logo.png";
 import del from "../../img/deliveryType.jpg";
+import offerIcon from "../../img/offerIcon.png";
 import { login, signout } from "../../actions";
 import { Link, NavLink } from "react-router-dom";
 import CartNum from "../UI/CartNum";
@@ -94,6 +95,14 @@ const CusNav3 = styled(Nav)`
 `;
 
 const CusImage = styled.img`
+  height: 40px;
+  @media (max-width: 431px) {
+    height: 40px;
+    width: 70px;
+  }
+`;
+
+const CusImage2 = styled.img`
   height: 40px;
   @media (max-width: 431px) {
     height: 40px;
@@ -544,6 +553,18 @@ export default function Header(props) {
             >
               <PinDropIcon></PinDropIcon> GPS Tracker
             </CusNavHashLink>
+
+            <NavHashLink
+              className="nav-link"
+              to="/#offers"
+              activeClassName="selected"
+              activeStyle={{
+                /* color: "red", */ borderBottom: "3px red solid",
+                paddingBottom: 0,
+              }}
+            >
+              <CusImage2 src={offerIcon} alt="Offers" />
+            </NavHashLink>
 
             {isMobile ? (
               <NavLink className="nav-link" to="/new-cart">
