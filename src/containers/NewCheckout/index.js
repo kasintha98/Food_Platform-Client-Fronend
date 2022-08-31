@@ -521,6 +521,7 @@ export default function NewCheckout() {
           storeId: allItems[i].storeId,
           price: allItems[i].price,
           remarks: allItems[i].specialText,
+          foodPackagedFlag: "N",
         };
 
         if (
@@ -540,6 +541,7 @@ export default function NewCheckout() {
             remarks: allItems[i].choiceIng.specialText
               ? allItems[i].choiceIng.specialText
               : "",
+            foodPackagedFlag: "N",
           };
           orderDetails.push(objCh);
         }
@@ -558,6 +560,7 @@ export default function NewCheckout() {
               storeId: allItems[i].storeId,
               price: allExtra[k].price,
               remarks: allExtra[k].specialText ? allExtra[k].specialText : "",
+              foodPackagedFlag: "N",
             };
             orderDetails.push(objextra);
           }
