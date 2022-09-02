@@ -544,7 +544,7 @@ export default function Header(props) {
             ) : null}
 
             <CusNavHashLink
-              className="nav-link ms-2"
+              className="nav-link ms-2 gps"
               to="/gps"
               activeClassName="selected"
               activeStyle={{
@@ -555,7 +555,7 @@ export default function Header(props) {
             </CusNavHashLink>
 
             <NavHashLink
-              className="nav-link"
+              className="nav-link offer"
               to="/#offers"
               activeClassName="selected"
               activeStyle={{
@@ -567,7 +567,7 @@ export default function Header(props) {
             </NavHashLink>
 
             {isMobile ? (
-              <NavLink className="nav-link" to="/new-cart">
+              <NavLink className="nav-link cartpd" to="/new-cart">
                 {Object.keys(cart.cartItems) ? (
                   <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
                 ) : null}

@@ -4,6 +4,35 @@
   }
 }
 
+@media (max-width: 992px) {
+  .offer {
+    margin-left: 0px !important;
+    padding: 0px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .gps {
+    margin-left: 0px !important;
+    margin-right: 10px !important;
+    padding: 0px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .gps {
+    margin-right: 5px !important;
+    line-height: 38px !important;
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .cartpd {
+    padding: 0px !important;
+  }
+}
+
 .dropdown-toggle::after {
   display: none;
 }
