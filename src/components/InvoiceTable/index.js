@@ -69,8 +69,12 @@ export const InvoiceTable = (props) => {
                     )}
                   </CusTableCell>
                   <CusTableCell>{row.quantity}</CusTableCell>
-                  <CusTableCell>Rs. {row.price}.00</CusTableCell>
-                  <CusTableCell>
+                  <CusTableCell
+                    sx={{ padding: "0px 5px 0px 0px", minWidth: "90px" }}
+                  >
+                    Rs. {row.price}.00
+                  </CusTableCell>
+                  <CusTableCell sx={{ padding: 0 }}>
                     Rs. {Number(row.quantity) * Number(row.price)}.00
                   </CusTableCell>
                 </TableRow>
