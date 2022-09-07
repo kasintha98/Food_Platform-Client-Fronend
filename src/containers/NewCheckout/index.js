@@ -609,7 +609,7 @@ export default function NewCheckout() {
         customerAddressId: selectedAddress ? selectedAddress.id : null,
         cgstCalculatedValue: cgstCaluclatedValue.toFixed(2),
         sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
-        overallPriceWithTax: overallPriceWithTax,
+        overallPriceWithTax: Math.round(overallPriceWithTax),
         orderDetails: orderDetails,
         couponCode: couponReduxObj
           ? couponReduxObj.couponDetails.couponCode
