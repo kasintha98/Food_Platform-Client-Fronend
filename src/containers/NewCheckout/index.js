@@ -594,11 +594,11 @@ export default function NewCheckout() {
         orderId: "EMPTY",
         restaurantId: currentType.restaurantId,
         storeId: currentType.storeId,
-        orderSource: "W",
+        orderSource: currentType.type === "delivery" ? "WD" : "WS",
         customerId: auth.user.id,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
-          currentType.type === "delivery" ? "DELIVERY" : "SELF-COLLECT",
+          currentType.type === "delivery" ? "WEB DELIVERY" : "WEB SELF COLLECT",
         storeTableId: null,
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
