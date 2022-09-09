@@ -973,9 +973,6 @@ export default function NewCheckout() {
                       Customer Name: {orderResp ? orderResp.customerName : null}
                     </Typography>
                     <Typography sx={{ fontWeight: "600" }}>
-                      Order No: {orderResp ? orderResp.id : null}
-                    </Typography>
-                    <Typography sx={{ fontWeight: "600" }}>
                       {defDel.type === "delivery" ? (
                         <span>Delivery</span>
                       ) : (
