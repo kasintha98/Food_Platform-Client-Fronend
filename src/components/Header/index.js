@@ -153,7 +153,7 @@ export default function Header(props) {
   };
 
   const renderDeliveryTypeModal2 = () => {
-    console.log(delModalOpen2);
+    //console.log(delModalOpen2);
     return setDelModalOpen2(true);
   };
 

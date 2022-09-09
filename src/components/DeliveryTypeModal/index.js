@@ -78,7 +78,7 @@ export const DeliveryTypeModal = (props) => {
 
     setTimeout(
       function () {
-        console.log("Delivery type");
+        //console.log("Delivery type");
         if (!localStorage.getItem("deliveryType")) {
           handleShow();
         }
@@ -112,18 +112,18 @@ export const DeliveryTypeModal = (props) => {
 
   const handleChangeStore = (event) => {
     setSelectedStore(event.target.value);
-    console.log(event.target.value);
+    //console.log(event.target.value);
   };
 
   const handleChangeTab = (event, newValue) => {
     setType(newValue);
-    console.log(newValue);
+    //console.log(newValue);
   };
 
   const handleSelectedStore = (store) => {
     setIsStoreChanged(true);
     setSelectedStoreObj(store);
-    console.log(store);
+    //console.log(store);
   };
 
   const handleClose = () => {
@@ -137,7 +137,7 @@ export const DeliveryTypeModal = (props) => {
   };
 
   const saveDeliveryType = () => {
-    console.log(selectedStoreObj);
+    //console.log(selectedStoreObj);
     const delObj = {
       ...selectedStoreObj,
       type,
@@ -161,7 +161,7 @@ export const DeliveryTypeModal = (props) => {
   };
 
   const NewAddress = ({ address }) => {
-    console.log("address: " + address.city);
+    //console.log("address: " + address.city);
     return (
       <div style={{ width: "100%", margin: "auto" }} className="mb-2 mt-2">
         <Card sx={{ display: "flex", maxWidth: 600, margin: "0px auto" }}>
