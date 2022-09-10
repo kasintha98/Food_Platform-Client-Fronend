@@ -967,6 +967,9 @@ export default function NewCheckout() {
                       {defDel.country}
                     </Typography>
                     <Typography sx={{ fontWeight: "600" }}>
+                      GST NO: {defDel ? defDel.storeGstNumber : null}
+                    </Typography>
+                    <Typography sx={{ fontWeight: "600" }}>
                       Order ID: {orderResp ? orderResp.orderId : null}
                     </Typography>
                     <Typography sx={{ fontWeight: "600" }}>
