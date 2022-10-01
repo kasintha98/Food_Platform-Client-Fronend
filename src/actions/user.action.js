@@ -9,6 +9,7 @@ import {
 } from "./constants";
 import { resetCart } from "./cart.action";
 import axios from "../helpers/axios";
+import axiosDefault from "axios";
 import { toast } from "react-toastify";
 
 //action to get addresses of user
@@ -549,6 +550,50 @@ export const getBusinessDate = (restaurantId, storeId) => {
     } catch (error) {
       dispatch({
         type: userConstants.GET_BUSINESS_DATE_FAILURE,
+        payload: null,
+      });
+      //toast.error("There was an error getting business date!");
+    }
+  };
+};
+
+export const verifyPayU = (form) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.VERIFY_PAYU_REQUEST });
+      console.log("veri start");
+      console.log(form);
+      const res = await axiosDefault.post(
+        "https://test.payu.in/merchant/postservice?form=2",
+        form,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Access-Control-Allow-Origin": "*",
+            Origin: "https://api-playground.payu.in",
+          },
+        }
+      );
+
+      console.log("res", res);
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.VERIFY_PAYU_SUCCESS,
+          payload: res.data,
+        });
+        toast.success("PayU Success!");
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.VERIFY_PAYU_FAILURE,
+          payload: null,
+        });
+        // toast.error("There was an error getting business date!");
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.VERIFY_PAYU_FAILURE,
         payload: null,
       });
       //toast.error("There was an error getting business date!");

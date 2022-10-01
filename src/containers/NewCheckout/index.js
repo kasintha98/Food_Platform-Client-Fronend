@@ -13,42 +13,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import Alert from "@mui/material/Alert";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import CheckoutCard from "../../components/CheckoutCard/index";
-import ProductCard from "../../components/ProductCard";
 import styled from "@emotion/styled";
-import CartNum from "../../components/UI/CartNum";
 import { useSelector, useDispatch } from "react-redux";
-import { Paper } from "@mui/material";
 import { Grid } from "@mui/material";
-import { CardActionArea } from "@mui/material";
-import { CardMedia, TextField } from "@mui/material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import Divider from "@mui/material/Divider";
-import LoginIcon from "@mui/icons-material/Login";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import { TextField } from "@mui/material";
 import CartCard from "../../components/CartCard";
 import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
-import GooglePayButton from "@google-pay/button-react";
-import { SettingsApplicationsRounded } from "@mui/icons-material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -60,6 +35,7 @@ import {
   validateCoupon,
   clearCoupon,
   getBusinessDate,
+  verifyPayU,
 } from "../../actions";
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
@@ -70,6 +46,10 @@ import { InvoiceTable } from "../../components/InvoiceTable";
 import Pdf from "react-to-pdf";
 import { PayUTest } from "../../components/PayUTest";
 import { toast } from "react-toastify";
+
+const queryString = require("query-string");
+var sha512 = require("js-sha512").sha512;
+var jwt = require("jsonwebtoken");
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -211,7 +191,7 @@ const CusTextField2 = styled(TextField)`
  }
 `;
 
-export default function NewCheckout() {
+export default function NewCheckout(props) {
   const defDel = useSelector((state) => state.auth.deliveryType);
   const deliveryPrice = useSelector((state) => state.auth.deliveryPrice);
   const couponReduxObj = useSelector((state) => state.user.coupon);
@@ -250,6 +230,7 @@ export default function NewCheckout() {
   const [bOGOLowestPizzaKey, setBOGOLowestPizzaKey] = useState(null);
   const [comboReduceKey, setComboReduceKey] = useState(null);
   const [allBogoReduceCost, setAllBogoReduceCost] = useState(0);
+  const [showPayUFailed, setShowPayUFailed] = useState(false);
 
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
@@ -303,6 +284,111 @@ export default function NewCheckout() {
   useEffect(() => {
     dispatch(getBusinessDate(defDel.restaurantId, defDel.storeId));
   }, [defDel]);
+
+  useEffect(() => {
+    if (
+      queryString.parse(props.location.search).page === "success" &&
+      queryString.parse(props.location.search).id &&
+      queryString.parse(props.location.search).token
+    ) {
+      setCurrentPaymentType("PayU");
+      toast.success("Payment Success");
+
+      var decodedOrderObj = jwt.verify(
+        queryString.parse(props.location.search).token,
+        "burgersecret"
+      );
+      console.log("decodedOrderObj", decodedOrderObj);
+      placeOrder(true, decodedOrderObj);
+
+      /* if (Object.keys(cart?.cartItems).length > 0 && auth.user.id) {
+        placeOrder(true);
+      } */
+
+      const hashString =
+        "JPM7Fg|verify_payment|" +
+        queryString.parse(props.location.search).id +
+        "|TuxqAugd";
+
+      var hashed = sha512(hashString);
+
+      /* let form = new FormData();
+
+      let data =
+        "key=JPM7Fg&command=verify_payment&var1=" +
+        queryString.parse(props.location.search).id +
+        "&hash=" +
+        hashed;
+      form.append("key", "JPM7Fg");
+      form.append("command", "verify_payment");
+      form.append("var1", queryString.parse(props.location.search).id);
+      form.append("hash", hashed); */
+
+      const data = queryString.stringify({
+        key: "JPM7Fg",
+        command: "verify_payment",
+        var1: queryString.parse(props.location.search).id,
+        hash: hashed,
+      });
+
+      dispatch(verifyPayU(data)).then((res) => {
+        if (res) {
+        }
+      });
+
+      /* axios
+        .post("https://test.payu.in/merchant/postservice?form=2", data, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Access-Control-Allow-Origin": "*",
+            Origin: "https://api-playground.payu.in",
+          },
+        })
+        .then(function (response) {
+          console.log("response", response);
+        })
+        .catch(function (error) {
+          console.log("error", error);
+        }); */
+
+      /* const fetch = require("node-fetch");
+      const encodedParams = new URLSearchParams();
+      encodedParams.set("key", "JPM7Fg");
+      encodedParams.set("command", "verify_payment");
+      encodedParams.set("var1", queryString.parse(props.location.search).id);
+      encodedParams.set("var2", "");
+      encodedParams.set("var3", "");
+      encodedParams.set("var4", "");
+      encodedParams.set("var5", "");
+      encodedParams.set("var6", "");
+      encodedParams.set("var7", "");
+      encodedParams.set("var8", "");
+      encodedParams.set("var9", "");
+      encodedParams.set("hash", hashed);
+      const url = "https://test.payu.in/merchant/postservice?form=2";
+      const options = {
+        method: "POST",
+        mode: 'no-cors',
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: encodedParams,
+      };
+      fetch(url, options)
+        .then((res) => res.json())
+        .then((json) => console.log(json))
+        .catch((err) => console.error("error:" + err));
+
+      if (queryString.parse(props.location.search).page === "failed") {
+        toast.success("Payment failed");
+      } */
+    }
+
+    if (queryString.parse(props.location.search).page === "failed") {
+      setShowPayUFailed(true);
+    }
+  }, []);
 
   const options = {
     unit: "px",
@@ -477,13 +563,15 @@ export default function NewCheckout() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const closePayUFailed = () => setShowPayUFailed(false);
+
   const handleCloseInvoice = () => {
     setShowInvoice(false);
     history.push("/");
   };
   const handleShowInvoice = () => setShowInvoice(true);
 
-  const placeOrder = async () => {
+  const placeOrder = async (fromVerifiedPayU, decodedOrderObj) => {
     try {
       let total =
         subTotal +
@@ -592,8 +680,12 @@ export default function NewCheckout() {
       const NewOrder = {
         id: 0,
         orderId: "EMPTY",
-        restaurantId: currentType.restaurantId,
-        storeId: currentType.storeId,
+        restaurantId: decodedOrderObj
+          ? decodedOrderObj.restaurantId
+          : currentType.restaurantId,
+        storeId: decodedOrderObj
+          ? decodedOrderObj.storeId
+          : currentType.storeId,
         orderSource: currentType.type === "delivery" ? "WD" : "WS",
         customerId: auth.user.id,
         orderReceivedDateTime: new Date(),
@@ -602,19 +694,31 @@ export default function NewCheckout() {
         storeTableId: null,
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
-        totalPrice: total,
-        paymentStatus: paymentStatus,
-        paymentMode: currentPaymentType,
-        deliveryCharges: Number(delCharge) ? Number(delCharge) : 0,
+        totalPrice: decodedOrderObj ? decodedOrderObj.total : total,
+        paymentStatus: fromVerifiedPayU ? "PAID" : paymentStatus,
+        paymentMode: fromVerifiedPayU ? "PayU" : currentPaymentType,
+        deliveryCharges: decodedOrderObj
+          ? decodedOrderObj.deliveryCharges
+          : Number(delCharge)
+          ? Number(delCharge)
+          : 0,
         customerAddressId: selectedAddress ? selectedAddress.id : null,
-        cgstCalculatedValue: cgstCaluclatedValue.toFixed(2),
-        sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
-        overallPriceWithTax: Math.round(overallPriceWithTax),
+        cgstCalculatedValue: decodedOrderObj
+          ? decodedOrderObj.cgstCalculatedValue
+          : cgstCaluclatedValue.toFixed(2),
+        sgstCalculatedValue: decodedOrderObj
+          ? decodedOrderObj.sgstCalculatedValue
+          : sgstCalculatedValue.toFixed(2),
+        overallPriceWithTax: decodedOrderObj
+          ? decodedOrderObj.overallPriceWithTax
+          : Math.round(overallPriceWithTax),
         orderDetails: orderDetails,
         couponCode: couponReduxObj
           ? couponReduxObj.couponDetails.couponCode
           : "",
-        discountPercentage: couponReduxObj
+        discountPercentage: decodedOrderObj
+          ? decodedOrderObj.discountPercentage
+          : couponReduxObj
           ? couponReduxObj.couponDetails.discountPercentage
           : 0,
       };
@@ -934,6 +1038,52 @@ export default function NewCheckout() {
     return <span>{time}</span>;
   };
 
+  const calcValues = (val) => {
+    let total =
+      subTotal +
+      (extraSubTotal ? extraSubTotal : 0) +
+      (choiceTotal ? choiceTotal : 0);
+
+    if (val === "total") {
+      return total;
+    }
+
+    if (val === "cgst") {
+      if (taxDetails) {
+        let c = 0;
+        taxDetails.forEach((tax) => {
+          if (tax.taxCategory.toUpperCase() === "CGST") {
+            c = total * (tax.taxPercentage / 100);
+          }
+        });
+        return c.toFixed(2);
+      } else {
+        return 0;
+      }
+    }
+
+    if (val === "sgst") {
+      if (taxDetails) {
+        let c = 0;
+        taxDetails.forEach((tax) => {
+          if (tax.taxCategory.toUpperCase() === "SGST") {
+            c = total * (tax.taxPercentage / 100);
+          }
+        });
+        return c.toFixed(2);
+      }
+    }
+
+    if (val === "over") {
+      return (
+        Number(total) +
+        Number(calcValues("cgst")) +
+        Number(calcValues("sgst")) +
+        Number(delCharge)
+      ).toFixed();
+    }
+  };
+
   const renderInvoiceModal = () => {
     return (
       <Modal show={showInvoice} onHide={handleCloseInvoice}>
@@ -1219,6 +1369,41 @@ export default function NewCheckout() {
           <Button variant="primary" onClick={handleClose}>
             Save Changes
           </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
+
+  const renderFailedPayUModal = () => {
+    return (
+      <Modal show={showPayUFailed} onHide={closePayUFailed}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <Typography>PayU Payment Failed</Typography>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ maxHeight: "75vh", overflowY: "auto" }}>
+          <div className="text-center">
+            <Typography sx={{ fontWeight: "600" }}>
+              PayU payment failed! Please try again!
+            </Typography>
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Row className="w-100">
+            <Col className="col-6"></Col>
+            <Col className="col-6">
+              <Button
+                color="primary"
+                onClick={closePayUFailed}
+                className="w-100"
+                variant="contained"
+              >
+                Close
+              </Button>
+            </Col>
+          </Row>
         </Modal.Footer>
       </Modal>
     );
@@ -1965,7 +2150,7 @@ export default function NewCheckout() {
                             value={paymentType}
                             onChange={handleChangePaymentType}
                           >
-                            {/* <FormControlLabel
+                            <FormControlLabel
                               value="PayU"
                               control={<Radio color="success" />}
                               label={
@@ -1980,7 +2165,7 @@ export default function NewCheckout() {
                                   PayU (Cards, Net Banking, UPI, Wallet)
                                 </Typography>
                               }
-                            /> */}
+                            />
                             {/* <FormControlLabel
                               value="Paytm"
                               control={<Radio color="success" />}
@@ -2085,6 +2270,21 @@ export default function NewCheckout() {
                                   : true
                               }
                               placeOrder={placeOrder}
+                              cgstCalculatedValue={calcValues}
+                              sgstCalculatedValue={calcValues}
+                              deliveryCharges={
+                                Number(delCharge) ? Number(delCharge) : 0
+                              }
+                              discountPercentage={
+                                couponReduxObj
+                                  ? couponReduxObj.couponDetails
+                                      .discountPercentage
+                                  : 0
+                              }
+                              overallPriceWithTax={calcValues}
+                              defTotal={calcValues}
+                              restaurantId={currentType.restaurantId}
+                              storeId={currentType.storeId}
                             ></PayUTest>
                           </Col>
                           <Col>
@@ -2218,6 +2418,7 @@ export default function NewCheckout() {
       ) : null}
       {renderInvoiceModal()}
       {renderPayUModal()}
+      {renderFailedPayUModal()}
       {isMobile ? <BottomNav onChangeTab={handleNavTab}></BottomNav> : null}
     </div>
   );

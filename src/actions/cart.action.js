@@ -79,9 +79,9 @@ export const updateCart = () => {
       : null;
 
     if (auth.authenticate) {
-      localStorage.removeItem("cart");
+      //localStorage.removeItem("cart");
 
-      if (cartItems) {
+      /* if (cartItems) {
         const payload = {
           cartItems: Object.keys(cartItems).map((key, index) => {
             return {
@@ -91,11 +91,17 @@ export const updateCart = () => {
           }),
         };
         if (Object.keys(cartItems).length > 0) {
-          /* const res = await axios.post("/user/cart/addtocart", payload);
+          const res = await axios.post("/user/cart/addtocart", payload);
           if (res.status === 201) {
             dispatch(getCartItems());
-          } */
+          }
         }
+      } */
+      if (cartItems) {
+        dispatch({
+          type: cartConstants.ADD_TO_CART_SUCCESS,
+          payload: { cartItems },
+        });
       }
     } else {
       if (cartItems) {
