@@ -148,6 +148,7 @@ export const PayUTest = (props) => {
           defaultValue={auth.user?.mobileNumber}
         />
         <input type="hidden" name="field1" defaultValue="KasiTest" />
+        <input type="hidden" name="drop_category" defaultValue="NB|EMI|CASH" />
         <input type="hidden" name="hash" defaultValue={hashed} />
         <button
           className="btn btn-primary w-100"

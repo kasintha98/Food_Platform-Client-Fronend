@@ -24,6 +24,7 @@
     "html2canvas": "^1.1.4",
     "jquery-validation": "^1.19.3",
     "js-sha512": "^0.8.0",
+    "jsonwebtoken": "^8.5.1",
     "jspdf": "^2.3.1",
     "paytm-blink-checkout-react": "0.0.3",
     "query-string": "^7.1.1",
