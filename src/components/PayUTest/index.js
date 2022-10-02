@@ -13,6 +13,7 @@ export const PayUTest = (props) => {
   const [hashedOrderObj, setHashedOrderObj] = useState(
     jwt.sign(
       {
+        txnUID,
         cgstCalculatedValue: props.cgstCalculatedValue("cgst"),
         sgstCalculatedValue: props.sgstCalculatedValue("sgst"),
         deliveryCharges: props.deliveryCharges,
@@ -21,6 +22,7 @@ export const PayUTest = (props) => {
         total: props.defTotal("total"),
         restaurantId: props.restaurantId,
         storeId: props.storeId,
+        time: new Date().getTime(),
       },
       "burgersecret"
     )
@@ -133,7 +135,7 @@ export const PayUTest = (props) => {
         <input
           type="hidden"
           name="surl"
-          defaultValue={`http://localhost:5080/new-checkout?page=success&id=${txnUID}&token=${hashedOrderObj}`}
+          defaultValue={`http://localhost:5080/new-checkout?page=success&token=${hashedOrderObj}`}
         />
         <input
           type="hidden"

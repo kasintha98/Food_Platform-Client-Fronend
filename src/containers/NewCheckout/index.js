@@ -288,101 +288,106 @@ export default function NewCheckout(props) {
   useEffect(() => {
     if (
       queryString.parse(props.location.search).page === "success" &&
-      queryString.parse(props.location.search).id &&
       queryString.parse(props.location.search).token
     ) {
-      setCurrentPaymentType("PayU");
-      toast.success("Payment Success");
+      let decodedOrderObj = null;
 
-      var decodedOrderObj = jwt.verify(
-        queryString.parse(props.location.search).token,
-        "burgersecret"
-      );
-      console.log("decodedOrderObj", decodedOrderObj);
-      placeOrder(true, decodedOrderObj);
+      try {
+        decodedOrderObj = jwt.verify(
+          queryString.parse(props.location.search).token,
+          "burgersecret"
+        );
+      } catch (error) {
+        console.log(error);
+      }
 
-      /* if (Object.keys(cart?.cartItems).length > 0 && auth.user.id) {
-        placeOrder(true);
-      } */
-
-      const hashString =
-        "JPM7Fg|verify_payment|" +
-        queryString.parse(props.location.search).id +
-        "|TuxqAugd";
-
-      var hashed = sha512(hashString);
-
-      /* let form = new FormData();
-
-      let data =
-        "key=JPM7Fg&command=verify_payment&var1=" +
-        queryString.parse(props.location.search).id +
-        "&hash=" +
-        hashed;
-      form.append("key", "JPM7Fg");
-      form.append("command", "verify_payment");
-      form.append("var1", queryString.parse(props.location.search).id);
-      form.append("hash", hashed); */
-
-      const data = queryString.stringify({
-        key: "JPM7Fg",
-        command: "verify_payment",
-        var1: queryString.parse(props.location.search).id,
-        hash: hashed,
-      });
-
-      dispatch(verifyPayU(data)).then((res) => {
-        if (res) {
+      if (decodedOrderObj) {
+        setCurrentPaymentType("PayU");
+        toast.success("Payment Success");
+        if (Object.keys(cart?.cartItems).length > 0 && auth.user.id) {
+          placeOrder(true, decodedOrderObj);
         }
-      });
 
-      /* axios
-        .post("https://test.payu.in/merchant/postservice?form=2", data, {
+        const hashString =
+          "JPM7Fg|verify_payment|" + decodedOrderObj.txnUID + "|TuxqAugd";
+
+        var hashed = sha512(hashString);
+
+        /* let form = new FormData();
+  
+        let data =
+          "key=JPM7Fg&command=verify_payment&var1=" +
+          decodedOrderObj.txnUID +
+          "&hash=" +
+          hashed;
+        form.append("key", "JPM7Fg");
+        form.append("command", "verify_payment");
+        form.append("var1", decodedOrderObj.txnUID);
+        form.append("hash", hashed); */
+
+        const data = queryString.stringify({
+          key: "JPM7Fg",
+          command: "verify_payment",
+          var1: decodedOrderObj.txnUID,
+          hash: hashed,
+        });
+
+        dispatch(verifyPayU(data)).then((res) => {
+          if (res) {
+            console.log(res);
+          }
+        });
+
+        /* axios
+          .post("https://test.payu.in/merchant/postservice?form=2", data, {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Access-Control-Allow-Origin": "*",
+              Origin: "https://api-playground.payu.in",
+            },
+          })
+          .then(function (response) {
+            console.log("response", response);
+          })
+          .catch(function (error) {
+            console.log("error", error);
+          }); */
+
+        /* const fetch = require("node-fetch");
+        const encodedParams = new URLSearchParams();
+        encodedParams.set("key", "JPM7Fg");
+        encodedParams.set("command", "verify_payment");
+        encodedParams.set("var1", decodedOrderObj.txnUID);
+        encodedParams.set("var2", "");
+        encodedParams.set("var3", "");
+        encodedParams.set("var4", "");
+        encodedParams.set("var5", "");
+        encodedParams.set("var6", "");
+        encodedParams.set("var7", "");
+        encodedParams.set("var8", "");
+        encodedParams.set("var9", "");
+        encodedParams.set("hash", hashed);
+        const url = "https://test.payu.in/merchant/postservice?form=2";
+        const options = {
+          method: "POST",
+          mode: 'no-cors',
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Allow-Origin": "*",
-            Origin: "https://api-playground.payu.in",
           },
-        })
-        .then(function (response) {
-          console.log("response", response);
-        })
-        .catch(function (error) {
-          console.log("error", error);
-        }); */
-
-      /* const fetch = require("node-fetch");
-      const encodedParams = new URLSearchParams();
-      encodedParams.set("key", "JPM7Fg");
-      encodedParams.set("command", "verify_payment");
-      encodedParams.set("var1", queryString.parse(props.location.search).id);
-      encodedParams.set("var2", "");
-      encodedParams.set("var3", "");
-      encodedParams.set("var4", "");
-      encodedParams.set("var5", "");
-      encodedParams.set("var6", "");
-      encodedParams.set("var7", "");
-      encodedParams.set("var8", "");
-      encodedParams.set("var9", "");
-      encodedParams.set("hash", hashed);
-      const url = "https://test.payu.in/merchant/postservice?form=2";
-      const options = {
-        method: "POST",
-        mode: 'no-cors',
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: encodedParams,
-      };
-      fetch(url, options)
-        .then((res) => res.json())
-        .then((json) => console.log(json))
-        .catch((err) => console.error("error:" + err));
-
-      if (queryString.parse(props.location.search).page === "failed") {
-        toast.success("Payment failed");
-      } */
+          body: encodedParams,
+        };
+        fetch(url, options)
+          .then((res) => res.json())
+          .then((json) => console.log(json))
+          .catch((err) => console.error("error:" + err));
+  
+        if (queryString.parse(props.location.search).page === "failed") {
+          toast.success("Payment failed");
+        } */
+      } else {
+        toast.error("Invalid token!");
+      }
     }
 
     if (queryString.parse(props.location.search).page === "failed") {
@@ -1382,7 +1387,13 @@ export default function NewCheckout(props) {
             <Typography>PayU Payment Failed</Typography>
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ maxHeight: "75vh", overflowY: "auto" }}>
+        <Modal.Body
+          style={{
+            maxHeight: "75vh",
+            overflowY: "auto",
+            backgroundColor: "red",
+          }}
+        >
           <div className="text-center">
             <Typography sx={{ fontWeight: "600" }}>
               PayU payment failed! Please try again!
