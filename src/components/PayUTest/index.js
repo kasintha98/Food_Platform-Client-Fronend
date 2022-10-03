@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { v5 as uuidv5 } from "uuid";
 
 var sha512 = require("js-sha512").sha512;
 var jwt = require("jsonwebtoken");
@@ -10,10 +11,27 @@ export const PayUTest = (props) => {
   const auth = useSelector((state) => state.auth);
 
   const [hashed, setHashed] = useState("");
-  const [txnUID, setTxnUID] = useState(uuidv4());
+  const [txnUID, setTxnUID] = useState(
+    uuidv5(
+      JSON.stringify({
+        customerId: props.customerId,
+        cgstCalculatedValue: props.cgstCalculatedValue("cgst"),
+        sgstCalculatedValue: props.sgstCalculatedValue("sgst"),
+        deliveryCharges: props.deliveryCharges,
+        discountPercentage: props.discountPercentage,
+        overallPriceWithTax: props.overallPriceWithTax("over"),
+        total: props.defTotal("total"),
+        restaurantId: props.restaurantId,
+        storeId: props.storeId,
+        time: new Date().getTime(),
+      }),
+      "0050ae36-4343-11ed-b878-0242ac120002"
+    )
+  );
   const [hashedOrderObj, setHashedOrderObj] = useState(
     jwt.sign(
       {
+        customerId: props.customerId,
         txnUID,
         cgstCalculatedValue: props.cgstCalculatedValue("cgst"),
         sgstCalculatedValue: props.sgstCalculatedValue("sgst"),

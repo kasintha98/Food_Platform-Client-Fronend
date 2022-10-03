@@ -2296,6 +2296,7 @@ export default function NewCheckout(props) {
                               defTotal={calcValues}
                               restaurantId={currentType.restaurantId}
                               storeId={currentType.storeId}
+                              customerId={auth.user ? auth.user.id : null}
                             ></PayUTest>
                           </Col>
                           <Col>
