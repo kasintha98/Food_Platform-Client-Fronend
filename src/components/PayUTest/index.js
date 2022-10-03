@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 var sha512 = require("js-sha512").sha512;
 var jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 export const PayUTest = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -135,12 +136,12 @@ export const PayUTest = (props) => {
         <input
           type="hidden"
           name="surl"
-          defaultValue={`http://localhost:5080/new-checkout?page=success&token=${hashedOrderObj}`}
+          defaultValue={`${process.env.REACT_APP_BASE_URL_DEV}/new-checkout?page=success&token=${hashedOrderObj}`}
         />
         <input
           type="hidden"
           name="furl"
-          defaultValue="http://localhost:5080/new-checkout?page=failed"
+          defaultValue={`${process.env.REACT_APP_BASE_URL_DEV}/new-checkout?page=failed`}
         />
         <input
           type="hidden"
