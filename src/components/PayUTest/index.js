@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { v5 as uuidv5 } from "uuid";
+import { api } from "../../urlConfig";
 
 var sha512 = require("js-sha512").sha512;
 var jwt = require("jsonwebtoken");
@@ -154,12 +155,12 @@ export const PayUTest = (props) => {
         <input
           type="hidden"
           name="surl"
-          defaultValue={`${process.env.REACT_APP_BASE_URL_DEV}/new-checkout?page=success&token=${hashedOrderObj}`}
+          defaultValue={`${"https://hangariesapp-uumgqhekpa-el.a.run.app/api"}/savePayUResponse`}
         />
         <input
           type="hidden"
           name="furl"
-          defaultValue={`${process.env.REACT_APP_BASE_URL_DEV}/new-checkout?page=failed`}
+          defaultValue={`${process.env.REACT_APP_BASE_URL_DEV}/savePayUResponse`}
         />
         <input
           type="hidden"
