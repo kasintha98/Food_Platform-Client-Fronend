@@ -287,14 +287,14 @@ export default function NewCheckout(props) {
 
   useEffect(() => {
     if (
-      queryString.parse(props.location.search).page === "success" &&
-      queryString.parse(props.location.search).token
+      queryString.parse(props.location.search).status === "success" &&
+      queryString.parse(props.location.search).hash
     ) {
       let decodedOrderObj = null;
 
       try {
         decodedOrderObj = jwt.verify(
-          queryString.parse(props.location.search).token,
+          queryString.parse(props.location.search).hash,
           "burgersecret"
         );
       } catch (error) {
@@ -304,93 +304,23 @@ export default function NewCheckout(props) {
       if (decodedOrderObj) {
         setCurrentPaymentType("PayU");
         toast.success("Payment Success");
-        if (Object.keys(cart?.cartItems).length > 0 && auth.user.id) {
-          placeOrder(true, decodedOrderObj);
-        }
 
-        const hashString =
-          "JPM7Fg|verify_payment|" + decodedOrderObj.txnUID + "|TuxqAugd";
-
-        var hashed = sha512(hashString);
-
-        /* let form = new FormData();
-  
-        let data =
-          "key=JPM7Fg&command=verify_payment&var1=" +
-          decodedOrderObj.txnUID +
-          "&hash=" +
-          hashed;
-        form.append("key", "JPM7Fg");
-        form.append("command", "verify_payment");
-        form.append("var1", decodedOrderObj.txnUID);
-        form.append("hash", hashed); */
-
-        const data = queryString.stringify({
-          key: "JPM7Fg",
-          command: "verify_payment",
-          var1: decodedOrderObj.txnUID,
-          hash: hashed,
-        });
-
-        dispatch(verifyPayU(data)).then((res) => {
-          if (res) {
-            console.log(res);
+        dispatch(saveNewOrder(decodedOrderObj)).then((res) => {
+          if (res && res.data) {
+            console.log(res.data);
+            setOrderResp(res.data[0], () => {
+              handleShowInvoice();
+            });
+            dispatch(clearCoupon());
+            return res.data;
           }
         });
-
-        /* axios
-          .post("https://test.payu.in/merchant/postservice?form=2", data, {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-              "Access-Control-Allow-Origin": "*",
-              Origin: "https://api-playground.payu.in",
-            },
-          })
-          .then(function (response) {
-            console.log("response", response);
-          })
-          .catch(function (error) {
-            console.log("error", error);
-          }); */
-
-        /* const fetch = require("node-fetch");
-        const encodedParams = new URLSearchParams();
-        encodedParams.set("key", "JPM7Fg");
-        encodedParams.set("command", "verify_payment");
-        encodedParams.set("var1", decodedOrderObj.txnUID);
-        encodedParams.set("var2", "");
-        encodedParams.set("var3", "");
-        encodedParams.set("var4", "");
-        encodedParams.set("var5", "");
-        encodedParams.set("var6", "");
-        encodedParams.set("var7", "");
-        encodedParams.set("var8", "");
-        encodedParams.set("var9", "");
-        encodedParams.set("hash", hashed);
-        const url = "https://test.payu.in/merchant/postservice?form=2";
-        const options = {
-          method: "POST",
-          mode: 'no-cors',
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: encodedParams,
-        };
-        fetch(url, options)
-          .then((res) => res.json())
-          .then((json) => console.log(json))
-          .catch((err) => console.error("error:" + err));
-  
-        if (queryString.parse(props.location.search).page === "failed") {
-          toast.success("Payment failed");
-        } */
       } else {
-        toast.error("Invalid token!");
+        toast.error("Invalid hash!");
       }
     }
 
-    if (queryString.parse(props.location.search).page === "failed") {
+    if (queryString.parse(props.location.search).status === "failure") {
       setShowPayUFailed(true);
     }
   }, []);
@@ -1398,6 +1328,9 @@ export default function NewCheckout(props) {
             <Typography sx={{ fontWeight: "600" }}>
               PayU payment failed! Please try again!
             </Typography>
+            <Typography sx={{ fontWeight: "600" }}>
+              ERROR: {queryString.parse(props.location.search).error_Message}
+            </Typography>
           </div>
         </Modal.Body>
 
@@ -1418,6 +1351,163 @@ export default function NewCheckout(props) {
         </Modal.Footer>
       </Modal>
     );
+  };
+
+  const getOrderObj = () => {
+    let total =
+      subTotal +
+      (extraSubTotal ? extraSubTotal : 0) +
+      (choiceTotal ? choiceTotal : 0);
+
+    if (
+      couponReduxObj &&
+      Number(couponReduxObj.couponDetails.discountPercentage)
+    ) {
+      const afterAddCoupon =
+        (100 - Number(couponReduxObj.couponDetails.discountPercentage)) / 100;
+      total = total * afterAddCoupon;
+    }
+
+    if (allBogoReduceCost) {
+      total = total - Number(allBogoReduceCost);
+    }
+
+    if (comboReduceKey) {
+      total = total - Number(comboReduceKey.reducingCost);
+    }
+
+    let orderDetails = [];
+    const allItems = Object.values(cart?.cartItems);
+
+    for (let i = 0; i < allItems.length; i++) {
+      const obj = {
+        productId: allItems[i].productId,
+        orderId: "EMPTY",
+        subProductId: allItems[i].subProductId
+          ? allItems[i].subProductId
+          : "NAA",
+        quantity: allItems[i].qty,
+        storeId: allItems[i].storeId,
+        price: allItems[i].price,
+        remarks: allItems[i].specialText,
+        foodPackagedFlag: "N",
+      };
+
+      if (
+        Object.keys(allItems[i].choiceIng).length > 0 &&
+        allItems[i].choiceIng.price
+      ) {
+        console.log(allItems[i].choiceIng);
+        const objCh = {
+          productId: allItems[i].productId,
+          orderId: "EMPTY",
+          subProductId: allItems[i].choiceIng.subProductId
+            ? allItems[i].choiceIng.subProductId
+            : "NAA",
+          quantity: allItems[i].qty ? allItems[i].qty : 1,
+          storeId: allItems[i].storeId,
+          price: allItems[i].choiceIng.price,
+          remarks: allItems[i].choiceIng.specialText
+            ? allItems[i].choiceIng.specialText
+            : "",
+          foodPackagedFlag: "N",
+        };
+        orderDetails.push(objCh);
+      }
+
+      if (Object.keys(allItems[i].extra).length > 0) {
+        const allExtra = Object.values(allItems[i].extra);
+
+        for (let k = 0; k < allExtra.length; k++) {
+          const objextra = {
+            productId: allItems[i].productId,
+            orderId: "EMPTY",
+            subProductId: allExtra[k].subProductId
+              ? allExtra[k].subProductId
+              : "NAA",
+            quantity: allItems[i].qty ? allItems[i].qty : 1,
+            storeId: allItems[i].storeId,
+            price: allExtra[k].price,
+            remarks: allExtra[k].specialText ? allExtra[k].specialText : "",
+            foodPackagedFlag: "N",
+          };
+          orderDetails.push(objextra);
+        }
+      }
+
+      orderDetails.push(obj);
+    }
+
+    let cgstCaluclatedValue = 0;
+    let sgstCalculatedValue = 0;
+
+    if (taxDetails) {
+      taxDetails.forEach((tax) => {
+        if (tax.taxCategory.toUpperCase() === "CGST") {
+          cgstCaluclatedValue = total * (tax.taxPercentage / 100);
+        }
+        if (tax.taxCategory.toUpperCase() === "SGST") {
+          sgstCalculatedValue = total * (tax.taxPercentage / 100);
+        }
+      });
+    }
+
+    let overallPriceWithTax =
+      Number(total) +
+      Number(cgstCaluclatedValue.toFixed(2)) +
+      Number(sgstCalculatedValue.toFixed(2)) +
+      Number(delCharge);
+
+    const NewOrder = {
+      id: 0,
+      orderId: "EMPTY",
+      restaurantId: currentType.restaurantId,
+      storeId: currentType.storeId,
+      orderSource: currentType.type === "delivery" ? "WD" : "WS",
+      customerId: auth.user.id,
+      orderReceivedDateTime: new Date(),
+      orderDeliveryType:
+        currentType.type === "delivery" ? "WEB DELIVERY" : "WEB SELF COLLECT",
+      storeTableId: null,
+      orderStatus: "SUBMITTED",
+      taxRuleId: 1,
+      totalPrice: total,
+      paymentStatus: paymentStatus,
+      paymentMode: currentPaymentType,
+      deliveryCharges: Number(delCharge) ? Number(delCharge) : 0,
+      customerAddressId: selectedAddress ? selectedAddress.id : null,
+      cgstCalculatedValue: cgstCaluclatedValue.toFixed(2),
+      sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
+      overallPriceWithTax: Math.round(overallPriceWithTax),
+      orderDetails: orderDetails,
+      couponCode: couponReduxObj ? couponReduxObj.couponDetails.couponCode : "",
+      discountPercentage: couponReduxObj
+        ? couponReduxObj.couponDetails.discountPercentage
+        : 0,
+    };
+
+    /* [
+        {
+          productId: "P001",
+          orderId: "44",
+          quantity: 10,
+          storeId: "S001",
+          price: 4.5,
+          remarks: "Burger Order",
+        },
+        {
+          productId: "P002",
+          quantity: 2,
+          orderId: "44",
+          storeId: "S001",
+          price: 8.5,
+          remarks: "Pizza Order",
+        },
+      ] */
+
+    console.log(NewOrder);
+
+    return NewOrder;
   };
 
   return (
@@ -2297,6 +2387,7 @@ export default function NewCheckout(props) {
                               restaurantId={currentType.restaurantId}
                               storeId={currentType.storeId}
                               customerId={auth.user ? auth.user.id : null}
+                              getOrderObj={getOrderObj}
                             ></PayUTest>
                           </Col>
                           <Col>

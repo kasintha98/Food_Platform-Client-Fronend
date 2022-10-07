@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import { v5 as uuidv5 } from "uuid";
-import { api } from "../../urlConfig";
+import { apiPayULocal, api } from "../../urlConfig";
 
 var sha512 = require("js-sha512").sha512;
 var jwt = require("jsonwebtoken");
@@ -30,76 +29,11 @@ export const PayUTest = (props) => {
     )
   );
   const [hashedOrderObj, setHashedOrderObj] = useState(
-    jwt.sign(
-      {
-        customerId: props.customerId,
-        txnUID,
-        cgstCalculatedValue: props.cgstCalculatedValue("cgst"),
-        sgstCalculatedValue: props.sgstCalculatedValue("sgst"),
-        deliveryCharges: props.deliveryCharges,
-        discountPercentage: props.discountPercentage,
-        overallPriceWithTax: props.overallPriceWithTax("over"),
-        total: props.defTotal("total"),
-        restaurantId: props.restaurantId,
-        storeId: props.storeId,
-        time: new Date().getTime(),
-      },
-      "burgersecret"
-    )
+    jwt.sign(props.getOrderObj(), "burgersecret")
   );
-  /* const [txnid, setTxnid] = useState("");
-  const [total, setTotal] = useState(0); */
-
-  /* const saveOrderFromFrontEnd = (e) => {
-    e.preventDefault();
-    try {
-      getSavedOrder();
-
-      setTimeout(function () {
-        document.getElementById("payuForm").submit();
-      }, 2000);
-    } catch (error) {
-      console.log(error);
-    }
-  }; */
-
-  /* const getSavedOrder =  () => {
-    props.placeOrder().then((res) => {
-      if (res) {
-        setTxnid(res.orderId);
-        setTotal(res.overallPriceWithTax);
-        var hashString =
-          "JPM7Fg" +
-          "|" +
-          `${res.orderId}` +
-          "|" +
-          `${res.overallPriceWithTax}` +
-          "|" +
-          "Hangries Food Items" +
-          "|" +
-          `${auth.user?.firstName}` +
-          "|" +
-          `${auth.user?.emailId}` +
-          "|" +
-          "||||||||||" +
-          "TuxqAugd"; // Your salt value
-        var hashed = sha512(hashString);
-        setHashed(hashed);
-        return true;
-      }
-    });
-  }; */
-
-  //const txnUID = uuidv4();
 
   useEffect(() => {
-    /* console.log({
-      cgstCalculatedValue: props.cgstCalculatedValue("cgst"),
-      sgstCalculatedValue: props.sgstCalculatedValue("sgst"),
-      deliveryCharges: props.deliveryCharges,
-      discountPercentage: props.discountPercentage,
-      overallPriceWithTax: props.overallPriceWithTax("over"),
-    }); */
+    console.log(hashedOrderObj);
     var hashString =
       "JPM7Fg" +
       "|" +
@@ -155,12 +89,12 @@ export const PayUTest = (props) => {
         <input
           type="hidden"
           name="surl"
-          defaultValue={`${"https://hangariesapp-uumgqhekpa-el.a.run.app/api"}/savePayUResponse`}
+          defaultValue={`${api}/savePayUResponseSuccess?token=${hashedOrderObj}`}
         />
         <input
           type="hidden"
           name="furl"
-          defaultValue={`${process.env.REACT_APP_BASE_URL_DEV}/savePayUResponse`}
+          defaultValue={`${api}/savePayUResponseFailure`}
         />
         <input
           type="hidden"
