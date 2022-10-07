@@ -1321,33 +1321,30 @@ export default function NewCheckout(props) {
           style={{
             maxHeight: "75vh",
             overflowY: "auto",
-            backgroundColor: "red",
+            backgroundColor: "#fff",
           }}
         >
           <div className="text-center">
-            <Typography sx={{ fontWeight: "600" }}>
+            <Typography sx={{ fontWeight: "600", color: "red" }}>
               PayU payment failed! Please try again!
             </Typography>
-            <Typography sx={{ fontWeight: "600" }}>
+            <Typography sx={{ fontWeight: "600", color: "red" }}>
               ERROR: {queryString.parse(props.location.search).error_Message}
             </Typography>
           </div>
         </Modal.Body>
 
-        <Modal.Footer>
-          <Row className="w-100">
-            <Col className="col-6"></Col>
-            <Col className="col-6">
-              <Button
-                color="primary"
-                onClick={closePayUFailed}
-                className="w-100"
-                variant="contained"
-              >
-                Close
-              </Button>
-            </Col>
-          </Row>
+        <Modal.Footer style={{ backgroundColor: "lightgray" }}>
+          <div className="w-100 text-center">
+            <Button
+              color="primary"
+              onClick={closePayUFailed}
+              className="w-100"
+              variant="contained"
+            >
+              Close
+            </Button>
+          </div>
         </Modal.Footer>
       </Modal>
     );

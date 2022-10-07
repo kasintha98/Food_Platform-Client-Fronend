@@ -29,7 +29,10 @@ export const PayUTest = (props) => {
     )
   );
   const [hashedOrderObj, setHashedOrderObj] = useState(
-    jwt.sign(props.getOrderObj(), "burgersecret")
+    jwt.sign(
+      { ...props.getOrderObj(), paymentTxnReference: txnUID },
+      "burgersecret"
+    )
   );
 
   useEffect(() => {

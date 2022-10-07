@@ -30,6 +30,7 @@ import { GPSTracker } from "./containers/GPSTracker";
 import ReactSession from "react-client-session";
 import { CloudError } from "./containers/CloudError";
 import PrivateRoute from "./components/PrivateRoute";
+import { LoadingPage } from "./containers/LoadingPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ function App() {
           <Route
             path="/new-checkout"
             exact
-            component={stores && stores.length > 0 ? NewCheckout : CloudError}
+            component={stores && stores.length > 0 ? NewCheckout : LoadingPage}
           />
           <Route
             path="/new-cart"
