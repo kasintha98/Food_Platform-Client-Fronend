@@ -311,9 +311,9 @@ export default function NewCheckout(props) {
       if (decodedOrderObj && decodedPayURes) {
         setCurrentPaymentType("PayU");
         toast.success("Payment Success");
-        let paymentMode = "PayU";
+        //let paymentMode = "PayU";
 
-        if (decodedPayURes.mode === "CC") {
+        /* if (decodedPayURes.mode === "CC") {
           paymentMode = "CREDIT_CARDS";
         }
         if (decodedPayURes.mode === "DC") {
@@ -324,20 +324,18 @@ export default function NewCheckout(props) {
         }
         if (decodedPayURes.mode === "UPI") {
           paymentMode = "UPI";
-        }
+        } */
 
-        dispatch(saveNewOrder({ ...decodedOrderObj, paymentMode })).then(
-          (res) => {
-            if (res && res.data) {
-              console.log(res.data);
-              setOrderResp(res.data[0], () => {
-                handleShowInvoice();
-              });
-              dispatch(clearCoupon());
-              return res.data;
-            }
+        dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
+          if (res && res.data) {
+            console.log(res.data);
+            setOrderResp(res.data[0], () => {
+              handleShowInvoice();
+            });
+            dispatch(clearCoupon());
+            return res.data;
           }
-        );
+        });
       } else {
         toast.error("Invalid hash or response data!");
       }
