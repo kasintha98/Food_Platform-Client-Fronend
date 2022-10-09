@@ -30,7 +30,11 @@ export const PayUTest = (props) => {
   );
   const [hashedOrderObj, setHashedOrderObj] = useState(
     jwt.sign(
-      { ...props.getOrderObj(), paymentTxnReference: txnUID },
+      {
+        ...props.getOrderObj(),
+        paymentTxnReference: txnUID,
+        paymentStatus: "PAID",
+      },
       "burgersecret"
     )
   );
@@ -104,8 +108,16 @@ export const PayUTest = (props) => {
           name="phone"
           defaultValue={auth.user?.mobileNumber}
         />
-        <input type="hidden" name="field1" defaultValue="KasiTest" />
-        <input type="hidden" name="drop_category" defaultValue="NB|EMI|CASH" />
+        <input
+          type="hidden"
+          name="enforce_paymethod"
+          defaultValue="creditcard|debitcard|netbanking|upi|PAYTM"
+        />
+        {/* <input
+          type="hidden"
+          name="drop_category"
+          defaultValue="UPI|googlepay"
+        /> */}
         <input type="hidden" name="hash" defaultValue={hashed} />
         <button
           className="btn btn-primary w-100"

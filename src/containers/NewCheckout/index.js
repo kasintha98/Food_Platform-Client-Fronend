@@ -288,35 +288,58 @@ export default function NewCheckout(props) {
   useEffect(() => {
     if (
       queryString.parse(props.location.search).status === "success" &&
-      queryString.parse(props.location.search).hash
+      queryString.parse(props.location.search).hash &&
+      queryString.parse(props.location.search).res
     ) {
       let decodedOrderObj = null;
+      let decodedPayURes = null;
 
       try {
         decodedOrderObj = jwt.verify(
           queryString.parse(props.location.search).hash,
           "burgersecret"
         );
+
+        decodedPayURes = jwt.verify(
+          queryString.parse(props.location.search).res,
+          "burgersecret"
+        );
       } catch (error) {
         console.log(error);
       }
 
-      if (decodedOrderObj) {
+      if (decodedOrderObj && decodedPayURes) {
         setCurrentPaymentType("PayU");
         toast.success("Payment Success");
+        let paymentMode = "PayU";
 
-        dispatch(saveNewOrder(decodedOrderObj)).then((res) => {
-          if (res && res.data) {
-            console.log(res.data);
-            setOrderResp(res.data[0], () => {
-              handleShowInvoice();
-            });
-            dispatch(clearCoupon());
-            return res.data;
+        if (decodedPayURes.mode === "CC") {
+          paymentMode = "CREDIT_CARDS";
+        }
+        if (decodedPayURes.mode === "DC") {
+          paymentMode = "DEBIT_CARDS";
+        }
+        if (decodedPayURes.mode === "NB") {
+          paymentMode = "NET_BANKING";
+        }
+        if (decodedPayURes.mode === "UPI") {
+          paymentMode = "UPI";
+        }
+
+        dispatch(saveNewOrder({ ...decodedOrderObj, paymentMode })).then(
+          (res) => {
+            if (res && res.data) {
+              console.log(res.data);
+              setOrderResp(res.data[0], () => {
+                handleShowInvoice();
+              });
+              dispatch(clearCoupon());
+              return res.data;
+            }
           }
-        });
+        );
       } else {
-        toast.error("Invalid hash!");
+        toast.error("Invalid hash or response data!");
       }
     }
 
@@ -2281,7 +2304,7 @@ export default function NewCheckout(props) {
                                 </Typography>
                               }
                             /> */}
-                            <FormControlLabel
+                            {/* <FormControlLabel
                               value="CASH"
                               control={<Radio color="success" />}
                               label={
@@ -2299,8 +2322,8 @@ export default function NewCheckout(props) {
                               disabled={
                                 currentType?.type === "delivery" ? true : false
                               }
-                            />
-                            <FormControlLabel
+                            /> */}
+                            {/* <FormControlLabel
                               value="COD"
                               control={<Radio color="success" />}
                               label={
@@ -2318,7 +2341,7 @@ export default function NewCheckout(props) {
                               disabled={
                                 currentType?.type === "collect" ? true : false
                               }
-                            />
+                            /> */}
                           </RadioGroup>
                         </FormControl>
                         <CardActions>
