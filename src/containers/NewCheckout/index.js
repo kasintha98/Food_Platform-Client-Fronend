@@ -35,7 +35,9 @@ import {
   validateCoupon,
   clearCoupon,
   getBusinessDate,
-  verifyPayU,
+  getPayuMerchantID,
+  getPayuUrl,
+  getPayuSalt,
 } from "../../actions";
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
@@ -48,7 +50,6 @@ import { PayUTest } from "../../components/PayUTest";
 import { toast } from "react-toastify";
 
 const queryString = require("query-string");
-var sha512 = require("js-sha512").sha512;
 var jwt = require("jsonwebtoken");
 
 function TabPanel(props) {
@@ -246,6 +247,11 @@ export default function NewCheckout(props) {
 
   useEffect(() => {
     dispatch(getAllStores());
+    dispatch(getPayuUrl(currentType ? currentType.restaurantId : "R001"));
+    dispatch(
+      getPayuMerchantID(currentType ? currentType.restaurantId : "R001")
+    );
+    dispatch(getPayuSalt(currentType ? currentType.restaurantId : "R001"));
     const item = localStorage.getItem("deliveryType");
     console.log(item);
     if (item) {

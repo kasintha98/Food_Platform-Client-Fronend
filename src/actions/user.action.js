@@ -600,3 +600,96 @@ export const verifyPayU = (form) => {
     }
   };
 };
+
+export const getPayuUrl = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYU_URL_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "All", criteria: "PAYU_URL" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_PAYU_URL_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.GET_PAYU_URL_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_PAYU_URL_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
+export const getPayuMerchantID = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYU_MERCHANT_ID_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "All", criteria: "PAYU_MERCHANT_ID" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_PAYU_MERCHANT_ID_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.GET_PAYU_MERCHANT_ID_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_PAYU_MERCHANT_ID_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
+export const getPayuSalt = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYU_SALT_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "All", criteria: "PAYU_SALT" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_PAYU_SALT_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.GET_PAYU_SALT_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_PAYU_SALT_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};

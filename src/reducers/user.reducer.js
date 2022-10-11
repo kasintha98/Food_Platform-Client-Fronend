@@ -17,6 +17,9 @@ const initState = {
   orderStatus: [],
   coupon: null,
   businessDate: null,
+  payUURL: null,
+  payUMerchantID: null,
+  payUSalt: null,
 };
 
 export default (state = initState, action) => {
@@ -242,6 +245,66 @@ export default (state = initState, action) => {
       state = {
         ...state,
         businessDate: null,
+      };
+      break;
+
+    case userConstants.GET_PAYU_URL_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
+
+    case userConstants.GET_PAYU_URL_SUCCESS:
+      state = {
+        ...state,
+        payUURL: action.payload,
+      };
+      break;
+
+    case userConstants.GET_PAYU_URL_FAILURE:
+      state = {
+        ...state,
+        payUURL: null,
+      };
+      break;
+
+    case userConstants.GET_PAYU_MERCHANT_ID_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
+
+    case userConstants.GET_PAYU_MERCHANT_ID_SUCCESS:
+      state = {
+        ...state,
+        payUMerchantID: action.payload,
+      };
+      break;
+
+    case userConstants.GET_PAYU_MERCHANT_ID_FAILURE:
+      state = {
+        ...state,
+        payUMerchantID: null,
+      };
+      break;
+
+    case userConstants.GET_PAYU_SALT_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
+
+    case userConstants.GET_PAYU_SALT_SUCCESS:
+      state = {
+        ...state,
+        payUSalt: action.payload,
+      };
+      break;
+
+    case userConstants.GET_PAYU_SALT_FAILURE:
+      state = {
+        ...state,
+        payUSalt: null,
       };
       break;
   }

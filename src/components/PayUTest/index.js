@@ -9,6 +9,9 @@ require("dotenv").config();
 
 export const PayUTest = (props) => {
   const auth = useSelector((state) => state.auth);
+  const payUURL = useSelector((state) => state.user.payUURL);
+  const payUMerchantID = useSelector((state) => state.user.payUMerchantID);
+  const payUSalt = useSelector((state) => state.user.payUSalt);
 
   const [hashed, setHashed] = useState("");
   const [txnUID, setTxnUID] = useState(
@@ -42,7 +45,7 @@ export const PayUTest = (props) => {
   useEffect(() => {
     console.log(hashedOrderObj);
     var hashString =
-      "JPM7Fg" +
+      `${payUMerchantID}` +
       "|" +
       `${txnUID}` +
       "|" +
@@ -55,7 +58,7 @@ export const PayUTest = (props) => {
       `${auth.user?.emailId}` +
       "|" +
       "||||||||||" +
-      "TuxqAugd"; // Your salt value
+      `${payUSalt}`; // Your salt value
     var hashed = sha512(hashString);
     setHashed(hashed);
   }, [props.total]);
@@ -73,7 +76,7 @@ export const PayUTest = (props) => {
 
   return (
     <div>
-      <form action="https://test.payu.in/_payment" method="POST" id="payuForm">
+      <form action={payUURL} method="POST" id="payuForm">
         <input type="hidden" name="key" defaultValue="JPM7Fg" />
         <input type="hidden" name="txnid" defaultValue={txnUID} />
         <input
@@ -111,7 +114,7 @@ export const PayUTest = (props) => {
         <input
           type="hidden"
           name="enforce_paymethod"
-          defaultValue="creditcard|debitcard|netbanking|upi|PAYTM"
+          defaultValue="creditcard|debitcard|netbanking|upi|PayTM"
         />
         {/* <input
           type="hidden"
