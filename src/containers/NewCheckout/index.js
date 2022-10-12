@@ -197,6 +197,9 @@ export default function NewCheckout(props) {
   const deliveryPrice = useSelector((state) => state.auth.deliveryPrice);
   const couponReduxObj = useSelector((state) => state.user.coupon);
   const businessDateAll = useSelector((state) => state.user.businessDate);
+  const allAddress = useSelector((state) => state.user.allAddresses);
+  const auth = useSelector((state) => state.auth);
+  const taxDetails = useSelector((state) => state.auth.taxDetails);
 
   const [value, setValue] = useState(0);
   const cart = useSelector((state) => state.cart);
@@ -207,13 +210,15 @@ export default function NewCheckout(props) {
   const [couponCode, setCouponCode] = useState("");
   const [orderResp, setOrderResp] = useStateWithCallbackLazy(null);
   const [selectedAddress, setSelectedAddress] = useState(
-    defDel ? defDel.selectedAddress : null
-  );
-  const [selectedAddressStr, setSelectedAddressStr] = useState(
     defDel
       ? defDel.selectedAddress
-        ? defDel.selectedAddress.customerAddressType
-        : null
+      : allAddress && allAddress.length > 0
+      ? allAddress[0].customerAddressType
+      : null
+  );
+  const [selectedAddressStr, setSelectedAddressStr] = useState(
+    defDel && defDel.selectedAddress
+      ? defDel.selectedAddress.customerAddressType
       : null
   );
   const [delModalOpen, setDelModalOpen] = useState(false);
@@ -239,10 +244,6 @@ export default function NewCheckout(props) {
   const ref = React.createRef();
   const refH = useRef(null);
 
-  const allAddress = useSelector((state) => state.user.allAddresses);
-  const auth = useSelector((state) => state.auth);
-  const taxDetails = useSelector((state) => state.auth.taxDetails);
-
   const history = useHistory();
 
   useEffect(() => {
@@ -266,7 +267,14 @@ export default function NewCheckout(props) {
       if (specialChars.test(localUserMobileNumber)) {
         encodeURIComponent(localUserMobileNumber);
       }
-      dispatch(GetAddress(localUserMobileNumber));
+      dispatch(GetAddress(localUserMobileNumber)).then((res) => {
+        if (res && !(defDel && defDel.selectedAddress)) {
+          if (res && res.length > 0) {
+            setSelectedAddress(res[0]);
+            setSelectedAddressStr(res[0].customerAddressType);
+          }
+        }
+      });
     }
   }, []);
 
@@ -277,6 +285,11 @@ export default function NewCheckout(props) {
       if (defDel.selectedAddress) {
         setSelectedAddress(defDel.selectedAddress);
         setSelectedAddressStr(defDel.selectedAddress.customerAddressType);
+      } else {
+        if (allAddress && allAddress.length > 0) {
+          setSelectedAddress(allAddress[0]);
+          setSelectedAddressStr(allAddress[0].customerAddressType);
+        }
       }
     }
   }, [defDel]);

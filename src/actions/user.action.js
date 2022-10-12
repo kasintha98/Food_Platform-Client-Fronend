@@ -291,6 +291,8 @@ export const GetAddress = (mobileNumber) => {
           type: userAddressConstants.GET_USER_ADDRESSS_SUCCESS,
           payload: filteredAddresses,
         });
+
+        return filteredAddresses;
       } else {
         const { error } = res.data;
         dispatch({
