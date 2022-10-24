@@ -74,10 +74,21 @@ export const PayUTest = (props) => {
     }
   };
 
+  const saveOrderFromBackendPayTM = (e) => {
+    e.preventDefault();
+    try {
+      setTimeout(function () {
+        document.getElementById("payuFormPayTM").submit();
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <form action={payUURL} method="POST" id="payuForm">
-        <input type="hidden" name="key" defaultValue="JPM7Fg" />
+        <input type="hidden" name="key" defaultValue={payUMerchantID} />
         <input type="hidden" name="txnid" defaultValue={txnUID} />
         <input
           type="hidden"
@@ -114,7 +125,7 @@ export const PayUTest = (props) => {
         <input
           type="hidden"
           name="enforce_paymethod"
-          defaultValue="creditcard|debitcard|netbanking|upi|PayTM"
+          defaultValue="creditcard|debitcard|netbanking"
         />
         {/* <input
           type="hidden"
@@ -132,6 +143,69 @@ export const PayUTest = (props) => {
           Pay With PayU
         </button>
       </form>
+
+      <br></br>
+
+      {/* PayTm form */}
+
+      {/* <form action={payUURL} method="POST" id="payuFormPayTM">
+        <input type="hidden" name="key" defaultValue={payUMerchantID} />
+        <input type="hidden" name="txnid" defaultValue={txnUID} />
+        <input
+          type="hidden"
+          name="productinfo"
+          defaultValue="Hangries Food Items"
+        />
+        <input type="hidden" name="amount" defaultValue={props.total} />
+        <input type="hidden" name="email" defaultValue={auth.user?.emailId} />
+        <input
+          type="hidden"
+          name="firstname"
+          defaultValue={auth.user?.firstName}
+        />
+        <input
+          type="hidden"
+          name="lastname"
+          defaultValue={auth.user?.lastName}
+        />
+        <input
+          type="hidden"
+          name="surl"
+          defaultValue={`${api}/savePayUResponseSuccess?token=${hashedOrderObj}`}
+        />
+        <input
+          type="hidden"
+          name="furl"
+          defaultValue={`${api}/savePayUResponseFailure`}
+        />
+        <input
+          type="hidden"
+          name="phone"
+          defaultValue={auth.user?.mobileNumber}
+        />
+        <input type="hidden" name="pg" defaultValue="CASH" />
+        <input type="hidden" name="bankcode" defaultValue="PAYTM" />
+        <input
+          type="hidden"
+          name="enforce_paymethod"
+          defaultValue="creditcard|debitcard|netbanking|upi|PayTM"
+        />
+        <input
+          type="hidden"
+          name="drop_category"
+          defaultValue="UPI|googlepay"
+        />
+        <input type="hidden" name="hash" defaultValue={hashed} />
+        <button
+          className="btn btn-primary w-100"
+          disabled={props.disabled}
+          onClick={(e) => {
+            saveOrderFromBackendPayTM(e);
+          }}
+        >
+          Pay With PayTM
+        </button>
+      </form> */}
     </div>
   );
 };
