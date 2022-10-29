@@ -37,6 +37,7 @@ export const NewCart = () => {
 
   const taxDetails = useSelector((state) => state.auth.taxDetails);
   const deliveryPrice = useSelector((state) => state.auth.deliveryPrice);
+  const defDel = useSelector((state) => state.auth.deliveryType);
 
   const handleSubTotal = (total) => {
     setSubtotal(total);
@@ -62,22 +63,24 @@ export const NewCart = () => {
   };
 
   const calcDeliveryPrice = () => {
-    const allSub =
-      subTotal +
-      (extraSubTotal ? extraSubTotal : 0) +
-      (choiceTotal ? choiceTotal : 0);
+    if (defDel.type === "delivery") {
+      const allSub =
+        subTotal +
+        (extraSubTotal ? extraSubTotal : 0) +
+        (choiceTotal ? choiceTotal : 0);
 
-    let deliveryCharge = 0;
+      let deliveryCharge = 0;
 
-    if (deliveryPrice) {
-      deliveryPrice.forEach((delivery) => {
-        if (allSub >= delivery.minAmount && allSub <= delivery.maxAmount) {
-          deliveryCharge = delivery.deliveryFee;
-        }
-      });
+      if (deliveryPrice) {
+        deliveryPrice.forEach((delivery) => {
+          if (allSub >= delivery.minAmount && allSub <= delivery.maxAmount) {
+            deliveryCharge = delivery.deliveryFee;
+          }
+        });
+      }
+
+      setDelCharge(deliveryCharge.toFixed(2));
     }
-
-    setDelCharge(deliveryCharge.toFixed(2));
   };
 
   const renderTax = (tax) => {
@@ -164,18 +167,21 @@ export const NewCart = () => {
               ) : null}
             </Row>
 
-            <Row className="ps-2">
-              <Col className="col-9 pr-0">
-                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
-                  Delivery Charges
-                </span>
-              </Col>
-              <Col className="col-3 ps-0">
-                <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
-                  ₹ {delCharge}
-                </span>
-              </Col>
-            </Row>
+            {defDel.type === "delivery" ? (
+              <Row className="ps-2">
+                <Col className="col-9 pr-0">
+                  <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                    Delivery Charges
+                  </span>
+                </Col>
+                <Col className="col-3 ps-0">
+                  <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>
+                    ₹ {delCharge}
+                  </span>
+                </Col>
+              </Row>
+            ) : null}
+
             <Row className="ps-2">
               <Col className="col-9 pr-0">Grand Total</Col>
               <Col className="col-3 ps-0">{renderGrandTot()}</Col>

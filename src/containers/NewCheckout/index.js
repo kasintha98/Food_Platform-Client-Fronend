@@ -423,39 +423,41 @@ export default function NewCheckout(props) {
   };
 
   const calcDeliveryPrice = () => {
-    let allSub =
-      subTotal +
-      (extraSubTotal ? extraSubTotal : 0) +
-      (choiceTotal ? choiceTotal : 0);
+    if (defDel.type === "delivery") {
+      let allSub =
+        subTotal +
+        (extraSubTotal ? extraSubTotal : 0) +
+        (choiceTotal ? choiceTotal : 0);
 
-    if (
-      couponReduxObj &&
-      Number(couponReduxObj.couponDetails.discountPercentage)
-    ) {
-      const afterAddCoupon =
-        (100 - Number(couponReduxObj.couponDetails.discountPercentage)) / 100;
-      allSub = allSub * afterAddCoupon;
+      if (
+        couponReduxObj &&
+        Number(couponReduxObj.couponDetails.discountPercentage)
+      ) {
+        const afterAddCoupon =
+          (100 - Number(couponReduxObj.couponDetails.discountPercentage)) / 100;
+        allSub = allSub * afterAddCoupon;
+      }
+
+      if (allBogoReduceCost) {
+        allSub = allSub - Number(allBogoReduceCost);
+      }
+
+      if (comboReduceKey) {
+        allSub = allSub - Number(comboReduceKey.reducingCost);
+      }
+
+      let deliveryCharge = 0;
+
+      if (deliveryPrice) {
+        deliveryPrice.forEach((delivery) => {
+          if (allSub >= delivery.minAmount && allSub <= delivery.maxAmount) {
+            deliveryCharge = delivery.deliveryFee;
+          }
+        });
+      }
+
+      setDelCharge(deliveryCharge.toFixed(2));
     }
-
-    if (allBogoReduceCost) {
-      allSub = allSub - Number(allBogoReduceCost);
-    }
-
-    if (comboReduceKey) {
-      allSub = allSub - Number(comboReduceKey.reducingCost);
-    }
-
-    let deliveryCharge = 0;
-
-    if (deliveryPrice) {
-      deliveryPrice.forEach((delivery) => {
-        if (allSub >= delivery.minAmount && allSub <= delivery.maxAmount) {
-          deliveryCharge = delivery.deliveryFee;
-        }
-      });
-    }
-
-    setDelCharge(deliveryCharge.toFixed(2));
   };
 
   const renderTax = (tax) => {
@@ -1721,31 +1723,34 @@ export default function NewCheckout(props) {
                           ) : null}
                         </Row>
 
-                        <Row className="ps-2">
-                          <div className="w75">
-                            <Typography
-                              sx={{
-                                fontSize: "0.9rem",
-                                fontWeight: "600",
-                                fontFamily: "Arial",
-                                color: "#595959",
-                              }}
-                            >
-                              Delivery Charges
-                            </Typography>
-                          </div>
-                          <div className="w25">
-                            <Typography
-                              sx={{
-                                fontSize: "0.9rem",
-                                fontWeight: "600",
-                                color: "#2e7d32",
-                              }}
-                            >
-                              ₹ {delCharge}
-                            </Typography>
-                          </div>
-                        </Row>
+                        {defDel.type === "delivery" ? (
+                          <Row className="ps-2">
+                            <div className="w75">
+                              <Typography
+                                sx={{
+                                  fontSize: "0.9rem",
+                                  fontWeight: "600",
+                                  fontFamily: "Arial",
+                                  color: "#595959",
+                                }}
+                              >
+                                Delivery Charges
+                              </Typography>
+                            </div>
+                            <div className="w25">
+                              <Typography
+                                sx={{
+                                  fontSize: "0.9rem",
+                                  fontWeight: "600",
+                                  color: "#2e7d32",
+                                }}
+                              >
+                                ₹ {delCharge}
+                              </Typography>
+                            </div>
+                          </Row>
+                        ) : null}
+
                         <Row className="ps-2">
                           <div className="w75 mt-2">
                             <Typography
