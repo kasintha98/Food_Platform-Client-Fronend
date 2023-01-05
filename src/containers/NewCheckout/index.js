@@ -48,6 +48,7 @@ import { InvoiceTable } from "../../components/InvoiceTable";
 import Pdf from "react-to-pdf";
 import { PayUTest } from "../../components/PayUTest";
 import { toast } from "react-toastify";
+import { PaytmButton } from "../../components/PayTMNew/paytmButton";
 
 const queryString = require("query-string");
 var jwt = require("jsonwebtoken");
@@ -548,7 +549,7 @@ export default function NewCheckout(props) {
   };
   const handleShowInvoice = () => setShowInvoice(true);
 
-  const placeOrder = async (fromVerifiedPayU, decodedOrderObj) => {
+  const placeOrder = async (fromVerifiedPayU, decodedOrderObj, fromVerifiedPayaTM) => {
     try {
       let total =
         subTotal +
@@ -672,7 +673,7 @@ export default function NewCheckout(props) {
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
         totalPrice: decodedOrderObj ? decodedOrderObj.total : total,
-        paymentStatus: fromVerifiedPayU ? "PAID" : paymentStatus,
+        paymentStatus: fromVerifiedPayU || fromVerifiedPayaTM ? "PAID" : paymentStatus,
         paymentMode: fromVerifiedPayU ? "PayU" : currentPaymentType,
         deliveryCharges: decodedOrderObj
           ? decodedOrderObj.deliveryCharges
@@ -2309,7 +2310,7 @@ export default function NewCheckout(props) {
                                 </Typography>
                               }
                             />
-                            {/* <FormControlLabel
+                            <FormControlLabel
                               value="Paytm"
                               control={<Radio color="success" />}
                               label={
@@ -2325,7 +2326,7 @@ export default function NewCheckout(props) {
                                   Card, Patm wallet)
                                 </Typography>
                               }
-                            /> */}
+                            />
                             {/* <FormControlLabel
                               value="CASH"
                               control={<Radio color="success" />}
@@ -2383,7 +2384,18 @@ export default function NewCheckout(props) {
                       <Card className="p-3" sx={{ height: "360px" }}>
                         <Row>
                           <Col>
-                            <Paytm></Paytm>
+                            <PaytmButton
+                            total={Math.round(grandTotalForPayU)}
+                            disabled={
+                              Object.keys(cart?.cartItems).length > 0 &&
+                              auth.user.id &&
+                              currentPaymentType
+                                ? false
+                                : true
+                            }
+                            placeOrder={placeOrder}
+                            customerId={auth.user ? auth.user.id : null}
+                            ></PaytmButton>
                           </Col>
                           <Col>
                             <Button
