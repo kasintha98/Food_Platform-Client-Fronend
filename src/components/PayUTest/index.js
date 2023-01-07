@@ -87,7 +87,7 @@ export const PayUTest = (props) => {
 
   return (
     <div>
-      <form action={payUURL} method="POST" id="payuForm">
+      <form action={"https://secure.payu.in/_payment"} method="POST" id="payuForm">
         <input type="hidden" name="key" defaultValue={payUMerchantID} />
         <input type="hidden" name="txnid" defaultValue={txnUID} />
         <input

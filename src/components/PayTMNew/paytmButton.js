@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-const PaytmChecksum = require('./paytmChecksum');
+import PaytmChecksum from './paytmChecksum'
+//const PaytmChecksum = require('./paytmChecksum');
 const https = require('https');
 
 export function PaytmButton (props) {
@@ -21,6 +22,7 @@ export function PaytmButton (props) {
     }, []);
 
     const initialize = () => {
+        setLoading(true);
         let orderId = 'Order_'+new Date().getTime();
 
         // Credentials : This data is available at Paytm dashboard --> Developer settings --> API Keys
@@ -74,7 +76,8 @@ export function PaytmButton (props) {
               response += chunk;
             });
                 post_res.on('end', function(){
-              console.log('Response: ', response);
+                   setLoading(false);
+                    console.log('Response: ', response);
                     // res.json({data: JSON.parse(response), orderId: orderId, mid: mid, amount: amount});
                     setPaymentData({
                         ...paymentData,
@@ -146,12 +149,11 @@ export function PaytmButton (props) {
                   //alert("Transaction Successful. Bank name :" + paymentStatus.BANKNAME + " and transaction id: " + paymentStatus.BANKTXNID);
                   toast.success("Payment successfull!")
                   props.placeOrder(null, null, true);
-                  /* setTimeout(function () {
-                    history.push("/new-menu");
-                  }, 2000); */
+                  document.getElementById("paytm-checkoutjs").style.display = "none";
                 }else{
                   // Handle Error logic manually
-                  toast.error("There was an error!Please refresh and try again!")
+                  toast.error("There was an error with your payment! Please refresh and try again!")
+                  document.getElementById("paytm-checkoutjs").style.display = "none";
                   //alert("Transaction Unsuccessful. Bank name :" + paymentStatus.BANKNAME + " and transaction id: " + paymentStatus.BANKTXNID);
                 }
                 
@@ -184,9 +186,9 @@ export function PaytmButton (props) {
         <div>
             {
                 loading ? (
-                    <img width={80} src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" />
+                    <img width={50} src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" />
                 ) : (
-                    <button onClick={makePayment}>Test Payment</button>
+                    <button className="btn btn-primary w-100" disabled={props.disabled} onClick={makePayment}>Pay With PayTM</button>
                 )
             }
         </div>
