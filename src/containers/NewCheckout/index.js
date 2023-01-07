@@ -197,10 +197,16 @@ export default function NewCheckout(props) {
   const defDel = useSelector((state) => state.auth.deliveryType);
   const deliveryPrice = useSelector((state) => state.auth.deliveryPrice);
   const couponReduxObj = useSelector((state) => state.user.coupon);
+  const clientPaymentModes = useSelector((state) => state.user.clientPaymentModes);
   const businessDateAll = useSelector((state) => state.user.businessDate);
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
   const taxDetails = useSelector((state) => state.auth.taxDetails);
+
+  const payTMURL = useSelector((state) => state.user.payTMURL);
+  const payTMMerchantID = useSelector((state) => state.user.payTMMerchantID);
+  const payTMSalt = useSelector((state) => state.user.payTMSalt);
+  const payTMWebsiteName = useSelector((state) => state.user.payTMWebsiteName);
 
   const [value, setValue] = useState(0);
   const cart = useSelector((state) => state.cart);
@@ -2294,39 +2300,46 @@ export default function NewCheckout(props) {
                             value={paymentType}
                             onChange={handleChangePaymentType}
                           >
+                            {clientPaymentModes === "PAYU" || clientPaymentModes === "BOTH" ? 
                             <FormControlLabel
-                              value="PayU"
-                              control={<Radio color="success" />}
-                              label={
-                                <Typography
-                                  sx={{
-                                    color: "#595959",
-                                    fontSize: "0.9rem",
-                                    fontWeight: "600",
-                                    fontFamily: "Arial",
-                                  }}
-                                >
-                                  PayU (Cards, Net Banking, UPI, Wallet)
-                                </Typography>
-                              }
-                            />
+                            value="PayU"
+                            control={<Radio color="success" />}
+                            label={
+                              <Typography
+                                sx={{
+                                  color: "#595959",
+                                  fontSize: "0.9rem",
+                                  fontWeight: "600",
+                                  fontFamily: "Arial",
+                                }}
+                              >
+                                PayU (Cards, Net Banking, UPI, Wallet)
+                              </Typography>
+                            }
+                          />
+                          : null
+                            }
+                            
+                            {clientPaymentModes === "PAYTM" || clientPaymentModes === "BOTH" ? 
                             <FormControlLabel
-                              value="Paytm"
-                              control={<Radio color="success" />}
-                              label={
-                                <Typography
-                                  sx={{
-                                    color: "#595959",
-                                    fontSize: "0.9rem",
-                                    fontWeight: "600",
-                                    fontFamily: "Arial",
-                                  }}
-                                >
-                                  Paytm (UPI, Net Banking, Credit card, Debit
-                                  Card, Patm wallet)
-                                </Typography>
-                              }
-                            />
+                            value="Paytm"
+                            control={<Radio color="success" />}
+                            label={
+                              <Typography
+                                sx={{
+                                  color: "#595959",
+                                  fontSize: "0.9rem",
+                                  fontWeight: "600",
+                                  fontFamily: "Arial",
+                                }}
+                              >
+                                Paytm (UPI, Net Banking, Credit card, Debit
+                                Card, Patm wallet)
+                              </Typography>
+                            }
+                          /> : null
+                          }
+                            
                             {/* <FormControlLabel
                               value="CASH"
                               control={<Radio color="success" />}
@@ -2395,6 +2408,10 @@ export default function NewCheckout(props) {
                             }
                             placeOrder={placeOrder}
                             customerId={auth.user ? auth.user.id : null}
+                            payTMMerchantID={payTMMerchantID}
+                            payTMSalt={payTMSalt}
+                            payTMURL={payTMURL}
+                            payTMWebsiteName={payTMWebsiteName}
                             ></PaytmButton>
                           </Col>
                           <Col>

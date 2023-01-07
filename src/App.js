@@ -6,30 +6,22 @@ import {
   getAllStores,
   setDeliveryType,
   getVersion,
+  getClientPaymentModes,
+  getPayTMUrl,
+  getPayTMMerchantID,
+  getPayTMSalt,
+  getPayTMWSebsiteName
 } from "./actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ProductListPage from "./containers/ProductListPage";
-import ProductPage from "./containers/ProductPage";
 import HomePage from "./containers/HomePage";
-import CartPage from "./containers/CartPage";
-import CheckoutPage from "./containers/CheckoutPage";
-import ProfilePage from "./containers/ProfilePage";
-import OrderPage from "./containers/OrderPage";
-import ResetPasswordPage from "./containers/ResetPasswordPage";
-import ChangePasswordPage from "./containers/ChangePasswordPage";
-import OrderDetailsPage from "./containers/OrderDetailsPage";
-import SignupPage from "./containers/SignupPage";
-import PdfPage from "./containers/PdfPage";
 import NewMenu from "./containers/NewMenu";
 import NewCheckout from "./containers/NewCheckout";
 import { NewCartPage } from "./containers/NewCartPage";
 import { DeliveryTypeModal } from "./components/DeliveryTypeModal";
 import { MyOrders } from "./containers/MyOrders";
 import { GPSTracker } from "./containers/GPSTracker";
-import ReactSession from "react-client-session";
 import { CloudError } from "./containers/CloudError";
-import PrivateRoute from "./components/PrivateRoute";
 import { LoadingPage } from "./containers/LoadingPage";
 
 function App() {
@@ -49,6 +41,15 @@ function App() {
     dispatch(updateCart());
     dispatch(getAllStores());
     dispatch(getVersion());
+    dispatch(getClientPaymentModes("R001"))
+    dispatch(getPayTMUrl("R001"))
+    dispatch(getPayTMMerchantID("R001")).then((mid)=>{
+      dispatch(getPayTMUrl("R001")).then((url)=>{
+        document.getElementById('paytmpgsrc').src = `https://${url}/merchantpgpui/checkoutjs/merchants/${mid}.js`;
+      })
+    })
+    dispatch(getPayTMSalt("R001"))
+    dispatch(getPayTMWSebsiteName("R001"))
 
     const delItem = localStorage.getItem("deliveryType");
 

@@ -695,3 +695,158 @@ export const getPayuSalt = (restaurantId) => {
     }
   };
 };
+
+export const getClientPaymentModes = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYU_MERCHANT_ID_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "ALL", criteria: "CLIENT_MODULE_PAYMENT_MODE" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
+export const getPayTMUrl = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYTM_URL_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "ALL", criteria: "PAYTM_URL" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_PAYTM_URL_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data[0].configCriteriaValue;
+      } else {
+        dispatch({
+          type: userConstants.GET_PAYTM_URL_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_PAYTM_URL_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
+export const getPayTMMerchantID = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYTM_MERCHANT_ID_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "ALL", criteria: "PAYTM_MERCHANT_ID" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_PAYTM_MERCHANT_ID_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data[0].configCriteriaValue;
+      } else {
+        dispatch({
+          type: userConstants.GET_PAYTM_MERCHANT_ID_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_PAYTM_MERCHANT_ID_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
+export const getPayTMSalt = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYTM_SALT_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "ALL", criteria: "PAYTM_SALT" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_PAYTM_SALT_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.GET_PAYTM_SALT_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_PAYTM_SALT_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
+export const getPayTMWSebsiteName = (restaurantId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_PAYTM_WEBSITE_NAME_REQUEST });
+
+      const res = await axios.get("/getConfigDetailsByCriteria", {
+        params: { restaurantId, storeId: "ALL", criteria: "PAYTM_WEBSITE_NAME" },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_PAYTM_WEBSITE_NAME_SUCCESS,
+          payload: res.data[0].configCriteriaValue,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.GET_PAYTM_WEBSITE_NAME_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_PAYTM_WEBSITE_NAME_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};

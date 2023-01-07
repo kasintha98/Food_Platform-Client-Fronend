@@ -26,14 +26,14 @@ export function PaytmButton (props) {
         let orderId = 'Order_'+new Date().getTime();
 
         // Credentials : This data is available at Paytm dashboard --> Developer settings --> API Keys
-        let mid = "IDpKGL25244605401004";     // Add Sandbox or PROD Merchant ID here
-        let mkey = "ctdEopzTwFfg8kJP";  // Add Sandbox or PROD Merchant Key here
+        let mid = props.payTMMerchantID;     // Add Sandbox or PROD Merchant ID here
+        let mkey = props.payTMSalt;  // Add Sandbox or PROD Merchant Key here
         var paytmParams = {};
 
         paytmParams.body = {
           "requestType"  : "Payment",
           "mid"      : mid,
-          "websiteName"  : "WEBSTAGING",  // WEBSTAGING for Sandbox and DEFAULT for PROD
+          "websiteName"  : props.payTMWebsiteName,  // WEBSTAGING for Sandbox and DEFAULT for PROD
           "orderId"    : orderId,
           "callbackUrl"  : "add callback url here",  // Here you can put your callback url where Transaction response will come
           "txnAmount"   : {
@@ -56,7 +56,7 @@ export function PaytmButton (props) {
 
           var options = {
             /* for Staging */
-            hostname: 'securegw-stage.paytm.in',  // Sandbox Testing URL
+            hostname: props.payTMURL,  // Sandbox Testing URL
 
             /* for Production */
                 // hostname: 'securegw.paytm.in',  // LIVE URL
