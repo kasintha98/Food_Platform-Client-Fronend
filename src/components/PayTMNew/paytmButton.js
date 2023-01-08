@@ -18,6 +18,7 @@ export function PaytmButton (props) {
     const history = useHistory();
 
     useEffect(() => {
+        console.log("Selected PayTM Option: " + props.selectedTypeOfPayment);
         initialize();
     }, []);
 

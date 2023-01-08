@@ -42,13 +42,14 @@ import {
 import LoginDrawer from "../../components/Login";
 import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
-import { Paytm } from "../../components/Paytm";
-import { PayU } from "../../components/PayU";
 import { InvoiceTable } from "../../components/InvoiceTable";
 import Pdf from "react-to-pdf";
 import { PayUTest } from "../../components/PayUTest";
 import { toast } from "react-toastify";
 import { PaytmButton } from "../../components/PayTMNew/paytmButton";
+import upiimg from "../../img/upi.jpg"
+import nbimg from "../../img/nb.jpg"
+import cardimg from "../../img/card.jpg"
 
 const queryString = require("query-string");
 var jwt = require("jsonwebtoken");
@@ -79,33 +80,12 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
-const CartIconArea = styled.div`
-  display: none;
-
-  @media (max-width: 992px) {
-    display: block;
-  }
-`;
-
 const CusContainer = styled(Container)`
   margin-top: 50px;
   min-height: calc(100vh - 180px);
   margin-bottom: -40px;
   @media (max-width: 992px) {
     margin-top: 60px;
-  }
-`;
-
-const CusCol = styled(Col)`
-  @media (max-width: 992px) {
-    display: none;
   }
 `;
 
@@ -131,14 +111,6 @@ const CLButton = styled(Button)`
   } */
 `;
 
-const ACButton = styled(Button)`
-  background-color: #92d050;
-  height: 40px;
-  &:hover {
-    background-color: #548235;
-  }
-`;
-
 const DTButton = styled(Button)`
   background-color: #92d050;
   height: 40px;
@@ -152,19 +124,6 @@ const SPMButton = styled(Button)`
   height: 40px;
   &:hover {
     background-color: #548235;
-  }
-`;
-
-const CusTextField = styled(TextField)`
-  border: 1px solid #a5a5a5;
-  height: 40px;
-
-  & .MuiOutlinedInput-notchedOutline {
-    border-style: hidden;
-  }
-
-  & .MuiOutlinedInput-root {
-    height: 40px;
   }
 `;
 
@@ -230,7 +189,6 @@ export default function NewCheckout(props) {
   );
   const [delModalOpen, setDelModalOpen] = useState(false);
   const [delModalOpen2, setDelModalOpen2] = useState(false);
-  const [isPaid, setIsPaid] = useState(false);
   const [tabValue, setTabValue] = useState(0);
   const [show, setShow] = useState(false);
   const [paymentType, setPaymentType] = useState("");
@@ -540,8 +498,9 @@ export default function NewCheckout(props) {
   };
 
   const handlePaymentType = () => {
-    console.log(paymentType);
-    setCurrentPaymentType(paymentType);
+    let type = paymentType === "UPI" || paymentType === "NB" || paymentType === "CARD" ? clientPaymentModes : paymentType;
+    console.log(type);
+    setCurrentPaymentType(type);
   };
 
   const handleClose = () => setShow(false);
@@ -1128,14 +1087,6 @@ export default function NewCheckout(props) {
                     </Typography>
                     {selectedAddress ? (
                       <Typography sx={{ color: "black" }}>
-                        {/* <p
-                                      style={{
-                                        fontWeight: "bold",
-                     
-                                      }}
-                                    >
-                                      {selectedAddress.customerAddressType}
-                                    </p> */}
                         <p
                           style={{
                             color: "black",
@@ -1597,25 +1548,10 @@ export default function NewCheckout(props) {
             <Col md={12} lg={4} className="mar-tp-f">
               <Row>
                 <Col className="col-12 text-center">
-                  {/* {cart?.cartItems &&
-                  Object.keys(cart?.cartItems).length > 0 ? (
-                    <h5>
-                      You have selected {Object.keys(cart.cartItems).length}{" "}
-                      items
-                    </h5>
-                  ) : (
-                    <h5>You have no items in the cart</h5>
-                  )} */}
-
                   <h5 style={{ fontWeight: "bold", color: "#000" }}>
                     VALIDATE YOUR ORDER
                   </h5>
                 </Col>
-                {/* <Col className="col-4">
-                <Typography sx={{ textAlign: "end" }}>
-                  <a href="/new-menu">Explore Menu</a>
-                </Typography>
-              </Col> */}
               </Row>
               <div>
                 <Card
@@ -1973,12 +1909,6 @@ export default function NewCheckout(props) {
                                   ) : null}
                                   <Typography sx={{ textAlign: "center" }}>
                                     <CardActions>
-                                      {/* <CLButton
-                                    variant="contained"
-                                    className="w-100"
-                                  >
-                                    ADD NEW ADDRESS
-                                  </CLButton> */}
                                       <LoginDrawer
                                         forceAddAddress={true}
                                       ></LoginDrawer>
@@ -2097,39 +2027,6 @@ export default function NewCheckout(props) {
                   </Grid>
                 </Col>
               </Row>
-
-              {/* <Row>
-                <Col className="col-12">
-                  <Grid sx={{ width: "100%", marginTop: 3 }}>
-                    <Card>
-                      <CardContent>
-                        <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                          APPLY COUPON CODE
-                        </h5>
-                        <div className="row align-items-center">
-                          <div className="col-6" sx={{ textAlign: "center" }}>
-                            <CusTextField
-                              id="outlined-name"
-                              value={coupon}
-                              onChange={handleChangeCoupon}
-                            />
-                          </div>
-
-                          <div className="col-6" sx={{ textAlign: "end" }}>
-                            <Typography sx={{ textAlign: "center" }}>
-                              <CardActions>
-                                <ACButton variant="contained" className="w-100">
-                                  APPLY COUPON
-                                </ACButton>
-                              </CardActions>
-                            </Typography>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Col>
-              </Row> */}
             </Col>
             <Col md={12} lg={4} className="mar-tp">
               <Row>
@@ -2139,151 +2036,6 @@ export default function NewCheckout(props) {
                   </h5>
                 </Col>
               </Row>
-              {/* <Row>
-              <Col className="col-12 mt-5">
-                <h5>Payment Options</h5>
-              </Col>
-              <Col className="col-12">
-                <Grid sx={{ width: "100%", marginTop: 3 }}>
-                  <Card>
-                    <CardActionArea>
-                      <CardContent>
-                        <Row>
-                          <Col className="col-6">
-                            <GooglePayButton
-                              environment="TEST"
-                              className="text-center p-0 m-0"
-                              paymentRequest={{
-                                apiVersion: 2,
-                                apiVersionMinor: 0,
-                                allowedPaymentMethods: [
-                                  {
-                                    type: "CARD",
-                                    parameters: {
-                                      allowedAuthMethods: [
-                                        "PAN_ONLY",
-                                        "CRYPTOGRAM_3DS",
-                                      ],
-                                      allowedCardNetworks: [
-                                        "MASTERCARD",
-                                        "VISA",
-                                      ],
-                                    },
-                                    tokenizationSpecification: {
-                                      type: "PAYMENT_GATEWAY",
-                                      parameters: {
-                                        gateway: "example",
-                                        gatewayMerchantId:
-                                          "exampleGatewayMerchantId",
-                                      },
-                                    },
-                                  },
-                                ],
-                                merchantInfo: {
-                                  merchantId: "12345678901234567890",
-                                  merchantName: "Hangries",
-                                },
-                                transactionInfo: {
-                                  totalPriceStatus: "FINAL",
-                                  totalPriceLabel: "Total",
-                                  totalPrice: "1.00",
-                                  currencyCode: "USD",
-                                  countryCode: "US",
-                                },
-                              }}
-                              onLoadPaymentData={(paymentRequest) => {
-                                console.log(
-                                  "load payment data",
-                                  paymentRequest
-                                );
-                                console.log(
-                                  "TODO: send data to backend",
-                                  paymentRequest
-                                );
-                                setIsPaid(true);
-                              }}
-                            />
-                          </Col>
-                          <Col className="col-6">
-                            <form
-                              method="post"
-                              action="https://merch-prod.snd.payu.com/api/v2_1/orders"
-                              target="_blank"
-                            >
-                              <input
-                                type="hidden"
-                                name="customerIp"
-                                defaultValue="123.123.123.123"
-                              />
-                              <input
-                                type="hidden"
-                                name="merchantPosId"
-                                defaultValue={300746}
-                              />
-                              <input
-                                type="hidden"
-                                name="description"
-                                defaultValue="Order description"
-                              />
-                              <input
-                                type="hidden"
-                                name="totalAmount"
-                                defaultValue={20000}
-                              />
-                              <input
-                                type="hidden"
-                                name="currencyCode"
-                                defaultValue="PLN"
-                              />
-                              <input
-                                type="hidden"
-                                name="buyer.language"
-                                defaultValue="en"
-                              />
-                              <input
-                                type="hidden"
-                                name="products[0].name"
-                                defaultValue="Product 1"
-                              />
-                              <input
-                                type="hidden"
-                                name="products[0].unitPrice"
-                                defaultValue={20000}
-                              />
-                              <input
-                                type="hidden"
-                                name="products[0].quantity"
-                                defaultValue={1}
-                              />
-                              <input
-                                type="hidden"
-                                name="continueUrl"
-                                defaultValue="https://developers.payu.com"
-                              />
-                              <input
-                                type="hidden"
-                                name="OpenPayu-Signature"
-                                defaultValue="sender=300746;algorithm=SHA-256;signature=4349c7a814c7d4caf40f5be4f0746c35f69094fccc0605a6b747dc621148f731"
-                              />
-                              <Button
-                                type="submit"
-                                variant="contained"
-                                color="success"
-                                className="w-100"
-                              >
-                                PayU Payment
-                              </Button>
-                            </form>
-
-                         
-                          </Col>
-                        </Row>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              </Col>
-            </Row> */}
 
               <Row>
                 <Col className="col-12">
@@ -2291,93 +2043,87 @@ export default function NewCheckout(props) {
                     {!currentPaymentType ? (
                       <Card sx={{ height: "360px" }}>
                         <FormControl sx={{ marginLeft: 3, marginTop: 2 }}>
-                          {/* <h5 style={{ fontWeight: "bold", color: "#7F7F7F" }}>
-                            PAYMENT METHOD
-                          </h5> */}
                           <RadioGroup
                             aria-labelledby="demo-controlled-radio-buttons-group"
                             name="controlled-radio-buttons-group"
                             value={paymentType}
                             onChange={handleChangePaymentType}
                           >
-                            {clientPaymentModes === "PAYU" || clientPaymentModes === "BOTH" ? 
                             <FormControlLabel
-                            value="PayU"
+                            value="UPI"
                             control={<Radio color="success" />}
+                            sx={{border: "2px solid #2e7d32",
+                                  padding: "5px 0 5px 0", marginTop: "5px"}}
                             label={
-                              <Typography
-                                sx={{
-                                  color: "#595959",
-                                  fontSize: "0.9rem",
-                                  fontWeight: "600",
-                                  fontFamily: "Arial",
-                                }}
-                              >
-                                PayU (Cards, Net Banking, UPI, Wallet)
-                              </Typography>
+                              <div>
+                                <div>
+                                  <Typography
+                                    sx={{
+                                      color: "#595959",
+                                      fontSize: "0.9rem",
+                                      fontWeight: "600",
+                                      fontFamily: "Arial",
+                                    }}
+                                  >
+                                  Payment by UPI <span style={{color: "#2F5597", fontStyle: "italic"}}>(Preferred Payment Mode)</span>
+                                  </Typography>
+                              </div>
+                              <img style={{ width: "100%", marginTop: "10px" }} src={upiimg} alt="upi"></img>
+                              </div>
                             }
                           />
-                          : null
-                            }
-                            
-                            {clientPaymentModes === "PAYTM" || clientPaymentModes === "BOTH" ? 
+
                             <FormControlLabel
-                            value="Paytm"
+                            value="NB"
                             control={<Radio color="success" />}
+                            sx={{border: "2px solid #2e7d32",
+                                  padding: "5px 0 5px 0", marginTop: "5px"}}
                             label={
-                              <Typography
-                                sx={{
-                                  color: "#595959",
-                                  fontSize: "0.9rem",
-                                  fontWeight: "600",
-                                  fontFamily: "Arial",
-                                }}
-                              >
-                                Paytm (UPI, Net Banking, Credit card, Debit
-                                Card, Patm wallet)
-                              </Typography>
+                              <div>
+                                <div>
+                                  <Typography
+                                    sx={{
+                                      color: "#595959",
+                                      fontSize: "0.9rem",
+                                      fontWeight: "600",
+                                      fontFamily: "Arial",
+                                    }}
+                                  >
+                                 Payment by Net Banking
+                                  </Typography>
+                              </div>
+                              <div className="text-center">
+                              <img style={{ width: "65%", marginTop: "10px" }} src={nbimg} alt="upi"></img>
+                              </div>
+                              </div>
                             }
-                          /> : null
-                          }
-                            
-                            {/* <FormControlLabel
-                              value="CASH"
-                              control={<Radio color="success" />}
-                              label={
-                                <Typography
-                                  sx={{
-                                    color: "#595959",
-                                    fontSize: "0.9rem",
-                                    fontWeight: "600",
-                                    fontFamily: "Arial",
-                                  }}
-                                >
-                                  Cash
-                                </Typography>
-                              }
-                              disabled={
-                                currentType?.type === "delivery" ? true : false
-                              }
-                            /> */}
-                            {/* <FormControlLabel
-                              value="COD"
-                              control={<Radio color="success" />}
-                              label={
-                                <Typography
-                                  sx={{
-                                    color: "#595959",
-                                    fontSize: "0.9rem",
-                                    fontWeight: "600",
-                                    fontFamily: "Arial",
-                                  }}
-                                >
-                                  Cash On Delivery
-                                </Typography>
-                              }
-                              disabled={
-                                currentType?.type === "collect" ? true : false
-                              }
-                            /> */}
+                          />
+
+                            <FormControlLabel
+                            value="CARD"
+                            control={<Radio color="success" />}
+                            sx={{border: "2px solid #2e7d32",
+                                  padding: "5px 0 5px 0", marginTop: "5px"}}
+                            label={
+                              <div>
+                                <div>
+                                  <Typography
+                                    sx={{
+                                      color: "#595959",
+                                      fontSize: "0.9rem",
+                                      fontWeight: "600",
+                                      fontFamily: "Arial",
+                                    }}
+                                  >
+                                 Payment by Prepaid, Credit & Debit cards
+                                  </Typography>
+                              </div>
+                              <div className="text-center">
+                              <img style={{ width: "70%", marginTop: "10px" }} src={cardimg} alt="upi"></img>
+                              </div>
+                              </div>
+                            }
+                          />
                           </RadioGroup>
                         </FormControl>
                         <CardActions>
@@ -2393,7 +2139,7 @@ export default function NewCheckout(props) {
                         </CardActions>
                       </Card>
                     ) : null}
-                    {currentPaymentType === "Paytm" ? (
+                    {currentPaymentType && clientPaymentModes === "PAYTM" ? (
                       <Card className="p-3" sx={{ height: "360px" }}>
                         <Row>
                           <Col>
@@ -2412,6 +2158,7 @@ export default function NewCheckout(props) {
                             payTMSalt={payTMSalt}
                             payTMURL={payTMURL}
                             payTMWebsiteName={payTMWebsiteName}
+                            selectedTypeOfPayment={paymentType}
                             ></PaytmButton>
                           </Col>
                           <Col>
@@ -2427,11 +2174,10 @@ export default function NewCheckout(props) {
                         </Row>
                       </Card>
                     ) : null}
-                    {currentPaymentType === "PayU" ? (
+                    {currentPaymentType && clientPaymentModes === "PAYU" ? (
                       <Card className="p-3" sx={{ height: "360px" }}>
                         <Row>
                           <Col>
-                            {/* <PayU></PayU> */}
                             <PayUTest
                               total={grandTotalForPayU}
                               disabled={
@@ -2459,6 +2205,7 @@ export default function NewCheckout(props) {
                               storeId={currentType.storeId}
                               customerId={auth.user ? auth.user.id : null}
                               getOrderObj={getOrderObj}
+                              selectedTypeOfPayment={paymentType}
                             ></PayUTest>
                           </Col>
                           <Col>

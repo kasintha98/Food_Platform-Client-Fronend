@@ -44,6 +44,7 @@ export const PayUTest = (props) => {
 
   useEffect(() => {
     console.log(hashedOrderObj);
+    console.log("Selected PayU Option: " + props.selectedTypeOfPayment);
     var hashString =
       `${payUMerchantID}` +
       "|" +
