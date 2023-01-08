@@ -63,7 +63,7 @@ export const NewCart = () => {
   };
 
   const calcDeliveryPrice = () => {
-    if (defDel.type === "delivery") {
+    if (defDel && defDel.type === "delivery") {
       const allSub =
         subTotal +
         (extraSubTotal ? extraSubTotal : 0) +
@@ -167,7 +167,7 @@ export const NewCart = () => {
               ) : null}
             </Row>
 
-            {defDel.type === "delivery" ? (
+            {defDel && defDel.type === "delivery" ? (
               <Row className="ps-2">
                 <Col className="col-9 pr-0">
                   <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>

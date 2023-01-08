@@ -27,6 +27,7 @@ import coverImg from "../../img/cover.jpg";
 import { Typography } from "@mui/material";
 import { BottomNav } from "../../components/BottomNav";
 import { NewCart } from "../NewCart";
+import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
 
 const CartIconArea = styled.div`
   display: none;
@@ -190,22 +191,29 @@ export default function NewMenu() {
   const [choiceTotal, setChoiceTotal] = useState(0);
   const [value2, setValue2] = useState(dishesOfSection[0]);
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
+  const defDel = useSelector((state) => state.auth.deliveryType);
 
   const [showCartModal, setShowCartModal] = useState(false);
+  const [showDeliveryTypeModal, setShowDeliveryTypeModal] = useState(false);
 
   const productList = useSelector((state) => state.product);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllStores());
-    dispatch(getProductsNew());
-    dispatch(getAllSections()).then((res) => {
-      if (res) {
-        setValue(res[0]);
-        dispatch(getDishesBySection(res[0]));
-      }
-    });
+    const delLoc = localStorage.getItem("deliveryType");
+    if(delLoc && defDel){
+      dispatch(getAllStores());
+      dispatch(getProductsNew());
+      dispatch(getAllSections()).then((res) => {
+        if (res) {
+          setValue(res[0]);
+          dispatch(getDishesBySection(res[0]));
+        }
+      });
+    }else{
+      setShowDeliveryTypeModal(true)
+    }
   }, []);
 
   const handleSubTotal = (total) => {
@@ -472,6 +480,7 @@ export default function NewMenu() {
       <Footer></Footer>
       {renderCartModal()}
       {isMobile ? <BottomNav onChangeTab={handleNavTab}></BottomNav> : null}
+      {showDeliveryTypeModal ? <DeliveryTypeModal></DeliveryTypeModal> : null}
     </div>
   );
 }
