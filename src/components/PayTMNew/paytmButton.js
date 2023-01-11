@@ -189,7 +189,7 @@ export function PaytmButton (props) {
                 loading ? (
                     <img width={50} src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" />
                 ) : (
-                    <button className="btn btn-primary w-100" disabled={props.disabled} onClick={makePayment}>Pay With PayTM</button>
+                    <button className="btn btn-primary w-100" disabled={props.disabled} onClick={makePayment}>Pay Now!</button>
                 )
             }
         </div>

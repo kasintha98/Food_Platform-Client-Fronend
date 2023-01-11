@@ -141,7 +141,7 @@ export const PayUTest = (props) => {
             saveOrderFromBackend(e);
           }}
         >
-          Pay With PayU
+          Pay Now!
         </button>
       </form>
 

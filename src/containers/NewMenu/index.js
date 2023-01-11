@@ -410,6 +410,7 @@ export default function NewMenu() {
                                     {productList.products?.map((product) =>
                                       product &&
                                       product.menuAvailableFlag === "Y" &&
+                                      product.onlineApplicableFlag !== "N" &&
                                       product.section === section &&
                                       product.dish === dish ? (
                                         <>
