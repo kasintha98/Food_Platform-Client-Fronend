@@ -29,7 +29,7 @@ export const PayUTest = (props) => {
         time: new Date().getTime(),
       }),
       "0050ae36-4343-11ed-b878-0242ac120002"
-    )
+    ) + new Date().getTime()
   );
   const [hashedOrderObj, setHashedOrderObj] = useState(
     jwt.sign(
