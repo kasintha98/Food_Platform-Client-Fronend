@@ -126,12 +126,12 @@ export const PayUTest = (props) => {
         <input
           type="hidden"
           name="enforce_paymethod"
-          defaultValue="creditcard|debitcard|netbanking"
+          defaultValue="creditcard|debitcard|netbanking|upi"
         />
         <input
           type="hidden"
           name="drop_category"
-          defaultValue="CASH,UPI"
+          defaultValue="CASH"
         />
         <input type="hidden" name="hash" defaultValue={hashed} />
         <button
