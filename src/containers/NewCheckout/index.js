@@ -2180,8 +2180,9 @@ export default function NewCheckout(props) {
                           <Col>
                             <PayUTest
                               total={grandTotalForPayU}
+                              // RD allAddress.length > 0 && selectedAddress && selectedAddress.id Added to control address Pay button disable
                               disabled={
-                                Object.keys(cart?.cartItems).length > 0 &&
+                                allAddress.length > 0 && selectedAddress && selectedAddress.id && Object.keys(cart?.cartItems).length > 0 &&
                                 auth.user.id &&
                                 currentPaymentType
                                   ? false

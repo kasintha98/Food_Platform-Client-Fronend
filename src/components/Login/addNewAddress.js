@@ -146,6 +146,11 @@ export default function AddNewAddress(props) {
       toast.success("Successfully Deleted!"); */
       //props.onBackPress();
 
+      // RD Added to control address delete and Pay button disable
+      if(allAddress.length == 1){
+        localStorage.removeItem("deliveryType");
+      }
+
       dispatch(
         DeleteAddress(localUserMobileNumber, address.customerAddressType)
       );
