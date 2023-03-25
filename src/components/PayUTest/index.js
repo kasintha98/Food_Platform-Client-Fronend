@@ -123,6 +123,7 @@ export const PayUTest = (props) => {
           name="phone"
           defaultValue={auth.user?.mobileNumber}
         />
+        {/* Enabled creditcard|debitcard|netbanking|upi */}
         <input
           type="hidden"
           name="enforce_paymethod"
