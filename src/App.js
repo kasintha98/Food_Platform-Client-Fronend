@@ -10,7 +10,7 @@ import {
   getPayTMUrl,
   getPayTMMerchantID,
   getPayTMSalt,
-  getPayTMWSebsiteName
+  getPayTMWSebsiteName,
 } from "./actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -23,6 +23,7 @@ import { MyOrders } from "./containers/MyOrders";
 import { GPSTracker } from "./containers/GPSTracker";
 import { CloudError } from "./containers/CloudError";
 import { LoadingPage } from "./containers/LoadingPage";
+// import { useLocation } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,15 +42,17 @@ function App() {
     dispatch(updateCart());
     dispatch(getAllStores());
     dispatch(getVersion());
-    dispatch(getClientPaymentModes("R001"))
-    dispatch(getPayTMUrl("R001"))
-    dispatch(getPayTMMerchantID("R001")).then((mid)=>{
-      dispatch(getPayTMUrl("R001")).then((url)=>{
-        document.getElementById('paytmpgsrc').src = `https://${url}/merchantpgpui/checkoutjs/merchants/${mid}.js`;
-      })
-    })
-    dispatch(getPayTMSalt("R001"))
-    dispatch(getPayTMWSebsiteName("R001"))
+    dispatch(getClientPaymentModes("R001"));
+    dispatch(getPayTMUrl("R001"));
+    dispatch(getPayTMMerchantID("R001")).then((mid) => {
+      dispatch(getPayTMUrl("R001")).then((url) => {
+        document.getElementById(
+          "paytmpgsrc"
+        ).src = `https://${url}/merchantpgpui/checkoutjs/merchants/${mid}.js`;
+      });
+    });
+    dispatch(getPayTMSalt("R001"));
+    dispatch(getPayTMWSebsiteName("R001"));
 
     const delItem = localStorage.getItem("deliveryType");
 
@@ -61,6 +64,7 @@ function App() {
     console.log("App.js - get stores");
 
     dispatch(getAllStores()).then((res) => {
+      // console.log("aaa res", res);
       if (res) {
         setShow(true);
       }
@@ -103,7 +107,8 @@ function App() {
           />
         </Switch>
       </Router>
-      {show ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null}
+      {/* {show ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null} */}
+      {/* {true ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null} */}
     </div>
   );
 }
