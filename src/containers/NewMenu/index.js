@@ -197,12 +197,13 @@ export default function NewMenu() {
   const [showDeliveryTypeModal, setShowDeliveryTypeModal] = useState(false);
 
   const productList = useSelector((state) => state.product);
+  console.log("aaa productList", productList);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const delLoc = localStorage.getItem("deliveryType");
-    if(delLoc && defDel){
+    if (delLoc && defDel) {
       dispatch(getAllStores());
       dispatch(getProductsNew());
       dispatch(getAllSections()).then((res) => {
@@ -211,8 +212,8 @@ export default function NewMenu() {
           dispatch(getDishesBySection(res[0]));
         }
       });
-    }else{
-      setShowDeliveryTypeModal(true)
+    } else {
+      setShowDeliveryTypeModal(true);
     }
   }, []);
 

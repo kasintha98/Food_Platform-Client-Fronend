@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 
 import MyCarousel from "../../components/Carousel";
@@ -12,9 +12,33 @@ import { useMediaQuery } from "react-responsive";
 import { BottomNav } from "../../components/BottomNav";
 import { Restaurants } from "../../components/Restaurants";
 import { Offers } from "../../components/Offers";
+import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllStores } from "../../actions";
+import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
 
 export default function HomePage(props) {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
+  const [show, setShow] = useState(false);
+
+  const search = useLocation().search;
+  const QRcode = new URLSearchParams(search).get("QRcode");
+  console.log("aaa qrcode", QRcode);
+
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!QRcode) {
+      dispatch(getAllStores()).then((res) => {
+        console.log("aaa res");
+        if (res) {
+          setShow(true);
+        }
+      });
+    }
+  }, [auth.authenticate]);
+
+  console.log("aaa show", show);
 
   return (
     <div>
@@ -43,6 +67,7 @@ export default function HomePage(props) {
         <Footer></Footer>
         {isMobile ? <BottomNav></BottomNav> : null}
       </ScrollingProvider>
+      {show ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null}
     </div>
   );
 }
