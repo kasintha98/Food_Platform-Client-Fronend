@@ -47,9 +47,9 @@ import Pdf from "react-to-pdf";
 import { PayUTest } from "../../components/PayUTest";
 import { toast } from "react-toastify";
 import { PaytmButton } from "../../components/PayTMNew/paytmButton";
-import upiimg from "../../img/upi.jpg"
-import nbimg from "../../img/nb.jpg"
-import cardimg from "../../img/card.jpg"
+import upiimg from "../../img/upi.jpg";
+import nbimg from "../../img/nb.jpg";
+import cardimg from "../../img/card.jpg";
 
 const queryString = require("query-string");
 var jwt = require("jsonwebtoken");
@@ -156,7 +156,9 @@ export default function NewCheckout(props) {
   const defDel = useSelector((state) => state.auth.deliveryType);
   const deliveryPrice = useSelector((state) => state.auth.deliveryPrice);
   const couponReduxObj = useSelector((state) => state.user.coupon);
-  const clientPaymentModes = useSelector((state) => state.user.clientPaymentModes);
+  const clientPaymentModes = useSelector(
+    (state) => state.user.clientPaymentModes
+  );
   const businessDateAll = useSelector((state) => state.user.businessDate);
   const allAddress = useSelector((state) => state.user.allAddresses);
   const auth = useSelector((state) => state.auth);
@@ -208,6 +210,11 @@ export default function NewCheckout(props) {
   const dispatch = useDispatch();
   const ref = React.createRef();
   const refH = useRef(null);
+
+  const delobj = JSON.parse(localStorage.getItem("deliveryType"));
+  const qrcode = delobj?.qrcode;
+  const tableId = delobj?.tableId;
+  // console.log("aaa qrcode, tableID", qrcode, tableId);
 
   const history = useHistory();
 
@@ -498,7 +505,10 @@ export default function NewCheckout(props) {
   };
 
   const handlePaymentType = () => {
-    let type = paymentType === "UPI" || paymentType === "NB" || paymentType === "CARD" ? clientPaymentModes : paymentType;
+    let type =
+      paymentType === "UPI" || paymentType === "NB" || paymentType === "CARD"
+        ? clientPaymentModes
+        : paymentType;
     console.log(type);
     setCurrentPaymentType(type);
   };
@@ -514,7 +524,11 @@ export default function NewCheckout(props) {
   };
   const handleShowInvoice = () => setShowInvoice(true);
 
-  const placeOrder = async (fromVerifiedPayU, decodedOrderObj, fromVerifiedPayaTM) => {
+  const placeOrder = async (
+    fromVerifiedPayU,
+    decodedOrderObj,
+    fromVerifiedPayaTM
+  ) => {
     try {
       let total =
         subTotal +
@@ -629,16 +643,22 @@ export default function NewCheckout(props) {
         storeId: decodedOrderObj
           ? decodedOrderObj.storeId
           : currentType.storeId,
-        orderSource: currentType.type === "delivery" ? "WD" : "WS",
+        orderSource:
+          currentType.type === "delivery" ? "WD" : qrcode ? "Q" : "WS",
         customerId: auth.user.id,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
-          currentType.type === "delivery" ? "WEB DELIVERY" : "WEB SELF COLLECT",
-        storeTableId: null,
+          currentType.type === "delivery"
+            ? "WEB DELIVERY"
+            : qrcode
+            ? "SELF DINE IN QR"
+            : "WEB SELF COLLECT",
+        storeTableId: tableId ? tableId : null,
         orderStatus: "SUBMITTED",
         taxRuleId: 1,
         totalPrice: decodedOrderObj ? decodedOrderObj.total : total,
-        paymentStatus: fromVerifiedPayU || fromVerifiedPayaTM ? "PAID" : paymentStatus,
+        paymentStatus:
+          fromVerifiedPayU || fromVerifiedPayaTM ? "PAID" : paymentStatus,
         paymentMode: fromVerifiedPayU ? "PayU" : currentPaymentType,
         deliveryCharges: decodedOrderObj
           ? decodedOrderObj.deliveryCharges
@@ -685,7 +705,7 @@ export default function NewCheckout(props) {
         },
       ] */
 
-      console.log(NewOrder);
+      console.log("aaa neworder", NewOrder);
 
       const result = await dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
@@ -2050,80 +2070,115 @@ export default function NewCheckout(props) {
                             onChange={handleChangePaymentType}
                           >
                             <FormControlLabel
-                            value="UPI"
-                            control={<Radio color="success" />}
-                            sx={{border: "2px solid #2e7d32",
-                                  padding: "5px 0 5px 0", marginTop: "5px"}}
-                            label={
-                              <div>
+                              value="UPI"
+                              control={<Radio color="success" />}
+                              sx={{
+                                border: "2px solid #2e7d32",
+                                padding: "5px 0 5px 0",
+                                marginTop: "5px",
+                              }}
+                              label={
                                 <div>
-                                  <Typography
-                                    sx={{
-                                      color: "#595959",
-                                      fontSize: "0.9rem",
-                                      fontWeight: "600",
-                                      fontFamily: "Arial",
-                                    }}
-                                  >
-                                  Payment by UPI <span style={{color: "#2F5597", fontStyle: "italic"}}>(Preferred Payment Mode)</span>
-                                  </Typography>
-                              </div>
-                              <img style={{ width: "100%", marginTop: "10px" }} src={upiimg} alt="upi"></img>
-                              </div>
-                            }
-                          />
+                                  <div>
+                                    <Typography
+                                      sx={{
+                                        color: "#595959",
+                                        fontSize: "0.9rem",
+                                        fontWeight: "600",
+                                        fontFamily: "Arial",
+                                      }}
+                                    >
+                                      Payment by UPI{" "}
+                                      <span
+                                        style={{
+                                          color: "#2F5597",
+                                          fontStyle: "italic",
+                                        }}
+                                      >
+                                        (Preferred Payment Mode)
+                                      </span>
+                                    </Typography>
+                                  </div>
+                                  <img
+                                    style={{ width: "100%", marginTop: "10px" }}
+                                    src={upiimg}
+                                    alt="upi"
+                                  ></img>
+                                </div>
+                              }
+                            />
 
                             <FormControlLabel
-                            value="NB"
-                            control={<Radio color="success" />}
-                            sx={{border: "2px solid #2e7d32",
-                                  padding: "5px 0 5px 0", marginTop: "5px"}}
-                            label={
-                              <div>
+                              value="NB"
+                              control={<Radio color="success" />}
+                              sx={{
+                                border: "2px solid #2e7d32",
+                                padding: "5px 0 5px 0",
+                                marginTop: "5px",
+                              }}
+                              label={
                                 <div>
-                                  <Typography
-                                    sx={{
-                                      color: "#595959",
-                                      fontSize: "0.9rem",
-                                      fontWeight: "600",
-                                      fontFamily: "Arial",
-                                    }}
-                                  >
-                                 Payment by Net Banking
-                                  </Typography>
-                              </div>
-                              <div className="text-center">
-                              <img style={{ width: "65%", marginTop: "10px" }} src={nbimg} alt="upi"></img>
-                              </div>
-                              </div>
-                            }
-                          />
+                                  <div>
+                                    <Typography
+                                      sx={{
+                                        color: "#595959",
+                                        fontSize: "0.9rem",
+                                        fontWeight: "600",
+                                        fontFamily: "Arial",
+                                      }}
+                                    >
+                                      Payment by Net Banking
+                                    </Typography>
+                                  </div>
+                                  <div className="text-center">
+                                    <img
+                                      style={{
+                                        width: "65%",
+                                        marginTop: "10px",
+                                      }}
+                                      src={nbimg}
+                                      alt="upi"
+                                    ></img>
+                                  </div>
+                                </div>
+                              }
+                            />
 
                             <FormControlLabel
-                            value="CARD"
-                            control={<Radio color="success" />}
-                            sx={{border: "2px solid #2e7d32",
-                                  padding: "5px 0 5px 0", marginTop: "5px"}}
-                            label={
-                              <div>
+                              value="CARD"
+                              control={<Radio color="success" />}
+                              sx={{
+                                border: "2px solid #2e7d32",
+                                padding: "5px 0 5px 0",
+                                marginTop: "5px",
+                              }}
+                              label={
                                 <div>
-                                  <Typography
-                                    sx={{
-                                      color: "#595959",
-                                      fontSize: "0.9rem",
-                                      fontWeight: "600",
-                                      fontFamily: "Arial",
-                                    }}
-                                  >
-                                 Payment by Prepaid, Credit & Debit cards
-                                  </Typography>
-                              </div>
-                              <div className="text-center">
-                              <img style={{ width: "70%", marginTop: "10px" }} src={cardimg} alt="upi"></img>
-                              </div>
-                              </div>
-                            }
-                          />
+                                  <div>
+                                    <Typography
+                                      sx={{
+                                        color: "#595959",
+                                        fontSize: "0.9rem",
+                                        fontWeight: "600",
+                                        fontFamily: "Arial",
+                                      }}
+                                    >
+                                      Payment by Prepaid, Credit & Debit cards
+                                    </Typography>
+                                  </div>
+                                  <div className="text-center">
+                                    <img
+                                      style={{
+                                        width: "70%",
+                                        marginTop: "10px",
+                                      }}
+                                      src={cardimg}
+                                      alt="upi"
+                                    ></img>
+                                  </div>
+                                </div>
+                              }
+                            />
                           </RadioGroup>
                         </FormControl>
                         <CardActions>
@@ -2144,21 +2199,28 @@ export default function NewCheckout(props) {
                         <Row>
                           <Col>
                             <PaytmButton
-                            total={Math.round(grandTotalForPayU)}
-                            disabled={
-                              Object.keys(cart?.cartItems).length > 0 &&
-                              auth.user.id &&
-                              currentPaymentType
-                                ? false
-                                : true
-                            }
-                            placeOrder={placeOrder}
-                            customerId={auth.user ? auth.user.id : null}
-                            payTMMerchantID={payTMMerchantID}
-                            payTMSalt={payTMSalt}
-                            payTMURL={payTMURL}
-                            payTMWebsiteName={payTMWebsiteName}
-                            selectedTypeOfPayment={paymentType}
+                              total={Math.round(grandTotalForPayU)}
+                              // disabled={
+                              //   Object.keys(cart?.cartItems).length > 0 &&
+                              //   auth.user.id &&
+                              //   currentPaymentType
+                              //     ? false
+                              //     : true
+                              // }
+                              disabled={
+                                Object.keys(cart?.cartItems).length > 0 &&
+                                currentPaymentType &&
+                                (qrcode || auth.user.id)
+                                  ? false
+                                  : true
+                              }
+                              placeOrder={placeOrder}
+                              customerId={auth.user ? auth.user.id : null}
+                              payTMMerchantID={payTMMerchantID}
+                              payTMSalt={payTMSalt}
+                              payTMURL={payTMURL}
+                              payTMWebsiteName={payTMWebsiteName}
+                              selectedTypeOfPayment={paymentType}
                             ></PaytmButton>
                           </Col>
                           <Col>
@@ -2174,6 +2236,11 @@ export default function NewCheckout(props) {
                         </Row>
                       </Card>
                     ) : null}
+                    {console.log(
+                      "aaa clientPaymentModes",
+                      Object.keys(cart?.cartItems).length,
+                      currentPaymentType
+                    )}
                     {currentPaymentType && clientPaymentModes === "PAYU" ? (
                       <Card className="p-3" sx={{ height: "360px" }}>
                         <Row>
@@ -2181,10 +2248,24 @@ export default function NewCheckout(props) {
                             <PayUTest
                               total={grandTotalForPayU}
                               // RD allAddress.length > 0 && selectedAddress && selectedAddress.id Added to control address Pay button disable
+                              // disabled={
+                              //   allAddress.length > 0 &&
+                              //   selectedAddress &&
+                              //   selectedAddress.id &&
+                              //   Object.keys(cart?.cartItems).length > 0 &&
+                              //   auth.user.id &&
+                              //   currentPaymentType
+                              //     ? false
+                              //     : true
+                              // }
                               disabled={
-                                allAddress.length > 0 && selectedAddress && selectedAddress.id && Object.keys(cart?.cartItems).length > 0 &&
-                                auth.user.id &&
-                                currentPaymentType
+                                Object.keys(cart?.cartItems).length > 0 &&
+                                currentPaymentType &&
+                                (qrcode ||
+                                  (allAddress.length > 0 &&
+                                    selectedAddress &&
+                                    selectedAddress.id &&
+                                    auth.user.id))
                                   ? false
                                   : true
                               }
@@ -2312,12 +2393,19 @@ export default function NewCheckout(props) {
             </Row>
           ) : null}
 
-          <Row>
+          {/* <Row>
             {!auth.user.id ? (
               <Alert severity="error">
                 Please login before placing the order!
               </Alert>
             ) : null}
+          </Row> */}
+          <Row>
+            {!auth.user.id && qrcode === null && (
+              <Alert severity="error">
+                Please login before placing the order!
+              </Alert>
+            )}
           </Row>
         </CusContainer>
       </div>

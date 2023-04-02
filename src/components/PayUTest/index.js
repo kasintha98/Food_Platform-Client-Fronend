@@ -88,6 +88,7 @@ export const PayUTest = (props) => {
 
   return (
     <div>
+      {console.log("aaa prps.disable", props.disabled)}
       <form action={payUURL} method="POST" id="payuForm">
         <input type="hidden" name="key" defaultValue={payUMerchantID} />
         <input type="hidden" name="txnid" defaultValue={txnUID} />
@@ -128,11 +129,7 @@ export const PayUTest = (props) => {
           name="enforce_paymethod"
           defaultValue="creditcard|debitcard|netbanking|upi"
         />
-        <input
-          type="hidden"
-          name="drop_category"
-          defaultValue="CASH"
-        />
+        <input type="hidden" name="drop_category" defaultValue="CASH" />
         <input type="hidden" name="hash" defaultValue={hashed} />
         <button
           className="btn btn-primary w-100"
