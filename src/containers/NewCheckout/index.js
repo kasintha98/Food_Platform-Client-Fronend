@@ -1804,7 +1804,7 @@ export default function NewCheckout(props) {
                       sx={{
                         width: "100%",
                         marginTop: 3,
-                        height: "360px",
+                        height: isMobile ? "" : "360px",
                       }}
                     >
                       <CardContent>
@@ -1816,11 +1816,18 @@ export default function NewCheckout(props) {
                             color: "#595959",
                           }}
                         >
-                          DELIVERY TYPE :{" "}
+                          {qrcode ? "ORDER SOURCE : " : "DELIVERY TYPE : "}
+                          {/* DELIVERY TYPE :{" "} */}
                           {currentType?.type === "delivery" ? (
                             <span>Delivery</span>
                           ) : (
-                            <span>Self-Collect</span>
+                            <>
+                              {qrcode ? (
+                                <span>Customer QR Dine In</span>
+                              ) : (
+                                <span>Self-Collect</span>
+                              )}
+                            </>
                           )}
                         </h5>
                         <h5
@@ -1947,6 +1954,20 @@ export default function NewCheckout(props) {
                         ) : null}
                         {currentType && currentType?.type === "collect" ? (
                           <div style={{ width: "100%", marginTop: 3 }}>
+                            {tableId ? (
+                              <div className="row">
+                                <h5
+                                  style={{
+                                    fontSize: "0.9rem",
+                                    fontWeight: "600",
+                                    fontFamily: "Arial",
+                                    color: "#595959",
+                                  }}
+                                >
+                                  TABLE NO  - {tableId}
+                                </h5>
+                              </div>
+                            ) : null}
                             <div className="row mb-3">
                               <h5
                                 style={{
@@ -1998,20 +2019,25 @@ export default function NewCheckout(props) {
                                 </Typography>
                               </div>
 
-                              <div className="col-12" sx={{ textAlign: "end" }}>
-                                <Typography sx={{ textAlign: "center" }}>
-                                  <CardActions>
-                                    <CLButton
-                                      onClick={renderDeliveryTypeModal2}
-                                      variant="contained"
-                                      className="w-100"
-                                      color="warning"
-                                    >
-                                      CHANGE LOCATION
-                                    </CLButton>
-                                  </CardActions>
-                                </Typography>
-                              </div>
+                              {!qrcode && (
+                                <div
+                                  className="col-12"
+                                  sx={{ textAlign: "end" }}
+                                >
+                                  <Typography sx={{ textAlign: "center" }}>
+                                    <CardActions>
+                                      <CLButton
+                                        onClick={renderDeliveryTypeModal2}
+                                        variant="contained"
+                                        className="w-100"
+                                        color="warning"
+                                      >
+                                        CHANGE LOCATION
+                                      </CLButton>
+                                    </CardActions>
+                                  </Typography>
+                                </div>
+                              )}
                             </div>
                           </div>
                         ) : null}
