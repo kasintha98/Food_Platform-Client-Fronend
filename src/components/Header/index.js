@@ -572,11 +572,19 @@ export default function Header(props) {
             </NavHashLink>
 
             {isMobile ? (
-              <NavLink className="nav-link cartpd" to="/new-cart">
+              <NavLink
+                className="nav-link cartpd"
+                to="/new-cart"
+                style={{
+                  position: "absolute",
+                  right: "20px",
+                  marginTop: "10px",
+                }}
+              >
                 {Object.keys(cart.cartItems) ? (
                   <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
                 ) : null}
-                <i className="fa fa-cart-plus"></i>
+                <i className="fa fa-cart-plus" style={{ fontSize: "20px" }}></i>
               </NavLink>
             ) : null}
           </div>
