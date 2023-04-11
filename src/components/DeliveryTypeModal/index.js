@@ -82,6 +82,9 @@ export const DeliveryTypeModal = (props) => {
         if (!localStorage.getItem("deliveryType")) {
           handleShow();
         }
+        if (JSON.parse(localStorage.getItem("deliveryType"))?.qrcode == null) {
+          handleShow();
+        }
         if (props.forceOpen) {
           const del = localStorage.getItem("deliveryType");
           if (del) {
@@ -133,6 +136,7 @@ export const DeliveryTypeModal = (props) => {
     }
   };
   const handleShow = () => {
+    console.log("aaa -------");
     setShow(true);
   };
 

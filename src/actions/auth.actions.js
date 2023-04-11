@@ -158,6 +158,7 @@ export const signup = (mobileNumber) => {
           draggable: true,
           progress: undefined,
         });
+        return res;
       } else {
         dispatch({
           type: authConstants.SIGNUP_FAILURE,

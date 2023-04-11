@@ -17,10 +17,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllStores, setDeliveryType } from "../../actions";
 import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
 import { toast } from "react-toastify";
+import QRCodeModal from "../../components/QRCodeModal";
 
 export default function HomePage(props) {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
   const [show, setShow] = useState(false);
+  const [qrshow, setQrshow] = useState(false);
+  console.log("aaa qrshow", qrshow);
 
   const search = useLocation().search;
   const QRcode = new URLSearchParams(search).get("QRcode");
@@ -39,16 +42,17 @@ export default function HomePage(props) {
       );
       if (res) {
         if (!QRcode) {
-          const del = localStorage.getItem("deliveryType");
-          console.log("aaa del", del);
+          setShow(true);
+          // const del = localStorage.getItem("deliveryType");
+          // console.log("aaa del", del);
           const delObj = {
-            ...del,
+            // ...del,
             qrcode: null,
             tableId: null,
           };
           dispatch(setDeliveryType(delObj));
-          setShow(true);
         } else if (QRcode && matchedStore) {
+          setQrshow(true);
           const delObj = {
             ...matchedStore,
             type: "collect",
@@ -58,7 +62,9 @@ export default function HomePage(props) {
           };
           dispatch(setDeliveryType(delObj));
         } else {
-          toast.error("Store not found for this QR, Pls seect store manually!");
+          toast.error(
+            "Store not found for this QR, Pleace select store manually!"
+          );
           setShow(true);
         }
       }
@@ -95,6 +101,8 @@ export default function HomePage(props) {
         {isMobile ? <BottomNav></BottomNav> : null}
       </ScrollingProvider>
       {show ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null}
+      {qrshow ? <QRCodeModal delay={0}></QRCodeModal> : null}
+      {/* {<DeliveryTypeModal delay={0}></DeliveryTypeModal>} */}
     </div>
   );
 }
