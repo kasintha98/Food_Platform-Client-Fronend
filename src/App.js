@@ -109,6 +109,7 @@ function App() {
       </Router>
       {/* {show ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null} */}
       {/* {true ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null} */}
+      {/* {<DeliveryTypeModal delay={0}></DeliveryTypeModal>} */}
     </div>
   );
 }

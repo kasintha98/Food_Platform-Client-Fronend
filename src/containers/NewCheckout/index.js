@@ -645,7 +645,7 @@ export default function NewCheckout(props) {
           : currentType.storeId,
         orderSource:
           currentType.type === "delivery" ? "WD" : qrcode ? "Q" : "WS",
-        customerId: auth.user.id,
+        customerId: auth.user.id || localStorage.getItem("qr").userid,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
           currentType.type === "delivery"
@@ -1481,7 +1481,7 @@ export default function NewCheckout(props) {
       restaurantId: currentType.restaurantId,
       storeId: currentType.storeId,
       orderSource: currentType.type === "delivery" ? "WD" : "WS",
-      customerId: auth.user.id,
+      customerId: auth.user.id || localStorage.getItem("qr").userid,
       orderReceivedDateTime: new Date(),
       orderDeliveryType:
         currentType.type === "delivery" ? "WEB DELIVERY" : "WEB SELF COLLECT",
@@ -2262,11 +2262,11 @@ export default function NewCheckout(props) {
                         </Row>
                       </Card>
                     ) : null}
-                    {console.log(
+                    {/* {console.log(
                       "aaa clientPaymentModes",
                       Object.keys(cart?.cartItems).length,
                       currentPaymentType
-                    )}
+                    )} */}
                     {currentPaymentType && clientPaymentModes === "PAYU" ? (
                       <Card className="p-3" sx={{ height: "360px" }}>
                         <Row>

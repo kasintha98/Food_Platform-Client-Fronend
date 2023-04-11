@@ -8,16 +8,27 @@ var jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 export const PayUTest = (props) => {
+  console.log("aaa payu props", props);
   const auth = useSelector((state) => state.auth);
   const payUURL = useSelector((state) => state.user.payUURL);
   const payUMerchantID = useSelector((state) => state.user.payUMerchantID);
   const payUSalt = useSelector((state) => state.user.payUSalt);
 
+  const qruser = JSON.parse(localStorage.getItem("qr"));
+  console.log("aaa qruser", qruser);
+
+  // const firstName = auth.user?.firstName || "kavindu";
+  const email = auth.user?.emailId || `${qruser.name}@gmail.com`;
+  const firstName = auth.user?.firstName || qruser.name.toString();
+  // const email = auth.user?.emailId || "abc@gmail.com";
+  // const firstName = auth.user?.firstName || "shyamal";
+  // const email = auth.user?.emailId || "shyamal@serendibsystems.com";
+
   const [hashed, setHashed] = useState("");
   const [txnUID, setTxnUID] = useState(
     uuidv5(
       JSON.stringify({
-        customerId: props.customerId,
+        customerId: props.customerId == "" ? 227 : props.customerId,
         cgstCalculatedValue: props.cgstCalculatedValue("cgst"),
         sgstCalculatedValue: props.sgstCalculatedValue("sgst"),
         deliveryCharges: props.deliveryCharges,
@@ -42,9 +53,32 @@ export const PayUTest = (props) => {
     )
   );
 
+  // useEffect(() => {
+  //   console.log("aaa hashedOrderObj", hashedOrderObj);
+  //   console.log("aaa Selected PayU Option: " + props.selectedTypeOfPayment);
+  //   var hashString =
+  //     `${payUMerchantID}` +
+  //     "|" +
+  //     `${txnUID}` +
+  //     "|" +
+  //     `${props.total}` +
+  //     "|" +
+  //     "Hangries Food Items" +
+  //     "|" +
+  //     `${auth.user?.firstName}` +
+  //     "|" +
+  //     `${auth.user?.emailId}` +
+  //     "|" +
+  //     "||||||||||" +
+  //     `${payUSalt}`; // Your salt value
+  //   console.log("aaa hashString", hashString);
+  //   var hashed = sha512(hashString);
+  //   setHashed(hashed);
+  // }, [props.total]);
+
   useEffect(() => {
-    console.log(hashedOrderObj);
-    console.log("Selected PayU Option: " + props.selectedTypeOfPayment);
+    console.log("aaa hashedOrderObj", hashedOrderObj);
+    console.log("aaa Selected PayU Option: " + props.selectedTypeOfPayment);
     var hashString =
       `${payUMerchantID}` +
       "|" +
@@ -54,12 +88,13 @@ export const PayUTest = (props) => {
       "|" +
       "Hangries Food Items" +
       "|" +
-      `${auth.user?.firstName}` +
+      `${firstName}` +
       "|" +
-      `${auth.user?.emailId}` +
+      `${email}` +
       "|" +
       "||||||||||" +
       `${payUSalt}`; // Your salt value
+    console.log("aaa hashString", hashString);
     var hashed = sha512(hashString);
     setHashed(hashed);
   }, [props.total]);
@@ -98,31 +133,37 @@ export const PayUTest = (props) => {
           defaultValue="Hangries Food Items"
         />
         <input type="hidden" name="amount" defaultValue={props.total} />
-        <input type="hidden" name="email" defaultValue={auth.user?.emailId} />
+        <input
+          type="hidden"
+          name="email"
+          defaultValue={auth.user?.emailId || `${qruser.name}@gmail.com`}
+        />
         <input
           type="hidden"
           name="firstname"
-          defaultValue={auth.user?.firstName}
+          defaultValue={auth.user?.firstName || qruser.name.toString()}
         />
         <input
           type="hidden"
           name="lastname"
-          defaultValue={auth.user?.lastName}
+          defaultValue={auth.user?.lastName || "shyamal"}
         />
         <input
           type="hidden"
           name="surl"
           defaultValue={`${api}/savePayUResponseSuccess?token=${hashedOrderObj}`}
+          // defaultValue={`${apiPayULocal}/savePayUResponseSuccess?token=${hashedOrderObj}`}
         />
         <input
           type="hidden"
           name="furl"
           defaultValue={`${api}/savePayUResponseFailure`}
+          // defaultValue={`${apiPayULocal}/savePayUResponseFailure`}
         />
         <input
           type="hidden"
           name="phone"
-          defaultValue={auth.user?.mobileNumber}
+          defaultValue={auth.user?.mobileNumber || "+94713873540"}
         />
         <input
           type="hidden"
