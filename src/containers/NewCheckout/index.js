@@ -212,8 +212,10 @@ export default function NewCheckout(props) {
   const refH = useRef(null);
 
   const delobj = JSON.parse(localStorage.getItem("deliveryType"));
+  const qrobj = JSON.parse(localStorage.getItem("qr"));
   const qrcode = delobj?.qrcode;
   const tableId = delobj?.tableId;
+  const customerName = qrobj?.name;
   console.log("aaa qrcode, tableID", qrcode, tableId);
 
   const history = useHistory();
@@ -644,7 +646,7 @@ export default function NewCheckout(props) {
           ? decodedOrderObj.storeId
           : currentType.storeId,
         orderSource:
-          currentType.type === "delivery" ? "WD" : qrcode ? "QR" : "WS",
+          currentType.type === "delivery" ? "WD" : qrcode ? "Q" : "WS",
         customerId: auth.user.id || localStorage.getItem("qr").userid,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
@@ -1086,11 +1088,14 @@ export default function NewCheckout(props) {
                       Order ID: {orderResp ? orderResp.orderId : null}
                     </Typography>
                     <Typography sx={{ fontWeight: "600" }}>
-                      Customer Name: {orderResp ? orderResp.customerName : null}
+                      Customer Name:{" "}
+                      {orderResp ? orderResp.customerName : customerName}
                     </Typography>
                     <Typography sx={{ fontWeight: "600" }}>
                       {defDel.type === "delivery" ? (
                         <span>Delivery</span>
+                      ) : qrcode ? (
+                        <span>QR Dine-In</span>
                       ) : (
                         <span>Self-Collect</span>
                       )}
@@ -1103,7 +1108,10 @@ export default function NewCheckout(props) {
                   <hr></hr>
                   <div>
                     <Typography sx={{ color: "black" }}>
-                      Name: {auth.user?.firstName} {auth.user?.lastName}
+                      Name:{" "}
+                      {auth.user
+                        ? `${auth.user?.firstName}" "${auth.user?.lastName}`
+                        : customerName}
                     </Typography>
                     {selectedAddress ? (
                       <Typography sx={{ color: "black" }}>
@@ -1480,7 +1488,7 @@ export default function NewCheckout(props) {
       orderId: "EMPTY",
       restaurantId: currentType.restaurantId,
       storeId: currentType.storeId,
-      orderSource: currentType.type === "delivery" ? "WD" : "WS",
+      orderSource: currentType.type === "delivery" ? "WD" : qrcode ? "Q" : "WS",
       customerId: auth.user.id || localStorage.getItem("qr").userid,
       orderReceivedDateTime: new Date(),
       // orderDeliveryType:
