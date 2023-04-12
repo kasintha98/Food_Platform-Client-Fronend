@@ -214,7 +214,7 @@ export default function NewCheckout(props) {
   const delobj = JSON.parse(localStorage.getItem("deliveryType"));
   const qrcode = delobj?.qrcode;
   const tableId = delobj?.tableId;
-  // console.log("aaa qrcode, tableID", qrcode, tableId);
+  console.log("aaa qrcode, tableID", qrcode, tableId);
 
   const history = useHistory();
 
@@ -644,7 +644,7 @@ export default function NewCheckout(props) {
           ? decodedOrderObj.storeId
           : currentType.storeId,
         orderSource:
-          currentType.type === "delivery" ? "WD" : qrcode ? "Q" : "WS",
+          currentType.type === "delivery" ? "WD" : qrcode ? "QR" : "WS",
         customerId: auth.user.id || localStorage.getItem("qr").userid,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
@@ -1483,9 +1483,16 @@ export default function NewCheckout(props) {
       orderSource: currentType.type === "delivery" ? "WD" : "WS",
       customerId: auth.user.id || localStorage.getItem("qr").userid,
       orderReceivedDateTime: new Date(),
+      // orderDeliveryType:
+      //   currentType.type === "delivery" ? "WEB DELIVERY" : "WEB SELF COLLECT",
       orderDeliveryType:
-        currentType.type === "delivery" ? "WEB DELIVERY" : "WEB SELF COLLECT",
-      storeTableId: null,
+        currentType.type === "delivery"
+          ? "WEB DELIVERY"
+          : qrcode
+          ? "SELF DINE IN QR"
+          : "WEB SELF COLLECT",
+      // storeTableId: null,
+      storeTableId: tableId ? tableId : null,
       orderStatus: "SUBMITTED",
       taxRuleId: 1,
       totalPrice: total,
