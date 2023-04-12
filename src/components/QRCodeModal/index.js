@@ -6,8 +6,12 @@ import Col from "react-bootstrap/Col";
 import PhoneInput from "react-phone-number-input";
 import Button from "react-bootstrap/Button";
 import validator from "validator";
-import { GetAddress, GetCustomer } from "../../actions";
-import { AddAddress } from "../../actions";
+import {
+  GetAddress,
+  GetCustomer,
+  UpdateUserDetails,
+  AddAddress,
+} from "../../actions";
 import { signup } from "../../actions";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -38,7 +42,7 @@ const QRCodeModal = () => {
         const userid = res.id;
         dispatch(GetAddress(mobileNumber)).then((res) => {
           console.log("aaa<<<res", res);
-          if (res[0].id) {
+          if (res[0]?.id) {
             let qr = {
               mobile: mobileNumber,
               name: name,
@@ -53,6 +57,8 @@ const QRCodeModal = () => {
       } else {
         dispatch(signup(mobileNumber)).then((res) => {
           if (res.data) {
+            const payload = { ...res.data, firstName: name };
+            dispatch(UpdateUserDetails(payload));
             const userid =
               parseInt(localStorage.getItem("userId")) || res.data.id;
             const userObj = JSON.parse(localStorage.getItem("deliveryType"));
@@ -67,7 +73,6 @@ const QRCodeModal = () => {
               zipCode: parseInt(userObj?.zipCode),
             };
             dispatch(AddAddress(addressObj)).then((res) => {
-              console.log("aaa>>>res", res);
               let qr = {
                 mobile: mobileNumber,
                 name: name,
