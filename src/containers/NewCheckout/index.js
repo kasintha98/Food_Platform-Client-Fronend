@@ -216,9 +216,10 @@ export default function NewCheckout(props) {
   const qrcode = delobj?.qrcode;
   const tableId = delobj?.tableId;
   const customerName = qrobj?.name;
-  console.log("aaa qrcode, tableID", qrcode, tableId);
+  // console.log("aaa qrcode, tableID", qrcode, tableId);
 
   const history = useHistory();
+  let mobileNum = localStorage.getItem("userMobileNumber");
 
   useEffect(() => {
     dispatch(getAllStores());
@@ -250,7 +251,7 @@ export default function NewCheckout(props) {
         }
       });
     }
-  }, []);
+  }, [mobileNum]);
 
   useEffect(() => {
     console.log("setSelectedAddress");
@@ -707,7 +708,7 @@ export default function NewCheckout(props) {
         },
       ] */
 
-      console.log("aaa neworder", NewOrder);
+      // console.log("aaa neworder", NewOrder);
 
       const result = await dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
@@ -1542,6 +1543,16 @@ export default function NewCheckout(props) {
     return NewOrder;
   };
 
+  {
+    console.log("aaa disable---1", allAddress);
+  }
+  {
+    console.log("aaa disable---2", selectedAddress);
+  }
+  {
+    console.log("aaa disable---3", auth.user.id);
+  }
+
   return (
     <div>
       <Header></Header>
@@ -2228,7 +2239,10 @@ export default function NewCheckout(props) {
                             color="success"
                             className="w-100"
                             onClick={handlePaymentType}
-                            disabled={paymentType ? false : true}
+                            // disabled={paymentType ? false : true}
+                            disabled={
+                              !paymentType || (!auth.user.id && !qrcode)
+                            }
                           >
                             SELECT PAYMENT METHOD
                           </SPMButton>
@@ -2286,6 +2300,9 @@ export default function NewCheckout(props) {
                       <Card className="p-3" sx={{ height: "360px" }}>
                         <Row>
                           <Col>
+                            {console.log("aaa disable---1", allAddress)}
+                            {console.log("aaa disable---2", selectedAddress)}
+                            {console.log("aaa disable---3", auth.user.id)}
                             <PayUTest
                               total={grandTotalForPayU}
                               // RD allAddress.length > 0 && selectedAddress && selectedAddress.id Added to control address Pay button disable
@@ -2441,8 +2458,11 @@ export default function NewCheckout(props) {
               </Alert>
             ) : null}
           </Row> */}
+          {/* {console.log("aaa--------auth.user.id", auth.user.id)} */}
+          {/* {console.log("aaa--------qrcode", qrcode)} */}
+
           <Row>
-            {!auth.user.id && qrcode === null && (
+            {!auth.user.id && !qrcode && (
               <Alert severity="error">
                 Please login before placing the order!
               </Alert>

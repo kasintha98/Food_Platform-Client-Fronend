@@ -15,7 +15,7 @@ export const PayUTest = (props) => {
   const payUSalt = useSelector((state) => state.user.payUSalt);
 
   const qruser = JSON.parse(localStorage.getItem("qr"));
-  console.log("aaa qruser", qruser);
+  console.log("aaa diable", props.disabled);
 
   // const firstName = auth.user?.firstName || "kavindu";
   const email = auth.user?.emailId || `${qruser.name}@gmail.com`;
