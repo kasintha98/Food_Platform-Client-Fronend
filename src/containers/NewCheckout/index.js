@@ -216,7 +216,8 @@ export default function NewCheckout(props) {
   const qrcode = delobj?.qrcode;
   const tableId = delobj?.tableId;
   const customerName = qrobj?.name;
-  // console.log("aaa qrcode, tableID", qrcode, tableId);
+  const qruserid = qrobj?.userid;
+  console.log("aaa qruserid", qruserid);
 
   const history = useHistory();
   let mobileNum = localStorage.getItem("userMobileNumber");
@@ -648,7 +649,7 @@ export default function NewCheckout(props) {
           : currentType.storeId,
         orderSource:
           currentType.type === "delivery" ? "WD" : qrcode ? "Q" : "WS",
-        customerId: auth.user.id || localStorage.getItem("qr").userid,
+        customerId: auth.user.id || qruserid,
         orderReceivedDateTime: new Date(),
         orderDeliveryType:
           currentType.type === "delivery"
@@ -1490,7 +1491,7 @@ export default function NewCheckout(props) {
       restaurantId: currentType.restaurantId,
       storeId: currentType.storeId,
       orderSource: currentType.type === "delivery" ? "WD" : qrcode ? "Q" : "WS",
-      customerId: auth.user.id || localStorage.getItem("qr").userid,
+      customerId: auth.user.id || qruserid,
       orderReceivedDateTime: new Date(),
       // orderDeliveryType:
       //   currentType.type === "delivery" ? "WEB DELIVERY" : "WEB SELF COLLECT",
@@ -1519,6 +1520,8 @@ export default function NewCheckout(props) {
         : 0,
     };
 
+    // console.log("aaa neworder", NewOrder);
+
     /* [
         {
           productId: "P001",
@@ -1543,15 +1546,15 @@ export default function NewCheckout(props) {
     return NewOrder;
   };
 
-  {
-    console.log("aaa disable---1", allAddress);
-  }
-  {
-    console.log("aaa disable---2", selectedAddress);
-  }
-  {
-    console.log("aaa disable---3", auth.user.id);
-  }
+  // {
+  //   console.log("aaa disable---1", allAddress);
+  // }
+  // {
+  //   console.log("aaa disable---2", selectedAddress);
+  // }
+  // {
+  //   console.log("aaa disable---3", auth.user.id);
+  // }
 
   return (
     <div>
@@ -2300,9 +2303,9 @@ export default function NewCheckout(props) {
                       <Card className="p-3" sx={{ height: "360px" }}>
                         <Row>
                           <Col>
-                            {console.log("aaa disable---1", allAddress)}
+                            {/* {console.log("aaa disable---1", allAddress)}
                             {console.log("aaa disable---2", selectedAddress)}
-                            {console.log("aaa disable---3", auth.user.id)}
+                            {console.log("aaa disable---3", auth.user.id)} */}
                             <PayUTest
                               total={grandTotalForPayU}
                               // RD allAddress.length > 0 && selectedAddress && selectedAddress.id Added to control address Pay button disable
