@@ -7,6 +7,7 @@ import { Row, Col, Container, Modal } from "react-bootstrap";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
+import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -195,9 +196,11 @@ export default function NewMenu() {
 
   const [showCartModal, setShowCartModal] = useState(false);
   const [showDeliveryTypeModal, setShowDeliveryTypeModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const productList = useSelector((state) => state.product);
-  console.log("aaa productList", productList);
+  // console.log("aaa productList", productList);
+  console.log("aaa isLoading", isLoading);
 
   const dispatch = useDispatch();
 
@@ -212,8 +215,10 @@ export default function NewMenu() {
           dispatch(getDishesBySection(res[0]));
         }
       });
+      setIsLoading(false);
     } else {
       setShowDeliveryTypeModal(true);
+      setIsLoading(false);
     }
   }, []);
 
@@ -406,31 +411,28 @@ export default function NewMenu() {
                               value={dish}
                             >
                               <Row>
-                                {productList.products?.length > 0 ? (
+                                {isLoading ? (
+                                  <h4
+                                    style={{
+                                      marginTop: "50px",
+                                      textAlign: "center",
+                                    }}
+                                  >
+                                    <CircularProgress />
+                                  </h4>
+                                ) : (
                                   <>
-                                    {productList.products?.map((product) =>
-                                      product &&
-                                      product.menuAvailableFlag === "Y" &&
-                                      product.onlineApplicableFlag !== "N" &&
-                                      product.section === section &&
-                                      product.dish === dish ? (
-                                        <>
-                                          {product.dish === "Fries" ? (
-                                            <Col xs={6} sm={6} md={6} lg={4}>
-                                              <ProductCard
-                                                product={product}
-                                                products={productList.products}
-                                                onChangeSubTotal={
-                                                  handleSubTotal
-                                                }
-                                              ></ProductCard>
-                                            </Col>
-                                          ) : (
+                                    {productList.products?.length > 0 ? (
+                                      <>
+                                        {productList.products?.map((product) =>
+                                          product &&
+                                          product.menuAvailableFlag === "Y" &&
+                                          product.onlineApplicableFlag !==
+                                            "N" &&
+                                          product.section === section &&
+                                          product.dish === dish ? (
                                             <>
-                                              {product.productSize ===
-                                                "Regular" ||
-                                              product.productSize ===
-                                                "Small" ? (
+                                              {product.dish === "Fries" ? (
                                                 <Col
                                                   xs={6}
                                                   sm={6}
@@ -447,17 +449,41 @@ export default function NewMenu() {
                                                     }
                                                   ></ProductCard>
                                                 </Col>
-                                              ) : null}
+                                              ) : (
+                                                <>
+                                                  {product.productSize ===
+                                                    "Regular" ||
+                                                  product.productSize ===
+                                                    "Small" ? (
+                                                    <Col
+                                                      xs={6}
+                                                      sm={6}
+                                                      md={6}
+                                                      lg={4}
+                                                    >
+                                                      <ProductCard
+                                                        product={product}
+                                                        products={
+                                                          productList.products
+                                                        }
+                                                        onChangeSubTotal={
+                                                          handleSubTotal
+                                                        }
+                                                      ></ProductCard>
+                                                    </Col>
+                                                  ) : null}
+                                                </>
+                                              )}
                                             </>
-                                          )}
-                                        </>
-                                      ) : null
+                                          ) : null
+                                        )}
+                                      </>
+                                    ) : (
+                                      <h4 style={{ marginTop: "50px" }}>
+                                        No Products Available
+                                      </h4>
                                     )}
                                   </>
-                                ) : (
-                                  <h4 style={{ marginTop: "50px" }}>
-                                    No Products Available
-                                  </h4>
                                 )}
                               </Row>
                             </TabPanel>
