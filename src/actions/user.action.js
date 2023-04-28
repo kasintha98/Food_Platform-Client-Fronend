@@ -727,6 +727,38 @@ export const getClientPaymentModes = (restaurantId) => {
   };
 };
 
+//--------------  OFFER API CALL -------------
+export const getOffersByStatusCall = (restaurantId,storeId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: userConstants.GET_OFFER_REQUEST });
+
+      const res = await axios.get("/getOffersByStatus", {
+        params: { restaurantId, storeId: storeId, status: "ACTIVE"},
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: userConstants.GET_OFFER_SUCCESS,
+          payload: res.data,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: userConstants.GET_OFFER_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: userConstants.GET_OFFER_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
 export const getPayTMUrl = (restaurantId) => {
   return async (dispatch) => {
     try {

@@ -10,7 +10,8 @@ import {
   getPayTMUrl,
   getPayTMMerchantID,
   getPayTMSalt,
-  getPayTMWSebsiteName
+  getPayTMWSebsiteName,
+  getOffersByStatusCall
 } from "./actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -42,6 +43,7 @@ function App() {
     dispatch(getAllStores());
     dispatch(getVersion());
     dispatch(getClientPaymentModes("R001"))
+    dispatch(getOffersByStatusCall("R001","S001"))
     dispatch(getPayTMUrl("R001"))
     dispatch(getPayTMMerchantID("R001")).then((mid)=>{
       dispatch(getPayTMUrl("R001")).then((url)=>{

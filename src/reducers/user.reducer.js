@@ -25,6 +25,7 @@ const initState = {
   payTMMerchantID: null,
   payTMSalt: null,
   payTMWebsiteName: null,
+  offersData: [],
 };
 
 export default (state = initState, action) => {
@@ -339,6 +340,25 @@ export default (state = initState, action) => {
         break;
 
 
+        
+          case userConstants.GET_OFFER_REQUEST:
+            state = {
+              ...state,
+            };
+            break;
+      
+          case userConstants.GET_OFFER_SUCCESS:
+            state = {
+              ...state,
+              offersData: action.payload,
+            };
+            break;
+      
+          case userConstants.GET_OFFER_FAILURE:
+            state = {
+              ...state,
+            };
+            break;
 
 
 

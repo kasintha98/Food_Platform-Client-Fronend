@@ -56,6 +56,12 @@ export default function CartCard(props) {
     calculateSubTotal();
     calculateExtraTotal();
     calculateChoiceTotal();
+
+    console.log("props.comboOfferReduceKey");
+    if (typeof props.comboOfferReduceKey !== 'undefined' && props.comboOfferReduceKey && props.comboOfferReduceKey.length > 0) {
+      console.log(props.comboOfferReduceKey[0].key);
+      console.log(props.comboOfferReduceKey[1].key);
+    }  
   });
 
   useEffect(() => {
@@ -68,8 +74,8 @@ export default function CartCard(props) {
     calculateSubTotal();
     props.onChangeSpecialOfferCheckBOGO &&
       props.onChangeSpecialOfferCheckBOGO();
-    //props.onChangeSpecialOfferCheckCOMBO1 &&
-    //  props.onChangeSpecialOfferCheckCOMBO1();
+    props.onChangeSpecialOfferCheckCOMBO1 &&
+     props.onChangeSpecialOfferCheckCOMBO1();
   };
 
   const onQuantityDecrement = (productId) => {
@@ -79,8 +85,8 @@ export default function CartCard(props) {
     calculateSubTotal();
     props.onChangeSpecialOfferCheckBOGO &&
       props.onChangeSpecialOfferCheckBOGO();
-    //props.onChangeSpecialOfferCheckCOMBO1 &&
-    //  props.onChangeSpecialOfferCheckCOMBO1();
+    props.onChangeSpecialOfferCheckCOMBO1 &&
+     props.onChangeSpecialOfferCheckCOMBO1();
   };
 
   const calculateSubTotal = () => {
@@ -88,7 +94,11 @@ export default function CartCard(props) {
     for (let key of Object.keys(cart?.cartItems)) {
       total = total + cart?.cartItems[key].qty * cart?.cartItems[key].price;
     }
-    props.onChangeSubTotal(total);
+    if(typeof props.comboOfferReduceKey !== 'undefined' && props.comboOfferReduceKey && props.comboOfferReduceKey.length > 0){
+      props.onChangeSubTotal(total + props.offerPriceToAdd);
+    }else{
+      props.onChangeSubTotal(total);
+    }
   };
 
   const calculateExtraTotal = () => {
@@ -213,7 +223,144 @@ export default function CartCard(props) {
                         </ButtonGroup>
                       </div>
                       <Col className="col-3" style={{ paddingLeft: 0 }}>
-                        <div>
+
+                      <div>
+                          <p
+                            style={{
+                              fontSize: "0.9rem",
+                              fontWeight: "600",
+                              marginTop: "auto",
+                              marginBottom: "auto",
+                              color: "#2e7d32",
+                            }}
+                          >
+                            ₹{" "}
+                            {props.bOGOLowestPizzaKey?.some(
+                              (el) => el.key === key
+                            ) ? (
+                              <>
+                                {props.bOGOLowestPizzaKey.find(
+                                  (x) => x.key === key
+                                ).qty *
+                                  (props.comboReduceKey &&
+                                  props.comboReduceKey.key === key
+                                    ? props.comboReduceKey.price
+                                    : props.bOGOLowestPizzaKey.find(
+                                        (x) => x.key === key
+                                      ).price) +
+                                  (props.bOGOLowestPizzaKey.find(
+                                    (x) => x.key === key
+                                  ).extraSubTotalWithQty
+                                    ? props.bOGOLowestPizzaKey.find(
+                                        (x) => x.key === key
+                                      ).extraSubTotalWithQty
+                                    : 0) +
+                                  (Object.keys(
+                                    props.bOGOLowestPizzaKey.find(
+                                      (x) => x.key === key
+                                    )?.choiceIng
+                                  ).length > 0
+                                    ? Number(
+                                        props.bOGOLowestPizzaKey.find(
+                                          (x) => x.key === key
+                                        )?.choiceIng.choiceTotal
+                                          ? props.bOGOLowestPizzaKey.find(
+                                              (x) => x.key === key
+                                            )?.choiceIng.choiceTotal
+                                          : 0
+                                      )
+                                    : 0)}
+                              </>
+                            ) : <>
+                             {typeof props.comboOfferReduceKey !== 'undefined' && props.comboOfferReduceKey && props.comboOfferReduceKey.length > 0
+                             ? (
+                                <> 
+                                {1 *
+                                  (props.comboOfferReduceKey &&
+                                    props.comboOfferReduceKey[index].key === key
+                                    ? props.comboOfferReduceKey[index].price
+                                    : cart?.cartItems[key].price) +
+                                  (cart?.cartItems[key].extraSubTotalWithQty
+                                    ? cart?.cartItems[key].extraSubTotalWithQty
+                                    : 0) +
+                                  (Object.keys(cart?.cartItems[key]?.choiceIng)
+                                    .length > 0
+                                    ? cart?.cartItems[key]?.choiceIng
+                                        .choiceTotal
+                                    : 0)}
+                                </>
+                            ):(
+                              <>
+                              {cart?.cartItems[key].qty *
+                                (props.comboReduceKey &&
+                                props.comboReduceKey.key === key
+                                  ? props.comboReduceKey.price
+                                  : cart?.cartItems[key].price) +
+                                (cart?.cartItems[key].extraSubTotalWithQty
+                                  ? cart?.cartItems[key].extraSubTotalWithQty
+                                  : 0) +
+                                (Object.keys(cart?.cartItems[key]?.choiceIng)
+                                  .length > 0
+                                  ? cart?.cartItems[key]?.choiceIng
+                                      .choiceTotal
+                                  : 0)}
+                            </>  
+                            )} 
+                            </>     
+                            }
+                            .00
+                          </p>
+                        </div>
+
+
+
+                      {/* ----------------------------- */}
+                      {/* <div>
+                          <p
+                            style={{
+                              fontSize: "0.9rem",
+                              fontWeight: "600",
+                              marginTop: "auto",
+                              marginBottom: "auto",
+                              color: "#2e7d32",
+                            }}
+                          >
+                            ₹{" "}
+                            {typeof props.comboOfferReduceKey !== 'undefined' && props.comboOfferReduceKey && props.comboOfferReduceKey.length > 0
+                             ? (
+                              // <>
+                              // {props.comboOfferReduceKey.map(
+                              //   (key) => (
+                                <> 
+                                {cart?.cartItems[key].qty *
+                                  (props.comboOfferReduceKey &&
+                                    props.comboOfferReduceKey[index].key === key
+                                    ? props.comboOfferReduceKey[index].price
+                                    : cart?.cartItems[key].price) +
+                                  (cart?.cartItems[key].extraSubTotalWithQty
+                                    ? cart?.cartItems[key].extraSubTotalWithQty
+                                    : 0) +
+                                  (Object.keys(cart?.cartItems[key]?.choiceIng)
+                                    .length > 0
+                                    ? cart?.cartItems[key]?.choiceIng
+                                        .choiceTotal
+                                    : 0)}
+                                </>
+                              //      )
+                              //  )} 
+                              // </>
+
+                            ):(
+                              <>
+                                THIS IS CALLED {key}
+                              </>
+                            )}
+                            .00
+                          </p>
+                        </div> */}
+
+                        {/* -----------START---------- */}
+                        {/* <div>
                           <p
                             style={{
                               fontSize: "0.9rem",
@@ -276,10 +423,54 @@ export default function CartCard(props) {
                                         .choiceTotal
                                     : 0)}
                               </>
+
+                              // ---------- END-------
+
+                              // <>
+                              // {props.comboOfferReduceKey.map(
+                              //   (key) => (
+                              //   <> 
+                              //   {cart?.cartItems[key].qty *
+                              //     (props.comboOfferReduceKey &&
+                              //     props.comboOfferReduceKey.key === key
+                              //       ? props.comboOfferReduceKey.price
+                              //       : cart?.cartItems[key].price) +
+                              //     (cart?.cartItems[key].extraSubTotalWithQty
+                              //       ? cart?.cartItems[key].extraSubTotalWithQty
+                              //       : 0) +
+                              //     (Object.keys(cart?.cartItems[key]?.choiceIng)
+                              //       .length > 0
+                              //       ? cart?.cartItems[key]?.choiceIng
+                              //           .choiceTotal
+                              //       : 0)}
+                              //   </>
+                              //      )
+                              //  )} 
+                              // </>
+
+
+                              
+                                // <> 
+                                // {cart?.cartItems[key].qty *
+                                //   (props.comboOfferReduceKey &&
+                                //   props.comboOfferReduceKey.key === key
+                                //     ? props.comboOfferReduceKey.price
+                                //     : cart?.cartItems[key].price) +
+                                //   (cart?.cartItems[key].extraSubTotalWithQty
+                                //     ? cart?.cartItems[key].extraSubTotalWithQty
+                                //     : 0) +
+                                //   (Object.keys(cart?.cartItems[key]?.choiceIng)
+                                //     .length > 0
+                                //     ? cart?.cartItems[key]?.choiceIng
+                                //         .choiceTotal
+                                //     : 0)}
+                                // </>
+                              
+
                             )}
                             .00
                           </p>
-                        </div>
+                        </div> */}
                       </Col>
                     </Row>
                   </div>
