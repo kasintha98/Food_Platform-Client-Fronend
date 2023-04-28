@@ -272,6 +272,34 @@ export const DeleteAddress = (mobno, addrType) => {
   };
 };
 
+//action to get userdata using mobile
+export const GetCustomer = (mobileNumber) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get("/getCustomerDtlsByMobNum", {
+        params: { mobno: mobileNumber },
+      });
+      dispatch({ type: userDetailsConstants.GET_USER_DETAILS_REQUEST });
+      if (res.status === 200) {
+        dispatch({
+          type: userDetailsConstants.GET_USER_DETAILS_SUCCESS,
+          payload: res.data,
+        });
+
+        return res.data;
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: userDetailsConstants.GET_USER_DETAILS_FAILURE,
+          payload: { error },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 //action to get address
 export const GetAddress = (mobileNumber) => {
   return async (dispatch) => {
@@ -702,7 +730,11 @@ export const getClientPaymentModes = (restaurantId) => {
       dispatch({ type: userConstants.GET_PAYU_MERCHANT_ID_REQUEST });
 
       const res = await axios.get("/getConfigDetailsByCriteria", {
-        params: { restaurantId, storeId: "ALL", criteria: "CLIENT_MODULE_PAYMENT_MODE" },
+        params: {
+          restaurantId,
+          storeId: "ALL",
+          criteria: "CLIENT_MODULE_PAYMENT_MODE",
+        },
       });
 
       if (res.status === 200 && res.data) {
@@ -858,7 +890,11 @@ export const getPayTMWSebsiteName = (restaurantId) => {
       dispatch({ type: userConstants.GET_PAYTM_WEBSITE_NAME_REQUEST });
 
       const res = await axios.get("/getConfigDetailsByCriteria", {
-        params: { restaurantId, storeId: "ALL", criteria: "PAYTM_WEBSITE_NAME" },
+        params: {
+          restaurantId,
+          storeId: "ALL",
+          criteria: "PAYTM_WEBSITE_NAME",
+        },
       });
 
       if (res.status === 200 && res.data) {

@@ -3,6 +3,7 @@ import {
   userAddressConstants,
   orderStatusConstantsNew,
   orderConstantsNew,
+  userDetailsConstants,
 } from "../actions/constants";
 
 const initState = {
@@ -26,6 +27,7 @@ const initState = {
   payTMSalt: null,
   payTMWebsiteName: null,
   offersData: [],
+  userDetails: {},
 };
 
 export default (state = initState, action) => {
@@ -135,6 +137,19 @@ export default (state = initState, action) => {
       break;
 
     case userConstants.GET_USER_ORDER_DETAILS_FAILURE:
+      break;
+
+    case userDetailsConstants.GET_USER_DETAILS_REQUEST:
+      break;
+
+    case userDetailsConstants.GET_USER_DETAILS_SUCCESS:
+      state = {
+        ...state,
+        userDetails: action.payload,
+      };
+      break;
+
+    case userDetailsConstants.GET_USER_DETAILS_FAILURE:
       break;
 
     case userAddressConstants.GET_USER_ADDRESSS_REQUEST:
@@ -314,140 +329,124 @@ export default (state = initState, action) => {
       };
       break;
 
+    case userConstants.GET_OFFER_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
 
+    case userConstants.GET_OFFER_SUCCESS:
+      state = {
+        ...state,
+        offersData: action.payload,
+      };
+      break;
 
+    case userConstants.GET_OFFER_FAILURE:
+      state = {
+        ...state,
+      };
+      break;  
 
+    case userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
 
+    case userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_SUCCESS:
+      state = {
+        ...state,
+        clientPaymentModes: action.payload,
+      };
+      break;
 
-      case userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_REQUEST:
-        state = {
-          ...state,
-        };
-        break;
-  
-      case userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_SUCCESS:
-        state = {
-          ...state,
-          clientPaymentModes: action.payload,
-        };
-        break;
-  
-      case userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_FAILURE:
-        state = {
-          ...state,
-          clientPaymentModes: "",
-        };
-        break;
+    case userConstants.GET_CLIENT_MODULE_PAYMENT_MODE_FAILURE:
+      state = {
+        ...state,
+        clientPaymentModes: "",
+      };
+      break;
 
+    case userConstants.GET_PAYTM_URL_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
 
-        
-          case userConstants.GET_OFFER_REQUEST:
-            state = {
-              ...state,
-            };
-            break;
-      
-          case userConstants.GET_OFFER_SUCCESS:
-            state = {
-              ...state,
-              offersData: action.payload,
-            };
-            break;
-      
-          case userConstants.GET_OFFER_FAILURE:
-            state = {
-              ...state,
-            };
-            break;
+    case userConstants.GET_PAYTM_URL_SUCCESS:
+      state = {
+        ...state,
+        payTMURL: action.payload,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_URL_FAILURE:
+      state = {
+        ...state,
+        payTMURL: null,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_MERCHANT_ID_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_MERCHANT_ID_SUCCESS:
+      state = {
+        ...state,
+        payTMMerchantID: action.payload,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_MERCHANT_ID_FAILURE:
+      state = {
+        ...state,
+        payTMMerchantID: null,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_SALT_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_SALT_SUCCESS:
+      state = {
+        ...state,
+        payTMSalt: action.payload,
+      };
+      break;
 
-        case userConstants.GET_PAYTM_URL_REQUEST:
-          state = {
-            ...state,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_URL_SUCCESS:
-          state = {
-            ...state,
-            payTMURL: action.payload,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_URL_FAILURE:
-          state = {
-            ...state,
-            payTMURL: null,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_MERCHANT_ID_REQUEST:
-          state = {
-            ...state,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_MERCHANT_ID_SUCCESS:
-          state = {
-            ...state,
-            payTMMerchantID: action.payload,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_MERCHANT_ID_FAILURE:
-          state = {
-            ...state,
-            payTMMerchantID: null,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_SALT_REQUEST:
-          state = {
-            ...state,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_SALT_SUCCESS:
-          state = {
-            ...state,
-            payTMSalt: action.payload,
-          };
-          break;
-    
-        case userConstants.GET_PAYTM_SALT_FAILURE:
-          state = {
-            ...state,
-            payTMSalt: null,
-          };
-          break;
+    case userConstants.GET_PAYTM_SALT_FAILURE:
+      state = {
+        ...state,
+        payTMSalt: null,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_WEBSITE_NAME_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
 
+    case userConstants.GET_PAYTM_WEBSITE_NAME_SUCCESS:
+      state = {
+        ...state,
+        payTMWebsiteName: action.payload,
+      };
+      break;
 
-
-          case userConstants.GET_PAYTM_WEBSITE_NAME_REQUEST:
-        state = {
-          ...state,
-        };
-        break;
-  
-      case userConstants.GET_PAYTM_WEBSITE_NAME_SUCCESS:
-        state = {
-          ...state,
-          payTMWebsiteName: action.payload,
-        };
-        break;
-  
-      case userConstants.GET_PAYTM_WEBSITE_NAME_FAILURE:
-        state = {
-          ...state,
-          payTMWebsiteName: null,
-        };
-        break;
+    case userConstants.GET_PAYTM_WEBSITE_NAME_FAILURE:
+      state = {
+        ...state,
+        payTMWebsiteName: null,
+      };
+      break;
   }
   return state;
 };

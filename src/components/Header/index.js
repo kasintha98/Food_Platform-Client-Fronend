@@ -125,6 +125,10 @@ export default function Header(props) {
   const dispatch = useDispatch();
   const location = useLocation();
 
+  const delobj = JSON.parse(localStorage.getItem("deliveryType"));
+  const qrcode = delobj?.qrcode;
+  // console.log("aaa qrcode", qrcode);
+
   //calling action to login the user
   const userLogin = () => {
     try {
@@ -393,7 +397,8 @@ export default function Header(props) {
                     id="dropdown-basic"
                     className="p-0 m-0"
                   >
-                    <CusImage src={del} alt="del logo" />
+                    {!qrcode ? <CusImage src={del} alt="del logo" /> : null}
+                    {/* <CusImage src={del} alt="del logo" /> */}
                   </CusDropdown>
 
                   <CusDropMenu>
@@ -567,11 +572,19 @@ export default function Header(props) {
             </NavHashLink>
 
             {isMobile ? (
-              <NavLink className="nav-link cartpd" to="/new-cart">
+              <NavLink
+                className="nav-link cartpd"
+                to="/new-cart"
+                style={{
+                  position: "absolute",
+                  right: "20px",
+                  marginTop: "10px",
+                }}
+              >
                 {Object.keys(cart.cartItems) ? (
                   <CartNum count={Object.keys(cart.cartItems).length}></CartNum>
                 ) : null}
-                <i className="fa fa-cart-plus"></i>
+                <i className="fa fa-cart-plus" style={{ fontSize: "20px" }}></i>
               </NavLink>
             ) : null}
           </div>
