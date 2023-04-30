@@ -55,13 +55,7 @@ export default function CartCard(props) {
   useEffect(() => {
     calculateSubTotal();
     calculateExtraTotal();
-    calculateChoiceTotal();
-
-    console.log("props.comboOfferReduceKey");
-    if (typeof props.comboOfferReduceKey !== 'undefined' && props.comboOfferReduceKey && props.comboOfferReduceKey.length > 0) {
-      console.log(props.comboOfferReduceKey[0].key);
-      console.log(props.comboOfferReduceKey[1].key);
-    }  
+    calculateChoiceTotal();  
   });
 
   useEffect(() => {

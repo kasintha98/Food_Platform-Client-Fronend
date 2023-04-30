@@ -1040,11 +1040,10 @@ export default function NewCheckout(props) {
     
     var offerString = offerStr;
     offerString = offerString.replace(/[{()}]/g, '');
-    console.log(offerString);
 
     const rule_Array = offerString.split('AND');
 
-    console.log(rule_Array);
+    // console.log(rule_Array);
 
     for (var i = 0; i < rule_Array.length; i++) {
         if (i === 0) {
@@ -1068,33 +1067,28 @@ export default function NewCheckout(props) {
         }
     }
 
-    console.log("RULE ARRAY LOGS START");
-    console.log("----------------------");
-    console.log( Object.values(cart?.cartItems));
-    console.log( Object.keys(cart?.cartItems));
-    console.log("----------------------");
+    // console.log("RULE ARRAY LOGS START");
+    // console.log("----------------------");
+    // console.log( Object.values(cart?.cartItems));
+    // console.log( Object.keys(cart?.cartItems));
+    // console.log("----------------------");
     // console.log("rule1",rule1Array);
     // console.log("rule2",rule2Array);
     // console.log("rule3",rule3Array);
     // console.log("rule4",rule4Array);
     // console.log("rule5",rule5Array);
     // console.log("rule6",rule6Array);
-    console.log("RULE ARRAY LOGS END");
+    // console.log("RULE ARRAY LOGS END");
 
     // verifyRule1("P055",rule1Array);
     // verifyRule("rule1","P055",rule1Array);
 
     for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
-      console.log("rule1Verified : ");
-      console.log(rule1Verified);
       if(rule1Verified || rule1Array[0] === "NA"){ rule1Verified = true; break;}
       verifyRule("rule1",Object.values(cart?.cartItems)[i].productId,rule1Array);
     }
 
     for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
-      console.log("rule2Verified : ");
-      console.log(rule2Verified);
-
       if(rule2Verified || rule2Array[0] === "NA"){ rule2Verified = true; break;}
       verifyRule("rule2",Object.values(cart?.cartItems)[i].productId,rule2Array);
     }
@@ -1161,14 +1155,14 @@ export default function NewCheckout(props) {
         });
     }
 
-    console.log("COMBO VALUES::::");
-    console.log(comboValues);
+    // console.log("COMBO VALUES::::");
+    // console.log(comboValues);
 
     const COMBOValuesSortByPrice = comboValues.sort(
       (a, b) => a.oneItemFullCost - b.oneItemFullCost
     );
 
-    console.log(COMBOValuesSortByPrice);
+    // console.log(COMBOValuesSortByPrice);
     var offerProduct = [];
 
     for (let j = 0; j < comboOfferObjects.length; j++) {
@@ -1181,9 +1175,9 @@ export default function NewCheckout(props) {
       }
     }
 
-    console.log("CALCULATED COST::::");
-    console.log(comboReduceCost);
-    console.log(offerProduct);
+    // console.log("CALCULATED COST::::");
+    // console.log(comboReduceCost);
+    // console.log(offerProduct);
 
     //----------
     let comboValuesWithReduceQty = [];
@@ -1210,9 +1204,9 @@ export default function NewCheckout(props) {
       };
       comboValuesWithReduceQty.push(obj2);
 
-      console.log("comboValuesWithReduceQty::::");
-      console.log(comboValuesWithReduceQty);
-      console.log(((Number(comboValuesWithReduceQty[0].price)* comboValuesWithReduceQty[0].qty)-Number(comboValuesWithReduceQty[0].price)));
+      // console.log("comboValuesWithReduceQty::::");
+      // console.log(comboValuesWithReduceQty);
+      // console.log(((Number(comboValuesWithReduceQty[0].price)* comboValuesWithReduceQty[0].qty)-Number(comboValuesWithReduceQty[0].price)));
     }
 
     //-----------
