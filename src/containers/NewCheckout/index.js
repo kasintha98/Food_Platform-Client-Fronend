@@ -848,6 +848,8 @@ export default function NewCheckout(props) {
   };
 
   var isComboCouponApplied = false;
+  var offerString = "";
+  localStorage.setItem("offerList",offerString);
 
   const validateCouponCode = () => {
     if (!couponCode) {
@@ -867,6 +869,9 @@ export default function NewCheckout(props) {
           if (couponCode === (offersData[i].offerCode)){
             isComboCouponApplied = true;
             setOfferCost(offersData[i].offerPrice);
+            offerString = offersData[i].offerProductList;
+            // if(offerString != null){ localStorage.setItem("offerList",offersData[i].offerProductList);}else{ localStorage.setItem("offerList","");}
+            localStorage.setItem("offerList",offersData[i].offerProductList);
             offerCheckForCart(offersData[i].offerProductList);
             console.log("+=+=");
             console.log(offersData[i].offerCode);
@@ -1037,7 +1042,7 @@ export default function NewCheckout(props) {
     
     // var offerString = "(P046 OR P049 OR P055 OR P052 OR P058)AND(P152 OR P154 OR P153)AND(P125 OR P126)AND(P1808 OR P113 OR P114)AND(NA)AND(NA)"
 
-    
+    console.log("************* offerStr",offerStr);
     var offerString = offerStr;
     offerString = offerString.replace(/[{()}]/g, '');
 
@@ -1122,9 +1127,13 @@ export default function NewCheckout(props) {
       calculateCOMBOCartCost();
       toast.success("Hurray!! COMBO Offer has been applied!");
     } else {
-      isCOMBOOfferVerified = false;
-      isComboCouponApplied = false;
-      calculateCOMBOCartCostWithFaiedCode();
+      // if (isCOMBOOfferVerified) {
+        isCOMBOOfferVerified = false;
+        isComboCouponApplied = false;
+        calculateCOMBOCartCostWithFaiedCode();
+
+        toast.error("FAILED!!");
+      // }
     }
 
   }
@@ -2109,8 +2118,8 @@ export default function NewCheckout(props) {
                         bOGOLowestPizzaKey ? bOGOLowestPizzaKey : []
                       }
                       onChangeSpecialOfferCheckBOGO={specialOfferCheckBOGO}
-                      //onChangeSpecialOfferCheckCOMBO1={specialOfferCheckCOMBO1}
-                      onChangeSpecialOfferCheckCOMBO1={offerCheckForCart}
+                      // onChangeSpecialOfferCheckCOMBO1={offerCheckForCart}
+                      onChangeSpecialOfferCheckCOMBO1={calculateCOMBOCartCostWithFaiedCode}
                       comboReduceKey={comboReduceKey}
                       comboOfferReduceKey={comboOfferReduceKey}
                       offerPriceToAdd={offerCost}
