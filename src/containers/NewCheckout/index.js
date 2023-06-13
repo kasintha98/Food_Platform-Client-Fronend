@@ -332,21 +332,38 @@ export default function NewCheckout(props) {
         } */
 
         console.log("**********************  isTransactionDone::: ", localStorage.getItem("transactionDone"));
-        if(localStorage.getItem("transactionDone") !== "TRANS_DONE"){
-          localStorage.setItem("transactionDone", "TRANS_DONE");
-        dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
-          if (res && res.data) {
-            console.log(res.data);
-            setOrderResp(res.data[0], () => {
-              handleShowInvoice();
+        if (!isMobile) {
+          if (localStorage.getItem("transactionDone") !== "TRANS_DONE") {
+            localStorage.setItem("transactionDone", "TRANS_DONE");
+            dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
+              if (res && res.data) {
+                console.log(res.data);
+                setOrderResp(res.data[0], () => {
+                  handleShowInvoice();
+                });
+                dispatch(clearCoupon());
+                return res.data;
+              } else {
+                toast.error("Invalid hash or response data!");
+              }
             });
-            dispatch(clearCoupon());
-            return res.data;
           }
-        });
-      } else {
-        toast.error("Invalid hash or response data!");
-      }
+        } else if (isMobile) {
+          dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
+            if (res && res.data) {
+              console.log(res.data);
+              setOrderResp(res.data[0], () => {
+                handleShowInvoice();
+              });
+              dispatch(clearCoupon());
+              return res.data;
+            } else {
+              toast.error("Invalid hash or response data!");
+            }
+          });
+        } else {
+          toast.error("Please login again!");
+        }
     }
     }
 
@@ -871,20 +888,27 @@ export default function NewCheckout(props) {
         console.log("===============");
         console.log(offersData);
   
-        for(let i = 0; i < offersData.length; i++) {
-          if (couponCode === (offersData[i].offerCode)){
+      for (let i = 0; i < offersData.length; i++) {
+        if (couponCode === (offersData[i].offerCode)) {
+
+          if (offersData[i].offerApplicability === 'ONLINE' || offersData[i].offerApplicability === 'BOTH') {
             isComboCouponApplied = true;
             setOfferCost(offersData[i].offerPrice);
             offerString = offersData[i].offerProductList;
             // if(offerString != null){ localStorage.setItem("offerList",offersData[i].offerProductList);}else{ localStorage.setItem("offerList","");}
-            localStorage.setItem("offerList",offersData[i].offerProductList);
+            localStorage.setItem("offerList", offersData[i].offerProductList);
             offerCheckForCart(offersData[i].offerProductList);
-            console.log("+=+=");
-            console.log(offersData[i].offerCode);
+            // console.log("+=+=");
+            // console.log(offersData[i].offerCode);
+            break;
+          } else {
+            toast.info("This code is not valid!");
+            calculateCOMBOCartCostWithFaiedCode();
             break;
           }
-          console.log(offersData[i].offerCode);
         }
+        console.log(offersData[i].offerCode);
+      }
   
        
         return;
