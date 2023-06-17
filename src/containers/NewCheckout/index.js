@@ -373,11 +373,11 @@ export default function NewCheckout(props) {
             });
             dispatch(clearCoupon());
             return res.data;
-          } else {
-            toast.error("Invalid hash or response data!");
           }
         });
-    }
+      } else {
+        toast.error("Invalid hash or response data!");
+      }
     }
 
     if (queryString.parse(props.location.search).status === "failure") {
