@@ -100,7 +100,7 @@ export const PayUTest = (props) => {
   }, [props.total]);
 
   const saveOrderFromBackend = (e) => {
-    localStorage.setItem("transactionDone", "");
+    // localStorage.setItem("transactionDone", ""); -- BLANK SCREEN COMMENTED
     e.preventDefault();
     try {
       setTimeout(function () {

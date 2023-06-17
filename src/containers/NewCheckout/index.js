@@ -288,8 +288,6 @@ export default function NewCheckout(props) {
     dispatch(getBusinessDate(defDel.restaurantId, defDel.storeId));
   }, [defDel]);
 
-  var isTransactionDone = false;
-
   useEffect(() => {
     if (
       queryString.parse(props.location.search).status === "success" &&
@@ -331,7 +329,8 @@ export default function NewCheckout(props) {
           paymentMode = "UPI";
         } */
 
-        console.log("**********************  isTransactionDone::: ", localStorage.getItem("transactionDone"));
+        /* -- BLANK SCREEN COMMENTED
+        // console.log("**********************  isTransactionDone::: ", localStorage.getItem("transactionDone")); -- BLANK SCREEN COMMENTED
         if (!isMobile) {
           if (localStorage.getItem("transactionDone") !== "TRANS_DONE") {
             localStorage.setItem("transactionDone", "TRANS_DONE");
@@ -364,6 +363,20 @@ export default function NewCheckout(props) {
         } else {
           toast.error("Please login again!");
         }
+        */
+
+        dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
+          if (res && res.data) {
+            console.log(res.data);
+            setOrderResp(res.data[0], () => {
+              handleShowInvoice();
+            });
+            dispatch(clearCoupon());
+            return res.data;
+          } else {
+            toast.error("Invalid hash or response data!");
+          }
+        });
     }
     }
 
