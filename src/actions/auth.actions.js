@@ -331,7 +331,7 @@ export const getVersion = () => {
     try {
       dispatch({ type: authConstants.GET_VERSION_REQUEST });
 
-      const res = await axios.get(`/getAppDetails`);
+      const res = await axios.get(`/getAppDetails?restaurantId=R001&storeId=ALL`);
 
       if (res.status === 200 && res.data) {
         dispatch({

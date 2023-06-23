@@ -285,7 +285,9 @@ export default function NewCheckout(props) {
   });
 
   useEffect(() => {
-    dispatch(getBusinessDate(defDel.restaurantId, defDel.storeId));
+    if (defDel) {
+      dispatch(getBusinessDate(defDel.restaurantId, defDel.storeId));
+    }
   }, [defDel]);
 
   useEffect(() => {
@@ -460,6 +462,7 @@ export default function NewCheckout(props) {
   };
 
   const calcDeliveryPrice = () => {
+    if(defDel) {
     if (defDel.type === "delivery") {
       let allSub =
         subTotal +
@@ -502,6 +505,7 @@ export default function NewCheckout(props) {
 
       setDelCharge(deliveryCharge.toFixed(2));
     }
+  }
   };
 
   const renderTax = (tax) => {
