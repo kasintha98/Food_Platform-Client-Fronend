@@ -41,8 +41,9 @@ const QRCodeModal = () => {
       console.log("GetCustomer response..",res[0].hasOwnProperty('id'));
       console.log(res);
       console.log("GetCustomer response..end");
-      if (res[0].hasOwnProperty('id')) {
+      // if (res[0].hasOwnProperty('id')) {
       // if (res.id) {
+        if(res.length > 0){
         const userid = res[0].id;
         dispatch(GetAddress(mobileNumber)).then((res) => {
           console.log("aaa<<<res", res);
