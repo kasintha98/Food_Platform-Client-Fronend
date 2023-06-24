@@ -38,7 +38,7 @@ const QRCodeModal = () => {
       return toast.error("Invalid Phone Number");
     }
     dispatch(GetCustomer(mobileNumber)).then((res) => {
-      console.log("GetCustomer response..",res[0].hasOwnProperty('id'));
+      console.log("GetCustomer response..");
       console.log(res);
       console.log("GetCustomer response..end");
       // if (res[0].hasOwnProperty('id')) {
