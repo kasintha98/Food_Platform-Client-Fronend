@@ -35,15 +35,14 @@ const QRCodeModal = () => {
 
   const handleproceed = () => {
 
-    var mobNo = mobileNumber.replace(/\+/g,"%2B");
+    // var mobNo = mobileNumber.replace(/\+/g,"%2B");
     console.log("mobileNumber ..",mobileNumber);
-    console.log("mobNo.....",mobNo);
     console.log("mobileNumber..end");
 
     if (!validatePhoneNumber(mobileNumber)) {
       return toast.error("Invalid Phone Number");
     }
-    dispatch(GetCustomer(mobNo)).then((res) => {
+    dispatch(GetCustomer(mobileNumber)).then((res) => {
       console.log("GetCustomer response..");
       console.log(res);
       console.log("GetCustomer response..end");
@@ -65,7 +64,14 @@ const QRCodeModal = () => {
             console.log(qr);
             console.log("QR Object Log EXIST USER ... END");
 
-            localStorage.setItem("qr", JSON.stringify(qr));
+            // localStorage.setItem("qr", JSON.stringify(qr));
+            if(qr != null){
+              console.log("QR Object is Not Null");
+              localStorage.setItem("qr", JSON.stringify(qr));
+            }else{
+              console.log("QR Object is Null");
+            }
+            
             toast.success("User Retrieved Successfully !");
           }
         });
@@ -100,7 +106,12 @@ const QRCodeModal = () => {
               console.log(qr);
               console.log("QR Object Log NEW USER ... END");
 
-              localStorage.setItem("qr", JSON.stringify(qr));
+              if(qr != null){
+                console.log("QR Object is Not Null");
+                localStorage.setItem("qr", JSON.stringify(qr));
+              }else{
+                console.log("QR Object is Null");
+              }
             });
           }
         });
