@@ -34,10 +34,16 @@ const QRCodeModal = () => {
   };
 
   const handleproceed = () => {
+
+    var mobNo = mobileNumber.replace(/\+/g,"%2B");
+    console.log("mobileNumber ..",mobileNumber);
+    console.log("mobNo.....",mobNo);
+    console.log("mobileNumber..end");
+
     if (!validatePhoneNumber(mobileNumber)) {
       return toast.error("Invalid Phone Number");
     }
-    dispatch(GetCustomer(mobileNumber)).then((res) => {
+    dispatch(GetCustomer(mobNo)).then((res) => {
       console.log("GetCustomer response..");
       console.log(res);
       console.log("GetCustomer response..end");
@@ -54,6 +60,11 @@ const QRCodeModal = () => {
               userid: userid,
               addressid: res[0].id,
             };
+            
+            console.log("QR Object Before set to local Storage EXIST USER");
+            console.log(qr);
+            console.log("QR Object Log EXIST USER ... END");
+
             localStorage.setItem("qr", JSON.stringify(qr));
             toast.success("User Retrieved Successfully !");
           }
@@ -84,6 +95,11 @@ const QRCodeModal = () => {
                 userid: userid,
                 addressid: res?.data.id,
               };
+
+              console.log("QR Object Before set to local Storage NEW USER");
+              console.log(qr);
+              console.log("QR Object Log NEW USER ... END");
+
               localStorage.setItem("qr", JSON.stringify(qr));
             });
           }
