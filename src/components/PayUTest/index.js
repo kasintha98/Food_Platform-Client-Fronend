@@ -13,8 +13,19 @@ export const PayUTest = (props) => {
   const payUURL = useSelector((state) => state.user.payUURL);
   const payUMerchantID = useSelector((state) => state.user.payUMerchantID);
   const payUSalt = useSelector((state) => state.user.payUSalt);
+  var qruser = {};
 
-  const qruser = JSON.parse(localStorage.getItem("qr"));
+  if(JSON.parse(localStorage.getItem("qr")) == null){
+    qruser = {
+      mobile: "",
+      name: "Guest",
+      userid: "Guest",
+      addressid: "Guest",
+    };
+  }else{
+    qruser = JSON.parse(localStorage.getItem("qr"));
+  }
+  // const qruser = JSON.parse(localStorage.getItem("qr"));
   console.log("aaa diable", props.disabled);
 
   // const firstName = auth.user?.firstName || "kavindu";
