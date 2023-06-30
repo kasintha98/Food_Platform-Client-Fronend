@@ -369,7 +369,9 @@ export default function NewCheckout(props) {
 
         dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
           if (res && res.data) {
+            console.log("Called at location 1");
             console.log(res.data);
+            console.log("END at location 1");
             setOrderResp(res.data[0], () => {
               handleShowInvoice();
             });
@@ -618,7 +620,13 @@ export default function NewCheckout(props) {
     setShowInvoice(false);
     history.push("/");
   };
-  const handleShowInvoice = () => setShowInvoice(true);
+  const handleShowInvoice = () => {
+    console.log("Log OrerResp");
+    console.log(orderResp);
+    console.log("END Log OrerResp");
+    setShowInvoice(true);
+   
+  }
 
   const placeOrder = async (
     fromVerifiedPayU,
@@ -814,12 +822,16 @@ export default function NewCheckout(props) {
 
       const result = await dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
+          console.log("Called at location 2");
           console.log(res.data);
+          console.log("END at location 2");
           setOrderResp(res.data[0], () => {
             if (currentPaymentType !== "PayU") {
+              console.log("Inside not PayU loop");
               handleShowInvoice();
             }
             if (currentPaymentType === "PayU") {
+              console.log("Inside PayU loop");
               toast.warning("Please complete the PayU process in next tab!");
             }
           });
