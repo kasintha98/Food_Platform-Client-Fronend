@@ -916,9 +916,20 @@ export default function NewCheckout(props) {
 
         console.log("===============");
         console.log(offersData);
+
+      const dateOfOffer = new Date(businessDateAll && businessDateAll.businessDate);
+      const day = dateOfOffer.getDay();
+      var dayOfferFlag ="";
   
       for (let i = 0; i < offersData.length; i++) {
         if (couponCode === (offersData[i].offerCode)) {
+
+           if(day === 0){dayOfferFlag = offersData[i].sunday }else if(day === 1){dayOfferFlag = offersData[i].monday}else if(day === 2){dayOfferFlag = offersData[i].tuesday}else if(day === 3){dayOfferFlag = offersData[i].wednesday}else if(day === 4){dayOfferFlag = offersData[i].thursday}else if(day === 5){dayOfferFlag = offersData[i].friday}else if(day === 6){dayOfferFlag = offersData[i].saturday}else{dayOfferFlag = ''}
+
+          if(dayOfferFlag === "N"){
+            toast.info("This code is not valid for the Day");
+            break;
+          }
 
           if (offersData[i].offerApplicability === 'ONLINE' || offersData[i].offerApplicability === 'BOTH') {
             isComboCouponApplied = true;
@@ -943,25 +954,6 @@ export default function NewCheckout(props) {
         return;
     }
 
-    // if (couponCode === "TEST123") {
-
-    //   console.log("===============");
-    //   console.log(offersData);
-
-    //   for(let i = 0; i < offersData.length; i++) {
-    //     console.log(offersData[i].offerCode);
-    //   }
-
-    //   isComboCouponApplied = true;
-    //   offerCheckForCart();
-    //   return;
-    // }
-
-    /* if (couponCode === "COMBO1") {
-      specialOfferCheckCOMBO1();
-      return;
-    } */
-
     dispatch(validateCoupon(couponCode)).then((res) => {
       if (res) {
         setCouponLocalObj(res);
@@ -969,6 +961,7 @@ export default function NewCheckout(props) {
     });
   };
 
+  //----- Combo offer code new ----
   var rule1 = "";
   var rule2 = "";
   var rule3 = "";
@@ -976,12 +969,28 @@ export default function NewCheckout(props) {
   var rule5 = "";
   var rule6 = "";
 
+  var rule1_qty = 1;
+  var rule2_qty = 1;
+  var rule3_qty = 1;
+  var rule4_qty = 1;
+  var rule5_qty = 1;
+  var rule6_qty = 1;
+
+  var rule1AddQty = 0;
+  var rule2AddQty = 0;
+  var rule3AddQty = 0;
+  var rule4AddQty = 0;
+  var rule5AddQty = 0;
+  var rule6AddQty = 0;
+
   var rule1Array = [];
   var rule2Array = [];
   var rule3Array = [];
   var rule4Array = [];
   var rule5Array = [];
   var rule6Array = [];
+
+  var ruleQtyListArray = [];
 
   var comboReduceCost = 0;
 
@@ -995,18 +1004,6 @@ export default function NewCheckout(props) {
   var isCOMBOOfferVerified = false;
 
   let comboOfferObjects = [];
-
-  // const [rule1Verified,setRule1Verified] = useState(false);
-  // const [rule2Verified,setRule2Verified] = useState(false);
-  // const [rule3Verified,setRule3Verified] = useState(false);
-  // const [rule4Verified,setRule4Verified] = useState(false);
-  // const [rule5Verified,setRule5Verified] = useState(false);
-  // const [rule6Verified,setRule6Verified] = useState(false);
-
-  // const isRule1Verified = React.useCallback(
-  //   () => setRule1Verified(!rule1Verified),
-  //   [rule1Verified, setRule1Verified],
-  // );
 
   let verifyRule1 = (item,rule_items) => {
     console.log("verifyRule1 Method called");
@@ -1023,6 +1020,212 @@ export default function NewCheckout(props) {
     });
   }
 
+  let verifyRuleWithQuantity = (rule, item, rule_items, rule_qty) => {
+
+    if (rule === "rule1") {
+      rule_items.forEach(product => {
+        if (product === item.productId) {
+
+          if (item.qty >= rule_qty) {
+            rule1Verified = true;
+            rule_items.forEach(checkProd => {
+              comboOfferObjects = comboOfferObjects.filter(function (item) {
+                return item !== checkProd
+              })
+            })
+            var offerQtyObj = {
+              key: product,
+              ruleQty: rule_qty
+            }
+            ruleQtyListArray.push(offerQtyObj);
+          } else {
+            rule1AddQty = rule1AddQty + 1;
+            console.log("======================", rule1AddQty, " -- product--", product, "==rule_qty==", rule_qty);
+            if (rule_qty == rule1AddQty) {
+              console.log("In Single rule verify condition", rule1AddQty, " -- product--", product);
+              rule1Verified = true;
+              var offerQtyObj = {
+                key: product,
+                ruleQty: rule_qty
+              }
+              ruleQtyListArray.push(offerQtyObj);
+            }
+          }
+
+          // for(let i = 0; i < rule_qty; i ++){
+          comboOfferObjects.push(item.productId);
+          // }
+        }
+      });
+    }
+
+    if (rule === "rule2") {
+      rule_items.forEach(product => {
+        if (product === item.productId) {
+
+          if (item.qty >= rule_qty) {
+            rule2Verified = true;
+            rule_items.forEach(checkProd => {
+              comboOfferObjects = comboOfferObjects.filter(function (item) {
+                return item !== checkProd
+              })
+            })
+            var offerQtyObj = {
+              key: product,
+              ruleQty: rule_qty
+            }
+            ruleQtyListArray.push(offerQtyObj);
+          } else {
+            rule2AddQty = rule2AddQty + 1;
+            if (rule_qty == rule2AddQty) {
+              rule2Verified = true;
+              var offerQtyObj = {
+                key: product,
+                ruleQty: rule_qty
+              }
+              ruleQtyListArray.push(offerQtyObj);
+            }
+          }
+
+          comboOfferObjects.push(item.productId);
+        }
+      });
+    }
+
+    if (rule === "rule3") {
+      rule_items.forEach(product => {
+        if (product === item.productId) {
+
+          if (item.qty >= rule_qty) {
+            rule3Verified = true;
+            rule_items.forEach(checkProd => {
+              comboOfferObjects = comboOfferObjects.filter(function (item) {
+                return item !== checkProd
+              })
+            })
+            var offerQtyObj = {
+              key: product,
+              ruleQty: rule_qty
+            }
+            ruleQtyListArray.push(offerQtyObj);
+          } else {
+            rule3AddQty = rule3AddQty + 1;
+            if (rule_qty == rule3AddQty) {
+              rule3Verified = true;
+              var offerQtyObj = {
+                key: product,
+                ruleQty: rule_qty
+              }
+              ruleQtyListArray.push(offerQtyObj);
+            }
+          }
+
+          comboOfferObjects.push(item.productId);
+        }
+      });
+    }
+
+    if (rule === "rule4") {
+      rule_items.forEach(product => {
+        if (product === item.productId) {
+
+          if (item.qty >= rule_qty) {
+            rule4Verified = true;
+            rule_items.forEach(checkProd => {
+              comboOfferObjects = comboOfferObjects.filter(function (item) {
+                return item !== checkProd
+              })
+            })
+            var offerQtyObj = {
+              key: product,
+              ruleQty: rule_qty
+            }
+            ruleQtyListArray.push(offerQtyObj);
+          } else {
+            rule4AddQty = rule4AddQty + 1;
+            if (rule_qty == rule4AddQty) {
+              rule4Verified = true;
+              var offerQtyObj = {
+                key: product,
+                ruleQty: rule_qty
+              }
+              ruleQtyListArray.push(offerQtyObj);
+            }
+          }
+
+          comboOfferObjects.push(item.productId);
+        }
+      });
+    }
+
+    if (rule === "rule5") {
+      rule_items.forEach(product => {
+        if (product === item.productId) {
+
+          if (item.qty >= rule_qty) {
+            rule5Verified = true;
+            rule_items.forEach(checkProd => {
+              comboOfferObjects = comboOfferObjects.filter(function (item) {
+                return item !== checkProd
+              })
+            })
+            var offerQtyObj = {
+              key: product,
+              ruleQty: rule_qty
+            }
+            ruleQtyListArray.push(offerQtyObj);
+          } else {
+            rule5AddQty = rule5AddQty + 1;
+            if (rule_qty == rule5AddQty) {
+              rule5Verified = true;
+              var offerQtyObj = {
+                key: product,
+                ruleQty: rule_qty
+              }
+              ruleQtyListArray.push(offerQtyObj);
+            }
+          }
+
+          comboOfferObjects.push(item.productId);
+        }
+      });
+    }
+
+    if (rule === "rule6") {
+      rule_items.forEach(product => {
+        if (product === item.productId) {
+
+          if (item.qty >= rule_qty) {
+            rule6Verified = true;
+            rule_items.forEach(checkProd => {
+              comboOfferObjects = comboOfferObjects.filter(function (item) {
+                return item !== checkProd
+              })
+            })
+            var offerQtyObj = {
+              key: product,
+              ruleQty: rule_qty
+            }
+            ruleQtyListArray.push(offerQtyObj);
+          } else {
+            rule6AddQty = rule6AddQty + 1;
+            if (rule_qty == rule6AddQty) {
+              rule6Verified = true;
+              var offerQtyObj = {
+                key: product,
+                ruleQty: rule_qty
+              }
+              ruleQtyListArray.push(offerQtyObj);
+            }
+          }
+
+          comboOfferObjects.push(item.productId);
+        }
+      });
+    }
+  }
+
+/*
   let verifyRule = (rule,item,rule_items) => {
     console.log("verifyRule Method called");
     console.log(rule);
@@ -1083,10 +1286,7 @@ export default function NewCheckout(props) {
       });
     }
   }
-
-  useEffect( () => {
-    console.log(rule1Verified);
-  },[rule1Verified]);
+  */
 
   const offerCheckForCart = (offerStr) => {
     rule1Verified = false;
@@ -1101,6 +1301,13 @@ export default function NewCheckout(props) {
     
     // var offerString = "(P046 OR P049 OR P055 OR P052 OR P058)AND(P152 OR P154 OR P153)AND(P125 OR P126)AND(P1808 OR P113 OR P114)AND(NA)AND(NA)"
 
+    // var offerString = "(P046 OR P049 OR P055 OR P052 OR P058 OR P061)X2AND(P152 OR P154 OR P153)X3AND(P125 OR P126)X1AND(P1808 OR P113 OR P114 OR P240)X1AND(NA)X1AND(NA)X1"
+
+    // var offerString = "(P001)X2AND(P011)X2AND(P115)X3AND(NA)X1AND(NA)X1AND(NA)X1";
+
+        // var offerString = "(P001)X3AND(NA)X1AND(NA)X1AND(NA)X1AND(NA)X1AND(NA)X1";
+
+
     console.log("************* offerStr",offerStr);
     var offerString = offerStr;
     offerString = offerString.replace(/[{()}]/g, '');
@@ -1112,41 +1319,65 @@ export default function NewCheckout(props) {
     for (var i = 0; i < rule_Array.length; i++) {
         if (i === 0) {
           rule1 = rule_Array[i];
+
+          rule1_qty = rule1.split('X')[1]; // Added for Quantity in each loop
+          rule1 = rule1.split('X')[0] // Added for Quantity in each loop
+
+          console.log("rule1_qty =====",rule1_qty);
+
           rule1Array = rule1.split(' OR ');
         } else if (i === 1) {
           rule2 = rule_Array[i];
+
+          rule2_qty = rule2.split('X')[1];
+          rule2 = rule2.split('X')[0]
+
           rule2Array = rule2.split(' OR ');
         } else if (i === 2) {
           rule3 = rule_Array[i];
+
+          rule3_qty = rule3.split('X')[1];
+          rule3 = rule3.split('X')[0]
+
           rule3Array = rule3.split(' OR ');
         } else if (i === 3) {
           rule4 = rule_Array[i];
+
+          rule4_qty = rule4.split('X')[1];
+          rule4 = rule4.split('X')[0]
+
           rule4Array = rule4.split(' OR ');
         } else if (i === 4) {
           rule5 = rule_Array[i];
+
+          rule5_qty = rule5.split('X')[1];
+          rule5 = rule5.split('X')[0]
+
           rule5Array = rule5.split(' OR ');
         }else if (i === 5) {
           rule6 = rule_Array[i];
+
+          rule6_qty = rule6.split('X')[1];
+          rule6 = rule6.split('X')[0]
+
           rule6Array = rule6.split(' OR ');
         }
     }
 
-    // console.log("RULE ARRAY LOGS START");
-    // console.log("----------------------");
-    // console.log( Object.values(cart?.cartItems));
-    // console.log( Object.keys(cart?.cartItems));
-    // console.log("----------------------");
-    // console.log("rule1",rule1Array);
-    // console.log("rule2",rule2Array);
-    // console.log("rule3",rule3Array);
-    // console.log("rule4",rule4Array);
-    // console.log("rule5",rule5Array);
-    // console.log("rule6",rule6Array);
-    // console.log("RULE ARRAY LOGS END");
+    console.log("RULE ARRAY LOGS START");
+    console.log("----------------------");
+    console.log( Object.values(cart?.cartItems));
+    console.log( Object.keys(cart?.cartItems));
+    console.log("----------------------");
+    console.log("rule1",rule1Array);
+    console.log("rule2",rule2Array);
+    console.log("rule3",rule3Array);
+    console.log("rule4",rule4Array);
+    console.log("rule5",rule5Array);
+    console.log("rule6",rule6Array);
+    console.log("RULE ARRAY LOGS END");
 
-    // verifyRule1("P055",rule1Array);
-    // verifyRule("rule1","P055",rule1Array);
-
+    /*
     for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
       if(rule1Verified || rule1Array[0] === "NA"){ rule1Verified = true; break;}
       verifyRule("rule1",Object.values(cart?.cartItems)[i].productId,rule1Array);
@@ -1178,7 +1409,42 @@ export default function NewCheckout(props) {
         break;}
       verifyRule("rule6",Object.values(cart?.cartItems)[i].productId,rule6Array);
     }
+    */
+
+    for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
+      if(rule1Verified || rule1Array[0] === "NA"){ rule1Verified = true; break;}
+      verifyRuleWithQuantity("rule1",Object.values(cart?.cartItems)[i],rule1Array,rule1_qty);
+    }
+
+    for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
+      if(rule2Verified || rule2Array[0] === "NA"){ rule2Verified = true; break;}
+      verifyRuleWithQuantity("rule2",Object.values(cart?.cartItems)[i],rule2Array,rule2_qty);
+    }
+
+    for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
+      if(rule3Verified || rule3Array[0] === "NA"){ rule3Verified = true; break;}
+      verifyRuleWithQuantity("rule3",Object.values(cart?.cartItems)[i],rule3Array,rule3_qty);
+    }
+
+    for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
+      if(rule4Verified || rule4Array[0] === "NA"){ rule4Verified = true; break;}
+      verifyRuleWithQuantity("rule4",Object.values(cart?.cartItems)[i],rule4Array,rule4_qty);
+    }
+
+    for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
+      if(rule5Verified || rule5Array[0] === "NA"){ rule5Verified = true; break;}
+      verifyRuleWithQuantity("rule5",Object.values(cart?.cartItems)[i],rule5Array,rule5_qty);
+    }
+
+    for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
+      if(rule6Verified || rule6Array[0] === "NA"){rule6Verified = true;break;}
+        verifyRuleWithQuantity("rule6",Object.values(cart?.cartItems)[i],rule6Array,rule6_qty);
+    }
+
     isCOMBOOfferVerified = false;
+
+    console.log("Booleans=====", isComboCouponApplied, rule1Verified , rule2Verified ,
+      rule3Verified , rule4Verified , rule5Verified , rule6Verified);
 
     if (isComboCouponApplied && rule1Verified && rule2Verified &&
       rule3Verified && rule4Verified && rule5Verified && rule6Verified) {
@@ -1189,7 +1455,7 @@ export default function NewCheckout(props) {
       // if (isCOMBOOfferVerified) {
         isCOMBOOfferVerified = false;
         isComboCouponApplied = false;
-        calculateCOMBOCartCostWithFaiedCode();
+        // calculateCOMBOCartCostWithFaiedCode();
 
         toast.error("FAILED!!");
       // }
@@ -1277,34 +1543,27 @@ export default function NewCheckout(props) {
       // console.log(((Number(comboValuesWithReduceQty[0].price)* comboValuesWithReduceQty[0].qty)-Number(comboValuesWithReduceQty[0].price)));
     }
 
-    //-----------
-    // setAllBogoReduceCost(comboReduceCost-100);
-    // setBOGOLowestPizzaKey(comboValuesWithReduceQty);
-
     var comboOfferArray = [];
 
     var finalArray = [];
-    // for (let i = 0; i < comboValuesWithReduceQty.length; i++) {
-    //   let object = {
-    //     key: comboValuesWithReduceQty[i].key,
-    //     price: 0,
-    //     reducingCost: Number(comboValuesWithReduceQty[i].price),
-    //   }
-    //   comboOfferArray.push(object);
-    // }
 
     for (let i = 0; i < Object.values(cart?.cartItems).length; i++) {
       comboOfferArray.push(Object.values(cart?.cartItems)[i])
     }
 
-    for (let i = 0; i < comboOfferArray.length; i++) {
+     for (let i = 0; i < comboOfferArray.length; i++) {
       if (comboValuesWithReduceQty.some(person => person.productId === comboOfferArray[i].productId)) {
-        // if(comboValuesWithReduceQty.indexOf(comboOfferArray[i])) {
+        var ruleQty = 1;
+
+        ruleQtyListArray.forEach(obj => {
+          if(obj.key === comboOfferArray[i].productId){ ruleQty = obj.ruleQty}
+        })
+
         if (comboOfferArray[i].qty > 1) {
           let object = {
             key: comboOfferArray[i].key,
-            price: Number((comboOfferArray[i].qty * comboOfferArray[i].price) - Number(comboOfferArray[i].price)),
-            reducingCost: Number(comboOfferArray[i].price),
+            price: Number((comboOfferArray[i].qty * comboOfferArray[i].price) - (Number(comboOfferArray[i].price)*ruleQty)),
+            reducingCost: Number(comboOfferArray[i].price)*ruleQty,
           }
           finalArray.push(object);
         } else {
@@ -1318,7 +1577,7 @@ export default function NewCheckout(props) {
       }else{
         let object = {
           key: comboOfferArray[i].key,
-          price: Number(comboOfferArray[i].price),
+          price: (Number(comboOfferArray[i].price)* (comboOfferArray[i].qty)),
           reducingCost: 0,
         }
         finalArray.push(object);
@@ -1329,27 +1588,10 @@ export default function NewCheckout(props) {
     console.log(comboOfferArray);
     console.log(finalArray);
 
-    // setcomboOfferReduceKey([{
-    //   key: comboValuesWithReduceQty[0].key,
-    //   price: 0,
-    //   reducingCost: Number(comboValuesWithReduceQty[0].price),
-    // },{
-    //   key: comboValuesWithReduceQty[1].key,
-    //   price: 0,
-    //   reducingCost: Number(comboValuesWithReduceQty[1].price),
-    // }]);
-
     setcomboOfferReduceKey(finalArray);
-
-    // setComboReduceKey({
-    //   key: comboValuesWithReduceQty[0].key,
-    //   price: 0,
-    //   reducingCost: Number(comboValuesWithReduceQty[0].price),
-    // });
 
     console.log("CART VALUE AFTER REDUCE::::");
     console.log( Object.values(cart?.cartItems));
-
   }
 
 
@@ -2177,7 +2419,6 @@ export default function NewCheckout(props) {
                         bOGOLowestPizzaKey ? bOGOLowestPizzaKey : []
                       }
                       onChangeSpecialOfferCheckBOGO={specialOfferCheckBOGO}
-                      // onChangeSpecialOfferCheckCOMBO1={offerCheckForCart}
                       onChangeSpecialOfferCheckCOMBO1={calculateCOMBOCartCostWithFaiedCode}
                       comboReduceKey={comboReduceKey}
                       comboOfferReduceKey={comboOfferReduceKey}
@@ -2185,6 +2426,32 @@ export default function NewCheckout(props) {
                     ></CartCard>
                     {Object.keys(cart.cartItems).length > 0 ? (
                       <Typography>
+                        <Row className="ps-2">
+                          <div className="w75">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                fontFamily: "Arial",
+                                color: "#595959",
+                              }}
+                            >
+                              Offer cost
+                            </Typography>
+                          </div>
+                          <div className="w25">
+                            <Typography
+                              sx={{
+                                fontSize: "0.9rem",
+                                fontWeight: "600",
+                                color: "#2e7d32",
+                              }}
+                            >
+                              ₹ {offerCost}.00
+                            </Typography>
+                          </div>
+                        </Row>
+
                         <Row className="ps-2">
                           <div className="w75">
                             <Typography
