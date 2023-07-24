@@ -211,6 +211,7 @@ export default function NewCheckout(props) {
 
   const [allBogoReduceCost, setAllBogoReduceCost] = useState(0);
   const [showPayUFailed, setShowPayUFailed] = useState(false);
+  const [comboOfferCode, setcomboOfferCode] = useState("");
 
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
 
@@ -331,8 +332,8 @@ export default function NewCheckout(props) {
           paymentMode = "UPI";
         } */
 
-        /* -- BLANK SCREEN COMMENTED
-        // console.log("**********************  isTransactionDone::: ", localStorage.getItem("transactionDone")); -- BLANK SCREEN COMMENTED
+        // -- BLANK SCREEN COMMENTED
+        console.log("**********************  isTransactionDone::: ", localStorage.getItem("transactionDone"));// BLANK SCREEN COMMENTED
         if (!isMobile) {
           if (localStorage.getItem("transactionDone") !== "TRANS_DONE") {
             localStorage.setItem("transactionDone", "TRANS_DONE");
@@ -365,8 +366,9 @@ export default function NewCheckout(props) {
         } else {
           toast.error("Please login again!");
         }
-        */
+        
 
+        /*
         dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
           if (res && res.data) {
             console.log("Called at location 1");
@@ -379,7 +381,9 @@ export default function NewCheckout(props) {
             return res.data;
           }
         });
-      } else {
+        */
+      } 
+      else {
         toast.error("Invalid hash or response data!");
       }
     }
@@ -789,9 +793,12 @@ export default function NewCheckout(props) {
           ? decodedOrderObj.overallPriceWithTax
           : Math.round(overallPriceWithTax),
         orderDetails: orderDetails,
+        // couponCode: couponReduxObj
+        //   ? couponReduxObj.couponDetails.couponCode
+        //   : "",
         couponCode: couponReduxObj
           ? couponReduxObj.couponDetails.couponCode
-          : "",
+          : comboOfferCode,
         discountPercentage: decodedOrderObj
           ? decodedOrderObj.discountPercentage
           : couponReduxObj
@@ -818,7 +825,7 @@ export default function NewCheckout(props) {
         },
       ] */
 
-      // console.log("aaa neworder", NewOrder);
+      console.log("New order==========", NewOrder);
 
       const result = await dispatch(saveNewOrder(NewOrder)).then((res) => {
         if (res && res.data) {
@@ -923,6 +930,8 @@ export default function NewCheckout(props) {
   
       for (let i = 0; i < offersData.length; i++) {
         if (couponCode === (offersData[i].offerCode)) {
+
+          setcomboOfferCode(offersData[i].offerCode);
 
            if(day === 0){dayOfferFlag = offersData[i].sunday }else if(day === 1){dayOfferFlag = offersData[i].monday}else if(day === 2){dayOfferFlag = offersData[i].tuesday}else if(day === 3){dayOfferFlag = offersData[i].wednesday}else if(day === 4){dayOfferFlag = offersData[i].thursday}else if(day === 5){dayOfferFlag = offersData[i].friday}else if(day === 6){dayOfferFlag = offersData[i].saturday}else{dayOfferFlag = ''}
 
@@ -1296,16 +1305,16 @@ export default function NewCheckout(props) {
     rule5Verified = false;
     rule6Verified = false;
 
-    // var offerString = "(P046 OR P047 OR PO54 OR P236 OR P237 OR P234)AND(PO76)AND(P022 OR P023)AND(P067 OR P068)AND(P067 OR P068)AND(NA)";
-    // var offerString = "(P046 OR P049 OR P055 OR P052 OR P058)AND(P152 OR P154 OR P153)AND(P125 OR P126)AND(P113 OR P114)AND(P113 OR P114)AND(NA)"
-    
-    // var offerString = "(P046 OR P049 OR P055 OR P052 OR P058)AND(P152 OR P154 OR P153)AND(P125 OR P126)AND(P1808 OR P113 OR P114)AND(NA)AND(NA)"
+    rule1AddQty = 0;
+    rule2AddQty = 0;
+    rule3AddQty = 0;
+    rule4AddQty = 0;
+    rule5AddQty = 0;
+    rule6AddQty = 0;
 
-    // var offerString = "(P046 OR P049 OR P055 OR P052 OR P058 OR P061)X2AND(P152 OR P154 OR P153)X3AND(P125 OR P126)X1AND(P1808 OR P113 OR P114 OR P240)X1AND(NA)X1AND(NA)X1"
-
+    // var offerString = "(P046 OR P049 OR P055 OR P052 OR P058 OR P061)X2AND(P152 OR P154 OR P153)X3AND(P125 OR P126)X1AND(P1808 OR P113 OR P114 OR P240)X1AND(NA)X1AND(NA)X1";
     // var offerString = "(P001)X2AND(P011)X2AND(P115)X3AND(NA)X1AND(NA)X1AND(NA)X1";
-
-        // var offerString = "(P001)X3AND(NA)X1AND(NA)X1AND(NA)X1AND(NA)X1AND(NA)X1";
+    // var offerString = "(P001)X3AND(NA)X1AND(NA)X1AND(NA)X1AND(NA)X1AND(NA)X1";
 
 
     console.log("************* offerStr",offerStr);
@@ -1456,6 +1465,8 @@ export default function NewCheckout(props) {
         isCOMBOOfferVerified = false;
         isComboCouponApplied = false;
         // calculateCOMBOCartCostWithFaiedCode();
+
+        setOfferCost(0);
 
         toast.error("FAILED!!");
       // }
@@ -2312,7 +2323,8 @@ export default function NewCheckout(props) {
       sgstCalculatedValue: sgstCalculatedValue.toFixed(2),
       overallPriceWithTax: Math.round(overallPriceWithTax),
       orderDetails: orderDetails,
-      couponCode: couponReduxObj ? couponReduxObj.couponDetails.couponCode : "",
+      // couponCode: couponReduxObj ? couponReduxObj.couponDetails.couponCode : "",
+      couponCode: couponReduxObj ? couponReduxObj.couponDetails.couponCode : comboOfferCode,
       discountPercentage: couponReduxObj
         ? couponReduxObj.couponDetails.discountPercentage
         : 0,
