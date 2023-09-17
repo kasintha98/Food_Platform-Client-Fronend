@@ -18,6 +18,7 @@ import { getAllStores2, setDeliveryType, getActiveCSS, getAllActiveCSS } from ".
 import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
 import { toast } from "react-toastify";
 import QRCodeModal from "../../components/QRCodeModal";
+import ReactGA from 'react-ga';
 
 export default function HomePage(props) {
   const isMobile = useMediaQuery({ query: `(max-width: 992px)` });
@@ -39,6 +40,11 @@ export default function HomePage(props) {
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  useEffect(() =>{
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  },[])
+
   useEffect(() => {
     dispatch(getActiveCSS(window.restId, "ALL", "HOME", "Banner"));
     dispatch(getAllActiveCSS(window.restId , "ALL"));

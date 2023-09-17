@@ -29,6 +29,7 @@ import { Typography } from "@mui/material";
 import { BottomNav } from "../../components/BottomNav";
 import { NewCart } from "../NewCart";
 import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
+import ReactGA from 'react-ga';
 
 const CartIconArea = styled.div`
   display: none;
@@ -205,6 +206,8 @@ export default function NewMenu() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
     const delLoc = localStorage.getItem("deliveryType");
     if (delLoc && defDel) {
       // dispatch(getAllStores());

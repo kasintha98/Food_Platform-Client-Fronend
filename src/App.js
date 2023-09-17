@@ -29,6 +29,9 @@ import { GPSTracker } from "./containers/GPSTracker";
 import { CloudError } from "./containers/CloudError";
 import { LoadingPage } from "./containers/LoadingPage";
 // import { useLocation } from "react-router-dom";
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('G-5WZE2ZP5RN');
 
 function App() {
   const dispatch = useDispatch();
