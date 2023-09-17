@@ -14,7 +14,7 @@ import { Restaurants } from "../../components/Restaurants";
 import { Offers } from "../../components/Offers";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStores, setDeliveryType } from "../../actions";
+import { getAllStores2, setDeliveryType, getActiveCSS, getAllActiveCSS } from "../../actions";
 import { DeliveryTypeModal } from "../../components/DeliveryTypeModal";
 import { toast } from "react-toastify";
 import QRCodeModal from "../../components/QRCodeModal";
@@ -32,10 +32,22 @@ export default function HomePage(props) {
   const tableId = new URLSearchParams(search).get("tableId");
   const stores = useSelector((state) => state.store.stores);
 
+  const banners = useSelector((state) => state.store.activeCSS);
+  const allCss = useSelector((state) => state.store.allActiveCSS);
+
+  console.log("ALL_ACTIVE_CSSSSSSSSSS...",allCss);
+
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllStores()).then((res) => {
+    dispatch(getActiveCSS(window.restId, "ALL", "HOME", "Banner"));
+    dispatch(getAllActiveCSS(window.restId , "ALL"));
+  },[]);
+
+  useEffect(() => {
+
+    console.log("RRRRREEssssstt---------------",window.restId);
+    dispatch(getAllStores2(window.restId)).then((res) => {
       // console.log("aaa res");
       let matchedStore = res?.find(
         (res) => res.restaurantId == restaurantId && res.storeId == storeId
@@ -69,6 +81,8 @@ export default function HomePage(props) {
         }
       }
     });
+
+  //  dispatch(getActiveCSS(window.restId, "ALL", "HOME", "Banner"));
   }, [auth.authenticate]);
 
   console.log("aaa show", show);
@@ -78,7 +92,8 @@ export default function HomePage(props) {
       <ScrollingProvider>
         <Header></Header>
         <Section id="home">
-          <MyCarousel></MyCarousel>
+          {banners != undefined ?(<MyCarousel></MyCarousel>):null}
+          
         </Section>
         <Container>
           <Section id="offers">

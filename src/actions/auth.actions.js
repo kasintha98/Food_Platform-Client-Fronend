@@ -326,12 +326,12 @@ export const GetDeliveryPrice = (restaurantId, storeId) => {
   };
 };
 
-export const getVersion = () => {
+export const getVersion = (restId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: authConstants.GET_VERSION_REQUEST });
 
-      const res = await axios.get(`/getAppDetails?restaurantId=R001&storeId=ALL`);
+      const res = await axios.get('/getAppDetails?restaurantId='+restId+'&storeId=ALL');
 
       if (res.status === 200 && res.data) {
         dispatch({

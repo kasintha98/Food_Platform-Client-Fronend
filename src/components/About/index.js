@@ -1,55 +1,35 @@
-import React from "react";
+import React, {useState, useEffect } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import res from "../../img/res.jpg";
 import logo from "../../img/logo.jpg";
 import about from "../../img/about.jpg";
 
+import { useSelector } from "react-redux";
+import { imagePath_dev } from "../../urlConfig";
+
 export default function About() {
+
+  const [aboutImg, setAboutImg] = useState("");
+
+  const allCss = useSelector((state) => state.store.allActiveCSS);
+
+  useEffect(() => {
+    if (allCss != undefined) {
+      allCss.forEach((category) => {
+        if (category.subCategory == "About_us") {
+          setAboutImg(imagePath_dev+"/"+window.restId+"/"+category.imagePath)
+        }
+      })
+    }
+  }, [allCss]);
+
   return (
     <div style={{ marginTop: "40px" }}>
       <Card style={{ width: "100%" }}>
-        <Card.Img variant="top" src={about} />
-        {/* <Row>
-          <Col sm={5}>
-            <Card.Img variant="top" src={res} />
-          </Col>
-          <Col sm={7}>
-            <Card.Body>
-              <Card.Title>
-                <div className="text-center">
-                  <h2>About Us</h2>
-                </div>{" "}
-              </Card.Title>
-              <Card.Text>
-                Burger Freakz Restaurant is a food supplying company mainly
-                focused on serving different kinds of burgers, submarines, and
-                submarines. For example, Crispy Chicken Cheesy Blast, Double
-                Cheesy Blast, Double Crispy Chicken Blast are some of the iconic
-                burgers that we are selling. We supply better quality food than
-                other our competitive food companies. We mainly focus on quality
-                rather than quantity.
-                <br></br>
-                <br></br>
-                The company has both dine-in and delivery facilities. The
-                company was started by Mr Yukthika Wimalaweera and his sister Ms
-                Yasara Wimalaweera in May 2020.
-                <br></br>
-                <br></br>
-                The restaurant is situated in a calm area in the city of
-                Homagama. You can enjoy your foods away from the noisy city, but
-                close to nature.
-                <br></br>
-                <br></br>
-                So, what are you waiting for? Come and feel the difference!
-                <br></br>
-                <br></br>
-                <div className="text-center">
-                  <img style={{ width: "200px" }} src={logo} alt="logo"></img>
-                </div>
-              </Card.Text>
-            </Card.Body>
-          </Col>
-        </Row> */}
+      {/* <Card.Img variant="top" src={about} /> */}
+      <Card.Img variant="top" src={aboutImg} />
+        {/* <Card.Img variant="top" src={`${imagePath_dev}/${window.restId}/${aboutUsImg}`} /> */}
+        {/* <Card.Img variant="top" src="https://storage.googleapis.com/hangries-dev/R002/Banner3.jpg" /> */}
       </Card>
     </div>
   );

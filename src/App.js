@@ -12,6 +12,10 @@ import {
   getPayTMSalt,
   getPayTMWSebsiteName,
   getOffersByStatusCall,
+  getAllStores2,
+  getActiveCSS,
+  getActiveCssLogo,
+  getAllActiveCSS,
 } from "./actions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -32,29 +36,76 @@ function App() {
   const stores = useSelector((state) => state.store.stores);
   const [show, setShow] = useState(false);
 
+  var restId = '';
+
   useEffect(() => {
+    const domain =  window.location.host;
+    console.log("DOMAIN NAME First Method ==== ", domain);
+    window.domainName = domain;
+
+    if(window.domainName == "hungry-point.in"){
+      console.log("Restaurant Selected @ hungry-point.in 1==== R002");
+      window.restId = 'R002';
+      restId = 'R002';
+    }else if(window.domainName == "hangries.in"){
+      console.log("Restaurant Selected @ hangries.in 1==== R001");
+      window.restId = 'R001';
+      restId = 'R001';
+    }else{
+      console.log("Restaurant Selected @ else loop 1==== R001");
+      window.restId = 'R001';
+      restId = 'R001'
+    }
+  },[]);
+
+  useEffect(() => {
+
+    const domain =  window.location.host;
+    console.log("DOMAIN NAME Second Method ==== ", domain);
+    window.domainName = domain;
+
+    if(window.domainName == "hungry-point.in"){
+      console.log("Restaurant Selected @ hungry-point.in 2==== R002");
+      window.restId = 'R002';
+      restId = 'R002';
+    }else if(window.domainName == "hangries.in"){
+      console.log("Restaurant Selected @ hangries.in 2==== R001");
+      window.restId = 'R001';
+      restId = 'R001';
+    }else{
+      console.log("Restaurant Selected @ else loop 2==== R001");
+      window.restId = 'R001';
+      restId = 'R001'
+    }
+    
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
     }
+
   }, [auth.authenticate]);
 
   useEffect(() => {
     console.log("App.js - updateCart");
     dispatch(updateCart());
-    dispatch(getAllStores());
-    dispatch(getVersion());
-    dispatch(getClientPaymentModes("R001"));
-    dispatch(getPayTMUrl("R001"));
-    dispatch(getPayTMMerchantID("R001")).then((mid) => {
-      dispatch(getPayTMUrl("R001")).then((url) => {
+    dispatch(getAllStores2(window.restId));
+    dispatch(getVersion(window.restId));
+    dispatch(getClientPaymentModes(window.restId));
+    dispatch(getPayTMUrl(window.restId));
+    dispatch(getPayTMMerchantID(window.restId)).then((mid) => {
+      dispatch(getPayTMUrl(window.restId)).then((url) => {
         document.getElementById(
           "paytmpgsrc"
         ).src = `https://${url}/merchantpgpui/checkoutjs/merchants/${mid}.js`;
       });
     });
-    dispatch(getPayTMSalt("R001"));
-    dispatch(getOffersByStatusCall("R001","S001"));
-    dispatch(getPayTMWSebsiteName("R001"));
+    dispatch(getPayTMSalt(window.restId));
+    dispatch(getOffersByStatusCall(window.restId,"S001"));
+    dispatch(getPayTMWSebsiteName(window.restId));
+
+    dispatch(getActiveCSS(restId , "ALL", "HOME", "Banner"));
+    dispatch(getActiveCssLogo(restId , "ALL", "HOME", "Logo"));
+    dispatch(getAllActiveCSS(restId , "ALL"));
+    
 
     const delItem = localStorage.getItem("deliveryType");
 
@@ -65,7 +116,7 @@ function App() {
 
     console.log("App.js - get stores");
 
-    dispatch(getAllStores()).then((res) => {
+    dispatch(getAllStores2(window.restId)).then((res) => {
       // console.log("aaa res", res);
       if (res) {
         setShow(true);

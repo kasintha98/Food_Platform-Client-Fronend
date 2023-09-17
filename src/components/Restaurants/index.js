@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 import styled from "@emotion/styled";
@@ -9,6 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import "./style.css";
 import { Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
+
+import { imagePath_dev } from "../../urlConfig";
+
 
 const CusCol = styled(Col)`
   height: 125vh;
@@ -98,6 +101,20 @@ export const Restaurants = () => {
   const [selectedStoreObj, setSelectedStoreObj] = useState(null);
   const stores = useSelector((state) => state.store.stores);
 
+  const [addressImg, setAddressImg] = useState("");
+  const allCss = useSelector((state) => state.store.allActiveCSS);
+
+  useEffect(() => {
+    if (allCss != undefined) {
+      allCss.forEach((category) => {
+        if (category.subCategory == "Restaurant_address_background") {
+          setAddressImg(imagePath_dev+"/"+window.restId+"/"+category.imagePath);
+        }
+      })
+    }
+  }, [allCss]);
+
+
   const handleChangeStore = (event) => {
     setSelectedStore(event.target.value);
     console.log(event.target.value);
@@ -108,10 +125,14 @@ export const Restaurants = () => {
     console.log(store);
   };
 
+  var sectionStyle = {
+    backgroundImage: `url(${addressImg})`
+ }
+
   return (
     <div style={{ marginTop: "40px" }}>
       <Row className="align-items-center" style={{ margin: 0, width: "100%" }}>
-        <CusCol className="col-background" sm={12} md={12}>
+        <CusCol style={sectionStyle} sm={12} md={12}>
           <Row>
             <Col md={12} lg={4}>
               {/* <Typography

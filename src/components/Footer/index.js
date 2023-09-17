@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import "./style.css";
 import footerimg from "../../img/footerimg.png";
 import { useSelector } from "react-redux";
@@ -7,7 +7,44 @@ import tw from "../../img/tw.png";
 import wa from "../../img/wa.png";
 import ig from "../../img/ig.png";
 
+import { imagePath_dev } from "../../urlConfig";
+
+
 export default function Footer() {
+  const [facebookUrl, setFacebookUrl] = useState("");
+  const [whatsappUrl, setWhatsappUrl] = useState("");
+  const [instaUrl, setInstaUrl] = useState("");
+  const [youTubeUrl, setYouTubeUrl] = useState("");
+  const [twitterUrl, setTwitterUrl] = useState("");
+
+  const allCss = useSelector((state) => state.store.allActiveCSS);
+
+  useEffect(() => {
+    if (allCss != undefined) {
+      allCss.forEach((category) => {
+        if (category.subCategory == "Facebook") {
+          setFacebookUrl(category.imagePath);
+        }
+
+        if (category.subCategory == "Instagram") {
+          setInstaUrl(category.imagePath);
+        }
+
+        if (category.subCategory == "Youtube") {
+          setYouTubeUrl(category.imagePath);
+        }
+
+        if (category.subCategory == "Whatapp") {
+          setWhatsappUrl(category.imagePath);
+        }
+
+        if (category.subCategory == "Twitter") {
+          setTwitterUrl(category.imagePath);
+        }
+      })
+    }
+  }, [allCss]);
+
   const version = useSelector((state) => state.auth.version);
 
   return (
@@ -83,23 +120,32 @@ export default function Footer() {
                   <div className="footer_menu">
                     <ul>
                       <li>
-                        <a href="https://www.facebook.com/HangriesOfficial">
+                        {/* <a href="https://www.facebook.com/HangriesOfficial"> */}
+                        <a href={facebookUrl}>
                           <i className="fa fa-facebook"> Facebook</i>
                         </a>
                       </li>
                       <li>
-                        <a href="https://www.instagram.com/hangriesofficial/">
+                        {/* <a href="https://www.instagram.com/hangriesofficial/"> */}
+                        <a href={instaUrl}>
                           <i className="fa fa-instagram"> Instagram</i>
                         </a>
                       </li>
                       <li>
-                        <a href="https://www.youtube.com/channel/UCJPY7XvcOOMWNlZcgmxAJLg/featured">
+                        {/* <a href="https://www.youtube.com/channel/UCJPY7XvcOOMWNlZcgmxAJLg/featured"> */}
+                        <a href={youTubeUrl}>
                           <i className="fa fa-youtube"> Youtube</i>
                         </a>
                       </li>
                       <li>
-                        <a href="https://api.whatsapp.com/send?phone=+91-9369522222">
+                        {/* <a href="https://api.whatsapp.com/send?phone=+91-9369522222"> */}
+                        <a href={whatsappUrl}>
                           <i className="fa fa-whatsapp"> Whatsapp</i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href={twitterUrl}>
+                          <i className="fa fa-twitter"> Twitter</i>
                         </a>
                       </li>
                     </ul>

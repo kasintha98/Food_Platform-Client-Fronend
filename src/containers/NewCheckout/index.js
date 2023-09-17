@@ -232,12 +232,12 @@ export default function NewCheckout(props) {
 
   useEffect(() => {
     dispatch(getAllStores());
-    dispatch(getOffersByStatusCall("R001","S001"));
-    dispatch(getPayuUrl(currentType ? currentType.restaurantId : "R001"));
+    dispatch(getOffersByStatusCall(window.restId,"S001"));
+    dispatch(getPayuUrl(currentType ? currentType.restaurantId : window.restId));
     dispatch(
-      getPayuMerchantID(currentType ? currentType.restaurantId : "R001")
+      getPayuMerchantID(currentType ? currentType.restaurantId : window.restId)
     );
-    dispatch(getPayuSalt(currentType ? currentType.restaurantId : "R001"));
+    dispatch(getPayuSalt(currentType ? currentType.restaurantId : window.restId));
     const item = localStorage.getItem("deliveryType");
     console.log(item);
     if (item) {

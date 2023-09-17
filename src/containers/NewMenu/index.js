@@ -19,7 +19,7 @@ import {
   getProductsNew,
   getAllSections,
   getDishesBySection,
-  getAllStores,
+  getAllStores2,
 } from "../../actions";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -207,7 +207,8 @@ export default function NewMenu() {
   useEffect(() => {
     const delLoc = localStorage.getItem("deliveryType");
     if (delLoc && defDel) {
-      dispatch(getAllStores());
+      // dispatch(getAllStores());
+      dispatch(getAllStores2(window.restId));
       dispatch(getProductsNew());
       dispatch(getAllSections()).then((res) => {
         if (res) {
@@ -337,37 +338,37 @@ export default function NewMenu() {
               <Box sx={{ width: "100%" }}>
                 <TabContext value={value ? value : sections[0]}>
                   <Box
-                    sx={{
-                      borderBottom: 1,
-                      borderColor: "divider",
-                      position: "absolute",
-                      top: "52px",
-                      left: "0px",
-                      width: "100%",
-                      backgroundColor: "#ffc423",
-                    }}
+                  sx={{
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    position: "absolute",
+                    top: "52px",
+                    left: "0px",
+                    width: "100%",
+                    backgroundColor: "#ffc423",
+                  }}
+                >
+                  <CusTabList2
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
                   >
-                    <CusTabList2
-                      onChange={handleChange}
-                      aria-label="lab API tabs example"
-                    >
-                      {sections.map((section) => (
-                        <Tab
-                          onClick={() => {
-                            getDishesOfSection(section);
-                          }}
-                          label={section}
-                          value={section}
-                          sx={{
-                            fontSize: "0.75rem",
-                            fontWeight: "600",
-                            fontFamily: "Arial",
-                            color: "#e71b23",
-                          }}
-                        />
-                      ))}
-                    </CusTabList2>
-                  </Box>
+                    {sections.map((section) => (
+                      <Tab
+                        onClick={() => {
+                          getDishesOfSection(section);
+                        }}
+                        label={section}
+                        value={section}
+                        sx={{
+                          fontSize: "0.75rem",
+                          fontWeight: "600",
+                          fontFamily: "Arial",
+                          color: "#e71b23",
+                        }}
+                      />
+                    ))}
+                  </CusTabList2>
+                </Box>
                   {sections.map((section) => (
                     <TabPanel sx={{ padding: "0px" }} value={section}>
                       <Box sx={{ width: "100%" }}>

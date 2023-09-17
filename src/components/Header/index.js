@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Navbar,
@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import logo from "../../img/logo.png";
 import del from "../../img/deliveryType.jpg";
 import offerIcon from "../../img/offerIcon.png";
-import { login, signout } from "../../actions";
+import { login, signout, getActiveCssLogo } from "../../actions";
 import { Link, NavLink } from "react-router-dom";
 import CartNum from "../UI/CartNum";
 import { ToastContainer } from "react-toastify";
@@ -29,6 +29,8 @@ import { DeliveryTypeModal } from "../DeliveryTypeModal";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import { Typography } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
+
+import { imagePath_dev } from "../../urlConfig";
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -127,7 +129,32 @@ export default function Header(props) {
 
   const delobj = JSON.parse(localStorage.getItem("deliveryType"));
   const qrcode = delobj?.qrcode;
-  // console.log("aaa qrcode", qrcode);
+
+  const logoCss = useSelector((state) => state.store.activeCSSLogo);
+  const allCss = useSelector((state) => state.store.allActiveCSS);
+  const [orderInfo, setOrderInfo] = useState("");
+  const [logoImg, setLogoImg] = useState("");
+
+
+  console.log("allCss ===========",allCss);
+
+  var deliveryTypeImg = "";
+
+  useEffect(() => {
+    dispatch(getActiveCssLogo(window.restId , "ALL", "HOME", "Logo"));
+    if (allCss != undefined) {
+      allCss.forEach((category) => {
+
+        if (category.subCategory == "Order_Information") {
+          setOrderInfo(imagePath_dev+"/"+window.restId+"/"+category.imagePath);
+        }
+
+        if (category.subCategory == "Logo") {
+          setLogoImg(imagePath_dev+"/"+window.restId+"/"+category.imagePath);
+        }
+      })
+    }
+  }, [allCss]);
 
   //calling action to login the user
   const userLogin = () => {
@@ -375,7 +402,17 @@ export default function Header(props) {
           <div className={isMobile ? "w-100" : ""} style={{ display: "flex" }}>
             <Navbar.Brand>
               <Link to="/">
-                <img height="45px" src={logo} alt="logo" />
+                {/* <img height="45px" src={logo} alt="logo" /> */}
+                {/* {logoCss != undefined ? (
+                <img height="45px" src={`${imagePath_dev}/${window.restId}/${logoCss[0].imagePath}`} alt="logo" />
+                ): <img height="45px" src={logo} alt="logo" />
+                } */}
+
+                {logoCss != undefined ? (
+                <img height="45px" src={logoImg} alt="logo" />
+                ): <img height="45px" src={logo} alt="logo" />
+                }
+                
               </Link>
             </Navbar.Brand>
             {/* <Form className="d-flex">
@@ -397,8 +434,8 @@ export default function Header(props) {
                     id="dropdown-basic"
                     className="p-0 m-0"
                   >
-                    {!qrcode ? <CusImage src={del} alt="del logo" /> : null}
-                    {/* <CusImage src={del} alt="del logo" /> */}
+                    {/* {!qrcode ? <CusImage src={del} alt="del logo" /> : null} */}
+                    {!qrcode ? <CusImage src={orderInfo} alt="del logo" /> : null}
                   </CusDropdown>
 
                   <CusDropMenu>
