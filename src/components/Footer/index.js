@@ -7,9 +7,6 @@ import tw from "../../img/tw.png";
 import wa from "../../img/wa.png";
 import ig from "../../img/ig.png";
 
-import { imagePath_dev } from "../../urlConfig";
-
-
 export default function Footer() {
   const [facebookUrl, setFacebookUrl] = useState("");
   const [whatsappUrl, setWhatsappUrl] = useState("");

@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import offers from "../../img/offerBanner.png";
 
 import { useSelector } from "react-redux";
-import { imagePath_dev } from "../../urlConfig";
+import { imagePathHome } from "../../urlConfig";
 
 export const Offers = () => {
 
@@ -17,11 +17,11 @@ export const Offers = () => {
     if (allCss != undefined) {
       allCss.forEach((category) => {
         if (category.subCategory == "Offers") {
-          // offerImg = imagePath_dev+"/"+window.restId+"/"+category.imagePath;
-          setOfferImg(imagePath_dev+"/"+window.restId+"/"+category.imagePath);
+          // offerImg = imagePathHome+"/"+window.restId+"/"+category.imagePath;
+          setOfferImg(imagePathHome+"/"+window.restId+"/"+category.imagePath);
           // offerImg = category.imagePath;
 
-          // console.log(offerImg + " offerImg ===========", `${imagePath_dev}/${window.restId}/${offerImg}`);
+          // console.log(offerImg + " offerImg ===========", `${imagePathHome}/${window.restId}/${offerImg}`);
         }
       })
     }

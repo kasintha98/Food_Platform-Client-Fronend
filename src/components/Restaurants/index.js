@@ -10,7 +10,7 @@ import "./style.css";
 import { Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 
-import { imagePath_dev } from "../../urlConfig";
+import { imagePathHome } from "../../urlConfig";
 
 
 const CusCol = styled(Col)`
@@ -108,7 +108,7 @@ export const Restaurants = () => {
     if (allCss != undefined) {
       allCss.forEach((category) => {
         if (category.subCategory == "Restaurant_address_background") {
-          setAddressImg(imagePath_dev+"/"+window.restId+"/"+category.imagePath);
+          setAddressImg(imagePathHome+"/"+window.restId+"/"+category.imagePath);
         }
       })
     }

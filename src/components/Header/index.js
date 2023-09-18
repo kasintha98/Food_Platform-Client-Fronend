@@ -30,7 +30,7 @@ import PinDropIcon from "@mui/icons-material/PinDrop";
 import { Typography } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
 
-import { imagePath_dev } from "../../urlConfig";
+import { imagePathHome } from "../../urlConfig";
 
 const CusNavbar = styled(Navbar)`
   background-color: #fff;
@@ -146,11 +146,11 @@ export default function Header(props) {
       allCss.forEach((category) => {
 
         if (category.subCategory == "Order_Information") {
-          setOrderInfo(imagePath_dev+"/"+window.restId+"/"+category.imagePath);
+          setOrderInfo(imagePathHome+"/"+window.restId+"/"+category.imagePath);
         }
 
         if (category.subCategory == "Logo") {
-          setLogoImg(imagePath_dev+"/"+window.restId+"/"+category.imagePath);
+          setLogoImg(imagePathHome+"/"+window.restId+"/"+category.imagePath);
         }
       })
     }
@@ -404,7 +404,7 @@ export default function Header(props) {
               <Link to="/">
                 {/* <img height="45px" src={logo} alt="logo" /> */}
                 {/* {logoCss != undefined ? (
-                <img height="45px" src={`${imagePath_dev}/${window.restId}/${logoCss[0].imagePath}`} alt="logo" />
+                <img height="45px" src={`${imagePathHome}/${window.restId}/${logoCss[0].imagePath}`} alt="logo" />
                 ): <img height="45px" src={logo} alt="logo" />
                 } */}
 

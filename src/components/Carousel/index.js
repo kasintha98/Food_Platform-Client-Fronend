@@ -7,7 +7,7 @@ import bg2m from "../../img/2m.jpg";
 import styled from "@emotion/styled";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
-import { imagePath_dev } from "../../urlConfig";
+import { imagePathHome } from "../../urlConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveCSS } from "../../actions";
 
@@ -40,7 +40,7 @@ export default function MyCarousel(props) {
         {banners1.map((banner) => (
           <Carousel.Item>
             <Link to="/new-menu">
-              <CusImg className="d-block w-100" src={`${imagePath_dev}/${window.restId}/${banner.imagePath}`} alt="First slide" />
+              <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banner.imagePath}`} alt="First slide" />
             </Link>
           </Carousel.Item>
           ))}   
@@ -55,7 +55,7 @@ export default function MyCarousel(props) {
           {banners1.map((banner) => (
           <Carousel.Item>
             <Link to="/new-menu">
-              <CusImg className="d-block w-100" src={`${imagePath_dev}/${window.restId}/${banner.imagePath}`} alt="First slide" />
+              <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banner.imagePath}`} alt="First slide" />
             </Link>
           </Carousel.Item>
           ))}          
@@ -79,7 +79,7 @@ export default function MyCarousel(props) {
   //         {banners1.map((banner) => (
   //         <Carousel.Item>
   //           <Link to="/new-menu">
-  //             <CusImg className="d-block w-100" src={`${imagePath_dev}/${window.restId}/${banner.imagePath}`} alt="First slide" />
+  //             <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banner.imagePath}`} alt="First slide" />
   //           </Link>
   //         </Carousel.Item>
   //         ))}
@@ -89,7 +89,7 @@ export default function MyCarousel(props) {
   //       {/* {!isMobile ? (
   //         <Carousel.Item>
   //           <Link to="/new-menu">
-  //             <CusImg className="d-block w-100" src={`${imagePath_dev}/${window.restId}/${banners1[0].imagePath}`} alt="First slide" />
+  //             <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banners1[0].imagePath}`} alt="First slide" />
   //           </Link>
   //         </Carousel.Item>
   //       ) : null}
@@ -97,7 +97,7 @@ export default function MyCarousel(props) {
   //       {!isMobile ? (
   //         <Carousel.Item>
   //           <Link to="/new-menu">
-  //             <CusImg className="d-block w-100" src={`${imagePath_dev}/${window.restId}/${banners1[1].imagePath}`} alt="First slide" />
+  //             <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banners1[1].imagePath}`} alt="First slide" />
   //           </Link>
   //         </Carousel.Item>
   //       ) : null} */}
