@@ -6,6 +6,7 @@ import yt from "../../img/yt.png";
 import tw from "../../img/tw.png";
 import wa from "../../img/wa.png";
 import ig from "../../img/ig.png";
+import { imagePathHome } from "../../urlConfig";
 
 export default function Footer() {
   const [facebookUrl, setFacebookUrl] = useState("");
@@ -13,6 +14,7 @@ export default function Footer() {
   const [instaUrl, setInstaUrl] = useState("");
   const [youTubeUrl, setYouTubeUrl] = useState("");
   const [twitterUrl, setTwitterUrl] = useState("");
+  const [logoImg, setLogoImg] = useState("");
 
   const allCss = useSelector((state) => state.store.allActiveCSS);
 
@@ -38,6 +40,11 @@ export default function Footer() {
         if (category.subCategory == "Twitter") {
           setTwitterUrl(category.imagePath);
         }
+
+        if (category.subCategory == "Logo") {
+          setLogoImg(imagePathHome+"/"+window.restId+"/"+category.imagePath);
+        }
+
       })
     }
   }, [allCss]);
@@ -48,10 +55,9 @@ export default function Footer() {
     <footer className="footer_area section_padding_130_0">
       <div className="container">
         <div className="row">
-          {/* Single Widget*/}
-          <div className="col-12 col-sm-6 col-lg-4">
+          {/* Original Code*/}
+          {/* <div className="col-12 col-sm-6 col-lg-4">
             <div className="single-footer-widget section_padding_0_130">
-              {/* Footer Logo*/}
               <div className="footer-logo " />
               <img src={footerimg} width="100%" alt="facebook" />
             </div>
@@ -62,15 +68,34 @@ export default function Footer() {
                 </p>
               ) : null}
             </div>
+          </div> */}
+
+          <div style={{marginTop:'3%',marginBottom:'1%'}} className="col-12 col-sm-6 col-lg-4">
+            <div className="single-footer-widget section_padding_0_130">
+              <div className="footer-logo " />
+              {/* {window.domainName == "hangries.in" ? (
+                <img src={footerimg} width="100%" alt="facebook" />
+              ) : (
+                <img src={logoImg} width="100%" alt="facebook" loading="lazy"/>
+              )} */}
+                <img src={logoImg} width="100%" alt="facebook" loading="lazy"/>
+            </div>
+            <div className="w-100 text-center">
+              {version ? (
+                <p style={{ color: "#fff" }}>
+                  {version.appEnvironment}: {version.appVersion}
+                </p>
+              ) : null}
+            </div>
           </div>
+
           <div className="text-section col-12 col-sm-6 col-lg-8">
             <div className="row">
+              {/* Commented Code as suggested by Gurmeet*/}
               {/* Single Widget*/}
-              <div className="col-12 col-sm-4 col-lg">
+              {/* <div className="col-12 col-sm-4 col-lg">
                 <div className="single-footer-widget section_padding_0_130">
-                  {/* Widget Title*/}
                   <h5 className="widget-title">Company</h5>
-                  {/* Footer Menu*/}
                   <div className="footer_menu">
                     <ul>
                       <li>
@@ -88,14 +113,13 @@ export default function Footer() {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
+              {/* Commented Code as suggested by Gurmeet*/}
               {/* Single Widget*/}
-              <div className="col-12 col-sm-4 col-lg">
+              {/* <div className="col-12 col-sm-4 col-lg">
                 <div className="single-footer-widget section_padding_0_130">
-                  {/* Widget Title*/}
                   <h5 className="widget-title">We Accept</h5>
-                  {/* Footer Menu*/}
                   <div className="footer_menu">
                     <ul>
                       <li>
@@ -107,9 +131,9 @@ export default function Footer() {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </div> */}
               {/* Single Widget*/}
-              <div className="col-12 col-sm-4 col-lg">
+              <div style={{marginTop:'-70px',marginBottom:'10px',marginLeft:'40%'}} className="col-12 col-sm-4 col-lg">
                 <div className="single-footer-widget section_padding_0_130">
                   {/* Widget Title*/}
                   <h5 className="widget-title">Follow Us</h5>

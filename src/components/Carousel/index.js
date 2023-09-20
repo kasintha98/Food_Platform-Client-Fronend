@@ -40,7 +40,7 @@ export default function MyCarousel(props) {
         {banners1.map((banner) => (
           <Carousel.Item>
             <Link to="/new-menu">
-              <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banner.imagePath}`} alt="First slide" />
+              <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banner.imagePath}`} alt="First slide" loading="lazy" />
             </Link>
           </Carousel.Item>
           ))}   
@@ -55,7 +55,7 @@ export default function MyCarousel(props) {
           {banners1.map((banner) => (
           <Carousel.Item>
             <Link to="/new-menu">
-              <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banner.imagePath}`} alt="First slide" />
+              <CusImg className="d-block w-100" src={`${imagePathHome}/${window.restId}/${banner.imagePath}`} loading="lazy" alt="First slide" />
             </Link>
           </Carousel.Item>
           ))}          
