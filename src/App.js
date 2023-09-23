@@ -31,7 +31,8 @@ import { LoadingPage } from "./containers/LoadingPage";
 // import { useLocation } from "react-router-dom";
 import ReactGA from 'react-ga';
 
-ReactGA.initialize('G-5WZE2ZP5RN');
+// ReactGA.initialize('G-5WZE2ZP5RN'); ----- ClientID
+  ReactGA.initialize('G-VEB7MD19H9'); //-------- DEV ID
 
 function App() {
   const dispatch = useDispatch();

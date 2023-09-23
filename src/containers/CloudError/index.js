@@ -18,7 +18,7 @@ export const CloudError = () => {
               {/*  <Typography sx={{ fontSize: "72px" }}>ERROR</Typography> */}
               <Typography sx={{ fontSize: "36px" }}>ERROR</Typography>
               <Typography sx={{ fontSize: "22px" }}>
-                PLease be patient, your favourite Hangries Menu will be
+                PLease be patient, your favourite Menu will be
                 displayed shortly!
                 <br></br>
                 Please try again after few minutes!
