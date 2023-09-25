@@ -206,7 +206,7 @@ export default function NewMenu() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.pageview(window.location.pathname);
 
     const delLoc = localStorage.getItem("deliveryType");
     if (delLoc && defDel) {

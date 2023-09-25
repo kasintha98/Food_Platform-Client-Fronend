@@ -42,7 +42,7 @@ export default function HomePage(props) {
   const dispatch = useDispatch();
 
   useEffect(() =>{
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.pageview(window.location.pathname);
   },[])
 
   useEffect(() => {

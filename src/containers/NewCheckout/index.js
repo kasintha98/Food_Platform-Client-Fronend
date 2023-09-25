@@ -293,7 +293,9 @@ export default function NewCheckout(props) {
   }, [defDel]);
 
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    // ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.pageview(window.location.pathname);
+
 
     if (
       queryString.parse(props.location.search).status === "success" &&
@@ -962,15 +964,15 @@ export default function NewCheckout(props) {
         console.log(offersData[i].offerCode);
       }
   
-       
+      dispatch(validateCoupon(couponCode, window.restId, "S001")).then((res) => {
+        if (res) {
+          setCouponLocalObj(res);
+        }
+      });
         return;
     }
 
-    dispatch(validateCoupon(couponCode)).then((res) => {
-      if (res) {
-        setCouponLocalObj(res);
-      }
-    });
+    
   };
 
   //----- Combo offer code new ----
@@ -1471,7 +1473,7 @@ export default function NewCheckout(props) {
 
         setOfferCost(0);
 
-        toast.error("FAILED!!");
+        // toast.error("FAILED!!");
       // }
     }
 

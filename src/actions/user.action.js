@@ -502,11 +502,11 @@ export const GetOrderProcessStatus2 = (id) => {
   };
 };
 
-export const validateCoupon = (couponCode) => {
+export const validateCoupon = (couponCode, restaurantId,storeId) => {
   return async (dispatch) => {
     try {
       const res = await axios.post("/validateCoupon", null, {
-        params: { couponCode },
+        params: {couponCode: couponCode, restaurantId:restaurantId, storeId: storeId },
       });
       dispatch({ type: userConstants.VALIDATE_COUPON_REQUEST });
 
