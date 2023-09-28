@@ -51,7 +51,7 @@ import { PaytmButton } from "../../components/PayTMNew/paytmButton";
 import upiimg from "../../img/upi.jpg";
 import nbimg from "../../img/nb.jpg";
 import cardimg from "../../img/card.jpg";
-import ReactGA from 'react-ga';
+import ReactGA from "react-ga4";
 
 const queryString = require("query-string");
 var jwt = require("jsonwebtoken");
@@ -293,8 +293,7 @@ export default function NewCheckout(props) {
   }, [defDel]);
 
   useEffect(() => {
-    // ReactGA.pageview(window.location.pathname + window.location.search);
-    ReactGA.pageview(window.location.pathname);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Checkout Screen" });
 
 
     if (

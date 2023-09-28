@@ -29,10 +29,13 @@ import { GPSTracker } from "./containers/GPSTracker";
 import { CloudError } from "./containers/CloudError";
 import { LoadingPage } from "./containers/LoadingPage";
 // import { useLocation } from "react-router-dom";
-import ReactGA from 'react-ga';
+import ReactGA from "react-ga4";
+
+
+ReactGA.initialize("G-VEB7MD19H9");
 
 // ReactGA.initialize('G-5WZE2ZP5RN'); ----- ClientID
-  ReactGA.initialize('G-VEB7MD19H9'); //-------- DEV ID
+  // ReactGA.initialize('G-VEB7MD19H9'); //-------- DEV ID
 
 function App() {
   const dispatch = useDispatch();
