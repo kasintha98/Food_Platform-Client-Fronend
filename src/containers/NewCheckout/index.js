@@ -293,8 +293,11 @@ export default function NewCheckout(props) {
   }, [defDel]);
 
   useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Checkout Screen" });
-
+    if(window.restId === "R001"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Checkout Screen" });
+    }else if (window.restId == "R002"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Checkout Screen Hungry Point" });
+    }
 
     if (
       queryString.parse(props.location.search).status === "success" &&

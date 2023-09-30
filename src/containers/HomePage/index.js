@@ -42,8 +42,11 @@ export default function HomePage(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Home Screen" });
-
+    if(window.restId === "R001"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Home Screen" });
+    }else if (window.restId == "R002"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Home Screen Hungry Point" });
+    }
     dispatch(getActiveCSS(window.restId, "ALL", "HOME", "Banner"));
     dispatch(getAllActiveCSS(window.restId , "ALL"));
   },[]);

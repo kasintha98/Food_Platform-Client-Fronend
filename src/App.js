@@ -32,7 +32,7 @@ import { LoadingPage } from "./containers/LoadingPage";
 import ReactGA from "react-ga4";
 
 
-ReactGA.initialize("G-VEB7MD19H9");
+// ReactGA.initialize("G-VEB7MD19H9");
 
 // ReactGA.initialize('G-5WZE2ZP5RN'); ----- ClientID
   // ReactGA.initialize('G-VEB7MD19H9'); //-------- DEV ID
@@ -54,10 +54,12 @@ function App() {
       console.log("Restaurant Selected @ hungry-point.in 1==== R002");
       window.restId = 'R002';
       restId = 'R002';
+      ReactGA.initialize("G-VMBQ5KGFJK");
     }else if(window.domainName == "hangries.in"){
       console.log("Restaurant Selected @ hangries.in 1==== R001");
       window.restId = 'R001';
       restId = 'R001';
+      ReactGA.initialize("G-VEB7MD19H9");
     }else{
       console.log("Restaurant Selected @ else loop 1==== R001");
       window.restId = 'R001';
