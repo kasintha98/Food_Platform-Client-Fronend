@@ -50,7 +50,7 @@ const QRCodeModal = () => {
       // if (res.id) {
         if(res.length > 0){
         const userid = res[0].id;
-        dispatch(GetAddress(mobileNumber)).then((res) => {
+        dispatch(GetAddress(mobileNumber, window.restId)).then((res) => {
           console.log("aaa<<<res", res);
           if (res[0]?.id) {
             let qr = {
