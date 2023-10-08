@@ -50,20 +50,20 @@ function App() {
     console.log("DOMAIN NAME First Method ==== ", domain);
     window.domainName = domain;
 
-    if(window.domainName == "hungry-point.in"){
+    if(window.domainName == "hungry-point.in" || window.domainName == "www.hungry-point.in"){
       console.log("Restaurant Selected @ hungry-point.in 1==== R002");
       window.restId = 'R002';
       restId = 'R002';
       ReactGA.initialize("G-VMBQ5KGFJK");
-    }else if(window.domainName == "hangries.in"){
+    }else if(window.domainName == "hangries.in" || window.domainName == "www.hangries.in"){
       console.log("Restaurant Selected @ hangries.in 1==== R001");
       window.restId = 'R001';
       restId = 'R001';
       ReactGA.initialize("G-VEB7MD19H9");
     }else{
-      console.log("Restaurant Selected @ else loop 1==== R001");
-      window.restId = 'R001';
-      restId = 'R001'
+      // console.log("Restaurant Selected @ else loop 1==== R001");
+      // window.restId = 'R001';
+      // restId = 'R001'
     }
   },[]);
 
@@ -73,18 +73,18 @@ function App() {
     console.log("DOMAIN NAME Second Method ==== ", domain);
     window.domainName = domain;
 
-    if(window.domainName == "hungry-point.in"){
+    if(window.domainName == "hungry-point.in" || window.domainName == "www.hungry-point.in"){
       console.log("Restaurant Selected @ hungry-point.in 2==== R002");
       window.restId = 'R002';
       restId = 'R002';
-    }else if(window.domainName == "hangries.in"){
+    }else if(window.domainName == "hangries.in" || window.domainName == "www.hangries.in"){
       console.log("Restaurant Selected @ hangries.in 2==== R001");
       window.restId = 'R001';
       restId = 'R001';
     }else{
-      console.log("Restaurant Selected @ else loop 2==== R001");
-      window.restId = 'R001';
-      restId = 'R001'
+      // console.log("Restaurant Selected @ else loop 2==== R001");
+      // window.restId = 'R001';
+      // restId = 'R001'
     }
     
     if (!auth.authenticate) {

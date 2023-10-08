@@ -269,7 +269,7 @@ export default function LoginDrawerMob(props) {
   //calling action to login the user
   const userLogin = async () => {
     try {
-      await dispatch(signup(mobileNumber));
+      await dispatch(signup(mobileNumber, window.restId));
       setOtpSuccess(false);
       setViewUserDetails(true);
     } catch (error) {

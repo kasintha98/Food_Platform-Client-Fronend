@@ -96,12 +96,12 @@ export const addAddressSign = (payload) => {
   };
 };
 
-export const signup = (mobileNumber) => {
+export const signup = (mobileNumber, restaurantId) => {
   return async (dispatch) => {
     try {
       dispatch({ type: authConstants.SIGNUP_REQUEST });
       const res = await axios.get("/customer/register", {
-        params: { mobno: mobileNumber },
+        params: {restaurantId:restaurantId, mobno: mobileNumber },
       });
       console.log(res);
 

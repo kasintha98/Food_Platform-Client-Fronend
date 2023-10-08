@@ -273,11 +273,11 @@ export const DeleteAddress = (mobno, addrType) => {
 };
 
 //action to get userdata using mobile
-export const GetCustomer = (mobileNumber) => {
+export const GetCustomer = (mobileNumber, restaurantId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get("/getCustomerDtlsByMobNum", {
-        params: { mobno: mobileNumber },
+        params: {restaurantId:restaurantId, mobno: mobileNumber },
       });
       dispatch({ type: userDetailsConstants.GET_USER_DETAILS_REQUEST });
       if (res.status === 200) {
