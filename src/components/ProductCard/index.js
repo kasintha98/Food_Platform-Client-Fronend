@@ -39,6 +39,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
 import { imagePath } from "../../urlConfig";
+import { imagePathHome } from "../../urlConfig";
 import "./style.css";
 
 const imageExt = ".jpg";
@@ -1036,11 +1037,13 @@ export default function ProductCard(props) {
         ) : (
           <CusCardMedia
             component="img"
-            image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
+            // image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
+            image={`${imagePathHome}/${window.restId}/${currentProduct?.imagePath}`}
             alt="product"
             onClick={() => {
               handleShowPictureModal();
-              setImage(`${imagePath}/${currentProduct?.imagePath}${imageExt}`);
+              // setImage(`${imagePath}/${currentProduct?.imagePath}${imageExt}`);
+              setImage(`${imagePathHome}/${window.restId}/${currentProduct?.imagePath}`);
               setImageName(props.product?.dishType);
             }}
           />
