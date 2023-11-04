@@ -30,6 +30,7 @@ import { CloudError } from "./containers/CloudError";
 import { LoadingPage } from "./containers/LoadingPage";
 // import { useLocation } from "react-router-dom";
 import ReactGA from "react-ga4";
+// import DetailProduct from "./components/ProductDetailView";
 
 
 ReactGA.initialize("G-VEB7MD19H9");
@@ -50,18 +51,19 @@ function App() {
     console.log("DOMAIN NAME First Method ==== ", domain);
     window.domainName = domain;
 
-    if(window.domainName == "hungry-point.in"){
+    if(window.domainName == "hungry-point.in" || window.domainName == "www.hungry-point.in"){
       console.log("Restaurant Selected @ hungry-point.in 1==== R002");
       window.restId = 'R002';
       restId = 'R002';
-    }else if(window.domainName == "hangries.in"){
+    }else if(window.domainName == "hangries.in" || window.domainName == "www.hangries.in"){
       console.log("Restaurant Selected @ hangries.in 1==== R001");
       window.restId = 'R001';
       restId = 'R001';
-    }else{
-      console.log("Restaurant Selected @ else loop 1==== R001");
-      window.restId = 'R001';
-      restId = 'R001'
+    }
+    else{
+      // console.log("Restaurant Selected @ else loop 1==== R001");
+      // window.restId = 'R001';
+      // restId = 'R001'
     }
   },[]);
 
@@ -71,18 +73,19 @@ function App() {
     console.log("DOMAIN NAME Second Method ==== ", domain);
     window.domainName = domain;
 
-    if(window.domainName == "hungry-point.in"){
+    if(window.domainName == "hungry-point.in" || window.domainName == "www.hungry-point.in"){
       console.log("Restaurant Selected @ hungry-point.in 2==== R002");
       window.restId = 'R002';
       restId = 'R002';
-    }else if(window.domainName == "hangries.in"){
+    }else if(window.domainName == "hangries.in" || window.domainName == "www.hangries.in"){
       console.log("Restaurant Selected @ hangries.in 2==== R001");
       window.restId = 'R001';
       restId = 'R001';
-    }else{
-      console.log("Restaurant Selected @ else loop 2==== R001");
-      window.restId = 'R001';
-      restId = 'R001'
+    }
+    else{
+      // console.log("Restaurant Selected @ else loop 2==== R001");
+      // window.restId = 'R001';
+      // restId = 'R001'
     }
     
     if (!auth.authenticate) {
@@ -165,6 +168,10 @@ function App() {
             path="/new-cart"
             component={stores && stores.length > 0 ? NewCartPage : CloudError}
           />
+           {/* <Route
+            path="/detailProduct"
+            component={stores && stores.length > 0 ? DetailProduct : CloudError}
+          /> */}
         </Switch>
       </Router>
       {/* {show ? <DeliveryTypeModal delay={0}></DeliveryTypeModal> : null} */}

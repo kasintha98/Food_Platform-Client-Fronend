@@ -83,6 +83,70 @@ export const getProductsNew = () => {
   };
 };
 
+export const getProductById = (restaurantId,storeId,productId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: productConstants.GET_PRODUCTS_BY_ID_REQUEST });
+
+      const res = await axios.get("/getProductById", {
+        params: { restaurantId: restaurantId,
+            storeId: storeId,
+            productId: productId },
+      });
+
+      if (res.status === 200 && res.data) {
+        dispatch({
+          type: productConstants.GET_PRODUCTS_BY_ID_SUCCESS,
+          payload: res.data,
+        });
+
+        return res.data;
+      } else {
+        dispatch({
+          type: productConstants.GET_PRODUCTS_BY_ID_FAILURE,
+          payload: null,
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: productConstants.GET_PRODUCTS_BY_ID_FAILURE,
+        payload: null,
+      });
+    }
+  };
+};
+
+// export const getProductById1 = (restaurantId,storeId,productId) => {
+//   return async (dispatch) => {
+//     try {
+//       let res = {};
+//         res = await axios.get(`/getProductById`, {
+//           params: {
+//             restaurantId: restaurantId,
+//             storeId: storeId,
+//             productId: productId,
+//           },
+//         });
+
+//       if (res && res.status === 200) {
+//         const product = {
+//           productById: res.data,
+//         };
+//         console.log(product);
+
+//         dispatch({
+//           type: productConstants.GET_PRODUCTS_BY_ID_SUCCESS,
+//           payload: res.data,
+//         });
+//       } else {
+//         console.log("error");
+//       }
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
+
 export const getMenuIngredientsByProductId = (id) => {
   return async (dispatch) => {
     try {

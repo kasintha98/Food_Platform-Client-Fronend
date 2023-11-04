@@ -18,6 +18,23 @@ export default (state = initState, action) => {
         products: action.payload.products,
       };
       break;
+    case productConstants.GET_PRODUCTS_BY_ID_REQUEST:
+      state = {
+        ...state,
+      };
+      break;
+    case productConstants.GET_PRODUCTS_BY_ID_SUCCESS:
+      state = {
+        ...state,
+        productById: action.payload.productById,
+      };
+      break;
+    case productConstants.GET_PRODUCTS_BY_ID_FAILURE:
+      state = {
+        ...state,
+        productById: null,
+      };
+      break;
     case productConstants.GET_SPECIFIC_PRODUCT_BY_SLUG_REQUEST:
       state = {
         ...state,

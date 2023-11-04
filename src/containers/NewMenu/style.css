@@ -35,3 +35,46 @@
 .pizzaRound:hover {
   background-color: transparent !important;
 }
+
+.detailsHeaderStyle {
+  font-family: 'Roboto Condensed', sans-serif !important;
+  font-size: 15px;
+  font-weight: bold;
+  width:"80%";
+  text-align: center;
+}
+
+.priceLabelStyle {
+  font-family: 'Roboto Condensed', sans-serif !important;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.descLabelStyle {
+  font-family: 'Roboto Condensed', sans-serif !important;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.detilsAddCartBtn {
+  width:60%;
+  background-color:#C61A24;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 700;
+  height: 30px;
+}
+
+.detilsMobAddCartBtn{
+  width:60%;
+  background-color:#C61A24;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  height: 30px;
+}
+

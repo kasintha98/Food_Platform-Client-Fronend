@@ -41,6 +41,8 @@ import LinesEllipsis from "react-lines-ellipsis";
 import { imagePath } from "../../urlConfig";
 import "./style.css";
 
+import { useHistory } from "react-router-dom";
+
 const imageExt = ".jpg";
 
 const CheckoutButton = styled(Button)`
@@ -220,6 +222,7 @@ const AddButton = styled(Button)`
 `;
 
 export default function ProductCard(props) {
+  const {showDetailScreen} = props;
   const [open, setOpen] = React.useState(false);
   const [showPictureModal, setshowPictureModal] = React.useState(false);
   const [dishCusType, setDishCusType] = React.useState("1");
@@ -237,6 +240,8 @@ export default function ProductCard(props) {
   const [selectedCusProd, setSelectedCusProd] = React.useState({});
   const [specialText, setSpecialText] = React.useState("");
   const [qty, setQty] = React.useState(1);
+
+  const history = useHistory();
 
   const cart = useSelector((state) => state.cart);
   let ingredients = useSelector((state) => state.product.ingredients);
@@ -407,6 +412,11 @@ export default function ProductCard(props) {
 
     props.onChangeSubTotal(total);
   };
+
+  const fireParentMethod = (productId) =>{
+    console.log("888888888888888",productId);
+    props.showDetailScreen(productId);
+  }
 
   const handleCustomization = (event) => {
     setToppingCustomization({
@@ -1027,22 +1037,26 @@ export default function ProductCard(props) {
             component="img"
             image={noImage}
             alt="product"
-            onClick={() => {
-              handleShowPictureModal();
-              setImage(noImage);
-              setImageName(props.product?.dishType);
-            }}
+            // onClick={() => {
+            //   handleShowPictureModal();
+            //   setImage(noImage);
+            //   setImageName(props.product?.dishType);
+            // }}
+            onClick={() => {fireParentMethod(props.product?.productId)}}
           />
         ) : (
           <CusCardMedia
             component="img"
             image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
             alt="product"
-            onClick={() => {
-              handleShowPictureModal();
-              setImage(`${imagePath}/${currentProduct?.imagePath}${imageExt}`);
-              setImageName(props.product?.dishType);
-            }}
+            // onClick={() => {
+            //   // window.open("/new-menu") //to open new page
+            //   // history.push("/detailProduct");
+            //   // handleShowPictureModal(); // CHECK HERE
+            //   // setImage(`${imagePath}/${currentProduct?.imagePath}${imageExt}`);
+            //   // setImageName(props.product?.dishType);
+            // }}
+            onClick={() => {fireParentMethod(props.product?.productId)}}
           />
         )}
 
