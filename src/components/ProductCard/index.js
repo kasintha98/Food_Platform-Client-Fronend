@@ -39,6 +39,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
 import { imagePath } from "../../urlConfig";
+import { imagePathHome } from "../../urlConfig";
 import "./style.css";
 
 import { useHistory } from "react-router-dom";
@@ -1047,7 +1048,8 @@ export default function ProductCard(props) {
         ) : (
           <CusCardMedia
             component="img"
-            image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
+            // image={`${imagePath}/${currentProduct?.imagePath}${imageExt}`}
+            image={`${imagePathHome}/${window.restId}/${currentProduct?.imagePath}`}
             alt="product"
             // onClick={() => {
             //   // window.open("/new-menu") //to open new page

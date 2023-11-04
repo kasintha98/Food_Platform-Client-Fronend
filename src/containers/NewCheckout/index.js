@@ -253,7 +253,7 @@ export default function NewCheckout(props) {
       if (specialChars.test(localUserMobileNumber)) {
         encodeURIComponent(localUserMobileNumber);
       }
-      dispatch(GetAddress(localUserMobileNumber)).then((res) => {
+      dispatch(GetAddress(localUserMobileNumber,window.restId)).then((res) => {
         if (res && !(defDel && defDel.selectedAddress)) {
           if (res && res.length > 0) {
             setSelectedAddress(res[0]);
@@ -293,8 +293,11 @@ export default function NewCheckout(props) {
   }, [defDel]);
 
   useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Checkout Screen" });
-
+    if(window.restId === "R001"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Checkout Screen" });
+    }else if (window.restId == "R002"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Checkout Screen Hungry Point" });
+    }
 
     if (
       queryString.parse(props.location.search).status === "success" &&
@@ -355,18 +358,21 @@ export default function NewCheckout(props) {
             });
           }
         } else if (isMobile) {
-          dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
-            if (res && res.data) {
-              console.log(res.data);
-              setOrderResp(res.data[0], () => {
-                handleShowInvoice();
-              });
-              dispatch(clearCoupon());
-              return res.data;
-            } else {
-              toast.error("Invalid hash or response data!");
-            }
-          });
+          if (localStorage.getItem("transactionDone") !== "TRANS_DONE") {
+            localStorage.setItem("transactionDone", "TRANS_DONE");
+            dispatch(saveNewOrder({ ...decodedOrderObj })).then((res) => {
+              if (res && res.data) {
+                console.log(res.data);
+                setOrderResp(res.data[0], () => {
+                  handleShowInvoice();
+                });
+                dispatch(clearCoupon());
+                return res.data;
+              } else {
+                toast.error("Invalid hash or response data!");
+              }
+            });
+          }
         } else {
           toast.error("Please login again!");
         }

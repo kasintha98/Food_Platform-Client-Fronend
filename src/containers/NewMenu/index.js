@@ -258,7 +258,11 @@ export default function NewMenu() {
   }
 
   useEffect(() => {
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Menu Screen" });
+    if(window.restId === "R001"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Menu Screen" });
+    }else if (window.restId == "R002"){
+      ReactGA.send({ hitType: "pageview", page: window.location.pathname, title: "Menu Screen Hungry Point" });
+    }
 
     const delLoc = localStorage.getItem("deliveryType");
     if (delLoc && defDel) {

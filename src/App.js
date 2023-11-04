@@ -33,7 +33,7 @@ import ReactGA from "react-ga4";
 // import DetailProduct from "./components/ProductDetailView";
 
 
-ReactGA.initialize("G-VEB7MD19H9");
+// ReactGA.initialize("G-VEB7MD19H9");
 
 // ReactGA.initialize('G-5WZE2ZP5RN'); ----- ClientID
   // ReactGA.initialize('G-VEB7MD19H9'); //-------- DEV ID
@@ -55,12 +55,13 @@ function App() {
       console.log("Restaurant Selected @ hungry-point.in 1==== R002");
       window.restId = 'R002';
       restId = 'R002';
+      ReactGA.initialize("G-VMBQ5KGFJK");
     }else if(window.domainName == "hangries.in" || window.domainName == "www.hangries.in"){
       console.log("Restaurant Selected @ hangries.in 1==== R001");
       window.restId = 'R001';
       restId = 'R001';
-    }
-    else{
+      ReactGA.initialize("G-VEB7MD19H9");
+    }else{
       // console.log("Restaurant Selected @ else loop 1==== R001");
       // window.restId = 'R001';
       // restId = 'R001'
@@ -81,8 +82,7 @@ function App() {
       console.log("Restaurant Selected @ hangries.in 2==== R001");
       window.restId = 'R001';
       restId = 'R001';
-    }
-    else{
+    }else{
       // console.log("Restaurant Selected @ else loop 2==== R001");
       // window.restId = 'R001';
       // restId = 'R001'

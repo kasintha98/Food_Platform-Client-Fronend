@@ -217,7 +217,7 @@ export const AddAddress = (payload) => {
       const res = await axios.post("/saveCustomerDtls", payload);
 
       if (res.status === 200) {
-        dispatch(GetAddress(payload.mobileNumber));
+        dispatch(GetAddress(payload.mobileNumber, window.restId));
         dispatch({
           type: userAddressConstants.ADD_USER_ADDRESS_SUCCESS,
           payload,
@@ -252,7 +252,7 @@ export const DeleteAddress = (mobno, addrType) => {
       });
 
       if (res.status === 200) {
-        dispatch(GetAddress(mobno));
+        dispatch(GetAddress(mobno, window.restId));
         dispatch({
           type: userAddressConstants.DELETE_USER_ADDRESS_SUCCESS,
           res,
@@ -273,11 +273,11 @@ export const DeleteAddress = (mobno, addrType) => {
 };
 
 //action to get userdata using mobile
-export const GetCustomer = (mobileNumber) => {
+export const GetCustomer = (mobileNumber, restaurantId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get("/getCustomerDtlsByMobNum", {
-        params: { mobno: mobileNumber },
+        params: {restaurantId:restaurantId, mobno: mobileNumber },
       });
       dispatch({ type: userDetailsConstants.GET_USER_DETAILS_REQUEST });
       if (res.status === 200) {
@@ -301,11 +301,11 @@ export const GetCustomer = (mobileNumber) => {
 };
 
 //action to get address
-export const GetAddress = (mobileNumber) => {
+export const GetAddress = (mobileNumber,restaurantId) => {
   return async (dispatch) => {
     try {
       const res = await axios.get("/getCustomerAddressDtlsByMobNum", {
-        params: { mobno: mobileNumber },
+        params: { restaurantId:restaurantId, mobno: mobileNumber },
       });
       dispatch({ type: userAddressConstants.GET_USER_ADDRESSS_REQUEST });
       if (res.status === 200) {

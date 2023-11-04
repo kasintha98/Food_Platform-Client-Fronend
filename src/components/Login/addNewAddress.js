@@ -125,7 +125,7 @@ export default function AddNewAddress(props) {
     if (specialChars.test(localUserMobileNumber)) {
       encodeURIComponent(localUserMobileNumber);
     }
-    dispatch(GetAddress(localUserMobileNumber));
+    dispatch(GetAddress(localUserMobileNumber, window.restId));
   };
 
   const onSubmitDelete = (address) => {

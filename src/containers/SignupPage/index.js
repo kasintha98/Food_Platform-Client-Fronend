@@ -101,7 +101,7 @@ export default function SignupPage() {
     };
     console.log(payload);
 
-    dispatch(signup(user));
+    dispatch(signup(user, window.restId));
   };
 
   return (

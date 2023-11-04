@@ -72,7 +72,7 @@ export const DeliveryTypeModal = (props) => {
       if (specialChars.test(localUserMobileNumber)) {
         encodeURIComponent(localUserMobileNumber);
       }
-      dispatch(GetAddress(localUserMobileNumber));
+      dispatch(GetAddress(localUserMobileNumber, window.restId));
       setisLoggedIn(true);
     }
 

@@ -42,7 +42,7 @@ const QRCodeModal = () => {
     if (!validatePhoneNumber(mobileNumber)) {
       return toast.error("Invalid Phone Number");
     }
-    dispatch(GetCustomer(mobileNumber)).then((res) => {
+    dispatch(GetCustomer(mobileNumber, window.restId)).then((res) => {
       console.log("GetCustomer response..");
       console.log(res);
       console.log("GetCustomer response..end");
@@ -50,7 +50,7 @@ const QRCodeModal = () => {
       // if (res.id) {
         if(res.length > 0){
         const userid = res[0].id;
-        dispatch(GetAddress(mobileNumber)).then((res) => {
+        dispatch(GetAddress(mobileNumber, window.restId)).then((res) => {
           console.log("aaa<<<res", res);
           if (res[0]?.id) {
             let qr = {
@@ -77,7 +77,7 @@ const QRCodeModal = () => {
         });
         setShow(false);
       } else {
-        dispatch(signup(mobileNumber)).then((res) => {
+        dispatch(signup(mobileNumber, window.restId)).then((res) => {
           if (res.data) {
             const payload = { ...res.data, firstName: name };
             dispatch(UpdateUserDetails(payload));
