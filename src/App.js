@@ -62,9 +62,9 @@ function App() {
       restId = 'R001';
       ReactGA.initialize("G-VEB7MD19H9");
     }else{
-      // console.log("Restaurant Selected @ else loop 1==== R001");
-      // window.restId = 'R001';
-      // restId = 'R001'
+      console.log("Restaurant Selected @ else loop 1==== R001");
+      window.restId = 'R001';
+      restId = 'R001'
     }
   },[]);
 
@@ -83,9 +83,9 @@ function App() {
       window.restId = 'R001';
       restId = 'R001';
     }else{
-      // console.log("Restaurant Selected @ else loop 2==== R001");
-      // window.restId = 'R001';
-      // restId = 'R001'
+      console.log("Restaurant Selected @ else loop 2==== R001");
+      window.restId = 'R001';
+      restId = 'R001'
     }
     
     if (!auth.authenticate) {

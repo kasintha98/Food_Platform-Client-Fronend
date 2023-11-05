@@ -54,6 +54,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Delete from "@mui/icons-material/Delete";
 import { Add, Remove } from "@mui/icons-material";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { imagePathHome } from "../../urlConfig";
 
 const CartIconArea = styled.div`
   display: none;
@@ -515,15 +516,15 @@ useEffect(() => {
 }, [
   currentProduct,
   cart?.cartItems,
-  // productObj.dishType,
-  // productObj.productId,
+  currentProduct.dishType,
+  currentProduct.productId,
   ingredients,
 ]);
 
 
 const handleClose = () => setOpen(false);
 const handleCurrentProduct = (curProduct) => {
-  // setCurrentProduct(curProduct);
+  setCurrentProduct(curProduct);
 
   const cartProd = cart?.cartItems[curProduct.productId];
 
@@ -680,18 +681,12 @@ const showCustPrice = () => {
                                                   dupProduct.productId
                                                 ]
                                               ) {
-                                                /* replaceCartItem(
-                                                  dupProduct,
-                                                  productObj.productId
-                                                ); */
                                               }
                                               dispatch(
                                                 getMenuIngredientsByProductId(
                                                   dupProduct.productId
                                                 )
                                               );
-                                              //setChoice("");
-                                              //handleClearCheckBox();
                                             }}
                                           />
                                         }
@@ -756,7 +751,7 @@ const showCustPrice = () => {
                                                       display: "block",
                                                     }}
                                                   >
-                                                    += ₹ {dupProduct.price}
+                                                    +=== ₹ {dupProduct.price}
                                                   </span>
                                                 ) : (
                                                   <span
@@ -771,7 +766,7 @@ const showCustPrice = () => {
                                                       display: "block",
                                                     }}
                                                   >
-                                                    +- ₹ {dupProduct.price}
+                                                    +--- ₹ {dupProduct.price}
                                                   </span>
                                                 )}
                                               </div>
@@ -1311,8 +1306,8 @@ const showCustPrice = () => {
                                             <Col className="" style={{minHeight:'350px',display: 'flex',justifyContent:'center',alignItems:'center', maxWidth: '40%', backgroundColor: '' }}>
                                               <div>
                                               {!isMobile ?
-                                              <img style={{height:"350px",width:"250px",position:'relative'}}src={tempImg}></img> :
-                                              <img style={{height:"200px",width:"100px",position:'relative'}}src={tempImg}></img>}
+                                              <img style={{height:"350px",width:"250px",position:'relative'}}src={imagePathHome+"/"+window.restId+"/"+productObj.imagePath+".jpg"}></img> :
+                                              <img style={{height:"200px",width:"100px",position:'relative'}}src={imagePathHome+"/"+window.restId+"/"+productObj.imagePath+".jpg"}></img>}
                                               </div>
                                             </Col>
                                             <Col className="" style={{minHeight:'100%', maxWidth: '60%', backgroundColor: '' }}>
