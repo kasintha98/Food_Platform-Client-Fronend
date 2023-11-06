@@ -516,8 +516,8 @@ useEffect(() => {
 }, [
   currentProduct,
   cart?.cartItems,
-  currentProduct.dishType,
-  currentProduct.productId,
+  // currentProduct.dishType,
+  // currentProduct.productId,
   ingredients,
 ]);
 
