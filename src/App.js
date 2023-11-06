@@ -61,10 +61,13 @@ function App() {
       window.restId = 'R001';
       restId = 'R001';
       ReactGA.initialize("G-VEB7MD19H9");
-    }else{
-      console.log("Restaurant Selected @ else loop 1==== R001");
+    }
+    else if(domain.includes("localhost") || domain.includes("client-app")) {
+      console.log("Restaurant Selected @ else loop 1.1==== R001");
       window.restId = 'R001';
       restId = 'R001'
+    }else{
+      console.log("NO DOMAIN DETECTED FROM URL");
     }
   },[]);
 
@@ -82,10 +85,13 @@ function App() {
       console.log("Restaurant Selected @ hangries.in 2==== R001");
       window.restId = 'R001';
       restId = 'R001';
-    }else{
-      console.log("Restaurant Selected @ else loop 2==== R001");
+    }
+    else if(domain.includes("localhost") || domain.includes("client-app")) {
+      console.log("Restaurant Selected @ else loop 2.1==== R001");
       window.restId = 'R001';
       restId = 'R001'
+    }else{
+      console.log("NO DOMAIN DETECTED FROM URL");
     }
     
     if (!auth.authenticate) {
