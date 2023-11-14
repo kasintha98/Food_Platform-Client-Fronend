@@ -245,7 +245,8 @@ export default function NewMenu() {
   const [toppingIngrdients, setToppingIngrdients] = React.useState([]);
   const [qty, setQty] = React.useState(1);
   const [toppingCustomization, setToppingCustomization] = React.useState({});
-  const [currentProduct, setCurrentProduct] = React.useState(productObj);
+  // const [currentProduct, setCurrentProduct] = React.useState(productObj); productList.products
+  const [currentProduct, setCurrentProduct] = React.useState(productList.products[0]);
   let ingredients = useSelector((state) => state.product.ingredients);
 
   const prevProduct = useRef();
@@ -292,6 +293,7 @@ export default function NewMenu() {
       
       dispatch(getProductById(window.restaurantId, window.storeId, window.productId)).then((resp) => {
         setProductObj(resp);
+        setCurrentProduct(resp);
       });
 
       // callProductApi();
@@ -315,6 +317,7 @@ export default function NewMenu() {
         if(resp){
         console.log("R222222222222222...",resp);
         setProductObj(resp);
+        setCurrentProduct(resp);
         setPrdFlag("yes");
         }
       });
@@ -324,6 +327,7 @@ export default function NewMenu() {
         if(resp){
         console.log("R222222222222222...",resp);
         setProductObj(resp);
+        setCurrentProduct(resp);
         setPrdFlag("yes");
         }
       });
@@ -383,11 +387,35 @@ export default function NewMenu() {
           toppings,
           toppingSubTotal,
           specialText,
-          null
+          choiceObj,
+          true
         )
       );
       calculateSubTotal();
     }
+
+    // dispatch(
+    //   addToCartNew(
+    //     currentProduct,
+    //     1,
+    //     toppings,
+    //     toppingSubTotal,
+    //     specialText,
+    //     choiceObj,
+    //     true
+    //   )
+    // ).then((res) => {
+    //   if (res) {
+    //     setChoice("");
+    //     setChoiceObj({});
+    //     setToppingSubTotal(0);
+    //     setToppings({});
+    //     setQty(1);
+    //   }
+    // });
+    // calculateSubTotal();
+    // setSpecialText("");
+    // handleClose();
   }
 
   const handleExtraTotal = (total) => {
@@ -605,7 +633,7 @@ const showCustPrice = () => {
   const choicePrice = choiceObj && choiceObj.price ? choiceObj.price : 0;
   const toppingAllPrice = toppingSubTotal ? toppingSubTotal : 0;
   const prodTotal =
-    productObj && productObj.price ? qty * productObj.price : 0;
+  currentProduct && currentProduct.price ? qty * currentProduct.price : 0;
 
   const total = prodTotal + choicePrice * qty + toppingAllPrice * qty;
   return <span>{total}</span>;
@@ -663,12 +691,12 @@ const showCustPrice = () => {
                               name="controlled-radio-buttons-group"
                               value={dishSize}
                               onChange={handleDishSize}
-                              defaultValue={productObj.productId}
+                              defaultValue={currentProduct.productId}
                             >
                               <Row className="align-items-center">
                                 {productList.products.map((dupProduct) =>
                                   dupProduct.dishType ===
-                                  productObj.dishType ? (
+                                  currentProduct.dishType ? (
                                     <Col className="col-4">
                                       <FormControlLabel
                                         value={dupProduct.productSize}
@@ -737,7 +765,7 @@ const showCustPrice = () => {
                                               {dupProduct.productSize}
                                               <br></br>
                                               <div style={{ marginTop: "5px" }}>
-                                                {productObj.productId ===
+                                                {currentProduct.productId ===
                                                 dupProduct.productId ? (
                                                   <span
                                                     style={{
@@ -1122,7 +1150,7 @@ const showCustPrice = () => {
                             : 1; */
                           dispatch(
                             addToCartNew(
-                              productObj,
+                              currentProduct,
                               qty,
                               toppings,
                               toppingSubTotal,
